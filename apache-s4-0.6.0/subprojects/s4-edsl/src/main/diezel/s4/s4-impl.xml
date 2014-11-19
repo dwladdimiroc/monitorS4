@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Licensed to the Apache Software Foundation (ASF) under one
+       or more contributor license agreements.  See the NOTICE file
+       distributed with this work for additional information
+       regarding copyright ownership.  The ASF licenses this file
+       to you under the Apache License, Version 2.0 (the
+       "License"); you may not use this file except in compliance
+       with the License.  You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+       Unless required by applicable law or agreed to in writing,
+       software distributed under the License is distributed on an
+       "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+       KIND, either express or implied.  See the License for the
+       specific language governing permissions and limitations
+       under the License.-->
+<diezelImplementation xmlns="http://diezel.ericaro.net/2.0.0/">
+	<package>org.apache.s4.edsl</package>
+	<name>Builder</name>
+	<extends>AppBuilder</extends>
+	<implements>org.apache.s4.edsl.S4DSL</implements>	
+	<transitions>
+		<transitionImplementation name="pe">
+			<body>
+			    clearPEState();peName = name;logger.debug("PE name: " + peName);
+			</body>
+		</transitionImplementation>
+		<transitionImplementation name="type">
+			<body>
+				processingElement = createPE(peType, peName);
+				logger.debug("peType: " + peType);
+			</body>
+		</transitionImplementation>
+		<transitionImplementation name="prop">
+			<body>
+			    addProperty(propName, propValue);
+			    logger.debug("prop: " + propName + " = " + propValue);
+			</body>
+		</transitionImplementation>
+		<transitionImplementation name="fireOn">
+			<body>
+				triggerEventType = eventType;
+				logger.debug("EventType: " + eventType);
+			</body>
+		</transitionImplementation>
+		<transitionImplementation name="afterInterval">
+			<body>
+				triggerInterval = interval;	triggerTimeUnit = timeUnit; processingElement.setTrigger(triggerEventType, 1, triggerInterval, triggerTimeUnit); logger.debug("Interval: " + triggerInterval);
+			</body>
+		</transitionImplementation>
+		<transitionImplementation name="afterNumEvents">
+			<body>
+				processingElement.setTrigger(triggerEventType, numEvents, triggerInterval, triggerTimeUnit);
+				logger.debug("afterNumeEvents: " + numEvents);
+			</body>
+		</transitionImplementation>
+		<transitionImplementation name="timer">
+			<body>
+				logger.debug("timer on");
+			</body>
+		</transitionImplementation>
+		<transitionImplementation name="withPeriod">
+			<body>
+				processingElement.setTimerInterval(interval, timeUnit);
+				logger.debug("withPeriod: " + interval);
+			</body>
+		</transitionImplementation>
+		<transitionImplementation name="cache">
+			<body>
+				logger.debug("cache");
+			</body>
+		</transitionImplementation>
+		<transitionImplementation name="size">
+			<body>
+				cacheSize = size; processingElement.setPECache(size); logger.debug("cache size: " + cacheSize);
+			</body>
+		</transitionImplementation>
+		<transitionImplementation name="expires">
+			<body>
+				processingElement.setPECache(cacheSize, duration, timeUnit); logger.debug("expires: " + duration);
+			</body>
+		</transitionImplementation>
+		<transitionImplementation name="asSingleton">
+			<body>
+				processingElement.setSingleton(true);
+				logger.debug("asSingleton");
+			</body>
+		</transitionImplementation>
+		<transitionImplementation name="emit">
+			<body>
+				streamBuilder = new StreamBuilder(app, event); streamBuilders.add(streamBuilder); addPe2Stream(processingElement, streamBuilder); logger.debug("emit event: " + event);
+			</body>
+		</transitionImplementation>
+		<transitionImplementation name="onField">
+			<body>
+				streamBuilder.setFieldName(fieldName);
+				logger.debug("onField");
+			</body>
+		</transitionImplementation>
+		<transitionImplementation name="withKeyFinder">
+			<body>
+				streamBuilder.setKeyFinder(keyFinder);
+				logger.debug("withKeyFinder");
+			</body>
+		</transitionImplementation>
+		<transitionImplementation name="withKey">
+			<body>
+				streamBuilder.setKey(key);
+				logger.debug("withKey");
+			</body>
+		</transitionImplementation>
+		<transitionImplementation name="to">
+			<body>
+				streamBuilder.to(targetPeNames);
+			</body>
+		</transitionImplementation>
+		<transitionImplementation name="build">
+			<body>
+				logger.debug("build");
+				return buildApp();
+			</body>
+		</transitionImplementation>
+
+	</transitions>
+</diezelImplementation>
