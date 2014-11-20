@@ -45,10 +45,12 @@ public class Topology extends App {
     protected void onInit() {
         //Create a prototype
         ProcessPE processPE = createPE(ProcessPE.class);
-        //Tiempo de replicación
+        //Tiempo de replicación - Automática
         processPE.setTimerInterval(1000, TimeUnit.MILLISECONDS);
         
         MongoPE mongoPE = createPE(MongoPE.class);
+        //Tiempo de replicación - Automática
+        mongoPE.setTimerInterval(1000, TimeUnit.MILLISECONDS);
         
         //Create a stream that listens to the "textInput" stream and passes events to the processPE instance.
         createInputStream("textInput", new KeyFinder<Event>() {
@@ -68,6 +70,7 @@ public class Topology extends App {
 					}
 				}, mongoPE);
         
+        processPE.registerMonitor(mongoPE.getClass());       
         processPE.setDownStream(mongoStream);
     }
 

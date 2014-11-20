@@ -331,6 +331,9 @@ public class Stream<T extends Event> implements Streamable {
 
                     /* STEP 2: pass event to PE instance. */
                     pe.handleInputEvent(event);
+                    
+                    logger.debug("Envía " + targetPEs[i].getClass().toString());
+                    logger.debug("Recibe " + pe.getClass().toString());
                 }
             }
 

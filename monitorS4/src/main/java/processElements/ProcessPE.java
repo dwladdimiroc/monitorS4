@@ -32,6 +32,8 @@ public class ProcessPE extends ProcessingElement {
 	private static Logger logger = LoggerFactory
 			.getLogger(ProcessPE.class);
 	private boolean showEvent = true;
+	
+	int count = 0;
 
 	Stream<Event> downStream;
 
@@ -46,7 +48,7 @@ public class ProcessPE extends ProcessingElement {
     	
     	//Processing
     	try {
-			Thread.sleep(1000);
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			logger.error(e.toString());
 		}
@@ -54,7 +56,7 @@ public class ProcessPE extends ProcessingElement {
     	Event eventOutput = new Event();
     	
     	//eventOutput.put("levelMongo", Long.class, eventCount % levelConcurrency);
-    	eventOutput.put("levelMongo", Long.class, getEventCount() % getReplication());
+    	eventOutput.put("levelMongo", Integer.class, 0);
     	eventOutput.put("id", Long.class, event.get("id", Long.class));
     	//eventOutput.put("id", Long.class, eventCount);
     	eventOutput.put("dateAdapter", Date.class, event.get("date", Date.class));
@@ -62,7 +64,8 @@ public class ProcessPE extends ProcessingElement {
     	
     	if(showEvent){logger.debug(eventOutput.getAttributesAsMap().toString());}
     	
-		downStream.put(eventOutput);
+    	downStream.put(eventOutput);
+    	
         
     }
 

@@ -57,11 +57,11 @@ public class MonitorAdapter extends AdapterApp implements Runnable {
 	
 	@Override
 	public void run() {
-		for(int i = 0; i<10; i++){
+		for(int i = 0; i<20000; i++){
 			Event event = new Event();
 
 			eventCount++;
-			event.put("levelProcess", Long.class, eventCount % levelConcurrency);
+			event.put("levelProcess", Integer.class, 0);
 			event.put("id", Long.class, eventCount);
 			event.put("date", Date.class, Calendar.getInstance().getTime());
 

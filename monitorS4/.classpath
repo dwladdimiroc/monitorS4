@@ -3,9 +3,6 @@
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry exported="true" kind="lib" path="/home/daniel/.m2/repository/org/apache/s4/s4-base/0.6.0-incubating/s4-base-0.6.0-incubating.jar" sourcepath="/s4-base"/>
-	<classpathentry exported="true" kind="lib" path="/home/daniel/.m2/repository/org/apache/s4/s4-comm/0.6.0-incubating/s4-comm-0.6.0-incubating.jar"/>
-	<classpathentry exported="true" kind="lib" path="/home/daniel/.m2/repository/org/apache/s4/s4-core/0.6.0-incubating/s4-core-0.6.0-incubating.jar" sourcepath="/s4-core"/>
 	<classpathentry exported="true" kind="lib" path="/home/daniel/.gradle/caches/artifacts-23/filestore/org.mongodb/mongo-java-driver/2.12.4/jar/3ed9a10c4315fae18e4a2ed1f01ff17475d7e16e/mongo-java-driver-2.12.4.jar" sourcepath="/home/daniel/.gradle/caches/artifacts-23/filestore/org.mongodb/mongo-java-driver/2.12.4/source/c40dcd25f1f0f9aebe2a81e4940789b2c40405fb/mongo-java-driver-2.12.4-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="/home/daniel/.gradle/caches/artifacts-23/filestore/net.sourceforge.collections/collections-generic/4.01/jar/12dddecd8e8c24f5c9453a6d3ecb13b38e59db52/collections-generic-4.01.jar" sourcepath="/home/daniel/.gradle/caches/artifacts-23/filestore/net.sourceforge.collections/collections-generic/4.01/source/55fb1e0d2f4ab06573df4df6d9ecf5e7a10aa2d6/collections-generic-4.01-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="/home/daniel/.gradle/caches/artifacts-23/filestore/ch.qos.logback/logback-core/0.9.29/jar/96bf09771ee37a15e8e096dbf4a586e964c2f91f/logback-core-0.9.29.jar" sourcepath="/home/daniel/.gradle/caches/artifacts-23/filestore/ch.qos.logback/logback-core/0.9.29/source/d8fc5a9bbc78693a9cd240add2b85af10731ee47/logback-core-0.9.29-sources.jar"/>
@@ -43,5 +40,8 @@
 	<classpathentry exported="true" kind="lib" path="/home/daniel/.gradle/caches/artifacts-23/filestore/io.netty/netty/3.5.11.Final/bundle/aa27b9e7b612e2b43c6a89a8d5825359f8de69d6/netty-3.5.11.Final.jar" sourcepath="/home/daniel/.gradle/caches/artifacts-23/filestore/io.netty/netty/3.5.11.Final/source/930d6f4dfece7a9ad7067450ec3d6ddca62f50cb/netty-3.5.11.Final-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="/home/daniel/.gradle/caches/artifacts-23/filestore/com.github.sgroschupf/zkclient/0.1/jar/a6cf8ffca10fdda90fe00b0b23665435bae50183/zkclient-0.1.jar" sourcepath="/home/daniel/.gradle/caches/artifacts-23/filestore/com.github.sgroschupf/zkclient/0.1/source/db5d173c3f03f2736b92bdb029df8f8f001c47d8/zkclient-0.1-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="/home/daniel/.gradle/caches/artifacts-23/filestore/com.beust/jcommander/1.25/jar/917389a932f9d1dbd66a9038b34b211eea3797ad/jcommander-1.25.jar" sourcepath="/home/daniel/.gradle/caches/artifacts-23/filestore/com.beust/jcommander/1.25/source/26030fa94dee3a635a9b9d46305d6c592f836073/jcommander-1.25-sources.jar"/>
+	<classpathentry kind="lib" path="/home/daniel/Proyectos/monitorS4/apache-s4-0.6.0/subprojects/s4-core/build/libs/s4-core-0.6.0-incubating.jar"/>
+	<classpathentry kind="lib" path="/home/daniel/Proyectos/monitorS4/apache-s4-0.6.0/subprojects/s4-comm/build/libs/s4-comm-0.6.0-incubating.jar"/>
+	<classpathentry kind="lib" path="/home/daniel/Proyectos/monitorS4/apache-s4-0.6.0/subprojects/s4-base/build/libs/s4-base-0.6.0-incubating.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

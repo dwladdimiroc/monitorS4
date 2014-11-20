@@ -171,9 +171,11 @@ public abstract class ProcessingElement implements Cloneable {
         /*
          * Only the PE Prototype uses the constructor. The PEPrototype field will be cloned by the instances and point
          * to the prototype.
-         */
+         */        
         this.pePrototype = this;
-
+        
+        //Inicialización del monitor de los distintos PE
+        monitor = new Monitor();
     }
 
     /**
@@ -188,7 +190,6 @@ public abstract class ProcessingElement implements Cloneable {
         if (app.measurePEProcessingTime) {
             processingTimer = Metrics.newTimer(getClass(), getClass().getName() + "-pe-processing-time");
         }
-        monitor = new Monitor();
     }
 
     /**
@@ -202,11 +203,11 @@ public abstract class ProcessingElement implements Cloneable {
     	//Se envía al monitor la cantidad eventos
     	//send(this.getClass(), eventCount, id);
     	logger.info("Send monitor " + this.getClass());
-    	monitor.sendStatus(this.getClass(), eventCount, id);
-    	logger.info("OK Status");
-    	/*if(monitor.distributedLoad().get(this.getClass())){
+    	//logger.info(monitor.messange());
+    	monitor.sendStatus(this.getClass(), eventCount);
+    	if(monitor.distributedLoad(this.getClass())){
     		replication++;
-    	}*/
+    	}
     }
 
     /**
@@ -495,6 +496,10 @@ public abstract class ProcessingElement implements Cloneable {
     public void checkpoint() {
         getApp().getCheckpointingFramework().saveState(this);
         clearDirty();
+    }
+    
+    public void registerMonitor(Class <? extends ProcessingElement> peRecibe){
+    	monitor.registerPE(this.getClass(), peRecibe);
     }
 
     private boolean isTrigger(Event event) {
