@@ -30,7 +30,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import processElements.MongoPE;
-import processElements.ProcessPE;
+import processElements.ProcessOnePE;
+import processElements.ProcessTwoPE;
 
 public class Topology extends App {
 	private static Logger logger = LoggerFactory
@@ -44,21 +45,35 @@ public class Topology extends App {
     @Override
     protected void onInit() {
         //Create a prototype
-        ProcessPE processPE = createPE(ProcessPE.class);
+        ProcessOnePE processOnePE = createPE(ProcessOnePE.class);
         //Tiempo de replicación - Automática
-        processPE.setTimerInterval(1000, TimeUnit.MILLISECONDS);
+        processOnePE.setTimerInterval(5000, TimeUnit.MILLISECONDS);
+        
+        ProcessTwoPE processTwoPE = createPE(ProcessTwoPE.class);
+        //Tiempo de replicación - Automática
+        processTwoPE.setTimerInterval(5000, TimeUnit.MILLISECONDS);
         
         MongoPE mongoPE = createPE(MongoPE.class);
         //Tiempo de replicación - Automática
-        mongoPE.setTimerInterval(1000, TimeUnit.MILLISECONDS);
+        mongoPE.setTimerInterval(5000, TimeUnit.MILLISECONDS);
         
         //Create a stream that listens to the "textInput" stream and passes events to the processPE instance.
         createInputStream("textInput", new KeyFinder<Event>() {
             @Override
             public List<String> get(Event event) {
-                return Arrays.asList(new String[] { event.get("levelProcess") });
+                return Arrays.asList(new String[] { event.get("levelProcessOne") });
             }
-        }, processPE);
+        }, processOnePE);
+        
+        Stream<Event> processTwoStream = createStream("processTwoStream",
+				new KeyFinder<Event>() {
+					@Override
+					public List<String> get(Event event) {
+
+						return Arrays.asList(new String[] { event
+								.get("levelProcessTwo") });
+					}
+				}, processTwoPE);
         
         Stream<Event> mongoStream = createStream("mongoStream",
 				new KeyFinder<Event>() {
@@ -70,8 +85,13 @@ public class Topology extends App {
 					}
 				}, mongoPE);
         
-        processPE.registerMonitor(mongoPE.getClass());       
-        processPE.setDownStream(mongoStream);
+        
+        //Register and setDownStream
+        processOnePE.registerMonitor(processTwoPE.getClass());       
+        processOnePE.setDownStream(processTwoStream);
+        
+        processTwoPE.registerMonitor(mongoPE.getClass());       
+        processTwoPE.setDownStream(mongoStream);
     }
 
     @Override

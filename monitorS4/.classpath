@@ -40,7 +40,7 @@
 	<classpathentry exported="true" kind="lib" path="/home/daniel/.gradle/caches/artifacts-23/filestore/io.netty/netty/3.5.11.Final/bundle/aa27b9e7b612e2b43c6a89a8d5825359f8de69d6/netty-3.5.11.Final.jar" sourcepath="/home/daniel/.gradle/caches/artifacts-23/filestore/io.netty/netty/3.5.11.Final/source/930d6f4dfece7a9ad7067450ec3d6ddca62f50cb/netty-3.5.11.Final-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="/home/daniel/.gradle/caches/artifacts-23/filestore/com.github.sgroschupf/zkclient/0.1/jar/a6cf8ffca10fdda90fe00b0b23665435bae50183/zkclient-0.1.jar" sourcepath="/home/daniel/.gradle/caches/artifacts-23/filestore/com.github.sgroschupf/zkclient/0.1/source/db5d173c3f03f2736b92bdb029df8f8f001c47d8/zkclient-0.1-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="/home/daniel/.gradle/caches/artifacts-23/filestore/com.beust/jcommander/1.25/jar/917389a932f9d1dbd66a9038b34b211eea3797ad/jcommander-1.25.jar" sourcepath="/home/daniel/.gradle/caches/artifacts-23/filestore/com.beust/jcommander/1.25/source/26030fa94dee3a635a9b9d46305d6c592f836073/jcommander-1.25-sources.jar"/>
-	<classpathentry kind="lib" path="/home/daniel/Proyectos/monitorS4/apache-s4-0.6.0/subprojects/s4-core/build/libs/s4-core-0.6.0-incubating.jar"/>
+	<classpathentry kind="lib" path="/home/daniel/Proyectos/monitorS4/apache-s4-0.6.0/subprojects/s4-core/build/libs/s4-core-0.6.0-incubating.jar" sourcepath="/s4-core"/>
 	<classpathentry kind="lib" path="/home/daniel/Proyectos/monitorS4/apache-s4-0.6.0/subprojects/s4-comm/build/libs/s4-comm-0.6.0-incubating.jar"/>
 	<classpathentry kind="lib" path="/home/daniel/Proyectos/monitorS4/apache-s4-0.6.0/subprojects/s4-base/build/libs/s4-base-0.6.0-incubating.jar"/>
 	<classpathentry kind="output" path="bin"/>

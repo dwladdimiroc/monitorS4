@@ -202,9 +202,10 @@ public abstract class ProcessingElement implements Cloneable {
     protected void onTime() {
     	//Se envía al monitor la cantidad eventos
     	//send(this.getClass(), eventCount, id);
-    	logger.info("Send monitor " + this.getClass());
+    	//logger.debug("Send monitor " + this.getClass());
     	//logger.info(monitor.messange());
     	monitor.sendStatus(this.getClass(), eventCount);
+    	logger.debug("Replication: " + monitor.distributedLoad(this.getClass()));
     	if(monitor.distributedLoad(this.getClass())){
     		replication++;
     	}

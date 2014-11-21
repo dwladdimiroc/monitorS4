@@ -16,21 +16,32 @@ import utilities.MongoConnection;
 public class MongoPE extends ProcessingElement {
 	private static Logger logger = LoggerFactory
 			.getLogger(MongoPE.class);
-	private boolean showEvent = true;
+	private boolean showEvent = false;
 	
 	MongoConnection mongo;
 	
 	public void onEvent(Event event) {
+    	//Processing
+    	try {
+    		wait(500);
+			//Thread.sleep(2500);
+		} catch (InterruptedException e) {
+			logger.error(e.toString());
+		}
+		
 		if(showEvent){logger.debug(event.getAttributesAsMap().toString());}
 		//logger.debug("Replication: " + getReplication());
     	//logger.debug("EventCount: " + getEventCount());
 		
 		DBObject objMongo = new BasicDBObject();
 		
-		objMongo.put("id", getEventCount());
+		objMongo.put("id", event.get("id", Long.class));
 		objMongo.put("dateAdapter", event.get("dateAdapter", Date.class));
-		objMongo.put("dateProcess", event.get("dateProcess", Date.class));
+		objMongo.put("dateProcessOne", event.get("dateProcessOne", Date.class));
+		objMongo.put("dateProcessTwo", event.get("dateProcessTwo", Date.class));
 		objMongo.put("dateMongo", Calendar.getInstance().getTime().toString());
+		
+		logger.debug("EventCount: " + getEventCount() + " | Replication: " + getReplication());
 				
 		mongo.insert(objMongo);
 	}

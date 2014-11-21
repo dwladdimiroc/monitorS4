@@ -1,7 +1,6 @@
 package org.apache.s4.core;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -20,12 +19,28 @@ public class Monitor {
 		topology.setPeSend(peSend);
 		topology.setPeRecibe(peRecibe);
 		topologySystem.add(topology);
+
+		boolean exist = false;
+		for (int i = 0; i < statusSystem.size(); i++) {
+			if (peSend.equals(statusSystem.get(i).getPe())) {
+				exist = true;
+				break;
+			}
+		}
+
+		if (!exist) {
+			StatusPE statusPE = new StatusPE();
+			statusPE.setPe(peSend);
+			statusPE.setRecibeEvent(0);
+			statusPE.setSendEvent(0);
+			statusSystem.add(statusPE);
+		}
 	}
 
 	public void sendStatus(Class<? extends ProcessingElement> data,
 			Long eventCount) {
 		List<Class<? extends ProcessingElement>> listPERecibe = new ArrayList<Class<? extends ProcessingElement>>();
-		logger.debug("sendStatus");
+		// logger.debug("sendStatus");
 
 		// Obtener todos las clases a donde de ir el PE
 		for (TopologyApp topology : topologySystem) {
@@ -37,6 +52,7 @@ public class Monitor {
 		// Asignar el valor de procesamiento de si mismo
 		for (int i = 0; i < statusSystem.size(); i++) {
 			if (data.equals(statusSystem.get(i).getPe())) {
+//				logger.debug("StatusSystem " + statusSystem.get(i).getPe());
 				statusSystem.get(i).setSendEvent(eventCount);
 				break;
 			}
@@ -46,6 +62,7 @@ public class Monitor {
 		for (int i = 0; i < statusSystem.size(); i++) {
 			for (Class<? extends ProcessingElement> recibe : listPERecibe) {
 				if (recibe.equals(statusSystem.get(i).getPe())) {
+//					logger.debug("StatusSystem " + statusSystem.get(i).getPe());
 					statusSystem.get(i).setRecibeEvent(eventCount);
 				}
 			}
@@ -53,18 +70,22 @@ public class Monitor {
 	}
 
 	public boolean distributedLoad(Class<? extends ProcessingElement> data) {
-		logger.debug("distributedLoad");
-		
-		for(int i=0 ; i<statusSystem.size() ; i++){
+		for (int i = 0; i < statusSystem.size(); i++) {
 			if (data.equals(statusSystem.get(i).getPe())) {
-				if(statusSystem.get(i).getSendEvent() < statusSystem.get(i).getRecibeEvent()){
+				logger.debug("Class: " + data);
+				logger.debug("SendEvent: " + statusSystem.get(i).getSendEvent());
+				logger.debug("RecibeEvent: "
+						+ statusSystem.get(i).getRecibeEvent());
+				if (statusSystem.get(i).getSendEvent() < statusSystem.get(i)
+						.getRecibeEvent()) {
+					logger.debug("distributedLoad");
 					return true;
 				} else {
 					return false;
 				}
 			}
 		}
-		
+
 		return false;
 	}
 
