@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+provider: gradle
+Implementation-Url: http://incubator.apache.org/s4/
+Implementation-Version: 0.6.0-incubating
+Implementation-Vendor: Apache Software Foundation
+Implementation-Vendor-Id: org.apache
+Implementation-Title: org.apache.s4.benchmarks
+
