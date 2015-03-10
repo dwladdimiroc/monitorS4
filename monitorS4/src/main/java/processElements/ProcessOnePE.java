@@ -27,57 +27,88 @@ import org.apache.s4.core.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+
+import utilities.MongoConnection;
+
 public class ProcessOnePE extends ProcessingElement {
-	private static Logger logger = LoggerFactory
-			.getLogger(ProcessOnePE.class);
+	private static Logger logger = LoggerFactory.getLogger(ProcessOnePE.class);
 	private boolean showEvent = false;
-	
+
 	int count = 0;
 
 	Stream<Event> downStream;
 
+	MongoConnection mongo;
+
 	public void setDownStream(Stream<Event> stream) {
 		downStream = stream;
 	}
-    
-    public void onEvent(Event event) {
-    	//if(showEvent){logger.debug(event.getAttributesAsMap().toString());}
-    	//logger.debug("Replication: " + getReplication());
-    	//logger.debug("EventCount: " + getEventCount());
-    	
-    	//Processing
-    	try {
-    		wait(1000);
-			//Thread.sleep(2500);
+
+	public void onEvent(Event event) {
+		// if(showEvent){logger.debug(event.getAttributesAsMap().toString());}
+		// logger.debug("Replication: " + getReplication());
+		// logger.debug("EventCount: " + getEventCount());
+
+		/*
+		 * if(getEventCount()==25){ setReplication(2);
+		 * logger.debug("LevelProcessTwo " + getEventCount() %
+		 * getReplication()); }
+		 */
+
+		// Processing
+		try {
+			// wait(500);
+			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			logger.error(e.toString());
 		}
-    	
-    	Event eventOutput = new Event();
-    	
-    	//eventOutput.put("levelMongo", Long.class, eventCount % levelConcurrency);
-    	eventOutput.put("levelProcessTwo", Integer.class, 0);
-    	eventOutput.put("id", Long.class, event.get("id", Long.class));
-    	eventOutput.put("dateAdapter", Date.class, event.get("date", Date.class));
-    	eventOutput.put("dateProcessOne", Date.class, Calendar.getInstance().getTime());
-    	
-    	if(showEvent){logger.debug(eventOutput.getAttributesAsMap().toString());}
-    	
-    	logger.debug("EventCount: " + getEventCount() + " | Replication: " + getReplication());
-    	
-    	downStream.put(eventOutput);
-    	
-        
-    }
 
-    @Override
-    protected void onCreate() {
-    	logger.info("Create ProcessOne PE");
-    }
+		Event eventOutput = new Event();
 
-    @Override
-    protected void onRemove() {
-    	//Important
-    }
+		// eventOutput.put("levelMongo", Long.class, eventCount %
+		// levelConcurrency);
+		eventOutput.put("levelProcessTwo", Long.class, getEventCount()
+				% getReplication());
+		eventOutput.put("id", Long.class, event.get("id", Long.class));
+		eventOutput.put("time", Long.class, event.get("time", Long.class));
+		eventOutput.put("dateAdapter", Date.class,
+				event.get("date", Date.class));
+		eventOutput.put("dateProcessOne", Date.class, Calendar.getInstance()
+				.getTime());
+
+		if (showEvent) {
+			logger.debug(eventOutput.getAttributesAsMap().toString());
+		}
+
+		/*DBObject objMongo = new BasicDBObject();
+		objMongo.put("time", System.nanoTime());
+		objMongo.put("replication", getReplication());
+		mongo.insert(objMongo);*/
+
+		downStream.put(eventOutput);
+
+	}
+
+	@Override
+	protected void onCreate() {
+		logger.info("Create ProcessOne PE");
+		this.replicationPE();
+
+/*		mongo = new MongoConnection();
+		mongo.setCollectionName("replicationTwoPE");
+		mongo.setupMongo();
+		
+		DBObject objMongo = new BasicDBObject();
+		objMongo.put("time", System.nanoTime()); 
+		objMongo.put("replication", getNumPEInstances());
+		mongo.insert(objMongo);*/
+	}
+
+	@Override
+	protected void onRemove() {
+		// Important
+	}
 
 }

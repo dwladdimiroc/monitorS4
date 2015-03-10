@@ -1,5 +1,8 @@
 package processElements;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -14,51 +17,81 @@ import com.mongodb.DBObject;
 import utilities.MongoConnection;
 
 public class MongoPE extends ProcessingElement {
-	private static Logger logger = LoggerFactory
-			.getLogger(MongoPE.class);
+	private static Logger logger = LoggerFactory.getLogger(MongoPE.class);
 	private boolean showEvent = false;
-	
-	MongoConnection mongo;
-	
+
+	MongoConnection mongo, mongoR;
+
 	public void onEvent(Event event) {
-    	//Processing
-    	try {
-    		wait(500);
-			//Thread.sleep(2500);
+
+		// Processing
+		try {
+			// wait(250);
+			Thread.sleep(250);
 		} catch (InterruptedException e) {
 			logger.error(e.toString());
 		}
-		
-		if(showEvent){logger.debug(event.getAttributesAsMap().toString());}
-		//logger.debug("Replication: " + getReplication());
-    	//logger.debug("EventCount: " + getEventCount());
+
+		if (showEvent) {
+			logger.debug(event.getAttributesAsMap().toString());
+		}
 		
 		DBObject objMongo = new BasicDBObject();
-		
 		objMongo.put("id", event.get("id", Long.class));
-		objMongo.put("dateAdapter", event.get("dateAdapter", Date.class));
-		objMongo.put("dateProcessOne", event.get("dateProcessOne", Date.class));
-		objMongo.put("dateProcessTwo", event.get("dateProcessTwo", Date.class));
-		objMongo.put("dateMongo", Calendar.getInstance().getTime().toString());
-		
-		logger.debug("EventCount: " + getEventCount() + " | Replication: " + getReplication());
-				
+		objMongo.put("timeInit", event.get("time", Long.class));
+		objMongo.put("timeFinal", System.nanoTime());
 		mongo.insert(objMongo);
+
+		/*
+		 * DBObject objMongo = new BasicDBObject();
+		 * 
+		 * objMongo.put("id", event.get("id", Long.class));
+		 * objMongo.put("dateAdapter", event.get("dateAdapter", Date.class));
+		 * objMongo.put("dateProcessOne", event.get("dateProcessOne",
+		 * Date.class)); objMongo.put("dateProcessTwo",
+		 * event.get("dateProcessTwo", Date.class)); objMongo.put("dateMongo",
+		 * Calendar.getInstance().getTime().toString());
+		 */
+
+		/*
+		 * logger.debug("EventCount: " + getEventCount() + " | Replication: " +
+		 * getReplication());
+		 */
+
+		if ((event.get("id", Long.class) == 100)
+				|| (event.get("id", Long.class) == 200)
+				|| (event.get("id", Long.class) == 300)
+				|| (event.get("id", Long.class) >= 400)) {
+			logger.debug("Time final (ns): " + System.nanoTime());
+		}
+
 	}
 
 	@Override
 	protected void onCreate() {
-		logger.info("Create Mongo PE");
-		
+		// logger.info("Create Mongo PE");
+		this.replicationPE();
+
 		mongo = new MongoConnection();
-		mongo.setCollectionName("testEvent");
+		mongo.setCollectionName("timeEvent");
 		mongo.setupMongo();
+
+		mongoR = new MongoConnection();
+		mongoR.setCollectionName("replicationMongoPE");
+		mongoR.setupMongo();
+		
+		
+		DBObject objMongo = new BasicDBObject();
+		objMongo.put("time", System.nanoTime()); 
+		objMongo.put("replication", getNumPEInstances());
+		mongoR.insert(objMongo);
+
 	}
 
 	@Override
 	protected void onRemove() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

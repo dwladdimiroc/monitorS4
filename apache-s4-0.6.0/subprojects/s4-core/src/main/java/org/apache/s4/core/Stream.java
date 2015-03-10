@@ -19,7 +19,9 @@
 package org.apache.s4.core;
 
 import java.util.Collection;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import org.apache.s4.base.Event;
 import org.apache.s4.base.GenericKeyFinder;
@@ -206,6 +208,7 @@ public class Stream<T extends Event> implements Streamable {
         // NOTE: ArrayBlockingQueue.size is O(1).
 
         eventProcessingExecutor.execute(new StreamEventProcessingTask((T) event));
+        
         // TODO abstraction around queue and add dropped counter
     }
 

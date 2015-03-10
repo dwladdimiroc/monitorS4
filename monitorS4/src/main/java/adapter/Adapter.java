@@ -27,21 +27,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Adapter extends AdapterApp implements Runnable {
-	private static Logger logger = LoggerFactory
-			.getLogger(Adapter.class);
+	private static Logger logger = LoggerFactory.getLogger(Adapter.class);
 	private boolean showEvent = false;
 
 	private long eventCount;
 	private int levelConcurrency;
-	
+
 	private Thread thread;
+
+	private int[] time = { 100000, 15000, 50000, 35000, 500 };
 
 	@Override
 	protected void onInit() {
 		logger.info("Create Adapter");
 		eventCount = 0;
 		levelConcurrency = 1;
-		
+
 		thread = new Thread(this);
 		super.onInit();
 	}
@@ -54,22 +55,39 @@ public class Adapter extends AdapterApp implements Runnable {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	@Override
 	public void run() {
-		for(int i = 0; i<100; i++){
-			Event event = new Event();
+		logger.debug("Time init (ns): " + System.nanoTime());
 
-			eventCount++;
-			event.put("levelProcessOne", Integer.class, 0);
-			event.put("id", Long.class, eventCount);
-			event.put("date", Date.class, Calendar.getInstance().getTime());
+		for (int loop = 0; loop < 5; loop++) {
 
-			if (showEvent) {logger.debug(event.getAttributesAsMap().toString());}
+			for (int i = 0; i < 100; i++) {
+				Event event = new Event();
 
-			getRemoteStream().put(event);
+				eventCount++;
+				event.put("levelProcessOne", Long.class, eventCount
+						% levelConcurrency);
+				event.put("id", Long.class, eventCount);
+				event.put("time", Long.class, System.nanoTime());
+				event.put("date", Date.class, Calendar.getInstance().getTime());
+
+				if (showEvent) {
+					logger.debug(event.getAttributesAsMap().toString());
+				}
+
+				getRemoteStream().put(event);
+			}
+
+			try {
+				Thread.sleep(time[loop]);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		}
-		
+
 		logger.info("Finish Adapter");
 	}
 

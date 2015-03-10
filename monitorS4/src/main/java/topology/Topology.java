@@ -34,38 +34,39 @@ import processElements.ProcessOnePE;
 import processElements.ProcessTwoPE;
 
 public class Topology extends App {
-	private static Logger logger = LoggerFactory
-			.getLogger(Topology.class);
-	
-    @Override
-    protected void onStart() {
-    	logger.info("Start Topology");
-    }
+	private static Logger logger = LoggerFactory.getLogger(Topology.class);
 
-    @Override
-    protected void onInit() {
-        //Create a prototype
-        ProcessOnePE processOnePE = createPE(ProcessOnePE.class);
-        //Tiempo de replicación - Automática
-        processOnePE.setTimerInterval(5000, TimeUnit.MILLISECONDS);
-        
-        ProcessTwoPE processTwoPE = createPE(ProcessTwoPE.class);
-        //Tiempo de replicación - Automática
-        processTwoPE.setTimerInterval(5000, TimeUnit.MILLISECONDS);
-        
-        MongoPE mongoPE = createPE(MongoPE.class);
-        //Tiempo de replicación - Automática
-        mongoPE.setTimerInterval(5000, TimeUnit.MILLISECONDS);
-        
-        //Create a stream that listens to the "textInput" stream and passes events to the processPE instance.
-        createInputStream("textInput", new KeyFinder<Event>() {
-            @Override
-            public List<String> get(Event event) {
-                return Arrays.asList(new String[] { event.get("levelProcessOne") });
-            }
-        }, processOnePE);
-        
-        Stream<Event> processTwoStream = createStream("processTwoStream",
+	@Override
+	protected void onStart() {
+		logger.info("Start Topology");
+	}
+
+	@Override
+	protected void onInit() {
+		// Create a prototype
+		ProcessOnePE processOnePE = createPE(ProcessOnePE.class);
+		// Tiempo de replicación - Automática
+		// processOnePE.setTimerInterval(5000, TimeUnit.MILLISECONDS);
+
+		ProcessTwoPE processTwoPE = createPE(ProcessTwoPE.class);
+		// Tiempo de replicación - Automática
+//		processTwoPE.setTimerInterval(5000, TimeUnit.MILLISECONDS);
+
+		MongoPE mongoPE = createPE(MongoPE.class);
+		// Tiempo de replicación - Automática
+//		mongoPE.setTimerInterval(5000, TimeUnit.MILLISECONDS);
+
+		// Create a stream that listens to the "textInput" stream and passes
+		// events to the processPE instance.
+		createInputStream("textInput", new KeyFinder<Event>() {
+			@Override
+			public List<String> get(Event event) {
+				return Arrays.asList(new String[] { event
+						.get("levelProcessOne") });
+			}
+		}, processOnePE).setParallelism(100);
+
+		Stream<Event> processTwoStream = createStream("processTwoStream",
 				new KeyFinder<Event>() {
 					@Override
 					public List<String> get(Event event) {
@@ -73,9 +74,9 @@ public class Topology extends App {
 						return Arrays.asList(new String[] { event
 								.get("levelProcessTwo") });
 					}
-				}, processTwoPE);
-        
-        Stream<Event> mongoStream = createStream("mongoStream",
+				}, processTwoPE).setParallelism(100);
+
+		Stream<Event> mongoStream = createStream("mongoStream",
 				new KeyFinder<Event>() {
 					@Override
 					public List<String> get(Event event) {
@@ -83,19 +84,20 @@ public class Topology extends App {
 						return Arrays.asList(new String[] { event
 								.get("levelMongo") });
 					}
-				}, mongoPE);
-        
-        
-        //Register and setDownStream
-        processOnePE.registerMonitor(processTwoPE.getClass());       
-        processOnePE.setDownStream(processTwoStream);
-        
-        processTwoPE.registerMonitor(mongoPE.getClass());       
-        processTwoPE.setDownStream(mongoStream);
-    }
+				}, mongoPE).setParallelism(100);
 
-    @Override
-    protected void onClose() {
-    }
+		// Register and setDownStream
+//		processOnePE.registerMonitor(processTwoPE.getClass());
+		processOnePE.setDownStream(processTwoStream);
+
+//		processTwoPE.registerMonitor(mongoPE.getClass());
+		processTwoPE.setDownStream(mongoStream);
+
+//		mongoPE.registerMonitor(null);
+	}
+
+	@Override
+	protected void onClose() {
+	}
 
 }
