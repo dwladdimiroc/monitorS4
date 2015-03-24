@@ -20,7 +20,6 @@ package topology;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.s4.base.Event;
 import org.apache.s4.base.KeyFinder;
@@ -35,6 +34,7 @@ import processElements.ProcessTwoPE;
 
 public class Topology extends App {
 	private static Logger logger = LoggerFactory.getLogger(Topology.class);
+//	Thread thread;
 
 	@Override
 	protected void onStart() {
@@ -42,11 +42,11 @@ public class Topology extends App {
 	}
 
 	@Override
-	protected void onInit() {
+	protected void onInit() {		
 		// Create a prototype
 		ProcessOnePE processOnePE = createPE(ProcessOnePE.class);
 		// Tiempo de replicación - Automática
-		// processOnePE.setTimerInterval(5000, TimeUnit.MILLISECONDS);
+//		 processOnePE.setTimerInterval(5000, TimeUnit.MILLISECONDS);
 
 		ProcessTwoPE processTwoPE = createPE(ProcessTwoPE.class);
 		// Tiempo de replicación - Automática
@@ -85,15 +85,16 @@ public class Topology extends App {
 								.get("levelMongo") });
 					}
 				}, mongoPE).setParallelism(100);
+			
 
 		// Register and setDownStream
-//		processOnePE.registerMonitor(processTwoPE.getClass());
+		processOnePE.registerMonitor(processTwoPE.getClass());
 		processOnePE.setDownStream(processTwoStream);
 
-//		processTwoPE.registerMonitor(mongoPE.getClass());
+		processTwoPE.registerMonitor(mongoPE.getClass());
 		processTwoPE.setDownStream(mongoStream);
 
-//		mongoPE.registerMonitor(null);
+		mongoPE.registerMonitor(null);
 	}
 
 	@Override

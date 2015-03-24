@@ -143,7 +143,7 @@ public abstract class ProcessingElement implements Cloneable {
 
 	/* Private fields. */
 	transient private ProcessingElement pePrototype;
-	transient private Monitor monitor;
+	transient private S4Monitor monitor;
 	transient private boolean haveTriggers = false;
 	transient private long timerIntervalInMilliseconds = 0;
 	transient private ScheduledExecutorService triggerTimer;
@@ -190,7 +190,7 @@ public abstract class ProcessingElement implements Cloneable {
 		this.pePrototype = this;
 
 		// Inicialización del monitor de los distintos PE
-		monitor = new Monitor();
+		monitor = new S4Monitor();
 	}
 
 	/**
@@ -217,18 +217,21 @@ public abstract class ProcessingElement implements Cloneable {
 	 * 
 	 * Override this method to implement a periodic process.
 	 */
-	protected void onTime() {
-		// Se envía al monitor la cantidad eventos
-		// send(this.getClass(), eventCount, id);
-		// logger.debug("Send monitor " + this.getClass());
-		// logger.info(monitor.messange());
-		monitor.sendStatus(this.getClass(), eventCount);
-		// logger.debug("Replication: " +
-		// monitor.distributedLoad(this.getClass()));
-		if (monitor.distributedLoad(this.getClass())) {
-			replication++;
-		}
+	protected void onTime(){
+		
 	}
+//	protected void onTime() { 
+//		// Se envía al monitor la cantidad eventos
+//		// send(this.getClass(), eventCount, id);
+//		// logger.debug("Send monitor " + this.getClass());
+//		// logger.info(monitor.messange());
+//		monitor.sendStatus(this.getClass(), eventCount);
+//		// logger.debug("Replication: " +
+//		// monitor.distributedLoad(this.getClass()));
+//		if (monitor.distributedLoad(this.getClass())) {
+//			replication++;
+//		}
+//	}
 
 	/**
 	 * This method is called after a PE instance is created. Use it to
@@ -872,7 +875,7 @@ public abstract class ProcessingElement implements Cloneable {
 	}
 
 	/**
-	 * @return the PE name
+	 * @return the PE replication
 	 */
 	protected int getReplication() {
 		return replication;

@@ -60,7 +60,15 @@ public class S4Node {
             System.exit(1);
         }
         startNode(s4Args);
-
+        
+        Thread threadMonitor = new Thread(new Runnable(){
+        	public void run(){
+        		S4Monitor monitor = new S4Monitor();
+        		monitor.startS4Monitor();
+        	}
+        }, "S4 Monitor loader");        
+        threadMonitor.start();
+        
     }
 
     private static void startNode(S4NodeArgs nodeArgs) throws InterruptedException, IOException {

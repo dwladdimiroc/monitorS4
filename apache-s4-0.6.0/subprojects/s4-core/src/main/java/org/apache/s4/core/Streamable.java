@@ -48,4 +48,9 @@ public interface Streamable<T extends Event> {
      * @return the name of this streamable object.
      */
     public String getName();
+    
+    /**
+     * @return the PEs of this streamable object.
+     */
+    public ProcessingElement[] getTargetPEs();
 }

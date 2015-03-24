@@ -36,11 +36,11 @@ public class MongoPE extends ProcessingElement {
 			logger.debug(event.getAttributesAsMap().toString());
 		}
 		
-		DBObject objMongo = new BasicDBObject();
-		objMongo.put("id", event.get("id", Long.class));
-		objMongo.put("timeInit", event.get("time", Long.class));
-		objMongo.put("timeFinal", System.nanoTime());
-		mongo.insert(objMongo);
+//		DBObject objMongo = new BasicDBObject();
+//		objMongo.put("id", event.get("id", Long.class));
+//		objMongo.put("timeInit", event.get("time", Long.class));
+//		objMongo.put("timeFinal", System.nanoTime());
+//		mongo.insert(objMongo);
 
 		/*
 		 * DBObject objMongo = new BasicDBObject();

@@ -237,6 +237,7 @@ public class Stream<T extends Event> implements Streamable {
     /**
      * @return the list of target processing element prototypes.
      */
+    @Override
     public ProcessingElement[] getTargetPEs() {
         return targetPEs;
     }
