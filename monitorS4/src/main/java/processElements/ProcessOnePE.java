@@ -56,6 +56,8 @@ public class ProcessOnePE extends ProcessingElement {
 		 * logger.debug("LevelProcessTwo " + getEventCount() %
 		 * getReplication()); }
 		 */
+		
+		logger.debug("ProcessOnePE Replication: " + getReplication());
 
 		// Processing
 		try {
@@ -94,7 +96,7 @@ public class ProcessOnePE extends ProcessingElement {
 	@Override
 	protected void onCreate() {
 		logger.info("Create ProcessOne PE");
-		this.replicationPE();
+//		this.replicationPE();
 
 /*		mongo = new MongoConnection();
 		mongo.setCollectionName("replicationTwoPE");

@@ -30,7 +30,7 @@ import org.gradle.util.ConfigureUtil
  * eclipse {
  *   jdt {
  *     //if you want to alter the java versions (by default they are configured with gradle java plugin settings):
- *     sourceCompatibility = 1.6
+ *     sourceCompatibility = 1.7
  *     targetCompatibility = 1.5
  *
  *     file {

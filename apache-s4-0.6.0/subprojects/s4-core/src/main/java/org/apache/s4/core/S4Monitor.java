@@ -3,49 +3,55 @@ package org.apache.s4.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.apache.s4.base.Event;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Inject;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
+import com.google.inject.Singleton;
 
+@Singleton
 public class S4Monitor {
 	private Logger logger = LoggerFactory.getLogger(S4Monitor.class);
 
 	private static List<TopologyApp> topologySystem = new ArrayList<TopologyApp>();
 	private static List<StatusPE> statusSystem = new ArrayList<StatusPE>();
-	MongoConnection mongo;
+	
+	transient protected App app;
 
-	public S4Monitor() {
-		mongo = new MongoConnection();
-		mongo.setCollectionName("queue");
-		mongo.setupMongo();
+	@Inject
+	private void init() {
+		logger.info("Init Monitor");
 	}
 
-	public void startS4Monitor() {
+	public void startS4Monitor(App app) {
 		while (true) {
 
 			logger.info("On Monitor!");
 
-			for (Streamable<Event> stream : app.getStreams()) {
-				for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
-					for (ProcessingElement PE : PEPrototype.getInstances()) {
-						sendStatus(PE.getClass(), PE.getEventCount());
-					}
-				}
-			}
+			logger.debug("PE Name: "
+					+ app.getStreams().get(0).getTargetPEs()[0].getName()
+					+ " | PE Id: "
+					+ app.getStreams().get(0).getTargetPEs()[0].getId());
 
-			for (Streamable<Event> stream : app.getStreams()) {
-				for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
-					for (ProcessingElement PE : PEPrototype.getInstances()) {
-						if (distributedLoad(PE.getClass())) {
-							logger.debug("Replication PE: " + PE.getClass());
-						}
-					}
-				}
-			}
+			// for (Streamable<Event> stream : app.getStreams()) {
+			// for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
+			// for (ProcessingElement PE : PEPrototype.getInstances()) {
+			// sendStatus(PE.getClass(), PE.getEventCount());
+			// }
+			// }
+			// }
+			//
+			// for (Streamable<Event> stream : app.getStreams()) {
+			// for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
+			// for (ProcessingElement PE : PEPrototype.getInstances()) {
+			// if (distributedLoad(PE.getClass())) {
+			// logger.debug("Replication PE: " + PE.getClass());
+			// }
+			// }
+			// }
+			// }
 
 			try {
 				Thread.sleep(10000);
@@ -58,7 +64,9 @@ public class S4Monitor {
 
 	public void registerPE(Class<? extends ProcessingElement> peSend,
 			Class<? extends ProcessingElement> peRecibe) {
-		/* logger.debug("registerPE"); */
+
+		logger.debug("registerPE");
+
 		if (peRecibe != null) {
 			TopologyApp topology = new TopologyApp();
 			topology.setPeSend(peSend);
@@ -114,13 +122,13 @@ public class S4Monitor {
 				// logger.debug("StatusSystem " + statusSystem.get(i).getPe());
 				statusSystem.get(i).setSendEvent(eventCount);
 
-				DBObject objMongo = new BasicDBObject();
-				objMongo.put("PE", data.toString());
-				objMongo.put("time", System.nanoTime());
-				long queuePE = statusSystem.get(i).getRecibeEvent()
-						- statusSystem.get(i).getSendEvent();
-				objMongo.put("queue", queuePE);
-				mongo.insert(objMongo);
+				// DBObject objMongo = new BasicDBObject();
+				// objMongo.put("PE", data.toString());
+				// objMongo.put("time", System.nanoTime());
+				// long queuePE = statusSystem.get(i).getRecibeEvent()
+				// - statusSystem.get(i).getSendEvent();
+				// objMongo.put("queue", queuePE);
+				// mongo.insert(objMongo);
 				break;
 			}
 		}
@@ -187,6 +195,23 @@ public class S4Monitor {
 		}
 
 		return false;
+	}
+	
+	/**
+	 * S4Monitor object must be associated with one and only one {@code App} object.
+	 * 
+	 * @return the app
+	 */
+	public App getApp() {
+		return app;
+	}
+
+	public void setApp(App app) {
+		if (this.app != null) {
+			throw new RuntimeException(
+					"Application was already assigne to this S4 Monitor");
+		}
+		this.app = app;
 	}
 
 	public class TopologyApp {

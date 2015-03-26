@@ -70,10 +70,9 @@ public class LoadSheddingSenderExecutorServiceFactory implements SenderExecutorS
                 metrics.droppedEventInSender();
             }
         });
-        ThreadPoolExecutor tpe = new ThreadPoolExecutor(parallelism, parallelism, 1, TimeUnit.SECONDS,
+        ThreadPoolExecutor tpe = new ThreadPoolExecutor(parallelism, parallelism, 60, TimeUnit.SECONDS,
                 new ArrayBlockingQueue<Runnable>(workQueueSize), threadFactory, rejectedExecutionHandler);
         tpe.allowCoreThreadTimeOut(true);
-        System.out.println("LOAD SENDER: DROP EVENT");
         return tpe;
     }
 

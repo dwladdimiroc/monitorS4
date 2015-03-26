@@ -35,7 +35,7 @@ public class Adapter extends AdapterApp implements Runnable {
 
 	private Thread thread;
 
-	private int[] time = { 100000, 15000, 50000, 35000, 500 };
+	private int[] time = { 10000, 15000, 50000, 35000, 500 };
 
 	@Override
 	protected void onInit() {

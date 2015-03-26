@@ -35,7 +35,6 @@ import com.beust.jcommander.Parameters;
 import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
 import com.google.inject.Guice;
-import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.util.Modules;
 
@@ -60,15 +59,7 @@ public class S4Node {
             System.exit(1);
         }
         startNode(s4Args);
-        
-        Thread threadMonitor = new Thread(new Runnable(){
-        	public void run(){
-        		S4Monitor monitor = new S4Monitor();
-        		monitor.startS4Monitor();
-        	}
-        }, "S4 Monitor loader");        
-        threadMonitor.start();
-        
+
     }
 
     private static void startNode(S4NodeArgs nodeArgs) throws InterruptedException, IOException {
@@ -96,7 +87,6 @@ public class S4Node {
         } catch (ArchiveFetchException e1) {
             logger.error("Cannot fetch module dependencies.", e1);
         }
-        
     }
 
     /**

@@ -143,7 +143,6 @@ public abstract class ProcessingElement implements Cloneable {
 
 	/* Private fields. */
 	transient private ProcessingElement pePrototype;
-	transient private S4Monitor monitor;
 	transient private boolean haveTriggers = false;
 	transient private long timerIntervalInMilliseconds = 0;
 	transient private ScheduledExecutorService triggerTimer;
@@ -151,7 +150,7 @@ public abstract class ProcessingElement implements Cloneable {
 	transient private boolean isPrototype = true;
 	transient private boolean isThreadSafe = false;
 	transient private String name = null;
-	transient private int replication = 0;
+	transient private int replication = 1;
 	transient private boolean isSingleton = false;
 	transient long eventCount = 0;
 
@@ -189,8 +188,6 @@ public abstract class ProcessingElement implements Cloneable {
 		 */
 		this.pePrototype = this;
 
-		// Inicialización del monitor de los distintos PE
-		monitor = new S4Monitor();
 	}
 
 	/**
@@ -207,6 +204,7 @@ public abstract class ProcessingElement implements Cloneable {
 			processingTimer = Metrics.newTimer(getClass(), getClass().getName()
 					+ "-pe-processing-time");
 		}
+
 	}
 
 	/**
@@ -217,21 +215,8 @@ public abstract class ProcessingElement implements Cloneable {
 	 * 
 	 * Override this method to implement a periodic process.
 	 */
-	protected void onTime(){
-		
+	protected void onTime() {
 	}
-//	protected void onTime() { 
-//		// Se envía al monitor la cantidad eventos
-//		// send(this.getClass(), eventCount, id);
-//		// logger.debug("Send monitor " + this.getClass());
-//		// logger.info(monitor.messange());
-//		monitor.sendStatus(this.getClass(), eventCount);
-//		// logger.debug("Replication: " +
-//		// monitor.distributedLoad(this.getClass()));
-//		if (monitor.distributedLoad(this.getClass())) {
-//			replication++;
-//		}
-//	}
 
 	/**
 	 * This method is called after a PE instance is created. Use it to
@@ -267,6 +252,7 @@ public abstract class ProcessingElement implements Cloneable {
 		}
 		this.app = app;
 		app.addPEPrototype(this, null);
+
 	}
 
 	/**
@@ -527,6 +513,8 @@ public abstract class ProcessingElement implements Cloneable {
 			}
 
 			eventCount++;
+			
+			app.monitor.sendStatus(this.getClass(), eventCount);
 
 			dirty = true;
 
@@ -547,14 +535,6 @@ public abstract class ProcessingElement implements Cloneable {
 	public void checkpoint() {
 		getApp().getCheckpointingFramework().saveState(this);
 		clearDirty();
-	}
-
-	public void registerMonitor(Class<? extends ProcessingElement> peRecibe) {
-		monitor.registerPE(this.getClass(), peRecibe);
-	}
-
-	public void replicationPE() {
-		monitor.replicationPE(this.getClass());
 	}
 
 	private boolean isTrigger(Event event) {
@@ -589,6 +569,20 @@ public abstract class ProcessingElement implements Cloneable {
 			 */
 			return trigger.checkAndUpdate();
 		}
+	}
+	
+	/**
+	 * Registro del PE en el Monitor, por lo tanto lo que se realizará
+	 * es saber cual es la dirección del grafo. De esta manera se sabrá
+	 * el emisor y el receptor, lo cual servirá para calcular la tasa
+	 * de procesamiento de cada PE.
+	 * 
+	 * @param PE receptor, donde estará siendo llamada la función por el
+	 * PE emisor.
+	 */
+	
+	public void registerMonitor(Class<? extends ProcessingElement> peRecibe){
+		this.app.monitor.registerPE(this.getClass(), peRecibe);
 	}
 
 	private void removeInstanceForKeyInternal(String id) {
@@ -891,11 +885,7 @@ public abstract class ProcessingElement implements Cloneable {
 			return;
 
 		this.replication = replication;
-		// if (app.peByName.containsKey(name)) {
-		// logger.warn("Using a duplicate PE name: [{}]. This is probbaly not what you wanted.",
-		// name);
-		// }
-		// app.peByName.put(name, this);
+
 	}
 
 	public CheckpointingConfig getCheckpointingConfig() {

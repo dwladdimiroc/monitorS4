@@ -53,6 +53,7 @@ public abstract class AdapterApp extends App {
     @Override
     protected void onInit() {
         remoteStream = createOutputStream(outputStreamName, remoteStreamKeyFinder);
+        setConditionAdapter(true);
     }
 
     /**

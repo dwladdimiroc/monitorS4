@@ -21,6 +21,9 @@ package org.apache.s4.core;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.s4.base.Event;
@@ -67,6 +70,8 @@ public abstract class App {
 
 	private ClockType clockType = ClockType.WALL_CLOCK;
 
+	private boolean conditionAdapter = false;
+
 	@Inject
 	private Sender sender;
 	@Inject
@@ -98,6 +103,9 @@ public abstract class App {
 
 	@Inject
 	S4Metrics metrics;
+
+	@Inject
+	S4Monitor monitor;
 
 	// serialization uses the application class loader
 	@Inject
@@ -155,51 +163,21 @@ public abstract class App {
 		return streams;
 	}
 
-	// Conexión con el Monitor, por lo que se cambiará el código
-	 protected abstract void onStart();
-//	protected void onStart() {
-//		
-//		logger.info("Start Topology");
-//		thread = new Thread(App.this);
-//		thread.start();
-//	}
+	protected abstract void onStart();
 
-//	@Override
-//	public void run() {
-//
-//		while (true) {
-//
-//			for (Streamable<Event> stream : getStreams()) {
-//				for (ProcessingElement PE : stream.getTargetPEs()) {
-//					logger.debug("Stream Name: " + stream.getName()
-//							+ " | PEs: " + PE.getClass() + " | Instances: "
-//							+ PE.getInstances() + " | Instances: "
-//							+ PE.getNumPEInstances());
-//					
-//					// Se envía al monitor la cantidad eventos
-//					// send(this.getClass(), eventCount, id);
-//					// logger.debug("Send monitor " + this.getClass());
-//					// logger.info(monitor.messange());
-//					monitor.sendStatus(this.getClass(), eventCount);
-//					// logger.debug("Replication: " +
-//					// monitor.distributedLoad(this.getClass()));
-//					if (monitor.distributedLoad(this.getClass())) {
-//						replication++;
-//					}
-//					
-//				}
-//			}
-//
-//			try {
-//				Thread.sleep(30000);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//
-//		}
-//
-//	}
+	private void startMonitor() {
+		ScheduledExecutorService timer = Executors
+				.newSingleThreadScheduledExecutor();
+		timer.scheduleAtFixedRate(new OnTimeMonitor(), 0, 5000, TimeUnit.MILLISECONDS);
+		logger.info("Timer Monitor started");
+	}
+	
+	private class OnTimeMonitor extends TimerTask {
+		@Override
+		public void run() {
+			//Poner los datos aquí de la mierda
+		}
+	}
 
 	/**
 	 * This method is called by the container after initialization. Once this
@@ -221,6 +199,9 @@ public abstract class App {
 		}
 
 		onStart();
+
+		if (!getConditionAdapter())
+			startMonitor();
 	}
 
 	/**
@@ -231,6 +212,7 @@ public abstract class App {
 	public final void init() {
 
 		onInit();
+
 	}
 
 	/**
@@ -321,6 +303,27 @@ public abstract class App {
 	 */
 	public ClockType getClockType() {
 		return clockType;
+	}
+
+	/**
+	 * Set the {@link conditionAdapter}
+	 * 
+	 * @param conditionAdapter
+	 *            Para saber si podemos saber si es el Adapter o no
+	 */
+
+	public void setConditionAdapter(boolean conditionAdapter) {
+		if (!conditionAdapter)
+			return;
+
+		this.conditionAdapter = conditionAdapter;
+	}
+
+	/**
+	 * @return the condition adapter.
+	 */
+	public boolean getConditionAdapter() {
+		return conditionAdapter;
 	}
 
 	/**
@@ -491,7 +494,6 @@ public abstract class App {
 			try {
 				T pe = type.getDeclaredConstructor(types).newInstance(this);
 				pe.setName(name);
-				pe.setReplication(1);
 				return pe;
 			} catch (NoSuchMethodException e) {
 				// no such constructor. Use the setter
@@ -499,7 +501,6 @@ public abstract class App {
 						.newInstance();
 				pe.setApp(this);
 				pe.setName(name);
-				pe.setReplication(1);
 				return pe;
 			}
 		} catch (Exception e) {

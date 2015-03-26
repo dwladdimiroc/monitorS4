@@ -42,6 +42,8 @@ public class ProcessTwoPE extends ProcessingElement {
 		} catch (InterruptedException e) {
 			logger.error(e.toString());
 		}
+		
+		logger.debug("ProcessTwoPE Replication: " + getReplication());
 
 		Event eventOutput = new Event();
 
@@ -72,16 +74,17 @@ public class ProcessTwoPE extends ProcessingElement {
 	@Override
 	protected void onCreate() {
 		// TODO Auto-generated method stub
-		this.replicationPE();
-		mongo = new MongoConnection();
-		mongo.setCollectionName("replicationTwoPE");
-		mongo.setupMongo();
-		
-		DBObject objMongo = new BasicDBObject();
-		objMongo.put("time", System.nanoTime()); 
-		objMongo.put("replication", getNumPEInstances());
-		mongo.insert(objMongo);
-		
+		logger.info("Create ProcessTwo PE");
+		//this.replicationPE();
+//		mongo = new MongoConnection();
+//		mongo.setCollectionName("replicationTwoPE");
+//		mongo.setupMongo();
+//		
+//		DBObject objMongo = new BasicDBObject();
+//		objMongo.put("time", System.nanoTime()); 
+//		objMongo.put("replication", getNumPEInstances());
+//		mongo.insert(objMongo);
+//		
 		// logger.info("Create ProcessTwo PE");
 	}
 

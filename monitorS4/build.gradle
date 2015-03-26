@@ -59,7 +59,7 @@ project.ext["libraries"] = [
            s4_base:            'org.apache.s4:s4-base:'+ s4Version,
            s4_comm:            'org.apache.s4:s4-comm:'+ s4Version,
            s4_core:            'org.apache.s4:s4-core:'+ s4Version,
-           mongo_db: 		   'org.mongodb:mongo-java-driver:2.12.4'
+           mongo_db:           'org.mongodb:mongo-java-driver:2.12.4'
        ]
 
 

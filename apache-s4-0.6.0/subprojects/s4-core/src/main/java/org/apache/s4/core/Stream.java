@@ -19,9 +19,7 @@
 package org.apache.s4.core;
 
 import java.util.Collection;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ThreadPoolExecutor;
 
 import org.apache.s4.base.Event;
 import org.apache.s4.base.GenericKeyFinder;
@@ -208,7 +206,6 @@ public class Stream<T extends Event> implements Streamable {
         // NOTE: ArrayBlockingQueue.size is O(1).
 
         eventProcessingExecutor.execute(new StreamEventProcessingTask((T) event));
-        
         // TODO abstraction around queue and add dropped counter
     }
 
@@ -237,7 +234,6 @@ public class Stream<T extends Event> implements Streamable {
     /**
      * @return the list of target processing element prototypes.
      */
-    @Override
     public ProcessingElement[] getTargetPEs() {
         return targetPEs;
     }
@@ -335,9 +331,6 @@ public class Stream<T extends Event> implements Streamable {
 
                     /* STEP 2: pass event to PE instance. */
                     pe.handleInputEvent(event);
-                    
-                    //logger.debug("Envía " + targetPEs[i].getClass().toString());
-                    //logger.debug("Recibe " + pe.getClass().toString());
                 }
             }
 

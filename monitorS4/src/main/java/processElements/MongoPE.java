@@ -61,7 +61,7 @@ public class MongoPE extends ProcessingElement {
 		if ((event.get("id", Long.class) == 100)
 				|| (event.get("id", Long.class) == 200)
 				|| (event.get("id", Long.class) == 300)
-				|| (event.get("id", Long.class) >= 400)) {
+				|| (event.get("id", Long.class) == 400)) {
 			logger.debug("Time final (ns): " + System.nanoTime());
 		}
 
@@ -69,22 +69,22 @@ public class MongoPE extends ProcessingElement {
 
 	@Override
 	protected void onCreate() {
-		// logger.info("Create Mongo PE");
-		this.replicationPE();
+		 logger.info("Create Mongo PE");
+//		this.replicationPE();
 
-		mongo = new MongoConnection();
-		mongo.setCollectionName("timeEvent");
-		mongo.setupMongo();
-
-		mongoR = new MongoConnection();
-		mongoR.setCollectionName("replicationMongoPE");
-		mongoR.setupMongo();
-		
-		
-		DBObject objMongo = new BasicDBObject();
-		objMongo.put("time", System.nanoTime()); 
-		objMongo.put("replication", getNumPEInstances());
-		mongoR.insert(objMongo);
+//		mongo = new MongoConnection();
+//		mongo.setCollectionName("timeEvent");
+//		mongo.setupMongo();
+//
+//		mongoR = new MongoConnection();
+//		mongoR.setCollectionName("replicationMongoPE");
+//		mongoR.setupMongo();
+//		
+//		
+//		DBObject objMongo = new BasicDBObject();
+//		objMongo.put("time", System.nanoTime()); 
+//		objMongo.put("replication", getNumPEInstances());
+//		mongoR.insert(objMongo);
 
 	}
 

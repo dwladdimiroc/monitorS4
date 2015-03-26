@@ -92,7 +92,7 @@ public class S4Bootstrap {
 
     CountDownLatch signalOneAppLoaded = new CountDownLatch(1);
 
-     
+    @Inject
     public S4Bootstrap(@Named("s4.cluster.name") String clusterName, ZkClient zkClient, ArchiveFetcher fetcher) {
 
         this.fetcher = fetcher;
@@ -104,7 +104,7 @@ public class S4Bootstrap {
         appPath = appDir + "/s4App";
         zkClient.subscribeDataChanges(appPath, new AppChangeListener());
     }
-    
+
     public void start(Injector parentInjector) throws InterruptedException, ArchiveFetchException {
         this.parentInjector = parentInjector;
         if (zkClient.exists(appPath)) {
