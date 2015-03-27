@@ -51,14 +51,6 @@ public class ProcessOnePE extends ProcessingElement {
 		// logger.debug("Replication: " + getReplication());
 		// logger.debug("EventCount: " + getEventCount());
 
-		/*
-		 * if(getEventCount()==25){ setReplication(2);
-		 * logger.debug("LevelProcessTwo " + getEventCount() %
-		 * getReplication()); }
-		 */
-		
-		logger.debug("ProcessOnePE Replication: " + getReplication());
-
 		// Processing
 		try {
 			// wait(500);
@@ -69,8 +61,6 @@ public class ProcessOnePE extends ProcessingElement {
 
 		Event eventOutput = new Event();
 
-		// eventOutput.put("levelMongo", Long.class, eventCount %
-		// levelConcurrency);
 		eventOutput.put("levelProcessTwo", Long.class, getEventCount()
 				% getReplication());
 		eventOutput.put("id", Long.class, event.get("id", Long.class));

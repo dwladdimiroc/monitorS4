@@ -166,16 +166,52 @@ public abstract class App {
 	protected abstract void onStart();
 
 	private void startMonitor() {
-		ScheduledExecutorService timer = Executors
+		logger.info("Start S4Monitor");
+
+		ScheduledExecutorService sendStatus = Executors
 				.newSingleThreadScheduledExecutor();
-		timer.scheduleAtFixedRate(new OnTimeMonitor(), 0, 5000, TimeUnit.MILLISECONDS);
-		logger.info("Timer Monitor started");
+		sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 0, 1000,
+				TimeUnit.MILLISECONDS);
+
+		logger.info("TimerMonitor send status");
+
+		ScheduledExecutorService pullStatus = Executors
+				.newSingleThreadScheduledExecutor();
+		pullStatus.scheduleAtFixedRate(new OnTimePullStatus(), 0, 10000,
+				TimeUnit.MILLISECONDS);
+
+		logger.info("TimerMonitor pull status");
+
 	}
-	
-	private class OnTimeMonitor extends TimerTask {
+
+	private class OnTimeSendStatus extends TimerTask {
 		@Override
 		public void run() {
-			//Poner los datos aquí de la mierda
+			for (Streamable<Event> stream : getStreams()) {
+				for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
+					for (ProcessingElement PE : PEPrototype.getInstances()) {
+						monitor.sendStatus(PE.getClass(), PE.getEventCount());
+					}
+				}
+			}
+		}
+	}
+
+	private class OnTimePullStatus extends TimerTask {
+		@Override
+		public void run() {
+			// Cambiar para poder obtener los datos, y no una copia de ellos
+			// Probar porque quizá el Pablo me cuenta mentiras...
+			for (Streamable<Event> stream : getStreams()) {
+				for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
+					for (ProcessingElement PE : PEPrototype.getInstances()) {
+						if (monitor.reactiveLoad(PE.getClass())) {
+							logger.debug("Replication PE: " + PE.getClass());
+							PE.setReplication(PE.getReplication()+1);
+						}
+					}
+				}
+			}
 		}
 	}
 

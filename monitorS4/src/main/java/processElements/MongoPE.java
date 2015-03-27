@@ -35,12 +35,12 @@ public class MongoPE extends ProcessingElement {
 		if (showEvent) {
 			logger.debug(event.getAttributesAsMap().toString());
 		}
-		
-//		DBObject objMongo = new BasicDBObject();
-//		objMongo.put("id", event.get("id", Long.class));
-//		objMongo.put("timeInit", event.get("time", Long.class));
-//		objMongo.put("timeFinal", System.nanoTime());
-//		mongo.insert(objMongo);
+
+		// DBObject objMongo = new BasicDBObject();
+		// objMongo.put("id", event.get("id", Long.class));
+		// objMongo.put("timeInit", event.get("time", Long.class));
+		// objMongo.put("timeFinal", System.nanoTime());
+		// mongo.insert(objMongo);
 
 		/*
 		 * DBObject objMongo = new BasicDBObject();
@@ -58,10 +58,9 @@ public class MongoPE extends ProcessingElement {
 		 * getReplication());
 		 */
 
-		if ((event.get("id", Long.class) == 100)
-				|| (event.get("id", Long.class) == 200)
-				|| (event.get("id", Long.class) == 300)
-				|| (event.get("id", Long.class) == 400)) {
+		if (getEventCount() == 100 || getEventCount() == 200
+				|| getEventCount() == 300 || getEventCount() == 400
+				|| getEventCount() == 500) {
 			logger.debug("Time final (ns): " + System.nanoTime());
 		}
 
@@ -69,22 +68,22 @@ public class MongoPE extends ProcessingElement {
 
 	@Override
 	protected void onCreate() {
-		 logger.info("Create Mongo PE");
-//		this.replicationPE();
+		logger.info("Create Mongo PE");
+		// this.replicationPE();
 
-//		mongo = new MongoConnection();
-//		mongo.setCollectionName("timeEvent");
-//		mongo.setupMongo();
-//
-//		mongoR = new MongoConnection();
-//		mongoR.setCollectionName("replicationMongoPE");
-//		mongoR.setupMongo();
-//		
-//		
-//		DBObject objMongo = new BasicDBObject();
-//		objMongo.put("time", System.nanoTime()); 
-//		objMongo.put("replication", getNumPEInstances());
-//		mongoR.insert(objMongo);
+		// mongo = new MongoConnection();
+		// mongo.setCollectionName("timeEvent");
+		// mongo.setupMongo();
+		//
+		// mongoR = new MongoConnection();
+		// mongoR.setCollectionName("replicationMongoPE");
+		// mongoR.setupMongo();
+		//
+		//
+		// DBObject objMongo = new BasicDBObject();
+		// objMongo.put("time", System.nanoTime());
+		// objMongo.put("replication", getNumPEInstances());
+		// mongoR.insert(objMongo);
 
 	}
 

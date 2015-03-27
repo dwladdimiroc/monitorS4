@@ -3,65 +3,42 @@ package org.apache.s4.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
-import org.apache.s4.base.Event;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
 public class S4Monitor {
 	private Logger logger = LoggerFactory.getLogger(S4Monitor.class);
 
-	private static List<TopologyApp> topologySystem = new ArrayList<TopologyApp>();
-	private static List<StatusPE> statusSystem = new ArrayList<StatusPE>();
-	
-	transient protected App app;
+	private final List<TopologyApp> topologySystem = new ArrayList<TopologyApp>();
+	private final List<StatusPE> statusSystem = new ArrayList<StatusPE>();
 
+	/**
+	 * Inicialización del monitor, dada la inyección de la clase
+	 */
 	@Inject
 	private void init() {
 		logger.info("Init Monitor");
+
+		// Correr demonio para el análisis del predictivo y reactivo
+		// Thread
 	}
 
 	public void startS4Monitor(App app) {
-		while (true) {
-
-			logger.info("On Monitor!");
-
-			logger.debug("PE Name: "
-					+ app.getStreams().get(0).getTargetPEs()[0].getName()
-					+ " | PE Id: "
-					+ app.getStreams().get(0).getTargetPEs()[0].getId());
-
-			// for (Streamable<Event> stream : app.getStreams()) {
-			// for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
-			// for (ProcessingElement PE : PEPrototype.getInstances()) {
-			// sendStatus(PE.getClass(), PE.getEventCount());
-			// }
-			// }
-			// }
-			//
-			// for (Streamable<Event> stream : app.getStreams()) {
-			// for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
-			// for (ProcessingElement PE : PEPrototype.getInstances()) {
-			// if (distributedLoad(PE.getClass())) {
-			// logger.debug("Replication PE: " + PE.getClass());
-			// }
-			// }
-			// }
-			// }
-
-			try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				logger.error(e.toString());
-			}
-		}
 	}
 
+	/**
+	 * registerPE hace referencia al registro del grafo dirigido, de esta manera
+	 * podremos saber quienes son los PE emisores y receptores.
+	 * 
+	 * @param peSend
+	 *            PE emisor
+	 * @param peRecibe
+	 *            PE receptor
+	 */
 	public void registerPE(Class<? extends ProcessingElement> peSend,
 			Class<? extends ProcessingElement> peRecibe) {
 
@@ -87,40 +64,51 @@ public class S4Monitor {
 			statusPE.setPe(peSend);
 			statusPE.setRecibeEvent(0);
 			statusPE.setSendEvent(0);
-			statusPE.setReplication(0);
+			statusPE.setReplication(1);
 			statusSystem.add(statusPE);
 		}
 	}
 
-	public void replicationPE(Class<? extends ProcessingElement> pe) {
-		for (int i = 0; i < statusSystem.size(); i++) {
-			if (pe.equals(statusSystem.get(i).getPe())) {
-				statusSystem.get(i).setReplication(
-						statusSystem.get(i).getReplication() + 1);
-				break;
-			}
-		}
-
-	}
+	/**
+	 * sendStatus hace referencia al 'Monitor de carga', donde se analizarán
+	 * cada una de las distintas cargas de los PEs. De esta manera, se podrá
+	 * analizar la cola y el flujo de datos.
+	 * 
+	 * @param data
+	 *            Corresponde al PE que se está analizando.
+	 * @param eventCount
+	 *            La cantidad de eventos totales procesados en ese período.
+	 */
 
 	public void sendStatus(Class<? extends ProcessingElement> data,
 			Long eventCount) {
 		List<Class<? extends ProcessingElement>> listPERecibe = new ArrayList<Class<? extends ProcessingElement>>();
 		// logger.debug("sendStatus");
 
-		// Obtener todos las clases a donde de ir el PE
+		/*
+		 * Obtener todos las clases a donde de ir el PE.
+		 */
 		for (TopologyApp topology : topologySystem) {
 			if (data.equals(topology.getPeSend())) {
 				listPERecibe.add(topology.getPeRecibe());
 			}
 		}
 
-		// Asignar el valor de procesamiento de si mismo
-		// Es decir, μ tasa de servicio
+		/*
+		 * Asignar el valor de procesamiento de si mismo. Es decir, μ tasa de
+		 * servicio.
+		 */
 		for (int i = 0; i < statusSystem.size(); i++) {
 			if (data.equals(statusSystem.get(i).getPe())) {
 				// logger.debug("StatusSystem " + statusSystem.get(i).getPe());
-				statusSystem.get(i).setSendEvent(eventCount);
+				/*
+				 * Se debe realizar una diferencia, debido que son el total de
+				 * eventos procesos en ese período menos el ya procesados. De
+				 * esta manera, obtendremos el número de eventos en el Δt
+				 * deseado.
+				 */
+				statusSystem.get(i).setSendEvent(
+						eventCount - statusSystem.get(i).getSendEvent());
 
 				// DBObject objMongo = new BasicDBObject();
 				// objMongo.put("PE", data.toString());
@@ -133,25 +121,44 @@ public class S4Monitor {
 			}
 		}
 
-		// Asignar el valor de la tasa de llegada de cada uno de los distintos
-		// PE
-		// Es decir, λ Tasa de llegada
+		/*
+		 * Asignar el valor de la tasa de llegada de cada uno de los distintos
+		 * PE. Es decir, λ Tasa de llegada.
+		 */
 		for (int i = 0; i < statusSystem.size(); i++) {
 			for (Class<? extends ProcessingElement> recibe : listPERecibe) {
 				if (recibe.equals(statusSystem.get(i).getPe())) {
 					// logger.debug("StatusSystem " +
 					// statusSystem.get(i).getPe());
-					statusSystem.get(i).setRecibeEvent(eventCount);
+
+					/*
+					 * Nuevamente lo mismo expresado anteriormente del número de
+					 * eventos procesados en un Δt deseado.
+					 */
+
+					statusSystem.get(i).setRecibeEvent(
+							eventCount - statusSystem.get(i).getRecibeEvent());
 				}
 			}
 		}
 	}
 
-	public boolean distributedLoad(Class<? extends ProcessingElement> data) {
-		// Replicacion en base al siguiente algoritmo
+	/**
+	 * El algoritmo propuesto ahora, representa la replicación reactiva del
+	 * monitor donde se tendrá como principal componente un factor ρ, el cual
+	 * indicará si existe una demora en el procesamiento de los datos.
+	 * 
+	 * @param data
+	 *            PE analizado para saber si necesita replicación según el
+	 *            algoritmo reactivo.
+	 * @return condición de replicación del PE según el algoritmo reactivo.
+	 */
+	public boolean reactiveLoad(Class<? extends ProcessingElement> data) {
 
-		// Como la replicacion se hace con el juego de llaves del PE que envia
-		// se debe buscar todos los PEs que reciben del PE que modificaremos
+		/*
+		 * Como la replicacion se hace con el juego de llaves del PE que envia
+		 * se debe buscar todos los PEs que reciben del PE que modificaremos.
+		 */
 		List<Class<? extends ProcessingElement>> listPE = new ArrayList<Class<? extends ProcessingElement>>();
 		for (TopologyApp topology : topologySystem) {
 			if (data.equals(topology.getPeSend())) {
@@ -159,32 +166,38 @@ public class S4Monitor {
 			}
 		}
 
-		// Posteriormente, analizamos todos los PE que reciben
-		// y ver si existe un rendimiento bajo el establecido
+		/*
+		 * Posteriormente, analizamos todos los PE que reciben y ver si existe
+		 * un rendimiento bajo el establecido.
+		 */
 		for (int i = 0; i < statusSystem.size(); i++) {
-			// es decir ρ = λ / (s*μ) ; donde s cantidad de replicas del PE
+			/*
+			 * Es decir ρ = λ / (s*μ) ; donde s cantidad de replicas del PE
+			 */
 			for (Class<? extends ProcessingElement> recibe : listPE) {
 				if (recibe.equals(statusSystem.get(i).getPe())) {
-					// Replicacion simple, es decir, si la tasa de llegada es
-					// mayor a la de servicio, modifica el indice de replicacion
 					/*
-					 * if (statusSystem.get(i).getSendEvent() < statusSystem
-					 * .get(i).getRecibeEvent()) {
-					 * logger.debug("distributedLoad"); return true; }
+					 * Replicacion simple, es decir, si la tasa de llegada es
+					 * mayor a la de servicio, modifica el indice de
+					 * replicación. Otra forma de analizar es con ρ.
 					 */
-					// Otra forma de analizar es con ρ
 					if ((statusSystem.get(i).getReplication() == 0)
 							|| (statusSystem.get(i).getSendEvent() == 0)) {
+						// Preguntarle a Daniel del pasado...
 						return false;
 					}
+
+					// long λ = statusSystem.get(i).getRecibeEvent();
+					// long s = statusSystem.get(i).getReplication();
+					// long μ = statusSystem.get(i).getSendEvent();
 
 					long ρ = statusSystem.get(i).getRecibeEvent()
 							/ (statusSystem.get(i).getReplication() * statusSystem
 									.get(i).getSendEvent());
-					/*
-					 * logger.debug("PE " + statusSystem.get(i).getPe() +
-					 * " | ρ " + ρ);
-					 */
+
+					// logger.debug("PE " + statusSystem.get(i).getPe() +
+					// " | ρ "
+					// + ρ);
 
 					if (ρ > 1) {
 						// logger.debug("distributedLoad");
@@ -196,23 +209,50 @@ public class S4Monitor {
 
 		return false;
 	}
-	
+
 	/**
-	 * S4Monitor object must be associated with one and only one {@code App} object.
+	 * El algoritmo propuesto ahora, representa la replicación predictiva del
+	 * monitor donde se tendrá como principal componente algún modelo matemático
+	 * que esté validado por el estado del arte.
 	 * 
-	 * @return the app
+	 * @param data
+	 *            PE analizado para saber si necesita replicación según el
+	 *            algoritmo predictivo.
+	 * @return condición de replicación del PE según el algoritmo predictivo.
 	 */
-	public App getApp() {
-		return app;
+	public boolean predictiveLoad(Class<? extends ProcessingElement> data) {
+		return false;
 	}
 
-	public void setApp(App app) {
-		if (this.app != null) {
-			throw new RuntimeException(
-					"Application was already assigne to this S4 Monitor");
+	/**
+	 * replicationPE corresponde a la replicación de un PE determinado
+	 * 
+	 * @param pe
+	 *            PE a replicar
+	 */
+	public void administrationLoad(Class<? extends ProcessingElement> pe) {
+		for (int i = 0; i < statusSystem.size(); i++) {
+			if (pe.equals(statusSystem.get(i).getPe())) {
+				statusSystem.get(i).setReplication(
+						statusSystem.get(i).getReplication() + 1);
+				break;
+			}
 		}
-		this.app = app;
 	}
+
+	public String mapTopology() {
+		return topologySystem.toString();
+	}
+
+	public String mapStatusSystem() {
+		return statusSystem.toString();
+	}
+
+	/**
+	 * Clase para analizar la topología del grafo, de esta manera tendremos el
+	 * PE emisor y receptor, además del flujo de datos entre ellos
+	 *
+	 */
 
 	public class TopologyApp {
 		private Class<? extends ProcessingElement> peSend;
@@ -248,7 +288,18 @@ public class S4Monitor {
 		public void setEventSend(long eventSend) {
 			this.eventSend = eventSend;
 		}
+
+		@Override
+		public String toString() {
+			return "[PE Send: " + peSend.toString() + " | PE Recibe: "
+					+ peRecibe.toString() + " | Event: " + eventSend + "]";
+		}
 	}
+
+	/**
+	 * Clase para analizar el estado de cada uno de los PE, según su tasa de
+	 * llegada y tasa de servicio, además de su replicación.
+	 */
 
 	public class StatusPE {
 		private long recibeEvent;
@@ -293,6 +344,13 @@ public class S4Monitor {
 
 		public void setReplication(int replication) {
 			this.replication = replication;
+		}
+
+		@Override
+		public String toString() {
+			return "[PE : " + pe.toString() + " | Recibe: " + recibeEvent
+					+ " | Send: " + sendEvent + " | Replication: "
+					+ replication + "]";
 		}
 	}
 
