@@ -32,65 +32,78 @@ import org.slf4j.LoggerFactory;
  */
 public class RemoteStream implements Streamable<Event> {
 
-    final private String name;
-    final protected Key<Event> key;
-    final static private String DEFAULT_SEPARATOR = "^";
+	final private String name;
+	final protected Key<Event> key;
+	final static private String DEFAULT_SEPARATOR = "^";
 
-    RemoteSenders remoteSenders;
+	private long eventCount;
 
-    Hasher hasher;
+	RemoteSenders remoteSenders;
 
-    int id;
-    final private App app;
-    private static Logger logger = LoggerFactory.getLogger(RemoteStream.class);
+	Hasher hasher;
 
-    public RemoteStream(App app, String name, KeyFinder<Event> finder, RemoteSenders remoteSenders, Hasher hasher,
-            RemoteStreams remoteStreams, String clusterName) {
-        this.app = app;
-        this.name = name;
-        this.remoteSenders = remoteSenders;
-        this.hasher = hasher;
-        if (finder == null) {
-            this.key = null;
-        } else {
-            this.key = new Key<Event>(finder, DEFAULT_SEPARATOR);
-        }
-        remoteStreams.addOutputStream(clusterName, name);
+	int id;
+	final private App app;
+	private static Logger logger = LoggerFactory.getLogger(RemoteStream.class);
 
-    }
+	public RemoteStream(App app, String name, KeyFinder<Event> finder,
+			RemoteSenders remoteSenders, Hasher hasher,
+			RemoteStreams remoteStreams, String clusterName) {
+		this.app = app;
+		this.name = name;
+		this.setEventCount(0);
+		this.remoteSenders = remoteSenders;
+		this.hasher = hasher;
+		if (finder == null) {
+			this.key = null;
+		} else {
+			this.key = new Key<Event>(finder, DEFAULT_SEPARATOR);
+		}
+		remoteStreams.addOutputStream(clusterName, name);
 
-    @Override
-    public void put(Event event) {
-        event.setStreamId(getName());
+	}
 
-        if (key != null) {
-            remoteSenders.send(key.get(event), event);
-        } else {
-            remoteSenders.send(null, event);
-        }
-    }
+	@Override
+	public void put(Event event) {
+		event.setStreamId(getName());
+		setEventCount(getEventCount() + 1);
 
-    @Override
-    public String getName() {
-        return name;
-    }
+		if (key != null) {
+			remoteSenders.send(key.get(event), event);
+		} else {
+			remoteSenders.send(null, event);
+		}
+	}
 
-    @Override
-    public void start() {
-        // TODO Auto-generated method stub
+	@Override
+	public String getName() {
+		return name;
+	}
 
-    }
+	@Override
+	public void start() {
+		// TODO Auto-generated method stub
 
-    @Override
-    public void close() {
-        // TODO Auto-generated method stub
+	}
 
-    }
+	@Override
+	public void close() {
+		// TODO Auto-generated method stub
+
+	}
 
 	@Override
 	public ProcessingElement[] getTargetPEs() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public long getEventCount() {
+		return eventCount;
+	}
+
+	public void setEventCount(long eventCount) {
+		this.eventCount = eventCount;
 	}
 
 }

@@ -24,7 +24,7 @@ public class S4Monitor {
 		logger.info("Init Monitor");
 
 		// Correr demonio para el análisis del predictivo y reactivo
-		// Thread
+
 	}
 
 	public void startS4Monitor(App app) {
@@ -42,7 +42,7 @@ public class S4Monitor {
 	public void registerPE(Class<? extends ProcessingElement> peSend,
 			Class<? extends ProcessingElement> peRecibe) {
 
-		logger.debug("registerPE");
+		logger.debug("Register PE");
 
 		if (peRecibe != null) {
 			TopologyApp topology = new TopologyApp();
@@ -53,7 +53,7 @@ public class S4Monitor {
 
 		boolean exist = false;
 		for (int i = 0; i < statusSystem.size(); i++) {
-			if (peSend.equals(statusSystem.get(i).getPe())) {
+			if (peSend.equals(statusSystem.get(i).getPE())) {
 				exist = true;
 				break;
 			}
@@ -61,7 +61,7 @@ public class S4Monitor {
 
 		if (!exist) {
 			StatusPE statusPE = new StatusPE();
-			statusPE.setPe(peSend);
+			statusPE.setPE(peSend);
 			statusPE.setRecibeEvent(0);
 			statusPE.setSendEvent(0);
 			statusPE.setReplication(1);
@@ -99,7 +99,7 @@ public class S4Monitor {
 		 * servicio.
 		 */
 		for (int i = 0; i < statusSystem.size(); i++) {
-			if (data.equals(statusSystem.get(i).getPe())) {
+			if (data.equals(statusSystem.get(i).getPE())) {
 				// logger.debug("StatusSystem " + statusSystem.get(i).getPe());
 				/*
 				 * Se debe realizar una diferencia, debido que son el total de
@@ -127,7 +127,7 @@ public class S4Monitor {
 		 */
 		for (int i = 0; i < statusSystem.size(); i++) {
 			for (Class<? extends ProcessingElement> recibe : listPERecibe) {
-				if (recibe.equals(statusSystem.get(i).getPe())) {
+				if (recibe.equals(statusSystem.get(i).getPE())) {
 					// logger.debug("StatusSystem " +
 					// statusSystem.get(i).getPe());
 
@@ -152,8 +152,10 @@ public class S4Monitor {
 	 *            PE analizado para saber si necesita replicación según el
 	 *            algoritmo reactivo.
 	 * @return condición de replicación del PE según el algoritmo reactivo.
+	 *         Donde 1 significa que aumenta la cantidad de PE, 0 se mantiene y
+	 *         -1 se aumenta.
 	 */
-	public boolean reactiveLoad(Class<? extends ProcessingElement> data) {
+	public int reactiveLoad(Class<? extends ProcessingElement> data) {
 
 		/*
 		 * Como la replicacion se hace con el juego de llaves del PE que envia
@@ -175,7 +177,7 @@ public class S4Monitor {
 			 * Es decir ρ = λ / (s*μ) ; donde s cantidad de replicas del PE
 			 */
 			for (Class<? extends ProcessingElement> recibe : listPE) {
-				if (recibe.equals(statusSystem.get(i).getPe())) {
+				if (recibe.equals(statusSystem.get(i).getPE())) {
 					/*
 					 * Replicacion simple, es decir, si la tasa de llegada es
 					 * mayor a la de servicio, modifica el indice de
@@ -184,7 +186,7 @@ public class S4Monitor {
 					if ((statusSystem.get(i).getReplication() == 0)
 							|| (statusSystem.get(i).getSendEvent() == 0)) {
 						// Preguntarle a Daniel del pasado...
-						return false;
+						return 0;
 					}
 
 					// long λ = statusSystem.get(i).getRecibeEvent();
@@ -201,13 +203,15 @@ public class S4Monitor {
 
 					if (ρ > 1) {
 						// logger.debug("distributedLoad");
-						return true;
+						return 1;
+					} else if (ρ < 0.5) {
+						return -1;
 					}
 				}
 			}
 		}
 
-		return false;
+		return 0;
 	}
 
 	/**
@@ -219,9 +223,31 @@ public class S4Monitor {
 	 *            PE analizado para saber si necesita replicación según el
 	 *            algoritmo predictivo.
 	 * @return condición de replicación del PE según el algoritmo predictivo.
+	 *         Donde 1 significa que aumenta la cantidad de PE, 0 se mantiene y
+	 *         -1 se aumenta.
 	 */
-	public boolean predictiveLoad(Class<? extends ProcessingElement> data) {
-		return false;
+	public int predictiveLoad(Class<? extends ProcessingElement> data) {
+		return 0;
+	}
+
+	/**
+	 * calculateLoad corresponde al cálculo de los distintos PE del sistema
+	 * 
+	 */
+	public void calculateLoad() {
+		for (int i = 0; i < statusSystem.size(); i++) {
+			if (reactiveLoad(statusSystem.get(i).getPE()) == 1) {
+				statusSystem.get(i).setMarkIncrement(statusSystem.get(i).getMarkIncrement() + 1);
+			} else if (reactiveLoad(statusSystem.get(i).getPE()) == -1) {
+				statusSystem.get(i).setMarkDecrement(statusSystem.get(i).getMarkDecrement() + 1);
+			}
+
+			if (predictiveLoad(statusSystem.get(i).getPE()) == 1) {
+				statusSystem.get(i).setMarkIncrement(statusSystem.get(i).getMarkIncrement() + 1);
+			} else if (predictiveLoad(statusSystem.get(i).getPE()) == -1) {
+				statusSystem.get(i).setMarkDecrement(statusSystem.get(i).getMarkDecrement() + 1);
+			}
+		}
 	}
 
 	/**
@@ -230,9 +256,9 @@ public class S4Monitor {
 	 * @param pe
 	 *            PE a replicar
 	 */
-	public void administrationLoad(Class<? extends ProcessingElement> pe) {
+	public void replicationPE(Class<? extends ProcessingElement> pe) {
 		for (int i = 0; i < statusSystem.size(); i++) {
-			if (pe.equals(statusSystem.get(i).getPe())) {
+			if (pe.equals(statusSystem.get(i).getPE())) {
 				statusSystem.get(i).setReplication(
 						statusSystem.get(i).getReplication() + 1);
 				break;
@@ -306,12 +332,16 @@ public class S4Monitor {
 		private long sendEvent;
 		private Class<? extends ProcessingElement> pe;
 		private int replication;
+		private int markIncrement;
+		private int markDecrement;
 
 		public StatusPE() {
 			recibeEvent = 0;
 			sendEvent = 0;
 			pe = null;
 			replication = 0;
+			setMarkIncrement(0);
+			setMarkDecrement(0);
 		}
 
 		public long getRecibeEvent() {
@@ -330,11 +360,11 @@ public class S4Monitor {
 			this.sendEvent = sendEvent;
 		}
 
-		public Class<? extends ProcessingElement> getPe() {
+		public Class<? extends ProcessingElement> getPE() {
 			return pe;
 		}
 
-		public void setPe(Class<? extends ProcessingElement> pe) {
+		public void setPE(Class<? extends ProcessingElement> pe) {
 			this.pe = pe;
 		}
 
@@ -344,6 +374,22 @@ public class S4Monitor {
 
 		public void setReplication(int replication) {
 			this.replication = replication;
+		}
+
+		public int getMarkIncrement() {
+			return markIncrement;
+		}
+
+		public void setMarkIncrement(int markIncrement) {
+			this.markIncrement = markIncrement;
+		}
+
+		public int getMarkDecrement() {
+			return markDecrement;
+		}
+
+		public void setMarkDecrement(int markDecrement) {
+			this.markDecrement = markDecrement;
 		}
 
 		@Override

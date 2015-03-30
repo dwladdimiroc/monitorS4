@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry exported="true" kind="lib" path="/home/daniel/.m2/repository/org/apache/s4/s4-base/0.6.0-incubating/s4-base-0.6.0-incubating.jar"/>
+	<classpathentry exported="true" kind="lib" path="/home/daniel/.m2/repository/org/apache/s4/s4-base/0.6.0-incubating/s4-base-0.6.0-incubating.jar" sourcepath="/s4-base"/>
 	<classpathentry exported="true" kind="lib" path="/home/daniel/.m2/repository/org/apache/s4/s4-comm/0.6.0-incubating/s4-comm-0.6.0-incubating.jar"/>
 	<classpathentry exported="true" kind="lib" path="/home/daniel/.m2/repository/org/apache/s4/s4-core/0.6.0-incubating/s4-core-0.6.0-incubating.jar" sourcepath="/s4-core"/>
 	<classpathentry exported="true" kind="lib" path="/home/daniel/.gradle/caches/artifacts-23/filestore/org.mongodb/mongo-java-driver/2.12.4/jar/3ed9a10c4315fae18e4a2ed1f01ff17475d7e16e/mongo-java-driver-2.12.4.jar" sourcepath="/home/daniel/.gradle/caches/artifacts-23/filestore/org.mongodb/mongo-java-driver/2.12.4/source/c40dcd25f1f0f9aebe2a81e4940789b2c40405fb/mongo-java-driver-2.12.4-sources.jar"/>

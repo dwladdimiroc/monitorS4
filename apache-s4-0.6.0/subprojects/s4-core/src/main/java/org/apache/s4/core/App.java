@@ -200,15 +200,17 @@ public abstract class App {
 	private class OnTimePullStatus extends TimerTask {
 		@Override
 		public void run() {
-			// Cambiar para poder obtener los datos, y no una copia de ellos
-			// Probar porque quizá el Pablo me cuenta mentiras...
 			for (Streamable<Event> stream : getStreams()) {
 				for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
+					//Analizar mejor esta parte, porque no es tan necesario
+					//ir por todas las instancias de los PE, solo si es necesario
+					//replicar
 					for (ProcessingElement PE : PEPrototype.getInstances()) {
-						if (monitor.reactiveLoad(PE.getClass())) {
+						/*if (monitor.reactiveLoad(PE.getClass())) {
 							logger.debug("Replication PE: " + PE.getClass());
-							PE.setReplication(PE.getReplication()+1);
-						}
+							//PE.close();
+							//PE.setReplication(PE.getReplication()+1);
+						}*/
 					}
 				}
 			}

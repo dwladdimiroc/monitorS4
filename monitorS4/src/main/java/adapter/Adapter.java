@@ -64,7 +64,7 @@ public class Adapter extends AdapterApp implements Runnable {
 
 			for (int i = 0; i < 100; i++) {
 				Event event = new Event();
-
+				
 				eventCount++;
 				event.put("levelProcessOne", Long.class, eventCount
 						% levelConcurrency);
@@ -77,6 +77,8 @@ public class Adapter extends AdapterApp implements Runnable {
 				}
 
 				getRemoteStream().put(event);
+				
+				logger.debug("Adapter EventCount: " + getRemoteStream().getEventCount());
 			}
 
 			try {

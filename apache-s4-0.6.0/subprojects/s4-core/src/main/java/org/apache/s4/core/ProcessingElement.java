@@ -513,8 +513,6 @@ public abstract class ProcessingElement implements Cloneable {
 			}
 
 			eventCount++;
-			
-			app.monitor.sendStatus(this.getClass(), eventCount);
 
 			dirty = true;
 
