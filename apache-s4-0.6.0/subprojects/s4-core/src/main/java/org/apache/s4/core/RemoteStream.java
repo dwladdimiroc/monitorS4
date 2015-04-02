@@ -46,12 +46,12 @@ public class RemoteStream implements Streamable<Event> {
 	final private App app;
 	private static Logger logger = LoggerFactory.getLogger(RemoteStream.class);
 
-	public RemoteStream(App app, String name, KeyFinder<Event> finder,
+	public RemoteStream(App app, String name, int eventCount, KeyFinder<Event> finder,
 			RemoteSenders remoteSenders, Hasher hasher,
 			RemoteStreams remoteStreams, String clusterName) {
 		this.app = app;
 		this.name = name;
-		this.setEventCount(0);
+		this.eventCount = eventCount;
 		this.remoteSenders = remoteSenders;
 		this.hasher = hasher;
 		if (finder == null) {

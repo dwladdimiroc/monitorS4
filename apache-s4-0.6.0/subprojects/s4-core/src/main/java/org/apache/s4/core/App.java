@@ -35,6 +35,7 @@ import org.apache.s4.comm.serialize.SerializerDeserializerFactory;
 import org.apache.s4.comm.topology.Cluster;
 import org.apache.s4.comm.topology.RemoteStreams;
 import org.apache.s4.core.ft.CheckpointingFramework;
+import org.apache.s4.core.monitor.S4Monitor;
 import org.apache.s4.core.staging.StreamExecutorServiceFactory;
 import org.apache.s4.core.util.S4Metrics;
 import org.apache.s4.core.window.AbstractSlidingWindowPE;
@@ -177,7 +178,7 @@ public abstract class App {
 
 		ScheduledExecutorService pullStatus = Executors
 				.newSingleThreadScheduledExecutor();
-		pullStatus.scheduleAtFixedRate(new OnTimePullStatus(), 0, 10000,
+		pullStatus.scheduleAtFixedRate(new OnTimePullStatus(), 30000, 10000,
 				TimeUnit.MILLISECONDS);
 
 		logger.info("TimerMonitor pull status");
@@ -202,15 +203,25 @@ public abstract class App {
 		public void run() {
 			for (Streamable<Event> stream : getStreams()) {
 				for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
-					//Analizar mejor esta parte, porque no es tan necesario
-					//ir por todas las instancias de los PE, solo si es necesario
-					//replicar
-					for (ProcessingElement PE : PEPrototype.getInstances()) {
-						/*if (monitor.reactiveLoad(PE.getClass())) {
-							logger.debug("Replication PE: " + PE.getClass());
-							//PE.close();
-							//PE.setReplication(PE.getReplication()+1);
-						}*/
+
+					int resultAdministration = monitor
+							.administrationLoad(PEPrototype.getClass());
+
+					if (resultAdministration == 1) {
+						for (ProcessingElement PE : PEPrototype.getInstances()) {
+							logger.debug("Increment PE: "
+									+ PEPrototype.getClass());
+							PE.setReplication(PE.getReplication() + 1);
+						}
+					} else if (resultAdministration == -1) {
+
+						if (PEPrototype.getInstances().size() <= 1) {
+							logger.debug("Decrement PE: "
+									+ PEPrototype.getClass());
+							PEPrototype.getInstances().iterator().next()
+									.close();
+						}
+
 					}
 				}
 			}
@@ -474,7 +485,7 @@ public abstract class App {
 	 */
 	protected <T extends Event> RemoteStream createOutputStream(String name,
 			KeyFinder<Event> finder) {
-		return new RemoteStream(this, name, finder, remoteSenders, hasher,
+		return new RemoteStream(this, name, 0, finder, remoteSenders, hasher,
 				remoteStreams, clusterName);
 	}
 

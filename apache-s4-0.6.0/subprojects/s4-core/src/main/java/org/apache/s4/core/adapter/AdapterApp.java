@@ -39,21 +39,36 @@ public abstract class AdapterApp extends App {
     String outputStreamName;
 
     private RemoteStream remoteStream;
+    private int levelConcurrency;
 
     protected KeyFinder<Event> remoteStreamKeyFinder;
 
     public RemoteStream getRemoteStream() {
         return remoteStream;
     }
+    
+    public long getEventCount(){
+    	return remoteStream.getEventCount();
+    }
 
-    @Override
+    public int getLevelConcurrency() {
+		return levelConcurrency;
+	}
+
+	public void setLevelConcurrency(int levelConcurrency) {
+		this.levelConcurrency = levelConcurrency;
+	}
+
+	@Override
     protected void onStart() {
     }
 
     @Override
     protected void onInit() {
         remoteStream = createOutputStream(outputStreamName, remoteStreamKeyFinder);
+        setLevelConcurrency(1);
         setConditionAdapter(true);
+        
     }
 
     /**

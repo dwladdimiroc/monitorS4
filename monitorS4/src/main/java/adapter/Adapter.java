@@ -30,9 +30,6 @@ public class Adapter extends AdapterApp implements Runnable {
 	private static Logger logger = LoggerFactory.getLogger(Adapter.class);
 	private boolean showEvent = false;
 
-	private long eventCount;
-	private int levelConcurrency;
-
 	private Thread thread;
 
 	private int[] time = { 10000, 15000, 50000, 35000, 500 };
@@ -40,8 +37,6 @@ public class Adapter extends AdapterApp implements Runnable {
 	@Override
 	protected void onInit() {
 		logger.info("Create Adapter");
-		eventCount = 0;
-		levelConcurrency = 1;
 
 		thread = new Thread(this);
 		super.onInit();
@@ -65,10 +60,9 @@ public class Adapter extends AdapterApp implements Runnable {
 			for (int i = 0; i < 100; i++) {
 				Event event = new Event();
 				
-				eventCount++;
-				event.put("levelProcessOne", Long.class, eventCount
-						% levelConcurrency);
-				event.put("id", Long.class, eventCount);
+				event.put("levelProcessOne", Long.class, getEventCount()
+						% getLevelConcurrency());
+				event.put("id", Long.class, getEventCount());
 				event.put("time", Long.class, System.nanoTime());
 				event.put("date", Date.class, Calendar.getInstance().getTime());
 
@@ -77,8 +71,6 @@ public class Adapter extends AdapterApp implements Runnable {
 				}
 
 				getRemoteStream().put(event);
-				
-				logger.debug("Adapter EventCount: " + getRemoteStream().getEventCount());
 			}
 
 			try {
@@ -93,19 +85,4 @@ public class Adapter extends AdapterApp implements Runnable {
 		logger.info("Finish Adapter");
 	}
 
-	public long getEventCount() {
-		return eventCount;
-	}
-
-	public void setEventCount(long eventCount) {
-		this.eventCount = eventCount;
-	}
-
-	public int getLevelConcurrency() {
-		return levelConcurrency;
-	}
-
-	public void setLevelConcurrency(int levelConcurrency) {
-		this.levelConcurrency = levelConcurrency;
-	}
 }
