@@ -1,18 +1,11 @@
 package org.apache.s4.core.monitor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.s4.core.App;
 import org.apache.s4.core.ProcessingElement;
-import org.codehaus.groovy.antlr.treewalker.SourceCodeTraversal;
-import org.codehaus.groovy.ast.ClassNode;
-import org.codehaus.groovy.ast.MethodNode;
-import org.codehaus.groovy.ast.Parameter;
-import org.gmetrics.metric.cyclomatic.CyclomaticComplexityMetric;
-import org.gmetrics.source.SourceCode;
-import org.gmetrics.source.SourceCodeCriteria;
-import org.gmetrics.source.SourceString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -276,9 +269,11 @@ public class S4Monitor {
 				int resultReactive = reactiveLoad(data);
 
 				if (resultReactive == 1) {
-					statusPE.getMap().put(System.currentTimeMillis(), 1);
+					statusPE.getMarkMap().add(1);
 				} else if (resultReactive == -1) {
-					statusPE.getMap().put(System.currentTimeMillis(), -1);
+					statusPE.getMarkMap().add(-1);
+				} else {
+					statusPE.getMarkMap().add(0);
 				}
 
 				/*
@@ -291,9 +286,11 @@ public class S4Monitor {
 				int resultPredictive = predictiveLoad(data);
 
 				if (resultPredictive == 1) {
-					statusPE.getMap().put(System.currentTimeMillis(), 1);
+					statusPE.getMarkMap().add(1);
 				} else if (resultPredictive == -1) {
-					statusPE.getMap().put(System.currentTimeMillis(), -1);
+					statusPE.getMarkMap().add(-1);
+				} else {
+					statusPE.getMarkMap().add(0);
 				}
 
 				/*
@@ -302,12 +299,16 @@ public class S4Monitor {
 				 * notifica dos veces que es necesario un incremento o
 				 * decremento de las réplicas del PE, se tomará una decisión.
 				 */
-				
-				//Hacer un algoritmo de verdad...
 
-				if (statusPE.getMarkIncrement() <= 2) {
+				/*
+				 * Para análisis de prueba, se considerarán los últimos 3
+				 * períodos para verificar si es necesario replicar.
+				 */
+
+				if (statusPE.getMarkMap().containsAll(Arrays.asList(1, 1))) {
 					return 1;
-				} else if (statusPE.getMarkDecrement() <= 2) {
+				} else if (statusPE.getMarkMap().containsAll(
+						Arrays.asList(-1, -1))) {
 					return -1;
 				}
 
@@ -346,6 +347,7 @@ public class S4Monitor {
 
 	/**
 	 * Muestra el estado del sistema
+	 * 
 	 * @return un string con el estado del sistema
 	 */
 	public String mapStatusSystem() {
