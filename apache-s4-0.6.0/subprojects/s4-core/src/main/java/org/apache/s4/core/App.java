@@ -201,7 +201,9 @@ public abstract class App {
 	private class OnTimePullStatus extends TimerTask {
 		@Override
 		public void run() {
-			for (Streamable<Event> stream : getStreams()) {
+			// Analizar problemas segun statusSystem y posteriori cambiar las llaves
+			// de cada PE...
+			/*for (Streamable<Event> stream : getStreams()) {
 				for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
 
 					int resultAdministration = monitor
@@ -224,7 +226,7 @@ public abstract class App {
 
 					}
 				}
-			}
+			}*/
 		}
 	}
 

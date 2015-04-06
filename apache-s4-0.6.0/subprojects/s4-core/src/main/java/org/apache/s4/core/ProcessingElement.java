@@ -137,6 +137,7 @@ public abstract class ProcessingElement implements Cloneable {
 
 	/* This map is initialized in the prototype and cloned to instances. */
 	transient Map<Class<? extends Event>, Trigger> triggers;
+	transient Map<Class<? extends ProcessingElement>, Integer> replications;
 
 	/* PE instance id. */
 	protected String id = "";
@@ -150,7 +151,6 @@ public abstract class ProcessingElement implements Cloneable {
 	transient private boolean isPrototype = true;
 	transient private boolean isThreadSafe = false;
 	transient private String name = null;
-	transient private int replication = 1;
 	transient private boolean isSingleton = false;
 	transient long eventCount = 0;
 
@@ -253,6 +253,22 @@ public abstract class ProcessingElement implements Cloneable {
 		this.app = app;
 		app.addPEPrototype(this, null);
 
+	}
+
+	/**
+	 * Devolverá el módulo el cual se aplicará para replicar al siguiente PE
+	 * 
+	 * @param PE
+	 *            PE al que se debe replicar
+	 * @return Módulo aplicado a la llave, que será la cantidad de réplicas que
+	 *         se desea de ese PE
+	 */
+
+	public int getReplicationPE(Class<? extends ProcessingElement> PE) {
+		if (!replications.containsKey(PE))
+			return 0;
+
+		return replications.get(PE);
 	}
 
 	/**
@@ -568,19 +584,26 @@ public abstract class ProcessingElement implements Cloneable {
 			return trigger.checkAndUpdate();
 		}
 	}
-	
+
 	/**
-	 * Registro del PE en el Monitor, por lo tanto lo que se realizará
-	 * es saber cual es la dirección del grafo. De esta manera se sabrá
-	 * el emisor y el receptor, lo cual servirá para calcular la tasa
-	 * de procesamiento de cada PE.
+	 * Registro del PE en el Monitor, por lo tanto lo que se realizará es saber
+	 * cual es la dirección del grafo. De esta manera se sabrá el emisor y el
+	 * receptor, lo cual servirá para calcular la tasa de procesamiento de cada
+	 * PE. Además de esto, se encargará de inicializar la llave para el PE que
+	 * debe dirigirse, de tal manera de replicar sólo a ese PE en caso de
+	 * aumentar su llave
 	 * 
-	 * @param PE receptor, donde estará siendo llamada la función por el
-	 * PE emisor.
+	 * @param PE
+	 *            receptor, donde estará siendo llamada la función por el PE
+	 *            emisor.
 	 */
-	
-	public void registerMonitor(Class<? extends ProcessingElement> peRecibe){
+
+	public void registerMonitor(Class<? extends ProcessingElement> peRecibe) {
+		// Register monitor
 		this.app.monitor.registerPE(this.getClass(), peRecibe);
+
+		// Put replication with your class in the map of replications
+		this.replications.put(peRecibe, 1);
 	}
 
 	private void removeInstanceForKeyInternal(String id) {
@@ -615,6 +638,7 @@ public abstract class ProcessingElement implements Cloneable {
 		ProcessingElement pe = (ProcessingElement) this.clone();
 		pe.isPrototype = false;
 		pe.id = id;
+		pe.replications = Maps.newHashMap(replications);
 		pe.triggers = Maps.newHashMap(triggers);
 		pe.onCreate();
 		logger.trace("Num PE instances: {}.", getNumPEInstances());
@@ -864,26 +888,6 @@ public abstract class ProcessingElement implements Cloneable {
 					name);
 		}
 		app.peByName.put(name, this);
-	}
-
-	/**
-	 * @return the PE replication
-	 */
-	protected int getReplication() {
-		return replication;
-	}
-
-	/**
-	 * @param replication
-	 *            PE replication
-	 */
-	protected void setReplication(int replication) {
-
-		if (replication == 0)
-			return;
-
-		this.replication = replication;
-
 	}
 
 	public CheckpointingConfig getCheckpointingConfig() {

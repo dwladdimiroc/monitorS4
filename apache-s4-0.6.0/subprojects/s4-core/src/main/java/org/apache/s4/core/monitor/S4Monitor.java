@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.s4.core.App;
 import org.apache.s4.core.ProcessingElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,12 +24,6 @@ public class S4Monitor {
 	@Inject
 	private void init() {
 		logger.info("Init Monitor");
-
-		// Correr demonio para el análisis del predictivo y reactivo
-
-	}
-
-	public void startS4Monitor(App app) {
 	}
 
 	/**
@@ -55,8 +48,8 @@ public class S4Monitor {
 		}
 
 		boolean exist = false;
-		for (int i = 0; i < statusSystem.size(); i++) {
-			if (peSend.equals(statusSystem.get(i).getPE())) {
+		for (StatusPE statusPE : statusSystem) {
+			if (peSend.equals(statusPE.getPE())) {
 				exist = true;
 				break;
 			}
@@ -85,11 +78,11 @@ public class S4Monitor {
 
 	public void sendStatus(Class<? extends ProcessingElement> data,
 			Long eventCount) {
+
 		List<Class<? extends ProcessingElement>> listPERecibe = new ArrayList<Class<? extends ProcessingElement>>();
-		// logger.debug("sendStatus");
 
 		/*
-		 * Obtener todos las clases a donde de ir el PE.
+		 * Obtener todos las clases a donde debe ir el PE.
 		 */
 		for (TopologyApp topology : topologySystem) {
 			if (data.equals(topology.getPeSend())) {
@@ -101,8 +94,8 @@ public class S4Monitor {
 		 * Asignar el valor de procesamiento de si mismo. Es decir, μ tasa de
 		 * servicio.
 		 */
-		for (int i = 0; i < statusSystem.size(); i++) {
-			if (data.equals(statusSystem.get(i).getPE())) {
+		for (StatusPE statusPE : statusSystem) {
+			if (data.equals(statusPE.getPE())) {
 				// logger.debug("StatusSystem " + statusSystem.get(i).getPe());
 				/*
 				 * Se debe realizar una diferencia, debido que son el total de
@@ -110,8 +103,7 @@ public class S4Monitor {
 				 * esta manera, obtendremos el número de eventos en el Δt
 				 * deseado.
 				 */
-				statusSystem.get(i).setSendEvent(
-						eventCount - statusSystem.get(i).getSendEvent());
+				statusPE.setSendEvent(eventCount - statusPE.getSendEvent());
 
 				// DBObject objMongo = new BasicDBObject();
 				// objMongo.put("PE", data.toString());
@@ -120,7 +112,6 @@ public class S4Monitor {
 				// - statusSystem.get(i).getSendEvent();
 				// objMongo.put("queue", queuePE);
 				// mongo.insert(objMongo);
-				break;
 			}
 		}
 
@@ -128,19 +119,16 @@ public class S4Monitor {
 		 * Asignar el valor de la tasa de llegada de cada uno de los distintos
 		 * PE. Es decir, λ Tasa de llegada.
 		 */
-		for (int i = 0; i < statusSystem.size(); i++) {
-			for (Class<? extends ProcessingElement> recibe : listPERecibe) {
-				if (recibe.equals(statusSystem.get(i).getPE())) {
-					// logger.debug("StatusSystem " +
-					// statusSystem.get(i).getPe());
-
+		for (Class<? extends ProcessingElement> recibe : listPERecibe) {
+			for (StatusPE statusPE : statusSystem) {
+				if (recibe.equals(statusPE.getPE())) {
 					/*
 					 * Nuevamente lo mismo expresado anteriormente del número de
 					 * eventos procesados en un Δt deseado.
 					 */
 
-					statusSystem.get(i).setRecibeEvent(
-							eventCount - statusSystem.get(i).getRecibeEvent());
+					statusPE.setRecibeEvent(eventCount
+							- statusPE.getRecibeEvent());
 				}
 			}
 		}
@@ -175,19 +163,19 @@ public class S4Monitor {
 		 * Posteriormente, analizamos todos los PE que reciben y ver si existe
 		 * un rendimiento bajo el establecido.
 		 */
-		for (int i = 0; i < statusSystem.size(); i++) {
+		for (StatusPE statusPE : statusSystem) {
 			/*
 			 * Es decir ρ = λ / (s*μ) ; donde s cantidad de replicas del PE
 			 */
 			for (Class<? extends ProcessingElement> recibe : listPE) {
-				if (recibe.equals(statusSystem.get(i).getPE())) {
+				if (recibe.equals(statusPE.getPE())) {
 					/*
 					 * Replicacion simple, es decir, si la tasa de llegada es
 					 * mayor a la de servicio, modifica el indice de
 					 * replicación. Otra forma de analizar es con ρ.
 					 */
-					if ((statusSystem.get(i).getReplication() == 0)
-							|| (statusSystem.get(i).getSendEvent() == 0)) {
+					if ((statusPE.getReplication() == 0)
+							|| (statusPE.getSendEvent() == 0)) {
 						// Preguntarle a Daniel del pasado...
 						return 0;
 					}
@@ -196,9 +184,9 @@ public class S4Monitor {
 					// long s = statusSystem.get(i).getReplication();
 					// long μ = statusSystem.get(i).getSendEvent();
 
-					long ρ = statusSystem.get(i).getRecibeEvent()
-							/ (statusSystem.get(i).getReplication() * statusSystem
-									.get(i).getSendEvent());
+					long ρ = statusPE.getRecibeEvent()
+							/ (statusPE.getReplication() * statusPE
+									.getSendEvent());
 
 					// logger.debug("PE " + statusSystem.get(i).getPe() +
 					// " | ρ "
@@ -210,9 +198,11 @@ public class S4Monitor {
 					 */
 					if (ρ > 1) {
 						// logger.debug("Increment");
+						statusPE.setReplication(statusPE.getReplication() + 1);
 						return 1;
 					} else if (ρ < 0.5) {
 						// logger.debug("Decrement");
+						statusPE.setReplication(statusPE.getReplication() - 1);
 						return -1;
 					}
 				}
@@ -256,6 +246,7 @@ public class S4Monitor {
 	 * 
 	 */
 	public int administrationLoad(Class<? extends ProcessingElement> data) {
+
 		for (StatusPE statusPE : statusSystem) {
 			if (data.equals(statusPE.getClass())) {
 
@@ -319,18 +310,33 @@ public class S4Monitor {
 		return 0;
 	}
 
+	public List<StatusPE> sendStatus() {
+
+		for (StatusPE statusPE : statusSystem) {
+
+			int status = administrationLoad(statusPE.getPE());
+
+			if (status == 1) {
+				statusPE.setReplication(statusPE.getReplication() + 1);
+			} else if (status == -1) {
+				statusPE.setReplication(statusPE.getReplication() - 1);
+			}
+
+		}
+
+		return statusSystem;
+	}
+
 	/**
 	 * replicationPE corresponde a la replicación de un PE determinado
 	 * 
 	 * @param pe
 	 *            PE a replicar
 	 */
-	// No se usa está función, pero es bonita...
 	public void replicationPE(Class<? extends ProcessingElement> pe) {
-		for (int i = 0; i < statusSystem.size(); i++) {
-			if (pe.equals(statusSystem.get(i).getPE())) {
-				statusSystem.get(i).setReplication(
-						statusSystem.get(i).getReplication() + 1);
+		for (StatusPE statusPE : statusSystem) {
+			if (pe.equals(statusPE.getPE())) {
+				statusPE.setReplication(statusPE.getReplication() + 1);
 				break;
 			}
 		}

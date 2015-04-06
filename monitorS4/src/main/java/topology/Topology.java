@@ -43,18 +43,10 @@ public class Topology extends App {
 
 	@Override
 	protected void onInit() {		
-		// Create a prototype
+		// Create the PE prototype
 		ProcessOnePE processOnePE = createPE(ProcessOnePE.class);
-		// Tiempo de replicación - Automática
-//		 processOnePE.setTimerInterval(5000, TimeUnit.MILLISECONDS);
-
 		ProcessTwoPE processTwoPE = createPE(ProcessTwoPE.class);
-		// Tiempo de replicación - Automática
-//		processTwoPE.setTimerInterval(5000, TimeUnit.MILLISECONDS);
-
 		MongoPE mongoPE = createPE(MongoPE.class);
-		// Tiempo de replicación - Automática
-//		mongoPE.setTimerInterval(5000, TimeUnit.MILLISECONDS);
 
 		// Create a stream that listens to the "textInput" stream and passes
 		// events to the processPE instance.
