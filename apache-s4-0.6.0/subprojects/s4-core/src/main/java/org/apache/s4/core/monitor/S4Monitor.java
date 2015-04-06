@@ -44,11 +44,11 @@ public class S4Monitor {
 			TopologyApp topology = new TopologyApp();
 			topology.setPeSend(peSend);
 			topology.setPeRecibe(peRecibe);
-			topologySystem.add(topology);
+			getTopologySystem().add(topology);
 		}
 
 		boolean exist = false;
-		for (StatusPE statusPE : statusSystem) {
+		for (StatusPE statusPE : getStatusSystem()) {
 			if (peSend.equals(statusPE.getPE())) {
 				exist = true;
 				break;
@@ -61,7 +61,7 @@ public class S4Monitor {
 			statusPE.setRecibeEvent(0);
 			statusPE.setSendEvent(0);
 			statusPE.setReplication(1);
-			statusSystem.add(statusPE);
+			getStatusSystem().add(statusPE);
 		}
 	}
 
@@ -84,7 +84,7 @@ public class S4Monitor {
 		/*
 		 * Obtener todos las clases a donde debe ir el PE.
 		 */
-		for (TopologyApp topology : topologySystem) {
+		for (TopologyApp topology : getTopologySystem()) {
 			if (data.equals(topology.getPeSend())) {
 				listPERecibe.add(topology.getPeRecibe());
 			}
@@ -94,7 +94,7 @@ public class S4Monitor {
 		 * Asignar el valor de procesamiento de si mismo. Es decir, μ tasa de
 		 * servicio.
 		 */
-		for (StatusPE statusPE : statusSystem) {
+		for (StatusPE statusPE : getStatusSystem()) {
 			if (data.equals(statusPE.getPE())) {
 				// logger.debug("StatusSystem " + statusSystem.get(i).getPe());
 				/*
@@ -120,7 +120,7 @@ public class S4Monitor {
 		 * PE. Es decir, λ Tasa de llegada.
 		 */
 		for (Class<? extends ProcessingElement> recibe : listPERecibe) {
-			for (StatusPE statusPE : statusSystem) {
+			for (StatusPE statusPE : getStatusSystem()) {
 				if (recibe.equals(statusPE.getPE())) {
 					/*
 					 * Nuevamente lo mismo expresado anteriormente del número de
@@ -153,7 +153,7 @@ public class S4Monitor {
 		 * se debe buscar todos los PEs que reciben del PE que modificaremos.
 		 */
 		List<Class<? extends ProcessingElement>> listPE = new ArrayList<Class<? extends ProcessingElement>>();
-		for (TopologyApp topology : topologySystem) {
+		for (TopologyApp topology : getTopologySystem()) {
 			if (data.equals(topology.getPeSend())) {
 				listPE.add(topology.getPeRecibe());
 			}
@@ -163,7 +163,7 @@ public class S4Monitor {
 		 * Posteriormente, analizamos todos los PE que reciben y ver si existe
 		 * un rendimiento bajo el establecido.
 		 */
-		for (StatusPE statusPE : statusSystem) {
+		for (StatusPE statusPE : getStatusSystem()) {
 			/*
 			 * Es decir ρ = λ / (s*μ) ; donde s cantidad de replicas del PE
 			 */
@@ -184,7 +184,7 @@ public class S4Monitor {
 					// long s = statusSystem.get(i).getReplication();
 					// long μ = statusSystem.get(i).getSendEvent();
 
-					long ρ = statusPE.getRecibeEvent()
+					float ρ = statusPE.getRecibeEvent()
 							/ (statusPE.getReplication() * statusPE
 									.getSendEvent());
 
@@ -196,13 +196,11 @@ public class S4Monitor {
 					 * Análisis de ρ para ver si debe aumentar, mantener o
 					 * disminuir la cantidad de réplicas de cierto PE
 					 */
-					if (ρ > 1) {
+					if (ρ > 1.5) {
 						// logger.debug("Increment");
-						statusPE.setReplication(statusPE.getReplication() + 1);
 						return 1;
 					} else if (ρ < 0.5) {
 						// logger.debug("Decrement");
-						statusPE.setReplication(statusPE.getReplication() - 1);
 						return -1;
 					}
 				}
@@ -228,11 +226,6 @@ public class S4Monitor {
 		return 0;
 	}
 
-	/*
-	 * El cálculo de los demás entes, es mejor analizar de forma inteligente,
-	 * según el número de ρ
-	 */
-
 	/**
 	 * administrationLoad corresponde a la administración de las distintas
 	 * réplicas según los cálculos de los distintos PE del sistema.
@@ -247,7 +240,7 @@ public class S4Monitor {
 	 */
 	public int administrationLoad(Class<? extends ProcessingElement> data) {
 
-		for (StatusPE statusPE : statusSystem) {
+		for (StatusPE statusPE : getStatusSystem()) {
 			if (data.equals(statusPE.getClass())) {
 
 				/*
@@ -310,21 +303,134 @@ public class S4Monitor {
 		return 0;
 	}
 
-	public List<StatusPE> sendStatus() {
+	/**
+	 * analyzeStatus analizará el nuevo flujo de datos, según la disminución o
+	 * aumento de uno de los PE emisores del PE analizado.
+	 * 
+	 * @param data
+	 *            PE analizado
+	 * @param recibeEvent
+	 *            Nueva cantidad de flujo del PE emisor
+	 * @param replication
+	 *            Booleano para ver si disminuye o aumenta el flujo
+	 * @return true Si es que surgió un cambio en el sistema, false si no cambió
+	 *         nada
+	 */
 
-		for (StatusPE statusPE : statusSystem) {
+	public boolean analyzeStatus(Class<? extends ProcessingElement> data,
+			long recibeEvent, boolean replication) {
+
+		for (StatusPE statusPE : getStatusSystem()) {
+			if (statusPE.getClass().equals(data)) {
+
+				/*
+				 * Análisis de ρ para ver si debe aumentar, mantener o disminuir
+				 * la cantidad de réplicas de cierto PE dada la replicación del
+				 * PE que le provee eventos.
+				 */
+
+				float ρ;
+
+				if (replication) {
+					ρ = (statusPE.getRecibeEvent() + recibeEvent)
+							/ (statusPE.getReplication() * statusPE
+									.getSendEvent());
+
+					if (ρ > 1.5) {
+						statusPE.setReplication(statusPE.getReplication() + 1);
+						return true;
+					}
+
+				} else {
+					ρ = (statusPE.getRecibeEvent() - recibeEvent)
+							/ (statusPE.getReplication() * statusPE
+									.getSendEvent());
+
+					if (ρ < 0.5) {
+						statusPE.setReplication(statusPE.getReplication() - 1);
+						return true;
+					}
+				}
+
+				return false;
+
+			}
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * intelligentReplication es una función recursiva que analizará si es que
+	 * debe aumentar o disminuir un PE receptor si es que el PE emisor ha sido
+	 * modificado.
+	 * 
+	 * @param peEmitter
+	 *            PE emisor, el cual será considerado para ver los nuevos flujos
+	 *            de sus PE receptores
+	 * @param replication
+	 *            condición de si aumento o disminuyo el PE emisor. true es que
+	 *            aumento, false es que disminuyó
+	 */
+
+	public void intelligentReplication(StatusPE peEmitter, boolean replication) {
+
+		for (TopologyApp topology : getTopologySystem()) {
+			if (peEmitter.getClass().equals(topology.getPeSend())) {
+				/*
+				 * En caso que el análisis del nuevo flujo haya modificado el PE
+				 * receptor, se deberá realizar el mismo procedimiento con los
+				 * PE receptores de PE receptor analizado.
+				 */
+				if (analyzeStatus(topology.getPeRecibe(),
+						peEmitter.getSendEvent(), replication)) {
+					intelligentReplication(peEmitter, replication);
+				}
+			}
+		}
+
+	}
+
+	/**
+	 * En este método se analizará cada uno de los distintos PE del sistema,
+	 * viendo si es necesario o no replicarlos. De esta manera, en caso de
+	 * modificar su cantidad de réplicas, se calculará de forma inteligente los
+	 * PEs que le continúen si deben replicarse o no.
+	 * 
+	 * @return Estado del sistema
+	 */
+
+	public List<StatusPE> askStatus() {
+
+		for (StatusPE statusPE : getStatusSystem()) {
 
 			int status = administrationLoad(statusPE.getPE());
 
+			/*
+			 * Se entenderá que debe replicarse si retornar el valor 1, por lo
+			 * tanto el estado del sistema se le añade una réplica. En el caso
+			 * que sea -1, se deberá disminuir en uno.
+			 * 
+			 * Posteriormente se realizará una replicación de forma inteligente,
+			 * de tal manera de aumentar o disminuir automáticamente los PEs
+			 * afectados por la replicación.
+			 */
 			if (status == 1) {
+
 				statusPE.setReplication(statusPE.getReplication() + 1);
+				intelligentReplication(statusPE, true);
+
 			} else if (status == -1) {
+
 				statusPE.setReplication(statusPE.getReplication() - 1);
+				intelligentReplication(statusPE, false);
+
 			}
 
 		}
 
-		return statusSystem;
+		return getStatusSystem();
 	}
 
 	/**
@@ -334,7 +440,7 @@ public class S4Monitor {
 	 *            PE a replicar
 	 */
 	public void replicationPE(Class<? extends ProcessingElement> pe) {
-		for (StatusPE statusPE : statusSystem) {
+		for (StatusPE statusPE : getStatusSystem()) {
 			if (pe.equals(statusPE.getPE())) {
 				statusPE.setReplication(statusPE.getReplication() + 1);
 				break;
@@ -343,12 +449,30 @@ public class S4Monitor {
 	}
 
 	/**
+	 * getTopologySystem se obtiene la topología del sistema
+	 * 
+	 * @return Topología del sistema
+	 */
+	public List<TopologyApp> getTopologySystem() {
+		return topologySystem;
+	}
+
+	/**
+	 * getStatusSystem se obtiene el estado del sistema
+	 * 
+	 * @return Estadp del sistema
+	 */
+	public List<StatusPE> getStatusSystem() {
+		return statusSystem;
+	}
+
+	/**
 	 * Muestra la topología del sistema
 	 * 
 	 * @return un string con la topología del sistema
 	 */
 	public String mapTopology() {
-		return topologySystem.toString();
+		return getTopologySystem().toString();
 	}
 
 	/**
@@ -357,7 +481,7 @@ public class S4Monitor {
 	 * @return un string con el estado del sistema
 	 */
 	public String mapStatusSystem() {
-		return statusSystem.toString();
+		return getStatusSystem().toString();
 	}
 
 }

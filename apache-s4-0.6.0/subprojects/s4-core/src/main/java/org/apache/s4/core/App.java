@@ -36,6 +36,8 @@ import org.apache.s4.comm.topology.Cluster;
 import org.apache.s4.comm.topology.RemoteStreams;
 import org.apache.s4.core.ft.CheckpointingFramework;
 import org.apache.s4.core.monitor.S4Monitor;
+import org.apache.s4.core.monitor.StatusPE;
+import org.apache.s4.core.monitor.TopologyApp;
 import org.apache.s4.core.staging.StreamExecutorServiceFactory;
 import org.apache.s4.core.util.S4Metrics;
 import org.apache.s4.core.window.AbstractSlidingWindowPE;
@@ -171,7 +173,7 @@ public abstract class App {
 
 		ScheduledExecutorService sendStatus = Executors
 				.newSingleThreadScheduledExecutor();
-		sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 0, 1000,
+		sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 25000, 10000,
 				TimeUnit.MILLISECONDS);
 
 		logger.info("TimerMonitor send status");
@@ -201,32 +203,40 @@ public abstract class App {
 	private class OnTimePullStatus extends TimerTask {
 		@Override
 		public void run() {
-			// Analizar problemas segun statusSystem y posteriori cambiar las llaves
-			// de cada PE...
-			/*for (Streamable<Event> stream : getStreams()) {
-				for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
+			//Hacer esto con funciones, así es mas bonito... pero dejemo esta pega
+			//para el Daniel del futuro
+			
+			// Analizar problemas segun statusSystem y posteriori cambiar las
+			// llaves de cada PE...
+			List<StatusPE> statusSystem = monitor.askStatus();
 
-					int resultAdministration = monitor
-							.administrationLoad(PEPrototype.getClass());
-
-					if (resultAdministration == 1) {
-						for (ProcessingElement PE : PEPrototype.getInstances()) {
-							logger.debug("Increment PE: "
-									+ PEPrototype.getClass());
-							PE.setReplication(PE.getReplication() + 1);
-						}
-					} else if (resultAdministration == -1) {
-
-						if (PEPrototype.getInstances().size() <= 1) {
-							logger.debug("Decrement PE: "
-									+ PEPrototype.getClass());
-							PEPrototype.getInstances().iterator().next()
-									.close();
-						}
-
+			for (StatusPE statusPE : statusSystem) {
+				List<Class<? extends ProcessingElement>> listPE = new ArrayList<Class<? extends ProcessingElement>>();
+				for (TopologyApp topology : monitor.getTopologySystem()) {
+					if (statusPE.equals(topology.getPeSend())) {
+						listPE.add(topology.getPeRecibe());
 					}
 				}
-			}*/
+			}
+
+			/*
+			 * for (Streamable<Event> stream : getStreams()) { for
+			 * (ProcessingElement PEPrototype : stream.getTargetPEs()) {
+			 * 
+			 * int resultAdministration = monitor
+			 * .administrationLoad(PEPrototype.getClass());
+			 * 
+			 * if (resultAdministration == 1) { for (ProcessingElement PE :
+			 * PEPrototype.getInstances()) { logger.debug("Increment PE: " +
+			 * PEPrototype.getClass()); PE.setReplication(PE.getReplication() +
+			 * 1); } } else if (resultAdministration == -1) {
+			 * 
+			 * if (PEPrototype.getInstances().size() <= 1) {
+			 * logger.debug("Decrement PE: " + PEPrototype.getClass());
+			 * PEPrototype.getInstances().iterator().next() .close(); }
+			 * 
+			 * } } }
+			 */
 		}
 	}
 
