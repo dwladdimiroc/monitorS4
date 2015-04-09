@@ -272,6 +272,20 @@ public abstract class ProcessingElement implements Cloneable {
 	}
 
 	/**
+	 * Devolverá el módulo el cual se aplicará para replicar al siguiente PE
+	 * 
+	 * @param PE
+	 *            PE al que se debe replicar
+	 * @return Módulo aplicado a la llave, que será la cantidad de réplicas que
+	 *         se desea de ese PE
+	 */
+
+	public void setReplicationPE(Class<? extends ProcessingElement> PE,
+			int replication) {
+		replications.put(PE, replication);
+	}
+
+	/**
 	 * Returns the approximate number of PE instances from the cache.
 	 * 
 	 * @return the approximate number of PE instances.

@@ -19,6 +19,7 @@
 package org.apache.s4.core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
@@ -168,9 +169,17 @@ public abstract class App {
 
 	protected abstract void onStart();
 
+	/**
+	 * Este método inicializará el monitor, de tal manera de generar dos hebras
+	 * independientes, para realizar una acción según un determinado tiempo.
+	 */
 	private void startMonitor() {
 		logger.info("Start S4Monitor");
 
+		/*
+		 * La primera hebra se utilizará para enviar los datos de los distintos
+		 * PEs, es decir, los eventos que ha procesado y ha enviado.
+		 */
 		ScheduledExecutorService sendStatus = Executors
 				.newSingleThreadScheduledExecutor();
 		sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 25000, 10000,
@@ -178,21 +187,40 @@ public abstract class App {
 
 		logger.info("TimerMonitor send status");
 
+		/*
+		 * En cambio, la segunda se dedicará para ser el callback del monitor.
+		 * De esta manera cada cierto tiempo, preguntará al monitor cual es el
+		 * estado del sistema, enviado las réplicas necesarias que se requieran
+		 * del sistema.
+		 */
 		ScheduledExecutorService pullStatus = Executors
 				.newSingleThreadScheduledExecutor();
-		pullStatus.scheduleAtFixedRate(new OnTimePullStatus(), 30000, 10000,
+		pullStatus.scheduleAtFixedRate(new OnTimeAskStatus(), 30000, 10000,
 				TimeUnit.MILLISECONDS);
 
 		logger.info("TimerMonitor pull status");
 
 	}
 
+	/**
+	 * Esta clase estará encargada de la correr la primera hebra, la cual
+	 * enviará los datos de cada uno de los PEs. Para obtenerlos, se recurrirá a
+	 * los distintos 'Streams' creandos en la aplicación de S4. Al obtener cada
+	 * 'Stream', se extraerá los distintos PEs Prototipos de cada uno de los
+	 * 'Streams', enviado después los eventos procesados y enviados (a la vez)
+	 * de cada instancia de los PEs Prototipos.
+	 */
 	private class OnTimeSendStatus extends TimerTask {
+
 		@Override
 		public void run() {
+			/* Obtención de cada 'Stream' */
 			for (Streamable<Event> stream : getStreams()) {
+				/* Obtención de cada 'PE Prototype' */
 				for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
+					/* Obtención de cada 'PE Instances' */
 					for (ProcessingElement PE : PEPrototype.getInstances()) {
+						/* Envío de los datos al monitor */
 						monitor.sendStatus(PE.getClass(), PE.getEventCount());
 					}
 				}
@@ -200,44 +228,175 @@ public abstract class App {
 		}
 	}
 
-	private class OnTimePullStatus extends TimerTask {
+	/**
+	 * Esta clase estará encargada de correr la segunda hebra, la cual
+	 * preguntará al monitor el estado de los distintos PEs, y en caso de ser
+	 * necesario realizar un cambio. Para esto se elaboró tres pasos: preguntar,
+	 * obtener PEs emisores y cambio del sistema. Siendo este último dividido en
+	 * dos etapas: aumento y disminución de las instancias de PEs.
+	 */
+	private class OnTimeAskStatus extends TimerTask {
+		List<StatusPE> statusSystem;
+
 		@Override
 		public void run() {
-			//Hacer esto con funciones, así es mas bonito... pero dejemo esta pega
-			//para el Daniel del futuro
-			
-			// Analizar problemas segun statusSystem y posteriori cambiar las
-			// llaves de cada PE...
-			List<StatusPE> statusSystem = monitor.askStatus();
+			/* Consulta del estado al monitor */
+			statusSystem = monitor.askStatus();
 
+			/* Análisis de cada PE según lo entregado por el monitor */
 			for (StatusPE statusPE : statusSystem) {
-				List<Class<? extends ProcessingElement>> listPE = new ArrayList<Class<? extends ProcessingElement>>();
-				for (TopologyApp topology : monitor.getTopologySystem()) {
-					if (statusPE.equals(topology.getPeSend())) {
-						listPE.add(topology.getPeRecibe());
+				/* Lista de PEs que proveen eventos al PE analizado */
+				List<Class<? extends ProcessingElement>> listPE = getPESend(statusPE
+						.getPE());
+				/* Cambio del sistema */
+				changeReplication(listPE, statusPE);
+			}
+		}
+
+		/**
+		 * Este método obtendrá todos los PEs que proveen de eventos al PE
+		 * analizado. De tal manera que se pueda cambiar su llave de
+		 * replicación, en caso que el PE analizado haya cambiado su estado.
+		 * 
+		 * @param peReplication
+		 *            PE analizado que se utilizar para buscar todos los PEs que
+		 *            le proveen eventos.
+		 * @return Todos los PEs que provee eventos al PE que se utilizó como
+		 *         parámetro de la función.
+		 */
+		private List<Class<? extends ProcessingElement>> getPESend(
+				Class<? extends ProcessingElement> peReplication) {
+
+			List<Class<? extends ProcessingElement>> listPE = new ArrayList<Class<? extends ProcessingElement>>();
+			for (TopologyApp topology : monitor.getTopologySystem()) {
+				if (peReplication.equals(topology.getPeSend())) {
+					listPE.add(topology.getPeRecibe());
+				}
+			}
+
+			return listPE;
+		}
+
+		/**
+		 * Este método analizará si el estado del PE debe aumentar o disminuir
+		 * de tal manera que si aumenta o disminuye, todos los PEs emisores a
+		 * ese PE deberán aumentar o disminuir su llave de replicación. Por otra
+		 * parte, en caso que disminuya, se deberá eliminar el PE con la llave
+		 * eliminada (es decir, el número mayor de los PEs instanciados).
+		 * 
+		 * @param listPESend
+		 * @param statusPE
+		 */
+		private void changeReplication(
+				List<Class<? extends ProcessingElement>> listPESend,
+				StatusPE statusPE) {
+
+			/* Se analiza cada uno de los distintos PE enviados */
+			for (Class<? extends ProcessingElement> peSend : listPESend) {
+
+				/* Obtención de cada 'Stream' */
+				for (Streamable<Event> stream : getStreams()) {
+					/* Obtención de cada 'PE Prototype' */
+					for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
+
+						/*
+						 * En caso que el PE Prototipo sea igual al PE que
+						 * estamos analizado de los emisores del PE, se deberá
+						 * realizar la comparación para ver si se cambia la
+						 * llave de replicación
+						 */
+						if (peSend.equals(PEPrototype.getClass())) {
+
+							/*
+							 * De ser mayor la cantidad de replicas del estado
+							 * del monitor, se deberá aumentar la cantidad de
+							 * réplicas
+							 */
+							if (statusPE.getReplication() > PEPrototype
+									.getReplicationPE(statusPE.getPE())) {
+
+								/*
+								 * Realizando esa modificación en cada instancia
+								 * del PE
+								 */
+								for (ProcessingElement PE : PEPrototype
+										.getInstances()) {
+									logger.debug("Increment PE  "
+											+ statusPE.getPE() + " in PE "
+											+ PE.getClass());
+
+									PE.setReplicationPE(statusPE.getPE(),
+											statusPE.getReplication());
+								}
+
+							}
+							/* De ser menor, se deberá disminuir */
+							else if (statusPE.getReplication() < PEPrototype
+									.getReplicationPE(statusPE.getPE())) {
+
+								/*
+								 * Para esto, es necesario eliminar una de las
+								 * instancias del PE analizado
+								 */
+								removeReplication(statusPE);
+
+								/*
+								 * Para luego disminuir sus llaves de
+								 * replicación
+								 */
+								for (ProcessingElement PE : PEPrototype
+										.getInstances()) {
+									logger.debug("Decrement PE  "
+											+ statusPE.getPE() + " in PE "
+											+ PE.getClass());
+
+									PE.setReplicationPE(statusPE.getPE(),
+											statusPE.getReplication());
+								}
+
+							}
+
+						}
+
+						/*
+						 * Dejará de analizar, debido que ya encontró el PE
+						 * solicitado.
+						 */
+						
+						//Analizar, no se si se sale de los dos breaks...
+						break;
 					}
 				}
 			}
 
-			/*
-			 * for (Streamable<Event> stream : getStreams()) { for
-			 * (ProcessingElement PEPrototype : stream.getTargetPEs()) {
-			 * 
-			 * int resultAdministration = monitor
-			 * .administrationLoad(PEPrototype.getClass());
-			 * 
-			 * if (resultAdministration == 1) { for (ProcessingElement PE :
-			 * PEPrototype.getInstances()) { logger.debug("Increment PE: " +
-			 * PEPrototype.getClass()); PE.setReplication(PE.getReplication() +
-			 * 1); } } else if (resultAdministration == -1) {
-			 * 
-			 * if (PEPrototype.getInstances().size() <= 1) {
-			 * logger.debug("Decrement PE: " + PEPrototype.getClass());
-			 * PEPrototype.getInstances().iterator().next() .close(); }
-			 * 
-			 * } } }
-			 */
 		}
+
+		/**
+		 * Función que estará encargada de eliminar la réplica con el valor de
+		 * la llave más alto. Es decir, en caso que el PE posee un 'id' con un
+		 * 
+		 * @param statusPE
+		 */
+		private void removeReplication(StatusPE statusPE) {
+
+			for (Streamable<Event> stream : getStreams()) {
+				for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
+					if (statusPE.getClass().equals(PEPrototype.getClass())) {
+						// PEPrototype.getInstances().iterator().next().close();
+						for (ProcessingElement PE : PEPrototype.getInstances()) {
+							/*if (PE.getId().equals(
+									PE.getReplicationPE(statusPE.getPE()))) {
+								PE.close();
+							}*/
+						}
+					}
+					
+					return;
+				}
+			}
+
+		}
+
 	}
 
 	/**
@@ -247,13 +406,13 @@ public abstract class App {
 	public final void start() {
 
 		// logger.info("Prepare to start App [{}].", getClass().getName());
-		//
+
 		/* Start all streams. */
 		for (Streamable<? extends Event> stream : getStreams()) {
 			stream.start();
 		}
-		//
-		// /* Allow abstract PE to initialize. */
+
+		/* Allow abstract PE to initialize. */
 		for (ProcessingElement pe : getPePrototypes()) {
 			logger.info("Init prototype [{}].", pe.getClass().getName());
 			pe.initPEPrototypeInternal();
@@ -261,6 +420,10 @@ public abstract class App {
 
 		onStart();
 
+		/*
+		 * Se inicializa el monitor en caso que no sea una aplicación del
+		 * adapter.
+		 */
 		if (!getConditionAdapter())
 			startMonitor();
 	}
