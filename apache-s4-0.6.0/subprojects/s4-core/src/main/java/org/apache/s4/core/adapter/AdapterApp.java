@@ -66,8 +66,7 @@ public abstract class AdapterApp extends App {
 	 */
 
 	public void registerMonitor(Class<? extends ProcessingElement> PE) {
-		// Put replication with your class in the map of replications
-		this.replications.put(PE, 1);
+		getMonitor().registerPE(null, PE);
 	}
 
 	/**
@@ -85,11 +84,11 @@ public abstract class AdapterApp extends App {
 		return replications.get(PE);
 	}
 
-	public Map<Class<? extends ProcessingElement>, Integer> getLevelConcurrency() {
+	public Map<Class<? extends ProcessingElement>, Integer> getReplications() {
 		return replications;
 	}
 
-	public void setLevelConcurrency(
+	public void setReplications(
 			Map<Class<? extends ProcessingElement>, Integer> replications) {
 		this.replications = replications;
 	}

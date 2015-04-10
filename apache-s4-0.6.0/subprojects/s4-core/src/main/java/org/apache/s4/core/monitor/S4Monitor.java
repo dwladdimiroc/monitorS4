@@ -287,12 +287,21 @@ public class S4Monitor {
 				/*
 				 * Para análisis de prueba, se considerarán los últimos 3
 				 * períodos para verificar si es necesario replicar.
+				 * 
+				 * Ej: Historia = [1,0,0,-1,0,1] Donde el primer período de
+				 * tiempo dio (1,0), el segundo período (0,-1) y el tercero
+				 * (0,1). Por lo tanto, encuentra que existen 2 señales de que
+				 * debe aumentar, por lo tanto, aumentará. Esto debido que el
+				 * reactivo del primero período y el predictor del tercer
+				 * período indicaron que debe aumentar.
 				 */
 
 				if (statusPE.getMarkMap().containsAll(Arrays.asList(1, 1))) {
+					statusPE.getMarkMap().clear();
 					return 1;
 				} else if (statusPE.getMarkMap().containsAll(
 						Arrays.asList(-1, -1))) {
+					statusPE.getMarkMap().clear();
 					return -1;
 				}
 

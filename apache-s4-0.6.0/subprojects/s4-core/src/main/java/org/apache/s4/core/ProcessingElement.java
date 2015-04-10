@@ -614,7 +614,7 @@ public abstract class ProcessingElement implements Cloneable {
 
 	public void registerMonitor(Class<? extends ProcessingElement> peRecibe) {
 		// Register monitor
-		this.app.monitor.registerPE(this.getClass(), peRecibe);
+		this.app.getMonitor().registerPE(this.getClass(), peRecibe);
 
 		// Put replication with your class in the map of replications
 		this.replications.put(peRecibe, 1);

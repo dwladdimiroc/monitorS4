@@ -62,7 +62,7 @@ public class ProcessOnePE extends ProcessingElement {
 		Event eventOutput = new Event();
 
 		eventOutput.put("levelProcessTwo", Long.class, getEventCount()
-				% getReplication());
+				% getReplicationPE(ProcessTwoPE.class));
 		eventOutput.put("id", Long.class, event.get("id", Long.class));
 		eventOutput.put("time", Long.class, event.get("time", Long.class));
 		eventOutput.put("dateAdapter", Date.class,

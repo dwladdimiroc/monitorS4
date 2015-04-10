@@ -26,6 +26,8 @@ import org.apache.s4.core.adapter.AdapterApp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import processElements.ProcessOnePE;
+
 public class Adapter extends AdapterApp implements Runnable {
 	private static Logger logger = LoggerFactory.getLogger(Adapter.class);
 	private boolean showEvent = false;
@@ -37,7 +39,8 @@ public class Adapter extends AdapterApp implements Runnable {
 	@Override
 	protected void onInit() {
 		logger.info("Create Adapter");
-
+		registerMonitor(ProcessOnePE.class);
+		
 		thread = new Thread(this);
 		super.onInit();
 	}
@@ -61,7 +64,7 @@ public class Adapter extends AdapterApp implements Runnable {
 				Event event = new Event();
 				
 				event.put("levelProcessOne", Long.class, getEventCount()
-						% getLevelConcurrency());
+						% getReplicationPE(ProcessOnePE.class));
 				event.put("id", Long.class, getEventCount());
 				event.put("time", Long.class, System.nanoTime());
 				event.put("date", Date.class, Calendar.getInstance().getTime());

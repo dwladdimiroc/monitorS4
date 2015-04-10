@@ -109,7 +109,7 @@ public abstract class App {
 	S4Metrics metrics;
 
 	@Inject
-	S4Monitor monitor;
+	private S4Monitor monitor;
 
 	// serialization uses the application class loader
 	@Inject
@@ -221,7 +221,8 @@ public abstract class App {
 					/* Obtención de cada 'PE Instances' */
 					for (ProcessingElement PE : PEPrototype.getInstances()) {
 						/* Envío de los datos al monitor */
-						monitor.sendStatus(PE.getClass(), PE.getEventCount());
+						getMonitor().sendStatus(PE.getClass(),
+								PE.getEventCount());
 					}
 				}
 			}
@@ -241,7 +242,7 @@ public abstract class App {
 		@Override
 		public void run() {
 			/* Consulta del estado al monitor */
-			statusSystem = monitor.askStatus();
+			statusSystem = getMonitor().askStatus();
 
 			/* Análisis de cada PE según lo entregado por el monitor */
 			for (StatusPE statusPE : statusSystem) {
@@ -268,7 +269,7 @@ public abstract class App {
 				Class<? extends ProcessingElement> peReplication) {
 
 			List<Class<? extends ProcessingElement>> listPE = new ArrayList<Class<? extends ProcessingElement>>();
-			for (TopologyApp topology : monitor.getTopologySystem()) {
+			for (TopologyApp topology : getMonitor().getTopologySystem()) {
 				if (peReplication.equals(topology.getPeSend())) {
 					listPE.add(topology.getPeRecibe());
 				}
@@ -291,6 +292,7 @@ public abstract class App {
 				List<Class<? extends ProcessingElement>> listPESend,
 				StatusPE statusPE) {
 
+			changeReplication:
 			/* Se analiza cada uno de los distintos PE enviados */
 			for (Class<? extends ProcessingElement> peSend : listPESend) {
 
@@ -356,15 +358,14 @@ public abstract class App {
 
 							}
 
+							/*
+							 * Dejará de analizar, debido que ya encontró el PE
+							 * solicitado.
+							 */
+							break changeReplication;
+
 						}
 
-						/*
-						 * Dejará de analizar, debido que ya encontró el PE
-						 * solicitado.
-						 */
-						
-						//Analizar, no se si se sale de los dos breaks...
-						break;
 					}
 				}
 			}
@@ -373,25 +374,39 @@ public abstract class App {
 
 		/**
 		 * Función que estará encargada de eliminar la réplica con el valor de
-		 * la llave más alto. Es decir, en caso que el PE posee un 'id' con un
+		 * la llave más alto. Es decir, en caso que el PE posee número de
+		 * réplica n, significa que habrá 0 a n-1 llaves, de esta manera, se
+		 * eliminarán m réplicas, como n-m réplicas diga que existen ahora en el
+		 * sistema.
 		 * 
 		 * @param statusPE
+		 *            Estado del PE analizado
 		 */
 		private void removeReplication(StatusPE statusPE) {
 
+			/* Obtención de cada 'Stream' */
 			for (Streamable<Event> stream : getStreams()) {
+				/* Obtención de cada 'PE Prototype' */
 				for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
+					/* Analizamos si el PE es el que deseamos eliminar */
 					if (statusPE.getClass().equals(PEPrototype.getClass())) {
-						// PEPrototype.getInstances().iterator().next().close();
 						for (ProcessingElement PE : PEPrototype.getInstances()) {
-							/*if (PE.getId().equals(
-									PE.getReplicationPE(statusPE.getPE()))) {
+							int replicationCurrent = Integer.parseInt(PE
+									.getId());
+							/*
+							 * En caso que el 'id' del PE sea mayor o igual a la
+							 * réplica que se desea, se deberá eliminar el PE.
+							 * Esto se debe a que se posee 'id' de 0 a n-1
+							 * réplicas, por lo tanto toda 'id' que sea n o
+							 * superior serán réplicas que sobran en el sistema.
+							 */
+							if (statusPE.getReplication() <= replicationCurrent) {
 								PE.close();
-							}*/
+							}
 						}
+						return;
 					}
-					
-					return;
+
 				}
 			}
 
@@ -528,6 +543,20 @@ public abstract class App {
 	public ClockType getClockType() {
 		return clockType;
 	}
+	
+	/**
+	 * @return the monitor
+	 */
+	public S4Monitor getMonitor() {
+		return monitor;
+	}
+
+	/**
+	 * @return the condition adapter.
+	 */
+	public boolean getConditionAdapter() {
+		return conditionAdapter;
+	}
 
 	/**
 	 * Set the {@link conditionAdapter}
@@ -541,13 +570,6 @@ public abstract class App {
 			return;
 
 		this.conditionAdapter = conditionAdapter;
-	}
-
-	/**
-	 * @return the condition adapter.
-	 */
-	public boolean getConditionAdapter() {
-		return conditionAdapter;
 	}
 
 	/**

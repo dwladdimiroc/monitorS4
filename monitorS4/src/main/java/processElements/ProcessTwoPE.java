@@ -46,7 +46,7 @@ public class ProcessTwoPE extends ProcessingElement {
 		Event eventOutput = new Event();
 
 		eventOutput.put("levelMongo", Long.class, getEventCount()
-				% getReplication());
+				% getReplicationPE(MongoPE.class));
 		eventOutput.put("id", Long.class, event.get("id", Long.class));
 		eventOutput.put("time", Long.class, event.get("time", Long.class));
 		eventOutput.put("dateAdapter", Date.class,
