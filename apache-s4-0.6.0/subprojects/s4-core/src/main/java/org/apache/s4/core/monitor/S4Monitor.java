@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.s4.core.ProcessingElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -223,6 +224,25 @@ public class S4Monitor {
 	 *         -1 se aumenta.
 	 */
 	public int predictiveLoad(Class<? extends ProcessingElement> data) {
+		MarkovChain markovChain = new MarkovChain();
+		double distEstacionaria[] = markovChain.calculatePrediction(
+				new double[] { 0, 0, 0 }, 100, 100000);
+
+		DescriptiveStatistics descriptiveStatistics = new DescriptiveStatistics(
+				distEstacionaria);
+		if (descriptiveStatistics.getStandardDeviation() > 0.25) {
+			for (int i = 0; i < distEstacionaria.length; i++) {
+				if (distEstacionaria[i] == descriptiveStatistics.getMax()) {
+					if (i == 0)
+						return -1;
+					else if (i == 1)
+						return 0;
+					else
+						return -1;
+				}
+			}
+		}
+
 		return 0;
 	}
 

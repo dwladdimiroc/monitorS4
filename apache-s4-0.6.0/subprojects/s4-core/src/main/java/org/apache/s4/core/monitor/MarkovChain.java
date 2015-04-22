@@ -25,49 +25,86 @@ public class MarkovChain {
 	 * procesamiento. E inestable cuando existe un tasa de procesamiento menor
 	 * que la tasa de llegada, por lo que generará colas en el sistema.
 	 * 
-	 * @param rho Tasa de procesamiento del sistema en un 
+	 * @param rho
+	 *            Tasa de procesamiento del sistema en un
 	 * @param n
+	 *            Número muestras que se poseen
 	 * @param iteration
-	 * @return
+	 *            Número de iteraciones en para calcular la distribución
+	 *            estacionaria de la cadena de Markov
+	 * @return Distribución estacionaria de la Cadena de Markov, generada con
+	 *         las muestras de los datos de entrada
 	 */
 
 	public double[] calculatePrediction(double[] rho, int n, int iteration) {
+		/*
+		 * En esta fase se analizará la probabilidad de las distintas
+		 * transiciones de un estado a otro. Para esto se ha dispuesto de un
+		 * contador por cada una de las distintas transiciones, para luego
+		 * normalizar la matriz de transición, de esta manera quedarán datos
+		 * entre [0-1], dando así la probabilidad de cambiar de un estado a
+		 * otro.
+		 */
 		int cont[] = new int[3];
-
 		for (int i = 0; i < n - 1; i++) {
+			/*
+			 * En este caso se analizó si en cierto período de tiempo se mantuvo
+			 * el sistema en el estado ocioso.
+			 */
 			if ((rho[i] < 0.5) && (rho[i + 1] < 0.5)) {
 				transitionMatrix[0][0]++;
 				cont[0]++;
-			} else if ((rho[i] < 0.5) && (rho[i + 1] >= 0.5)
+			}
+			// Que haya pasado de un estado ocioso a uno estable
+			else if ((rho[i] < 0.5) && (rho[i + 1] >= 0.5)
 					&& (rho[i + 1] <= 1.5)) {
 				transitionMatrix[0][1]++;
 				cont[0]++;
-			} else if ((rho[i] < 0.5) && (rho[i + 1] > 1.5)) {
+			}
+			// De un estado ocioso a uno inestable
+			else if ((rho[i] < 0.5) && (rho[i + 1] > 1.5)) {
 				transitionMatrix[0][2]++;
 				cont[0]++;
-			} else if ((rho[i] >= 0.5) && (rho[i] <= 1.5) && (rho[i + 1] < 0.5)) {
+			}
+			// De un estado estable a uno ocioso
+			else if ((rho[i] >= 0.5) && (rho[i] <= 1.5) && (rho[i + 1] < 0.5)) {
 				transitionMatrix[1][0]++;
 				cont[1]++;
-			} else if ((rho[i] >= 0.5) && (rho[i] <= 1.5)
-					&& (rho[i + 1] >= 0.5) && (rho[i + 1] <= 1.5)) {
+			}
+			// De que se mantenga en el sistema estable
+			else if ((rho[i] >= 0.5) && (rho[i] <= 1.5) && (rho[i + 1] >= 0.5)
+					&& (rho[i + 1] <= 1.5)) {
 				transitionMatrix[1][1]++;
 				cont[1]++;
-			} else if ((rho[i] >= 0.5) && (rho[i] <= 1.5) && (rho[i + 1] > 1.5)) {
+			}
+			// De un estado estable a uno inestable
+			else if ((rho[i] >= 0.5) && (rho[i] <= 1.5) && (rho[i + 1] > 1.5)) {
 				transitionMatrix[1][2]++;
 				cont[1]++;
-			} else if ((rho[i] > 1.5) && (rho[i + 1] < 0.5)) {
+			}
+			// De un estado inestable a uno ocioso
+			else if ((rho[i] > 1.5) && (rho[i + 1] < 0.5)) {
 				transitionMatrix[2][0]++;
 				cont[2]++;
-			} else if ((rho[i] > 1.5) && (rho[i + 1] >= 0.5)
+			}
+			// De un estado inestable a uno estable
+			else if ((rho[i] > 1.5) && (rho[i + 1] >= 0.5)
 					&& (rho[i + 1] <= 1.5)) {
 				transitionMatrix[2][1]++;
 				cont[2]++;
-			} else if ((rho[i] > 1.5) && (rho[i + 1] > 1.5)) {
+			}
+			// Que se mantenga inestable el sistema
+			else if ((rho[i] > 1.5) && (rho[i + 1] > 1.5)) {
 				transitionMatrix[2][2]++;
 				cont[2]++;
 			}
 		}
 
+		/*
+		 * Normalización de los datos, de esta manera cada uno de los estados
+		 * sus posibles transiciones deben sumar 1, de esta manera tendremos
+		 * datos normalizados.
+		 */
 		for (int i = 0; i < 3; i++) {
 			if (cont[i] != 0) {
 				for (int j = 0; j < 3; j++) {
@@ -76,9 +113,19 @@ public class MarkovChain {
 			}
 		}
 
+		/*
+		 * Un detalle importante, es que en caso que algún estado no se presente
+		 * se debe realizar una variación en la inicialización de estados,
+		 * debido que toda probabilidad daría cero. Por lo tanto, la
+		 * distribución estacionaria daría cero si no puede trasicitar de un
+		 * estado a otro.
+		 * 
+		 * Por ejemplo, que todas las transiciones del estado ocioso sean 0. De
+		 * ser así, el estado inicial para calcular la distribución estacionaria
+		 * será el estado estable.
+		 */
 		int acum;
 		int i = 0;
-
 		for (int k = 0; k < 3; k++) {
 
 			acum = 0;
@@ -95,10 +142,13 @@ public class MarkovChain {
 
 		}
 
+		/*
+		 * Finalmente, se calculará la distribución estacionaria dada la
+		 * ecuación de Chapman-Kolmogorov.
+		 */
 		double u;
 		double probAcum;
 		cont = new int[3];
-
 		for (int k = 0; k < iteration; k++) {
 
 			u = Math.random();
@@ -113,6 +163,11 @@ public class MarkovChain {
 			}
 
 		}
+
+		/*
+		 * Normalización de los datos, para dejarlos con una probabilidad entre
+		 * 0 y 1, que la suma de todos de 1
+		 */
 
 		for (int k = 0; k < 3; k++) {
 			prediction[k] = (double) cont[k] / (double) iteration;
