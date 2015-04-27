@@ -41,6 +41,11 @@ public class S4Monitor {
 
 		logger.debug("Register PE");
 
+		/*
+		 * En caso que no sea un nodo terminal, se deberá generar un conexión
+		 * entre el PE emisor y receptor. Por lo que la topología deberá agregar
+		 * una arista con sus respectivos vértices.
+		 */
 		if (peRecibe != null) {
 			TopologyApp topology = new TopologyApp();
 			topology.setPeSend(peSend);
@@ -48,6 +53,10 @@ public class S4Monitor {
 			getTopologySystem().add(topology);
 		}
 
+		/*
+		 * En caso de no existir, se deberá crear un nuevo análisis del estado
+		 * del PE de entrada.
+		 */
 		boolean exist = false;
 		for (StatusPE statusPE : getStatusSystem()) {
 			if (peSend.equals(statusPE.getPE())) {
@@ -105,14 +114,6 @@ public class S4Monitor {
 				 * deseado.
 				 */
 				statusPE.setSendEvent(eventCount - statusPE.getSendEvent());
-
-				// DBObject objMongo = new BasicDBObject();
-				// objMongo.put("PE", data.toString());
-				// objMongo.put("time", System.nanoTime());
-				// long queuePE = statusSystem.get(i).getRecibeEvent()
-				// - statusSystem.get(i).getSendEvent();
-				// objMongo.put("queue", queuePE);
-				// mongo.insert(objMongo);
 			}
 		}
 
@@ -185,9 +186,19 @@ public class S4Monitor {
 					// long s = statusSystem.get(i).getReplication();
 					// long μ = statusSystem.get(i).getSendEvent();
 
+					/*
+					 * En caso que todos los PEs fueran homólogos en cuanto a su
+					 * flujo
+					 */
+					// float ρ = statusPE.getRecibeEvent()
+					// / (statusPE.getReplication() * statusPE
+					// .getSendEvent());
+
+					/*
+					 * En caso que sean los PEs heterogénos
+					 */
 					float ρ = statusPE.getRecibeEvent()
-							/ (statusPE.getReplication() * statusPE
-									.getSendEvent());
+							/ statusPE.getSendEvent();
 
 					// logger.debug("PE " + statusSystem.get(i).getPe() +
 					// " | ρ "

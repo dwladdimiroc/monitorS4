@@ -19,7 +19,6 @@
 package org.apache.s4.core;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
@@ -218,12 +217,14 @@ public abstract class App {
 			for (Streamable<Event> stream : getStreams()) {
 				/* Obtención de cada 'PE Prototype' */
 				for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
-					/* Obtención de cada 'PE Instances' */
+					/* Obtención del flujo de cada 'PE Instances' */
+					long acumEventCount = 0;
 					for (ProcessingElement PE : PEPrototype.getInstances()) {
-						/* Envío de los datos al monitor */
-						getMonitor().sendStatus(PE.getClass(),
-								PE.getEventCount());
+						acumEventCount += PE.getEventCount();
 					}
+					/* Envío de los datos al monitor */
+					getMonitor().sendStatus(PEPrototype.getClass(),
+							acumEventCount);
 				}
 			}
 		}
@@ -543,7 +544,7 @@ public abstract class App {
 	public ClockType getClockType() {
 		return clockType;
 	}
-	
+
 	/**
 	 * @return the monitor
 	 */

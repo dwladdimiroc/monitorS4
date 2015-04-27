@@ -1,6 +1,7 @@
 package org.apache.s4.core.monitor;
 
 import org.apache.s4.core.ProcessingElement;
+import org.apache.s4.core.adapter.AdapterApp;
 
 /**
  * Clase para analizar la topología del grafo, de esta manera tendremos el PE
@@ -9,14 +10,24 @@ import org.apache.s4.core.ProcessingElement;
  */
 
 public class TopologyApp {
+	private Class<AdapterApp> adapter;
 	private Class<? extends ProcessingElement> peSend;
 	private Class<? extends ProcessingElement> peRecibe;
 	private long eventSend;
 
 	public TopologyApp() {
+		adapter = null;
 		peSend = null;
 		peRecibe = null;
 		eventSend = 0;
+	}
+
+	public Class<AdapterApp> getAdapter() {
+		return adapter;
+	}
+
+	public void setAdapter(Class<AdapterApp> adapter) {
+		this.adapter = adapter;
 	}
 
 	public Class<? extends ProcessingElement> getPeSend() {
