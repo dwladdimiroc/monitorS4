@@ -1,10 +1,10 @@
 % Muestras
-N = 19;
+N = 100;
 
 % λ = lambda
 num = [1 N];
 %Tl = normrnd(1000,500,num);
-Tl = poissrnd(1000,num);
+Tl = poissrnd(2000,num);
 
 for i = 1:N
     if( Tl(i) < 0 )
@@ -60,21 +60,24 @@ ylabel('Queue')
 axis([0 N 0 Inf])
 grid on
 
-Tp = [0.5 0.15 0.81 1.5 8.2 3.1 0.1 0.423 0.15 0.135 2.1 1.123 2.1656 3.12356 9.34535 8.95 0.4 0.6 0.99];
-
 % Tasa de procesamiento
-%Tp = Tl ./ Ts;
-%for i=1:N
-%	if(Tp(i) == Inf)
-%        Tp(i) = 0;
-%    end
-%end
+TpMax = 0;
+Tp = Tl ./ Ts;
+for i=1:N
+	if(Tp(i) == Inf)
+        Tp(i) = 0;
+    end
+    
+    if(TpMax < Tp(i))
+        TpMax = Tp(i);
+    end
+end
 
 subplot(4,1,4), plot(Tp)
 title('Tasa de rendimiento')
 xlabel('t(s)')
 ylabel('rho')
-axis([0 N 0 100])
+axis([0 N 0 TpMax])
 grid on
 
 %Cadena de Markov

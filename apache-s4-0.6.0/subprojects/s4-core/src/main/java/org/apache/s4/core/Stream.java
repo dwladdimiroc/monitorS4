@@ -36,315 +36,344 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Preconditions;
 
 /**
- * {@link Stream} and {@link ProcessingElement} objects represent the links and nodes in the application graph. A stream
- * sends an {@link Event} object to {@link ProcessingElement} instances located anywhere in a cluster.
+ * {@link Stream} and {@link ProcessingElement} objects represent the links and
+ * nodes in the application graph. A stream sends an {@link Event} object to
+ * {@link ProcessingElement} instances located anywhere in a cluster.
  * <p>
  * Once a stream is instantiated, it is immutable.
  * <p>
- * To build an application, create stream objects using relevant methods in the {@link App} class.
+ * To build an application, create stream objects using relevant methods in the
+ * {@link App} class.
  */
 public class Stream<T extends Event> implements Streamable {
 
-    private static final Logger logger = LoggerFactory.getLogger(Stream.class);
+	private static final Logger logger = LoggerFactory.getLogger(Stream.class);
 
-    final static private String DEFAULT_SEPARATOR = "^";
-    private String name;
-    protected Key<T> key;
-    private ProcessingElement[] targetPEs;
-    private Executor eventProcessingExecutor;
-    final private Sender sender;
-    final private ReceiverImpl receiver;
-    // final private int id;
-    final private App app;
-    private Class<T> eventType = null;
-    SerializerDeserializer serDeser;
+	final static private String DEFAULT_SEPARATOR = "^";
+	private String name;
+	protected Key<T> key;
+	private ProcessingElement[] targetPEs;
+	private Executor eventProcessingExecutor;
+	final private Sender sender;
+	final private ReceiverImpl receiver;
+	// final private int id;
+	final private App app;
+	private Class<T> eventType = null;
+	SerializerDeserializer serDeser;
 
-    private int parallelism = 1;
+	private int parallelism = 1;
 
-    /**
-     * Send events using a {@link KeyFinder}. The key finder extracts the value of the key which is used to determine
-     * the target {@link org.apache.s4.comm.topology.ClusterNode} for an event.
-     * 
-     * @param app
-     *            we always register streams with the parent application.
-     */
-    public Stream(App app) {
-        this.app = app;
-        this.sender = app.getSender();
-        this.receiver = app.getReceiver();
-    }
+	/**
+	 * Send events using a {@link KeyFinder}. The key finder extracts the value
+	 * of the key which is used to determine the target
+	 * {@link org.apache.s4.comm.topology.ClusterNode} for an event.
+	 * 
+	 * @param app
+	 *            we always register streams with the parent application.
+	 */
+	public Stream(App app) {
+		this.app = app;
+		this.sender = app.getSender();
+		this.receiver = app.getReceiver();
+	}
 
-    @Override
-    public void start() {
-        app.metrics.createStreamMeters(getName());
-        if (logger.isTraceEnabled()) {
-            if (targetPEs != null) {
-                for (ProcessingElement pe : targetPEs) {
-                    logger.trace("Starting stream [{}] with target PE [{}].", this.getName(), pe.getName());
-                }
-            }
-        }
+	@Override
+	public void start() {
+		app.metrics.createStreamMeters(getName());
+		if (logger.isTraceEnabled()) {
+			if (targetPEs != null) {
+				for (ProcessingElement pe : targetPEs) {
+					logger.trace("Starting stream [{}] with target PE [{}].",
+							this.getName(), pe.getName());
+				}
+			}
+		}
 
-        eventProcessingExecutor = app.getStreamExecutorFactory().create(parallelism, name,
-                app.getClass().getClassLoader());
+		eventProcessingExecutor = app.getStreamExecutorFactory().create(
+				parallelism, name, app.getClass().getClassLoader());
 
-        this.receiver.addStream(this);
-    }
+		this.receiver.addStream(this);
+	}
 
-    /**
-     * Name the stream.
-     * 
-     * @param name
-     *            the stream name, default is an empty string.
-     * @return the stream object
-     */
-    public Stream<T> setName(String name) {
-        this.name = name;
-        return this;
-    }
+	/**
+	 * Name the stream.
+	 * 
+	 * @param name
+	 *            the stream name, default is an empty string.
+	 * @return the stream object
+	 */
+	public Stream<T> setName(String name) {
+		this.name = name;
+		return this;
+	}
 
-    /**
-     * Define the key finder for this stream.
-     * 
-     * @param keyFinder
-     *            a function to lookup the value of the key.
-     * @return the stream object
-     */
-    public Stream<T> setKey(KeyFinder<T> keyFinder) {
-        if (keyFinder == null) {
-            this.key = null;
-        } else {
-            this.key = new Key<T>(keyFinder, DEFAULT_SEPARATOR);
-        }
-        return this;
-    }
+	/**
+	 * Define the key finder for this stream.
+	 * 
+	 * @param keyFinder
+	 *            a function to lookup the value of the key.
+	 * @return the stream object
+	 */
+	public Stream<T> setKey(KeyFinder<T> keyFinder) {
+		if (keyFinder == null) {
+			this.key = null;
+		} else {
+			this.key = new Key<T>(keyFinder, DEFAULT_SEPARATOR);
+		}
+		return this;
+	}
 
-    Stream<T> setEventType(Class<T> type) {
-        this.eventType = type;
-        return this;
-    }
+	Stream<T> setEventType(Class<T> type) {
+		this.eventType = type;
+		return this;
+	}
 
-    /**
-     * Define the key finder for this stream using a descriptor.
-     * 
-     * @param keyName
-     *            a descriptor to lookup up the value of the key.
-     * @return the stream object
-     */
-    public Stream<T> setKey(String keyName) {
+	/**
+	 * Define the key finder for this stream using a descriptor.
+	 * 
+	 * @param keyName
+	 *            a descriptor to lookup up the value of the key.
+	 * @return the stream object
+	 */
+	public Stream<T> setKey(String keyName) {
 
-        Preconditions.checkNotNull(eventType);
+		Preconditions.checkNotNull(eventType);
 
-        KeyFinder<T> kf = new GenericKeyFinder<T>(keyName, eventType);
-        setKey(kf);
+		KeyFinder<T> kf = new GenericKeyFinder<T>(keyName, eventType);
+		setKey(kf);
 
-        return this;
-    }
+		return this;
+	}
 
-    /**
-     * Send events from this stream to one or more PEs.
-     * 
-     * @param pes
-     *            one or more target prototypes
-     * 
-     * 
-     * @return the stream object
-     */
-    public Stream<T> setPEs(ProcessingElement... pes) {
-        this.targetPEs = pes;
-        return this;
-    }
+	/**
+	 * Send events from this stream to one or more PEs.
+	 * 
+	 * @param pes
+	 *            one or more target prototypes
+	 * 
+	 * 
+	 * @return the stream object
+	 */
+	public Stream<T> setPEs(ProcessingElement... pes) {
+		this.targetPEs = pes;
+		return this;
+	}
 
-    /**
-     * Sends an event.
-     * 
-     * @param event
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    public void put(Event event) {
-        event.setStreamId(getName());
+	/**
+	 * Sends an event.
+	 * 
+	 * @param event
+	 */
+	@Override
+	@SuppressWarnings("unchecked")
+	public void put(Event event) {
+		event.setStreamId(getName());
 
-        /*
-         * Events may be sent to local or remote partitions or both. The following code implements the logic.
-         */
-        if (key != null) {
+		/*
+		 * Events may be sent to local or remote partitions or both. The
+		 * following code implements the logic.
+		 */
+		if (key != null) {
 
-            /*
-             * We send to a specific PE instance using the key but we don't know if the target partition is remote or
-             * local. We need to ask the sender.
-             */
-            if (!sender.checkAndSendIfNotLocal(key.get((T) event), event)) {
+			/*
+			 * We send to a specific PE instance using the key but we don't know
+			 * if the target partition is remote or local. We need to ask the
+			 * sender.
+			 */
+			if (!sender.checkAndSendIfNotLocal(key.get((T) event), event)) {
 
-                /*
-                 * Sender checked and decided that the target is local so we simply put the event in the queue and we
-                 * save the trip over the network.
-                 */
-                eventProcessingExecutor.execute(new StreamEventProcessingTask((T) event));
-            }
+				/*
+				 * Sender checked and decided that the target is local so we
+				 * simply put the event in the queue and we save the trip over
+				 * the network.
+				 */
+				eventProcessingExecutor.execute(new StreamEventProcessingTask(
+						(T) event));
+			}
 
-        } else {
+		} else {
 
-            /*
-             * We are broadcasting this event to all PE instance. In a cluster, we need to send the event to every node.
-             * The sender method takes care of the remote partitions an we take care of putting the event into the
-             * queue.
-             */
-            sender.sendToAllRemotePartitions(event);
+			/*
+			 * We are broadcasting this event to all PE instance. In a cluster,
+			 * we need to send the event to every node. The sender method takes
+			 * care of the remote partitions an we take care of putting the
+			 * event into the queue.
+			 */
+			sender.sendToAllRemotePartitions(event);
 
-            // now send to local queue
-            eventProcessingExecutor.execute(new StreamEventProcessingTask((T) event));
-            // TODO abstraction around queue and add dropped counter
-            // TODO add counter for local events
+			// now send to local queue
+			eventProcessingExecutor.execute(new StreamEventProcessingTask(
+					(T) event));
+			// TODO abstraction around queue and add dropped counter
+			// TODO add counter for local events
 
-        }
-    }
+		}
+	}
 
-    /**
-     * The low level {@link ReceiverImpl} object call this method when a new {@link Event} is available.
-     */
-    public void receiveEvent(Event event) {
-        // NOTE: ArrayBlockingQueue.size is O(1).
+	/**
+	 * The low level {@link ReceiverImpl} object call this method when a new
+	 * {@link Event} is available.
+	 */
+	public void receiveEvent(Event event) {
+		// NOTE: ArrayBlockingQueue.size is O(1).
 
-        eventProcessingExecutor.execute(new StreamEventProcessingTask((T) event));
-        // TODO abstraction around queue and add dropped counter
-    }
+		/* Comentar esta solución, si bien no es la mejor, funciona. */
+		if (event.containsKey("readyInitAdapter")) {
+			synchronized (this.app.blockAdapter) {
+				boolean initAdapter = event.get("readyInitAdapter",
+						Boolean.class);
+				logger.debug("[{}] InitAdapter: {}", this.getClass(),
+						initAdapter);
+				this.app.blockAdapter.notify();
+			}
+		} else {
+			eventProcessingExecutor.execute(new StreamEventProcessingTask(
+					(T) event));
+		}
+		// TODO abstraction around queue and add dropped counter
+	}
 
-    /**
-     * @return the name
-     */
-    @Override
-    public String getName() {
-        return name;
-    }
+	/**
+	 * @return the name
+	 */
+	@Override
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * @return the key
-     */
-    public Key<T> getKey() {
-        return key;
-    }
+	/**
+	 * @return the key
+	 */
+	public Key<T> getKey() {
+		return key;
+	}
 
-    /**
-     * @return the app
-     */
-    public App getApp() {
-        return app;
-    }
+	/**
+	 * @return the app
+	 */
+	public App getApp() {
+		return app;
+	}
 
-    /**
-     * @return the list of target processing element prototypes.
-     */
-    public ProcessingElement[] getTargetPEs() {
-        return targetPEs;
-    }
-    
-    /**
-     * 
-     */
-    public int getSizeQueue() {
-    	BlockingThreadPoolExecutorService queue = (BlockingThreadPoolExecutorService) eventProcessingExecutor;
-    	return queue.getSizeQueue();
-    }
+	/**
+	 * @return the list of target processing element prototypes.
+	 */
+	public ProcessingElement[] getTargetPEs() {
+		return targetPEs;
+	}
 
-    /**
-     * Stop and close this stream.
-     */
-    @Override
-    public void close() {
-    }
-
-    /**
-     * @return the sender object
-     */
-    public Sender getSender() {
-        return sender;
-    }
-
-    /**
-     * @return the receiver object
-     */
-    public Receiver getReceiver() {
-        return receiver;
-    }
-
-    public Stream<T> register() {
-        app.addStream(this);
-        return this;
-    }
-
-    public Stream<T> setSerializerDeserializerFactory(SerializerDeserializerFactory serDeserFactory) {
-        this.serDeser = serDeserFactory.createSerializerDeserializer(getClass().getClassLoader());
-        return this;
-    }
-
-    /**
-     * <p>
-     * Defines the maximum number of concurrent threads that should be used for processing events for this stream.
-     * Threads will only be created as necessary, up to the specified maximum.
-     * </p>
-     * <p>
-     * Default is 1 (i.e. with default stream executor service, this corresponds to asynchronous processing, but no
-     * parallelism)
-     * </p>
-     * <p>
-     * It might be useful to increase parallelism when:
-     * <ul>
-     * <li>Processing elements handling events for this stream are CPU bound</li>
-     * <li>Processing elements handling events for this stream use blocking I/O operations</li>
-     * </ul>
-     * <p>
-     * 
+	/**
      * 
      */
-    public Stream<T> setParallelism(int parallelism) {
-        this.parallelism = parallelism;
-        return this;
-    }
+	public int getSizeQueue() {
+		BlockingThreadPoolExecutorService queue = (BlockingThreadPoolExecutorService) eventProcessingExecutor;
+		return queue.getSizeQueue();
+	}
 
-    class StreamEventProcessingTask implements Runnable {
+	/**
+	 * Stop and close this stream.
+	 */
+	@Override
+	public void close() {
+	}
 
-        T event;
+	/**
+	 * @return the sender object
+	 */
+	public Sender getSender() {
+		return sender;
+	}
 
-        public StreamEventProcessingTask(T event) {
-            this.event = event;
-        }
+	/**
+	 * @return the receiver object
+	 */
+	public Receiver getReceiver() {
+		return receiver;
+	}
 
-        @Override
-        public void run() {
-            app.metrics.dequeuedEvent(name);
-            //logger.debug("Queue: " + getSizeQueue());
+	public Stream<T> register() {
+		app.addStream(this);
+		return this;
+	}
 
-            /* Send event to each target PE. */
-            for (int i = 0; i < targetPEs.length; i++) {
+	public Stream<T> setSerializerDeserializerFactory(
+			SerializerDeserializerFactory serDeserFactory) {
+		this.serDeser = serDeserFactory.createSerializerDeserializer(getClass()
+				.getClassLoader());
+		return this;
+	}
 
-                if (key == null) {
+	/**
+	 * <p>
+	 * Defines the maximum number of concurrent threads that should be used for
+	 * processing events for this stream. Threads will only be created as
+	 * necessary, up to the specified maximum.
+	 * </p>
+	 * <p>
+	 * Default is 1 (i.e. with default stream executor service, this corresponds
+	 * to asynchronous processing, but no parallelism)
+	 * </p>
+	 * <p>
+	 * It might be useful to increase parallelism when:
+	 * <ul>
+	 * <li>Processing elements handling events for this stream are CPU bound</li>
+	 * <li>Processing elements handling events for this stream use blocking I/O
+	 * operations</li>
+	 * </ul>
+	 * <p>
+	 * 
+	 * 
+	 */
+	public Stream<T> setParallelism(int parallelism) {
+		this.parallelism = parallelism;
+		return this;
+	}
 
-                    /* Broadcast to all PE instances! */
+	class StreamEventProcessingTask implements Runnable {
 
-                    /* STEP 1: find all PE instances. */
+		T event;
 
-                    Collection<ProcessingElement> pes = targetPEs[i].getInstances();
+		public StreamEventProcessingTask(T event) {
+			this.event = event;
+		}
 
-                    /* STEP 2: iterate and pass event to PE instance. */
-                    for (ProcessingElement pe : pes) {
+		@Override
+		public void run() {
+			app.metrics.dequeuedEvent(name);
+			// logger.debug("Queue: " + getSizeQueue());
 
-                        pe.handleInputEvent(event);
-                    }
+			/* Send event to each target PE. */
+			for (int i = 0; i < targetPEs.length; i++) {
 
-                } else {
+				if (key == null) {
 
-                    /* We have a key, send to target PE. */
+					/* Broadcast to all PE instances! */
 
-                    /* STEP 1: find the PE instance for key. */
-                    ProcessingElement pe = targetPEs[i].getInstanceForKey(key.get(event));
+					/* STEP 1: find all PE instances. */
 
-                    /* STEP 2: pass event to PE instance. */
-                    pe.handleInputEvent(event);
-                }
-            }
+					Collection<ProcessingElement> pes = targetPEs[i]
+							.getInstances();
 
-        }
+					/* STEP 2: iterate and pass event to PE instance. */
+					for (ProcessingElement pe : pes) {
 
-    }
+						pe.handleInputEvent(event);
+					}
+
+				} else {
+
+					/* We have a key, send to target PE. */
+
+					/* STEP 1: find the PE instance for key. */
+					ProcessingElement pe = targetPEs[i].getInstanceForKey(key
+							.get(event));
+
+					/* STEP 2: pass event to PE instance. */
+					pe.handleInputEvent(event);
+				}
+			}
+
+		}
+
+	}
 }

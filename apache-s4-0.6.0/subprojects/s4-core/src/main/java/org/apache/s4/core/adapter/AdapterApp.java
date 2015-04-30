@@ -33,6 +33,8 @@ import org.apache.s4.core.App;
 import org.apache.s4.core.ProcessingElement;
 import org.apache.s4.core.RemoteStream;
 import org.apache.s4.core.Streamable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -132,10 +134,11 @@ public abstract class AdapterApp extends App {
 		 * cada un segundo, para poseer el historial de cada PE
 		 */
 
-		ScheduledExecutorService getEventCount = Executors
-				.newSingleThreadScheduledExecutor();
-		getEventCount.scheduleAtFixedRate(new OnTimeGetEventCountAdapter(), 0,
-				1000, TimeUnit.MILLISECONDS);
+		// ScheduledExecutorService getEventCount = Executors
+		// .newSingleThreadScheduledExecutor();
+		// getEventCount.scheduleAtFixedRate(new OnTimeGetEventCountAdapter(),
+		// 0,
+		// 1000, TimeUnit.MILLISECONDS);
 
 	}
 
@@ -184,6 +187,11 @@ public abstract class AdapterApp extends App {
 		remoteStream = createOutputStream(outputStreamName,
 				remoteStreamKeyFinder);
 		setConditionAdapter(true);
+		
+		System.out.println("[" + this.getClass() + "] Send messange");
+		Event event = new Event();
+		event.put("readyInitAdapter", Boolean.class, true);
+		remoteStream.put(event);
 	}
 
 	/**

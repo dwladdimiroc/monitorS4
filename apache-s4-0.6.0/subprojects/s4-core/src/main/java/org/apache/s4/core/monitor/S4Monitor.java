@@ -445,7 +445,7 @@ public class S4Monitor {
 					else if (i == 1)
 						return 0;
 					else
-						return -1;
+						return 1;
 				}
 			}
 		}

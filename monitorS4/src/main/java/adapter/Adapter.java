@@ -50,7 +50,6 @@ public class Adapter extends AdapterApp implements Runnable {
 		try {
 			// registerMonitor(ProcessOnePE.class);
 			thread.start();
-			getMonitor().get
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

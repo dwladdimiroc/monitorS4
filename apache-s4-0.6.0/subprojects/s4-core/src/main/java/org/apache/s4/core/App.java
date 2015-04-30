@@ -87,6 +87,7 @@ public abstract class App {
 	 * sendStatus haya terminado su función.
 	 */
 	private Object block = new Object();
+	public Object blockAdapter = new Object();
 
 	@Inject
 	private Sender sender;
@@ -190,42 +191,53 @@ public abstract class App {
 	private void startMonitor() {
 		logger.info("Start S4Monitor");
 
-		/*
-		 * La primera hebra se utilizará para enviar los datos de los distintos
-		 * PEs cada un segundo, para poseer el historial de cada PE
-		 */
-		ScheduledExecutorService getEventCount = Executors
-				.newSingleThreadScheduledExecutor();
-		getEventCount.scheduleAtFixedRate(new OnTimeGetEventCount(), 10000,
-				1000, TimeUnit.MILLISECONDS);
-
-		logger.info("TimerMonitor get eventCount");
-
-		/*
-		 * La segunda hebra se utilizará para enviar los datos de los distintos
-		 * PEs, es decir, los eventos que ha procesado y ha enviado.
-		 */
-		ScheduledExecutorService sendStatus = Executors
-				.newSingleThreadScheduledExecutor();
-		sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 15000, 10000,
-				TimeUnit.MILLISECONDS);
-
-		logger.info("TimerMonitor send status");
-
-		if (runMonitor) {
+		synchronized (blockAdapter) {
+			try {
+				blockAdapter.wait();
+			} catch (InterruptedException e) {
+				logger.error(e.getMessage());
+			}
 
 			/*
-			 * Finalmente, la tercera se dedicará para ser el callback del
-			 * monitor. De esta manera cada cierto tiempo, preguntará al monitor
-			 * cual es el estado del sistema, enviado las réplicas necesarias
-			 * que se requieran del sistema.
+			 * La primera hebra se utilizará para enviar los datos de los
+			 * distintos PEs cada un segundo, para poseer el historial de cada
+			 * PE
 			 */
-			ScheduledExecutorService pullStatus = Executors
+			ScheduledExecutorService getEventCount = Executors
 					.newSingleThreadScheduledExecutor();
-			pullStatus.scheduleAtFixedRate(new OnTimeAskStatus(), 15000, 10000,
-					TimeUnit.MILLISECONDS);
+			getEventCount.scheduleAtFixedRate(new OnTimeGetEventCount(), 10000,
+					1000, TimeUnit.MILLISECONDS);
 
-			logger.info("TimerMonitor pull status");
+			logger.info("TimerMonitor get eventCount");
+
+			/*
+			 * La segunda hebra se utilizará para enviar los datos de los
+			 * distintos PEs, es decir, los eventos que ha procesado y ha
+			 * enviado.
+			 */
+			ScheduledExecutorService sendStatus = Executors
+					.newSingleThreadScheduledExecutor();
+			sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 15000,
+					10000, TimeUnit.MILLISECONDS);
+
+			logger.info("TimerMonitor send status");
+
+			if (runMonitor) {
+
+				/*
+				 * Finalmente, la tercera se dedicará para ser el callback del
+				 * monitor. De esta manera cada cierto tiempo, preguntará al
+				 * monitor cual es el estado del sistema, enviado las réplicas
+				 * necesarias que se requieran del sistema.
+				 */
+				ScheduledExecutorService pullStatus = Executors
+						.newSingleThreadScheduledExecutor();
+				pullStatus.scheduleAtFixedRate(new OnTimeAskStatus(), 15000,
+						10000, TimeUnit.MILLISECONDS);
+
+				logger.info("TimerMonitor pull status");
+			}
+
 		}
 
 	}
