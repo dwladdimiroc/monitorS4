@@ -8,9 +8,8 @@ import org.apache.s4.core.adapter.AdapterApp;
  * emisor y receptor, además del flujo de datos entre ellos
  *
  */
-
 public class TopologyApp {
-	private Class<AdapterApp> adapter;
+	private Class<? extends AdapterApp> adapter;
 	private Class<? extends ProcessingElement> peSend;
 	private Class<? extends ProcessingElement> peRecibe;
 	private long eventSend;
@@ -22,11 +21,11 @@ public class TopologyApp {
 		eventSend = 0;
 	}
 
-	public Class<AdapterApp> getAdapter() {
+	public Class<? extends AdapterApp> getAdapter() {
 		return adapter;
 	}
 
-	public void setAdapter(Class<AdapterApp> adapter) {
+	public void setAdapter(Class<? extends AdapterApp> adapter) {
 		this.adapter = adapter;
 	}
 

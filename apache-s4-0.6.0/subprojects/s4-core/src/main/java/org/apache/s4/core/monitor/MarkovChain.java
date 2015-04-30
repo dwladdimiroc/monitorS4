@@ -36,7 +36,7 @@ public class MarkovChain {
 	 *         las muestras de los datos de entrada
 	 */
 
-	public double[] calculatePrediction(double[] rho, int n, int iteration) {
+	public double[] calculatePrediction(Double[] rho, int n, int iteration) {
 		/*
 		 * En esta fase se analizará la probabilidad de las distintas
 		 * transiciones de un estado a otro. Para esto se ha dispuesto de un
@@ -108,7 +108,7 @@ public class MarkovChain {
 		for (int i = 0; i < 3; i++) {
 			if (cont[i] != 0) {
 				for (int j = 0; j < 3; j++) {
-					transitionMatrix[i][j] /= cont[i];
+					transitionMatrix[i][j] /= (double) cont[i];
 				}
 			}
 		}

@@ -27,7 +27,7 @@ public class MongoPE extends ProcessingElement {
 		// Processing
 		try {
 			// wait(250);
-			Thread.sleep(250);
+			Thread.sleep(200);
 		} catch (InterruptedException e) {
 			logger.error(e.toString());
 		}

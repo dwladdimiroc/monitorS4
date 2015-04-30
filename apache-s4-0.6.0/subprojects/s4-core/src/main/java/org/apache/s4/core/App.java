@@ -19,13 +19,17 @@
 package org.apache.s4.core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.collections4.queue.CircularFifoQueue;
 import org.apache.s4.base.Event;
 import org.apache.s4.base.Hasher;
 import org.apache.s4.base.KeyFinder;
@@ -59,8 +63,10 @@ public abstract class App {
 
 	static final Logger logger = LoggerFactory.getLogger(App.class);
 
-	/* All the PE prototypes in this app. */
+	/* All the PE prototypes and history in this app. */
 	final private List<ProcessingElement> pePrototypes = new ArrayList<ProcessingElement>();
+	final private Queue<Map<Class<? extends ProcessingElement>, Long>> historyPE = new CircularFifoQueue<Map<Class<? extends ProcessingElement>, Long>>(
+			25);
 
 	// /* Stream to PE prototype relations. */
 	// final private Multimap<Streamable<? extends Event>, ProcessingElement>
@@ -74,6 +80,13 @@ public abstract class App {
 	private ClockType clockType = ClockType.WALL_CLOCK;
 
 	private boolean conditionAdapter = false;
+
+	/*
+	 * Objecto para poder sincronizar los datos enviados con los datos obtenidos
+	 * por parte del monitor. De estar manera, askStatus esperará hasta que
+	 * sendStatus haya terminado su función.
+	 */
+	private Object block = new Object();
 
 	@Inject
 	private Sender sender;
@@ -109,6 +122,8 @@ public abstract class App {
 
 	@Inject
 	private S4Monitor monitor;
+
+	private boolean runMonitor;
 
 	// serialization uses the application class loader
 	@Inject
@@ -177,32 +192,88 @@ public abstract class App {
 
 		/*
 		 * La primera hebra se utilizará para enviar los datos de los distintos
+		 * PEs cada un segundo, para poseer el historial de cada PE
+		 */
+		ScheduledExecutorService getEventCount = Executors
+				.newSingleThreadScheduledExecutor();
+		getEventCount.scheduleAtFixedRate(new OnTimeGetEventCount(), 10000,
+				1000, TimeUnit.MILLISECONDS);
+
+		logger.info("TimerMonitor get eventCount");
+
+		/*
+		 * La segunda hebra se utilizará para enviar los datos de los distintos
 		 * PEs, es decir, los eventos que ha procesado y ha enviado.
 		 */
 		ScheduledExecutorService sendStatus = Executors
 				.newSingleThreadScheduledExecutor();
-		sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 25000, 10000,
+		sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 15000, 10000,
 				TimeUnit.MILLISECONDS);
 
 		logger.info("TimerMonitor send status");
 
-		/*
-		 * En cambio, la segunda se dedicará para ser el callback del monitor.
-		 * De esta manera cada cierto tiempo, preguntará al monitor cual es el
-		 * estado del sistema, enviado las réplicas necesarias que se requieran
-		 * del sistema.
-		 */
-		ScheduledExecutorService pullStatus = Executors
-				.newSingleThreadScheduledExecutor();
-		pullStatus.scheduleAtFixedRate(new OnTimeAskStatus(), 30000, 10000,
-				TimeUnit.MILLISECONDS);
+		if (runMonitor) {
 
-		logger.info("TimerMonitor pull status");
+			/*
+			 * Finalmente, la tercera se dedicará para ser el callback del
+			 * monitor. De esta manera cada cierto tiempo, preguntará al monitor
+			 * cual es el estado del sistema, enviado las réplicas necesarias
+			 * que se requieran del sistema.
+			 */
+			ScheduledExecutorService pullStatus = Executors
+					.newSingleThreadScheduledExecutor();
+			pullStatus.scheduleAtFixedRate(new OnTimeAskStatus(), 15000, 10000,
+					TimeUnit.MILLISECONDS);
+
+			logger.info("TimerMonitor pull status");
+		}
 
 	}
 
 	/**
 	 * Esta clase estará encargada de la correr la primera hebra, la cual
+	 * enviará los eventCount de cada uno de los PEs cada un segundo. Para
+	 * obtenerlos, se recurrirá a los distintos 'Streams' creandos en la
+	 * aplicación de S4. Al obtener cada 'Stream', se extraerá los distintos PEs
+	 * Prototipos de cada uno de los 'Streams', enviado después los eventos
+	 * procesados y enviados (a la vez) de cada instancia de los PEs Prototipos.
+	 */
+	private class OnTimeGetEventCount extends TimerTask {
+
+		@Override
+		public void run() {
+			// logger.debug("OnTimeGetEventCount");
+
+			Map<Class<? extends ProcessingElement>, Long> mapEventCount = new HashMap<Class<? extends ProcessingElement>, Long>();
+
+			/* Obtención de cada 'Stream' */
+			for (Streamable<Event> stream : getStreams()) {
+				/* Obtención de cada 'PE Prototype' */
+				for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
+					/* Obtención del flujo de cada 'PE Instances' */
+					long acumEventCount = 0;
+					for (ProcessingElement PE : PEPrototype.getInstances()) {
+						acumEventCount += PE.getEventSeg();
+						// Reinicio del contador de eventos para períodos de un
+						// segundo
+						PE.setEventSeg(0);
+					}
+
+					logger.debug("[History PE] PE: " + PEPrototype.getClass()
+							+ " | acumEventCount: " + acumEventCount);
+
+					/* Para luego guardarlos en el historial del período */
+					mapEventCount.put(PEPrototype.getClass(), acumEventCount);
+				}
+			}
+
+			/* Donde finalmente, se irán al historial colectivo */
+			historyPE.add(mapEventCount);
+		}
+	}
+
+	/**
+	 * Esta clase estará encargada de la correr la segunda hebra, la cual
 	 * enviará los datos de cada uno de los PEs. Para obtenerlos, se recurrirá a
 	 * los distintos 'Streams' creandos en la aplicación de S4. Al obtener cada
 	 * 'Stream', se extraerá los distintos PEs Prototipos de cada uno de los
@@ -213,25 +284,41 @@ public abstract class App {
 
 		@Override
 		public void run() {
-			/* Obtención de cada 'Stream' */
-			for (Streamable<Event> stream : getStreams()) {
-				/* Obtención de cada 'PE Prototype' */
-				for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
-					/* Obtención del flujo de cada 'PE Instances' */
-					long acumEventCount = 0;
-					for (ProcessingElement PE : PEPrototype.getInstances()) {
-						acumEventCount += PE.getEventCount();
+
+			synchronized (block) {
+				/* Obtención de cada 'Stream' */
+				for (Streamable<Event> stream : getStreams()) {
+					/* Obtención de cada 'PE Prototype' */
+					for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
+						/* Obtención del flujo de cada 'PE Instances' */
+						long acumEventCount = 0;
+						for (ProcessingElement PE : PEPrototype.getInstances()) {
+							acumEventCount += PE.getEventPeriod();
+							// Reinicio del contador de eventos para períodos
+							// del
+							// análisis del monitor
+							PE.setEventPeriod(0);
+						}
+						/* Envío de los datos al monitor */
+						getMonitor().sendStatus(PEPrototype.getClass(),
+								acumEventCount);
 					}
-					/* Envío de los datos al monitor */
-					getMonitor().sendStatus(PEPrototype.getClass(),
-							acumEventCount);
 				}
+
+				/* Envío del historial de todos de los PEs */
+				getMonitor().sendHistory(historyPE);
+
+				/*
+				 * Avisará al Thread de AskStatus que está disponible para
+				 * obtener los datos
+				 */
+				block.notify();
 			}
 		}
 	}
 
 	/**
-	 * Esta clase estará encargada de correr la segunda hebra, la cual
+	 * Esta clase estará encargada de correr la tercera hebra, la cual
 	 * preguntará al monitor el estado de los distintos PEs, y en caso de ser
 	 * necesario realizar un cambio. Para esto se elaboró tres pasos: preguntar,
 	 * obtener PEs emisores y cambio del sistema. Siendo este último dividido en
@@ -242,16 +329,25 @@ public abstract class App {
 
 		@Override
 		public void run() {
-			/* Consulta del estado al monitor */
-			statusSystem = getMonitor().askStatus();
+			synchronized (block) {
+				try {
+					block.wait();
+				} catch (InterruptedException e) {
+					logger.error("InterruptedException: " + e.getMessage());
+				}
 
-			/* Análisis de cada PE según lo entregado por el monitor */
-			for (StatusPE statusPE : statusSystem) {
-				/* Lista de PEs que proveen eventos al PE analizado */
-				List<Class<? extends ProcessingElement>> listPE = getPESend(statusPE
-						.getPE());
-				/* Cambio del sistema */
-				changeReplication(listPE, statusPE);
+				/* Consulta del estado al monitor */
+				statusSystem = getMonitor().askStatus();
+
+				/* Análisis de cada PE según lo entregado por el monitor */
+				for (StatusPE statusPE : statusSystem) {
+					/* Lista de PEs que proveen eventos al PE analizado */
+					List<Class<? extends ProcessingElement>> listPE = getPESend(statusPE
+							.getPE());
+					/* Cambio del sistema */
+					changeReplication(listPE, statusPE);
+				}
+
 			}
 		}
 
@@ -550,6 +646,14 @@ public abstract class App {
 	 */
 	public S4Monitor getMonitor() {
 		return monitor;
+	}
+
+	public boolean getRunMonitor() {
+		return runMonitor;
+	}
+
+	public void setRunMonitor(boolean runMonitor) {
+		this.runMonitor = runMonitor;
 	}
 
 	/**

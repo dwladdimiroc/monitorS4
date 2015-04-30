@@ -23,6 +23,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.nio.ByteBuffer;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
@@ -152,6 +153,8 @@ public abstract class ProcessingElement implements Cloneable {
 	transient private boolean isThreadSafe = false;
 	transient private String name = null;
 	transient private boolean isSingleton = false;
+	transient long eventSeg = 0;
+	transient long eventPeriod = 0;
 	transient long eventCount = 0;
 
 	transient private OverloadDispatcher overloadDispatcher;
@@ -181,7 +184,8 @@ public abstract class ProcessingElement implements Cloneable {
 					}
 				});
 		triggers = new MapMaker().makeMap();
-
+		replications = new HashMap<Class<? extends ProcessingElement>, Integer>();
+		
 		/*
 		 * Only the PE Prototype uses the constructor. The PEPrototype field
 		 * will be cloned by the instances and point to the prototype.
@@ -542,6 +546,8 @@ public abstract class ProcessingElement implements Cloneable {
 				overloadDispatcher.dispatchTrigger(this, event);
 			}
 
+			eventSeg++;
+			eventPeriod++;
 			eventCount++;
 
 			dirty = true;
@@ -613,7 +619,7 @@ public abstract class ProcessingElement implements Cloneable {
 	 */
 
 	public void registerMonitor(Class<? extends ProcessingElement> peRecibe) {
-		// Register monitor
+		// Register PE in the monitor
 		this.app.getMonitor().registerPE(this.getClass(), peRecibe);
 
 		// Put replication with your class in the map of replications
@@ -1042,6 +1048,22 @@ public abstract class ProcessingElement implements Cloneable {
 		boolean isActive() {
 			return active;
 		}
+	}
+	
+	public long getEventSeg() {
+		return eventSeg;
+	}
+	
+	public void setEventSeg(long eventSeg) {
+		this.eventSeg = eventSeg;
+	}
+	
+	public long getEventPeriod() {
+		return eventPeriod;
+	}
+	
+	public void setEventPeriod(long eventPeriod) {
+		this.eventPeriod = eventPeriod;
 	}
 
 	public long getEventCount() {

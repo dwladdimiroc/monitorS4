@@ -37,11 +37,6 @@ public class Topology extends App {
 //	Thread thread;
 
 	@Override
-	protected void onStart() {
-		logger.info("Start Topology");
-	}
-
-	@Override
 	protected void onInit() {		
 		// Create the PE prototype
 		ProcessOnePE processOnePE = createPE(ProcessOnePE.class);
@@ -56,7 +51,7 @@ public class Topology extends App {
 				return Arrays.asList(new String[] { event
 						.get("levelProcessOne") });
 			}
-		}, processOnePE).setParallelism(100);
+		}, processOnePE).setParallelism(1);
 
 		Stream<Event> processTwoStream = createStream("processTwoStream",
 				new KeyFinder<Event>() {
@@ -66,7 +61,7 @@ public class Topology extends App {
 						return Arrays.asList(new String[] { event
 								.get("levelProcessTwo") });
 					}
-				}, processTwoPE).setParallelism(100);
+				}, processTwoPE).setParallelism(1);
 
 		Stream<Event> mongoStream = createStream("mongoStream",
 				new KeyFinder<Event>() {
@@ -76,7 +71,7 @@ public class Topology extends App {
 						return Arrays.asList(new String[] { event
 								.get("levelMongo") });
 					}
-				}, mongoPE).setParallelism(100);
+				}, mongoPE).setParallelism(1);
 			
 
 		// Register and setDownStream
@@ -87,6 +82,12 @@ public class Topology extends App {
 		processTwoPE.setDownStream(mongoStream);
 
 		mongoPE.registerMonitor(null);
+		setRunMonitor(false);
+	}
+	
+	@Override
+	protected void onStart() {
+		logger.info("Start Topology");
 	}
 
 	@Override

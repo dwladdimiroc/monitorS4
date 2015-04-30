@@ -54,15 +54,15 @@ public class ProcessOnePE extends ProcessingElement {
 		// Processing
 		try {
 			// wait(500);
-			Thread.sleep(500);
+			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			logger.error(e.toString());
 		}
 
 		Event eventOutput = new Event();
 
-		eventOutput.put("levelProcessTwo", Long.class, getEventCount()
-				% getReplicationPE(ProcessTwoPE.class));
+		//eventOutput.put("levelProcessTwo", Long.class, getEventCount() % getReplicationPE(ProcessTwoPE.class));
+		eventOutput.put("levelProcessTwo", Integer.class, 1);
 		eventOutput.put("id", Long.class, event.get("id", Long.class));
 		eventOutput.put("time", Long.class, event.get("time", Long.class));
 		eventOutput.put("dateAdapter", Date.class,

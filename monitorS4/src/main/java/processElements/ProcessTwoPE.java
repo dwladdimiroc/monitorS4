@@ -38,15 +38,15 @@ public class ProcessTwoPE extends ProcessingElement {
 		// Processing
 		try {
 			// wait(1000);
-			Thread.sleep(1500);
+			Thread.sleep(300);
 		} catch (InterruptedException e) {
 			logger.error(e.toString());
 		}
 
 		Event eventOutput = new Event();
 
-		eventOutput.put("levelMongo", Long.class, getEventCount()
-				% getReplicationPE(MongoPE.class));
+		//eventOutput.put("levelMongo", Long.class, getEventCount() % getReplicationPE(MongoPE.class));
+		eventOutput.put("levelMongo", Integer.class, 1);
 		eventOutput.put("id", Long.class, event.get("id", Long.class));
 		eventOutput.put("time", Long.class, event.get("time", Long.class));
 		eventOutput.put("dateAdapter", Date.class,

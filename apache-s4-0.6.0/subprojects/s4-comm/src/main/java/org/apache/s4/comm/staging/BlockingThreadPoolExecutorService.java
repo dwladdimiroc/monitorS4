@@ -108,6 +108,10 @@ public class BlockingThreadPoolExecutorService extends ForwardingListeningExecut
         executorDelegatee = MoreExecutors.listeningDecorator(eventProcessingExecutor);
 
     }
+    
+    public int getSizeQueue(){
+    	return workQueue.size();
+    }
 
     @Override
     protected ListeningExecutorService delegate() {

@@ -34,13 +34,13 @@ public class Adapter extends AdapterApp implements Runnable {
 
 	private Thread thread;
 
-	private int[] time = { 10000, 15000, 50000, 35000, 500 };
+	private int[] time = { 1000, 1500, 2000, 1500, 1000, 1000, 1500, 2000,
+			1500, 1000 };
 
 	@Override
 	protected void onInit() {
 		logger.info("Create Adapter");
-		registerMonitor(ProcessOnePE.class);
-		
+		getMonitor().registerAdapter(this.getClass(), ProcessOnePE.class);
 		thread = new Thread(this);
 		super.onInit();
 	}
@@ -48,7 +48,9 @@ public class Adapter extends AdapterApp implements Runnable {
 	@Override
 	protected void onStart() {
 		try {
+			// registerMonitor(ProcessOnePE.class);
 			thread.start();
+			getMonitor().get
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -58,13 +60,14 @@ public class Adapter extends AdapterApp implements Runnable {
 	public void run() {
 		logger.debug("Time init (ns): " + System.nanoTime());
 
-		for (int loop = 0; loop < 5; loop++) {
+		for (int loop = 0; loop < 1; loop++) {
 
-			for (int i = 0; i < 100; i++) {
+			for (int i = 0; i < 10; i++) {
 				Event event = new Event();
-				
-				event.put("levelProcessOne", Long.class, getEventCount()
-						% getReplicationPE(ProcessOnePE.class));
+
+				// event.put("levelProcessOne", Long.class, getEventCount() %
+				// getReplicationPE(ProcessOnePE.class));
+				event.put("levelProcessOne", Integer.class, 1);
 				event.put("id", Long.class, getEventCount());
 				event.put("time", Long.class, System.nanoTime());
 				event.put("date", Date.class, Calendar.getInstance().getTime());
@@ -79,7 +82,6 @@ public class Adapter extends AdapterApp implements Runnable {
 			try {
 				Thread.sleep(time[loop]);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -87,5 +89,4 @@ public class Adapter extends AdapterApp implements Runnable {
 
 		logger.info("Finish Adapter");
 	}
-
 }

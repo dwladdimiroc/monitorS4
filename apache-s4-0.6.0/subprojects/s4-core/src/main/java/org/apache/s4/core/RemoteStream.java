@@ -36,7 +36,9 @@ public class RemoteStream implements Streamable<Event> {
 	final protected Key<Event> key;
 	final static private String DEFAULT_SEPARATOR = "^";
 
-	private long eventCount;
+	private long eventSeg = 0;
+	private long eventPeriod = 0;
+	private long eventCount = 0;
 
 	RemoteSenders remoteSenders;
 
@@ -66,7 +68,9 @@ public class RemoteStream implements Streamable<Event> {
 	@Override
 	public void put(Event event) {
 		event.setStreamId(getName());
-		setEventCount(getEventCount() + 1);
+		eventSeg++;
+		eventPeriod++;
+		eventCount++;
 
 		if (key != null) {
 			remoteSenders.send(key.get(event), event);
@@ -96,6 +100,22 @@ public class RemoteStream implements Streamable<Event> {
 	public ProcessingElement[] getTargetPEs() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public long getEventSeg() {
+		return eventSeg;
+	}
+
+	public void setEventSeg(long eventSeg) {
+		this.eventSeg = eventSeg;
+	}
+
+	public long getEventPeriod() {
+		return eventPeriod;
+	}
+
+	public void setEventPeriod(long eventPeriod) {
+		this.eventPeriod = eventPeriod;
 	}
 
 	public long getEventCount() {

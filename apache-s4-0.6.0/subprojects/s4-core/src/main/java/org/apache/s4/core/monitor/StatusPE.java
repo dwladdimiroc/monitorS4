@@ -19,6 +19,7 @@ import org.apache.s4.core.ProcessingElement;
 public class StatusPE {
 	private long recibeEvent;
 	private long sendEvent;
+	private Queue<Double> history;
 	private Class<? extends ProcessingElement> pe;
 	private int replication;
 	private Queue<Integer> markMap;
@@ -26,6 +27,7 @@ public class StatusPE {
 	public StatusPE() {
 		recibeEvent = 0;
 		sendEvent = 0;
+		history = new CircularFifoQueue<Double>(25);
 		pe = null;
 		replication = 0;
 		markMap = new CircularFifoQueue<Integer>(6);
@@ -45,6 +47,14 @@ public class StatusPE {
 
 	public void setSendEvent(long sendEvent) {
 		this.sendEvent = sendEvent;
+	}
+
+	public Queue<Double> getHistory() {
+		return history;
+	}
+
+	public void setHistory(Queue<Double> history) {
+		this.history = history;
 	}
 
 	public Class<? extends ProcessingElement> getPE() {

@@ -29,6 +29,7 @@ import org.apache.s4.base.Receiver;
 import org.apache.s4.base.Sender;
 import org.apache.s4.base.SerializerDeserializer;
 import org.apache.s4.comm.serialize.SerializerDeserializerFactory;
+import org.apache.s4.comm.staging.BlockingThreadPoolExecutorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -237,6 +238,14 @@ public class Stream<T extends Event> implements Streamable {
     public ProcessingElement[] getTargetPEs() {
         return targetPEs;
     }
+    
+    /**
+     * 
+     */
+    public int getSizeQueue() {
+    	BlockingThreadPoolExecutorService queue = (BlockingThreadPoolExecutorService) eventProcessingExecutor;
+    	return queue.getSizeQueue();
+    }
 
     /**
      * Stop and close this stream.
@@ -304,6 +313,7 @@ public class Stream<T extends Event> implements Streamable {
         @Override
         public void run() {
             app.metrics.dequeuedEvent(name);
+            //logger.debug("Queue: " + getSizeQueue());
 
             /* Send event to each target PE. */
             for (int i = 0; i < targetPEs.length; i++) {
