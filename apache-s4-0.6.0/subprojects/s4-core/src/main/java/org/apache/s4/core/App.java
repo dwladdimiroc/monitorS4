@@ -190,6 +190,7 @@ public abstract class App {
 	 */
 	private void startMonitor() {
 		logger.info("Start S4Monitor");
+		monitor.startMetrics();
 
 		synchronized (blockAdapter) {
 			try {
@@ -198,31 +199,31 @@ public abstract class App {
 				logger.error(e.getMessage());
 			}
 
-			/*
-			 * La primera hebra se utilizará para enviar los datos de los
-			 * distintos PEs cada un segundo, para poseer el historial de cada
-			 * PE
-			 */
-			ScheduledExecutorService getEventCount = Executors
-					.newSingleThreadScheduledExecutor();
-			getEventCount.scheduleAtFixedRate(new OnTimeGetEventCount(), 10000,
-					1000, TimeUnit.MILLISECONDS);
-
-			logger.info("TimerMonitor get eventCount");
-
-			/*
-			 * La segunda hebra se utilizará para enviar los datos de los
-			 * distintos PEs, es decir, los eventos que ha procesado y ha
-			 * enviado.
-			 */
-			ScheduledExecutorService sendStatus = Executors
-					.newSingleThreadScheduledExecutor();
-			sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 15000,
-					10000, TimeUnit.MILLISECONDS);
-
-			logger.info("TimerMonitor send status");
-
 			if (runMonitor) {
+
+				/*
+				 * La primera hebra se utilizará para enviar los datos de los
+				 * distintos PEs cada un segundo, para poseer el historial de
+				 * cada PE
+				 */
+				ScheduledExecutorService getEventCount = Executors
+						.newSingleThreadScheduledExecutor();
+				getEventCount.scheduleAtFixedRate(new OnTimeGetEventCount(),
+						0, 1000, TimeUnit.MILLISECONDS);
+
+				logger.info("TimerMonitor get eventCount");
+
+				/*
+				 * La segunda hebra se utilizará para enviar los datos de los
+				 * distintos PEs, es decir, los eventos que ha procesado y ha
+				 * enviado.
+				 */
+				ScheduledExecutorService sendStatus = Executors
+						.newSingleThreadScheduledExecutor();
+				sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 0,
+						10000, TimeUnit.MILLISECONDS);
+
+				logger.info("TimerMonitor send status");
 
 				/*
 				 * Finalmente, la tercera se dedicará para ser el callback del
@@ -232,7 +233,7 @@ public abstract class App {
 				 */
 				ScheduledExecutorService pullStatus = Executors
 						.newSingleThreadScheduledExecutor();
-				pullStatus.scheduleAtFixedRate(new OnTimeAskStatus(), 15000,
+				pullStatus.scheduleAtFixedRate(new OnTimeAskStatus(), 0,
 						10000, TimeUnit.MILLISECONDS);
 
 				logger.info("TimerMonitor pull status");
@@ -271,8 +272,8 @@ public abstract class App {
 						PE.setEventSeg(0);
 					}
 
-					logger.debug("[History PE] PE: " + PEPrototype.getClass()
-							+ " | acumEventCount: " + acumEventCount);
+					// logger.debug("[History PE] PE: " + PEPrototype.getClass()
+					// + " | acumEventCount: " + acumEventCount);
 
 					/* Para luego guardarlos en el historial del período */
 					mapEventCount.put(PEPrototype.getClass(), acumEventCount);
@@ -324,6 +325,7 @@ public abstract class App {
 				 * Avisará al Thread de AskStatus que está disponible para
 				 * obtener los datos
 				 */
+				logger.info("Notify to AskMonitor");
 				block.notify();
 			}
 		}
@@ -343,13 +345,17 @@ public abstract class App {
 		public void run() {
 			synchronized (block) {
 				try {
+					logger.info("Wait to AskMonitor");
 					block.wait();
+					logger.info("Go AskMonitor");
 				} catch (InterruptedException e) {
 					logger.error("InterruptedException: " + e.getMessage());
 				}
 
 				/* Consulta del estado al monitor */
 				statusSystem = getMonitor().askStatus();
+				
+				logger.info("Finish AskStatus");
 
 				/* Análisis de cada PE según lo entregado por el monitor */
 				for (StatusPE statusPE : statusSystem) {
@@ -542,14 +548,15 @@ public abstract class App {
 			pe.initPEPrototypeInternal();
 		}
 
-		onStart();
-
 		/*
 		 * Se inicializa el monitor en caso que no sea una aplicación del
 		 * adapter.
 		 */
 		if (!getConditionAdapter())
 			startMonitor();
+
+		onStart();
+
 	}
 
 	/**
@@ -558,9 +565,7 @@ public abstract class App {
 	protected abstract void onInit();
 
 	public final void init() {
-
 		onInit();
-
 	}
 
 	/**

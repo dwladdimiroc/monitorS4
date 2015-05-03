@@ -2,7 +2,6 @@ package org.apache.s4.core.monitor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -20,10 +19,13 @@ import com.google.inject.Singleton;
 public class S4Monitor {
 	private boolean ready;
 
-	private Logger logger = LoggerFactory.getLogger(S4Monitor.class);
+	static final Logger logger = LoggerFactory.getLogger(S4Monitor.class);
 
 	private final List<TopologyApp> topologySystem = new ArrayList<TopologyApp>();
 	private final List<StatusPE> statusSystem = new ArrayList<StatusPE>();
+
+	/* Clase que se hara cargo de almacenar las estadísticas de S4Monitor */
+	private MonitorMetrics metrics;
 
 	/**
 	 * Inicialización del monitor, dada la inyección de la clase
@@ -32,6 +34,10 @@ public class S4Monitor {
 	private void init() {
 		logger.info("Init Monitor");
 		ready = false;
+	}
+
+	public void startMetrics() {
+		metrics = new MonitorMetrics();
 	}
 
 	/**
@@ -102,6 +108,14 @@ public class S4Monitor {
 			statusPE.setSendEvent(0);
 			statusPE.setReplication(1);
 			getStatusSystem().add(statusPE);
+
+			/* Además, se crearán los contadores y estadísticas para el PE */
+			metrics.createCounterReplicationPE(peSend.getCanonicalName());
+			metrics.createGaugeAvgEventSystem(peSend.getCanonicalName());
+			metrics.createGaugeAvgEventQueue(peSend.getCanonicalName());
+			metrics.createGaugeAvgTimeResident(peSend.getCanonicalName());
+			metrics.createGaugeAvgTimeQueue(peSend.getCanonicalName());
+			metrics.createGaugeAvgTimeProcess(peSend.getCanonicalName());
 		}
 	}
 
@@ -199,7 +213,7 @@ public class S4Monitor {
 		for (Map<Class<? extends AdapterApp>, Long> epochAdapter : historyAdapter) {
 
 			/* Solicitamos el adapter que poseemos en el Map de ese período */
-			for (Class<? extends AdapterApp> Adapter : epochAdapter.keySet()) {
+			for (Class<? extends AdapterApp> adapter : epochAdapter.keySet()) {
 				/*
 				 * Donde analizaremos cada uno de los PEs en esa época en
 				 * específico
@@ -246,7 +260,7 @@ public class S4Monitor {
 
 		}
 
-		printHistoryForPE();
+		// printHistoryForPE();
 
 	}
 
@@ -332,14 +346,13 @@ public class S4Monitor {
 		 */
 		for (StatusPE statusPE : getStatusSystem()) {
 			if (data.equals(statusPE.getPE())) {
-				// logger.debug("StatusSystem " + statusSystem.get(i).getPe());
-				/*
-				 * Se debe realizar una diferencia, debido que son el total de
-				 * eventos procesos en ese período menos el ya procesados. De
-				 * esta manera, obtendremos el número de eventos en el Δt
-				 * deseado.
-				 */
 				statusPE.setSendEvent(eventCount);
+				/* Analizamos la cola del PE */
+				long queuePE = statusPE.getQueueEvent() - eventCount;
+				if (queuePE > 0)
+					statusPE.setQueueEvent(queuePE);
+				else
+					statusPE.setQueueEvent(0);
 			}
 		}
 
@@ -350,11 +363,10 @@ public class S4Monitor {
 		for (Class<? extends ProcessingElement> recibe : listPERecibe) {
 			for (StatusPE statusPE : getStatusSystem()) {
 				if (recibe.equals(statusPE.getPE())) {
-					/*
-					 * Nuevamente lo mismo expresado anteriormente del número de
-					 * eventos procesados en un Δt deseado.
-					 */
 					statusPE.setRecibeEvent(statusPE.getRecibeEvent()
+							+ eventCount);
+					/* Analizamos la cola del PE */
+					statusPE.setQueueEvent(statusPE.getQueueEvent()
 							+ eventCount);
 				}
 			}
@@ -490,7 +502,8 @@ public class S4Monitor {
 		 * replicación.
 		 */
 
-		int resultPredictive = predictiveLoad(statusPE);
+		// int resultPredictive = predictiveLoad(statusPE);
+		int resultPredictive = 0;
 
 		if (resultPredictive == 1) {
 			statusPE.getMarkMap().add(1);
@@ -548,7 +561,7 @@ public class S4Monitor {
 			long recibeEvent, boolean replication) {
 
 		for (StatusPE statusPE : getStatusSystem()) {
-			if (statusPE.getClass().equals(data)) {
+			if (statusPE.getPE().equals(data)) {
 
 				/*
 				 * Análisis de ρ para ver si debe aumentar, mantener o disminuir
@@ -575,6 +588,8 @@ public class S4Monitor {
 					}
 
 					if (ρ > 1.5) {
+						metrics.counterReplicationPE(statusPE.getPE()
+								.getCanonicalName(), true);
 						statusPE.setReplication(statusPE.getReplication() + 1);
 						return true;
 					}
@@ -591,6 +606,8 @@ public class S4Monitor {
 					}
 
 					if (ρ < 0.5) {
+						metrics.counterReplicationPE(statusPE.getPE()
+								.getCanonicalName(), false);
 						statusPE.setReplication(statusPE.getReplication() - 1);
 						return true;
 					}
@@ -651,6 +668,9 @@ public class S4Monitor {
 
 			int status = administrationLoad(statusPE);
 
+			logger.debug("[Finish administrationLoad] PE: "
+					+ statusPE.getPE() + " | status: " + status);
+
 			/*
 			 * Se entenderá que debe replicarse si retornar el valor 1, por lo
 			 * tanto el estado del sistema se le añade una réplica. En el caso
@@ -662,11 +682,15 @@ public class S4Monitor {
 			 */
 			if (status == 1) {
 
+				metrics.counterReplicationPE(statusPE.getPE()
+						.getCanonicalName(), true);
 				statusPE.setReplication(statusPE.getReplication() + 1);
 				intelligentReplication(statusPE, true);
 
 			} else if (status == -1) {
 
+				metrics.counterReplicationPE(statusPE.getPE()
+						.getCanonicalName(), false);
 				statusPE.setReplication(statusPE.getReplication() - 1);
 				intelligentReplication(statusPE, false);
 
@@ -674,9 +698,52 @@ public class S4Monitor {
 
 		}
 
+		metricsStatusSystem();
 		clearStatusSystem();
 
 		return getStatusSystem();
+	}
+
+	/**
+	 * registerStatusSystem registará en las métricas las estadísticas
+	 * solicitadas por parte de MonitorMetrics
+	 */
+	private void metricsStatusSystem() {
+		for (StatusPE statusPE : statusSystem) {
+			double λ = (double) statusPE.getRecibeEvent();
+			double μ = (double) statusPE.getSendEvent();
+			double ρ = λ / μ;
+
+			logger.debug("[{}] ρ: {} | λ: {} | μ: {}", new String[] {
+					statusPE.getPE().getCanonicalName(), Double.toString(ρ),
+					Double.toString(λ), Double.toString(μ) });
+			;
+
+			/* Número promedio de eventos en el sistema */
+			double En = ρ / (1 - ρ);
+			metrics.gaugeAvgEventSystem(statusPE.getPE().getCanonicalName(),
+					En);
+
+			/* Número esperado de eventos en la cola */
+			double Eq = (Math.pow(λ, 2)) / ((μ - λ) * μ);
+			metrics.gaugeAvgEventQueue(statusPE.getPE().getCanonicalName(),
+					Eq);
+
+			/* Tiempo promedio de residencia */
+			double Et = 1 / (μ - λ);
+			metrics.gaugeAvgTimeResident(
+					statusPE.getPE().getCanonicalName(), Et);
+
+			/* Tiempo promedio de espera en la cola */
+			double Ed = ρ / (μ - λ);
+			metrics.gaugeAvgTimeQueue(statusPE.getPE().getCanonicalName(),
+					Ed);
+
+			/* Tiempo promedio en el sistema */
+			double Ep = Et + Ed;
+			metrics.gaugeAvgTimeProcess(statusPE.getPE().getCanonicalName(),
+					Ep);
+		}
 	}
 
 	/**

@@ -34,14 +34,18 @@ import processElements.ProcessTwoPE;
 
 public class Topology extends App {
 	private static Logger logger = LoggerFactory.getLogger(Topology.class);
-//	Thread thread;
+	
+	/* PEs de la App */ 
+	ProcessOnePE processOnePE;
+	ProcessTwoPE processTwoPE;
+	MongoPE mongoPE;
 
 	@Override
 	protected void onInit() {		
 		// Create the PE prototype
-		ProcessOnePE processOnePE = createPE(ProcessOnePE.class);
-		ProcessTwoPE processTwoPE = createPE(ProcessTwoPE.class);
-		MongoPE mongoPE = createPE(MongoPE.class);
+		processOnePE = createPE(ProcessOnePE.class);
+		processTwoPE = createPE(ProcessTwoPE.class);
+		mongoPE = createPE(MongoPE.class);
 
 		// Create a stream that listens to the "textInput" stream and passes
 		// events to the processPE instance.
@@ -75,19 +79,19 @@ public class Topology extends App {
 			
 
 		// Register and setDownStream
-		processOnePE.registerMonitor(processTwoPE.getClass());
 		processOnePE.setDownStream(processTwoStream);
-
-		processTwoPE.registerMonitor(mongoPE.getClass());
 		processTwoPE.setDownStream(mongoStream);
 
-		mongoPE.registerMonitor(null);
-		setRunMonitor(false);
+		setRunMonitor(true);
 	}
 	
 	@Override
 	protected void onStart() {
 		logger.info("Start Topology");
+		
+		processOnePE.registerMonitor(processTwoPE.getClass());
+		processTwoPE.registerMonitor(mongoPE.getClass());
+		mongoPE.registerMonitor(null);
 	}
 
 	@Override

@@ -61,7 +61,7 @@ public class Adapter extends AdapterApp implements Runnable {
 
 		for (int loop = 0; loop < 1; loop++) {
 
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 100; i++) {
 				Event event = new Event();
 
 				// event.put("levelProcessOne", Long.class, getEventCount() %
