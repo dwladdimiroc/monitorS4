@@ -88,6 +88,7 @@ public class MonitorMetrics {
 	public void createCounterReplicationPE(String name) {
 		replicationPE.put(name,
 				Metrics.newCounter(S4Monitor.class, "replication@" + name));
+		replicationPE.get(name).inc(); 
 	}
 
 	public void counterReplicationPE(String name, boolean status) {

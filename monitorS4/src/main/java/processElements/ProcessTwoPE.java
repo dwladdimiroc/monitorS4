@@ -24,7 +24,7 @@ public class ProcessTwoPE extends ProcessingElement {
 	Stream<Event> downStream;
 
 	MongoConnection mongo;
-	
+
 	public void setDownStream(Stream<Event> stream) {
 		downStream = stream;
 	}
@@ -45,25 +45,20 @@ public class ProcessTwoPE extends ProcessingElement {
 
 		Event eventOutput = new Event();
 
-		//eventOutput.put("levelMongo", Long.class, getEventCount() % getReplicationPE(MongoPE.class));
-		eventOutput.put("levelMongo", Integer.class, 1);
-		eventOutput.put("id", Long.class, event.get("id", Long.class));
-		eventOutput.put("time", Long.class, event.get("time", Long.class));
-		eventOutput.put("dateAdapter", Date.class,
-				event.get("dateAdapter", Date.class));
-		eventOutput.put("dateProcessOne", Date.class,
-				event.get("dateProcessOne", Date.class));
-		eventOutput.put("dateProcessTwo", Date.class, Calendar.getInstance()
-				.getTime());
+		eventOutput.put("levelMongo", Long.class, getEventCount()
+				% getReplicationPE(MongoPE.class));
+		// eventOutput.put("levelMongo", Integer.class, 1);
+		// eventOutput.put("id", Long.class, event.get("id", Long.class));
 
 		if (showEvent) {
 			logger.debug(eventOutput.getAttributesAsMap().toString());
 		}
-		
-		/*DBObject objMongo = new BasicDBObject();
-		objMongo.put("time", System.nanoTime());
-		objMongo.put("replication", getReplication());
-		mongo.insert(objMongo);*/
+
+		/*
+		 * DBObject objMongo = new BasicDBObject(); objMongo.put("time",
+		 * System.nanoTime()); objMongo.put("replication", getReplication());
+		 * mongo.insert(objMongo);
+		 */
 
 		downStream.put(eventOutput);
 	}
@@ -72,21 +67,22 @@ public class ProcessTwoPE extends ProcessingElement {
 	protected void onCreate() {
 		// TODO Auto-generated method stub
 		logger.info("Create ProcessTwo PE");
-		//this.replicationPE();
-//		mongo = new MongoConnection();
-//		mongo.setCollectionName("replicationTwoPE");
-//		mongo.setupMongo();
-//		
-//		DBObject objMongo = new BasicDBObject();
-//		objMongo.put("time", System.nanoTime()); 
-//		objMongo.put("replication", getNumPEInstances());
-//		mongo.insert(objMongo);
-//		
+		// this.replicationPE();
+		// mongo = new MongoConnection();
+		// mongo.setCollectionName("replicationTwoPE");
+		// mongo.setupMongo();
+		//
+		// DBObject objMongo = new BasicDBObject();
+		// objMongo.put("time", System.nanoTime());
+		// objMongo.put("replication", getNumPEInstances());
+		// mongo.insert(objMongo);
+		//
 		// logger.info("Create ProcessTwo PE");
 	}
 
 	@Override
 	protected void onRemove() {
+		logger.info("Remove ProcessTwo PE");
 		// TODO Auto-generated method stub
 
 	}

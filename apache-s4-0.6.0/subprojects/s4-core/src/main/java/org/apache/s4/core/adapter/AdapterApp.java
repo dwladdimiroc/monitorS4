@@ -102,7 +102,7 @@ public abstract class AdapterApp extends App {
 
 	public void registerMonitor(Class<? extends ProcessingElement> peRecibe) {
 		// Register adapter in the monitor
-		getMonitor().registerAdapter(this.getClass(), peRecibe);
+		// getMonitor().registerAdapter(this.getClass(), peRecibe);
 
 		// Put replication with your class in the map of replications
 		this.replications.put(peRecibe, 1);
@@ -187,8 +187,7 @@ public abstract class AdapterApp extends App {
 		remoteStream = createOutputStream(outputStreamName,
 				remoteStreamKeyFinder);
 		setConditionAdapter(true);
-		
-		System.out.println("[" + this.getClass() + "] Send messange");
+
 		Event event = new Event();
 		event.put("readyInitAdapter", Boolean.class, true);
 		remoteStream.put(event);

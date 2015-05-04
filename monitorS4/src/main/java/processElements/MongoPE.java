@@ -89,6 +89,7 @@ public class MongoPE extends ProcessingElement {
 
 	@Override
 	protected void onRemove() {
+		logger.info("Remove Mongo PE");
 		// TODO Auto-generated method stub
 
 	}

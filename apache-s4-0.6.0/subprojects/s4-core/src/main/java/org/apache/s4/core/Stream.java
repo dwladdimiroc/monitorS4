@@ -217,7 +217,7 @@ public class Stream<T extends Event> implements Streamable {
 	public void receiveEvent(Event event) {
 		// NOTE: ArrayBlockingQueue.size is O(1).
 
-		/* Comentar esta solución, si bien no es la mejor, funciona. */
+		/* Comentar esta solución, si bien no es la mejor, funciona. BOOLEANO */
 		if (event.containsKey("readyInitAdapter")) {
 			synchronized (this.app.blockAdapter) {
 				boolean initAdapter = event.get("readyInitAdapter",

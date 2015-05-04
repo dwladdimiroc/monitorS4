@@ -51,7 +51,7 @@ public class S4Monitor {
 	 */
 	public void registerAdapter(Class<? extends AdapterApp> adapter,
 			Class<? extends ProcessingElement> peRecibe) {
-		logger.debug("Register PE");
+		logger.debug("Register Adapter");
 
 		/*
 		 * Registro del adapter con su respectivo flujo al PE correspondiente
@@ -531,6 +531,10 @@ public class S4Monitor {
 		 * predictor del tercer período indicaron que debe aumentar.
 		 */
 
+		// logger.debug("[{}] MarkMap: {}", new String[] {
+		// statusPE.getPE().getCanonicalName(),
+		// statusPE.getMarkMap().toString() });
+
 		if (statusPE.getMarkMap().containsAll(Arrays.asList(1, 1))) {
 			statusPE.getMarkMap().clear();
 			return 1;
@@ -668,8 +672,9 @@ public class S4Monitor {
 
 			int status = administrationLoad(statusPE);
 
-			logger.debug("[Finish administrationLoad] PE: "
-					+ statusPE.getPE() + " | status: " + status);
+			// logger.debug("[Finish administrationLoad] PE: " +
+			// statusPE.getPE()
+			// + " | status: " + status);
 
 			/*
 			 * Se entenderá que debe replicarse si retornar el valor 1, por lo
@@ -689,10 +694,12 @@ public class S4Monitor {
 
 			} else if (status == -1) {
 
-				metrics.counterReplicationPE(statusPE.getPE()
-						.getCanonicalName(), false);
-				statusPE.setReplication(statusPE.getReplication() - 1);
-				intelligentReplication(statusPE, false);
+				if (statusPE.getReplication() > 1) {
+					metrics.counterReplicationPE(statusPE.getPE()
+							.getCanonicalName(), false);
+					statusPE.setReplication(statusPE.getReplication() - 1);
+					intelligentReplication(statusPE, false);
+				}
 
 			}
 
@@ -714,35 +721,34 @@ public class S4Monitor {
 			double μ = (double) statusPE.getSendEvent();
 			double ρ = λ / μ;
 
-			logger.debug("[{}] ρ: {} | λ: {} | μ: {}", new String[] {
-					statusPE.getPE().getCanonicalName(), Double.toString(ρ),
-					Double.toString(λ), Double.toString(μ) });
-			;
+			// logger.debug("[{}] ρ: {} | λ: {} | μ: {}", new String[] {
+			// statusPE.getPE().getCanonicalName(), Double.toString(ρ),
+			// Double.toString(λ), Double.toString(μ) });
+
+			/**
+			 * Analizar esto para un sistema inestable
+			 */
 
 			/* Número promedio de eventos en el sistema */
 			double En = ρ / (1 - ρ);
-			metrics.gaugeAvgEventSystem(statusPE.getPE().getCanonicalName(),
-					En);
+			metrics.gaugeAvgEventSystem(statusPE.getPE().getCanonicalName(), En);
 
 			/* Número esperado de eventos en la cola */
 			double Eq = (Math.pow(λ, 2)) / ((μ - λ) * μ);
-			metrics.gaugeAvgEventQueue(statusPE.getPE().getCanonicalName(),
-					Eq);
+			metrics.gaugeAvgEventQueue(statusPE.getPE().getCanonicalName(), Eq);
 
 			/* Tiempo promedio de residencia */
 			double Et = 1 / (μ - λ);
-			metrics.gaugeAvgTimeResident(
-					statusPE.getPE().getCanonicalName(), Et);
+			metrics.gaugeAvgTimeResident(statusPE.getPE().getCanonicalName(),
+					Et);
 
 			/* Tiempo promedio de espera en la cola */
 			double Ed = ρ / (μ - λ);
-			metrics.gaugeAvgTimeQueue(statusPE.getPE().getCanonicalName(),
-					Ed);
+			metrics.gaugeAvgTimeQueue(statusPE.getPE().getCanonicalName(), Ed);
 
 			/* Tiempo promedio en el sistema */
 			double Ep = Et + Ed;
-			metrics.gaugeAvgTimeProcess(statusPE.getPE().getCanonicalName(),
-					Ep);
+			metrics.gaugeAvgTimeProcess(statusPE.getPE().getCanonicalName(), Ep);
 		}
 	}
 

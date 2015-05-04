@@ -61,23 +61,26 @@ public class ProcessOnePE extends ProcessingElement {
 
 		Event eventOutput = new Event();
 
-		//eventOutput.put("levelProcessTwo", Long.class, getEventCount() % getReplicationPE(ProcessTwoPE.class));
-		eventOutput.put("levelProcessTwo", Integer.class, 1);
-		eventOutput.put("id", Long.class, event.get("id", Long.class));
-		eventOutput.put("time", Long.class, event.get("time", Long.class));
-		eventOutput.put("dateAdapter", Date.class,
-				event.get("date", Date.class));
-		eventOutput.put("dateProcessOne", Date.class, Calendar.getInstance()
-				.getTime());
+		eventOutput.put("levelProcessTwo", Long.class, getEventCount()
+				% getReplicationPE(ProcessTwoPE.class));
+		// logger.debug("[Replication] " + eventOutput.get("levelProcessTwo"));
+		// eventOutput.put("levelProcessTwo", Integer.class, 1);
+		// eventOutput.put("id", Long.class, event.get("id", Long.class));
+		// eventOutput.put("time", Long.class, event.get("time", Long.class));
+		// eventOutput.put("dateAdapter", Date.class,
+		// event.get("date", Date.class));
+		// eventOutput.put("dateProcessOne", Date.class, Calendar.getInstance()
+		// .getTime());
 
 		if (showEvent) {
 			logger.debug(eventOutput.getAttributesAsMap().toString());
 		}
 
-		/*DBObject objMongo = new BasicDBObject();
-		objMongo.put("time", System.nanoTime());
-		objMongo.put("replication", getReplication());
-		mongo.insert(objMongo);*/
+		/*
+		 * DBObject objMongo = new BasicDBObject(); objMongo.put("time",
+		 * System.nanoTime()); objMongo.put("replication", getReplication());
+		 * mongo.insert(objMongo);
+		 */
 
 		downStream.put(eventOutput);
 
@@ -86,20 +89,21 @@ public class ProcessOnePE extends ProcessingElement {
 	@Override
 	protected void onCreate() {
 		logger.info("Create ProcessOne PE");
-//		this.replicationPE();
+		// this.replicationPE();
 
-/*		mongo = new MongoConnection();
-		mongo.setCollectionName("replicationTwoPE");
-		mongo.setupMongo();
-		
-		DBObject objMongo = new BasicDBObject();
-		objMongo.put("time", System.nanoTime()); 
-		objMongo.put("replication", getNumPEInstances());
-		mongo.insert(objMongo);*/
+		/*
+		 * mongo = new MongoConnection();
+		 * mongo.setCollectionName("replicationTwoPE"); mongo.setupMongo();
+		 * 
+		 * DBObject objMongo = new BasicDBObject(); objMongo.put("time",
+		 * System.nanoTime()); objMongo.put("replication", getNumPEInstances());
+		 * mongo.insert(objMongo);
+		 */
 	}
 
 	@Override
 	protected void onRemove() {
+		logger.info("Remove ProcessOne PE");
 		// Important
 	}
 

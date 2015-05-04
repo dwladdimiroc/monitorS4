@@ -34,7 +34,7 @@ public class Adapter extends AdapterApp implements Runnable {
 
 	private Thread thread;
 
-	private int[] time = { 1000, 1500, 2000, 1500, 1000, 1000, 1500, 2000,
+	private int[] time = { 12000, 1500, 2000, 1500, 1000, 1000, 1500, 2000,
 			1500, 1000 };
 
 	@Override
@@ -48,7 +48,7 @@ public class Adapter extends AdapterApp implements Runnable {
 	@Override
 	protected void onStart() {
 		try {
-			// registerMonitor(ProcessOnePE.class);
+			registerMonitor(ProcessOnePE.class);
 			thread.start();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -59,17 +59,21 @@ public class Adapter extends AdapterApp implements Runnable {
 	public void run() {
 		logger.debug("Time init (ns): " + System.nanoTime());
 
-		for (int loop = 0; loop < 1; loop++) {
+		for (int loop = 0; loop < 2; loop++) {
+
+			logger.info("Init Bash");
 
 			for (int i = 0; i < 100; i++) {
+
 				Event event = new Event();
 
-				// event.put("levelProcessOne", Long.class, getEventCount() %
-				// getReplicationPE(ProcessOnePE.class));
-				event.put("levelProcessOne", Integer.class, 1);
-				event.put("id", Long.class, getEventCount());
-				event.put("time", Long.class, System.nanoTime());
-				event.put("date", Date.class, Calendar.getInstance().getTime());
+				event.put("levelProcessOne", Long.class, getEventCount()
+						% getReplicationPE(ProcessOnePE.class));
+				// event.put("levelProcessOne", Integer.class, 1);
+				// event.put("id", Long.class, getEventCount());
+				// event.put("time", Long.class, System.nanoTime());
+				// event.put("date", Date.class,
+				// Calendar.getInstance().getTime());
 
 				if (showEvent) {
 					logger.debug(event.getAttributesAsMap().toString());
