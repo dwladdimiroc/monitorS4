@@ -30,7 +30,7 @@ public class StatusPE {
 		recibeEvent = 0;
 		sendEvent = 0;
 		queueEvent = 0;
-		history = new CircularFifoQueue<Double>(25);
+		history = new CircularFifoQueue<Double>(50);
 		name = null;
 		pe = null;
 		replication = 0;

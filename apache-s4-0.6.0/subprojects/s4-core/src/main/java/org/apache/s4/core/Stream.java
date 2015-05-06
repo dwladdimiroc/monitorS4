@@ -30,6 +30,8 @@ import org.apache.s4.base.Sender;
 import org.apache.s4.base.SerializerDeserializer;
 import org.apache.s4.comm.serialize.SerializerDeserializerFactory;
 import org.apache.s4.comm.staging.BlockingThreadPoolExecutorService;
+import org.apache.s4.core.adapter.Notification;
+import org.apache.s4.core.adapter.Statistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -210,6 +212,16 @@ public class Stream<T extends Event> implements Streamable {
 		}
 	}
 
+	@Override
+	public void notification(Notification notification) {
+		logger.error("It can't send local notification");
+	}
+
+	@Override
+	public void sendStatistics(Statistics statistics) {
+		logger.error("It can't send local statistics");
+	}
+
 	/**
 	 * The low level {@link ReceiverImpl} object call this method when a new
 	 * {@link Event} is available.
@@ -217,19 +229,66 @@ public class Stream<T extends Event> implements Streamable {
 	public void receiveEvent(Event event) {
 		// NOTE: ArrayBlockingQueue.size is O(1).
 
-		/* Comentar esta solución, si bien no es la mejor, funciona. BOOLEANO */
-		if (event.containsKey("readyInitAdapter")) {
+		eventProcessingExecutor
+				.execute(new StreamEventProcessingTask((T) event));
+		// TODO abstraction around queue and add dropped counter
+	}
+
+	/**
+	 * The low level {@link ReceiverImpl} object call this method when a new
+	 * {@link Notification} is available.
+	 */
+	public void receiveNotification(Notification notification) {
+		// NOTE: ArrayBlockingQueue.size is O(1).
+
+		/* Registro del Adaptar en el Monitor */
+		for (Class<? extends ProcessingElement> peRecibe : notification
+				.getListPE()) {
+			this.app.getMonitor().registerAdapter(notification.getAdapter(),
+					peRecibe);
+		}
+
+		/*
+		 * En caso que llegue un mensaje que sea exclusivo de notificación,
+		 * entonces el monitor empezará a iniciarse
+		 */
+		if (notification.getStatus()) {
 			synchronized (this.app.blockAdapter) {
-				boolean initAdapter = event.get("readyInitAdapter",
-						Boolean.class);
-				logger.debug("[{}] InitAdapter: {}", this.getClass(),
-						initAdapter);
+				logger.debug("InitAdapter: {}", notification.getStatus());
 				this.app.blockAdapter.notify();
 			}
-		} else {
-			eventProcessingExecutor.execute(new StreamEventProcessingTask(
-					(T) event));
 		}
+		// TODO abstraction around queue and add dropped counter
+	}
+
+	/**
+	 * The low level {@link ReceiverImpl} object call this method when a new
+	 * {@link Statistics} is available.
+	 */
+	public void receiveStatistics(Statistics statistics) {
+		// NOTE: ArrayBlockingQueue.size is O(1).
+
+		/*
+		 * En caso que llegue un mensaje que sea exclusivo de las estadísticas,
+		 * entonces el monitor empezará a iniciarse
+		 */
+		synchronized (this.app.blockSend) {
+			logger.debug("Send statistics Adapter " + statistics.getAdapter());
+
+			this.app.getMonitor().sendHistoryAdapter(statistics.getHistory());
+			this.app.getMonitor().sendStatusAdapter(statistics.getAdapter(),
+					statistics.getEventPeriod());
+
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				logger.error("InterruptedException: " + e);
+			}
+
+			this.app.blockSend.notify();
+		}
+
+		// }
 		// TODO abstraction around queue and add dropped counter
 	}
 

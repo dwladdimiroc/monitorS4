@@ -2,13 +2,16 @@ package org.apache.s4.core.monitor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Queue;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.s4.core.ProcessingElement;
 import org.apache.s4.core.adapter.AdapterApp;
+import org.apache.s4.core.overloadgen.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +29,9 @@ public class S4Monitor {
 
 	/* Clase que se hara cargo de almacenar las estadísticas de S4Monitor */
 	private MonitorMetrics metrics;
+
+	/* Variables del adapter */
+	private final List<Map<Class<? extends AdapterApp>, Queue<Long>>> listHistoryAdapter = new ArrayList<Map<Class<? extends AdapterApp>, Queue<Long>>>();
 
 	/**
 	 * Inicialización del monitor, dada la inyección de la clase
@@ -131,10 +137,12 @@ public class S4Monitor {
 	 *            Tasa de procesamiento
 	 * @param epochPE
 	 *            Tasa de procesamiento de todos los PEs en la época analizada
+	 * @param map
 	 * @return
 	 */
 	private double getRho(Class<? extends ProcessingElement> pECurrent, long μ,
-			Map<Class<? extends ProcessingElement>, Long> epochPE) {
+			Map<Class<? extends ProcessingElement>, Long> epochPE,
+			Map<Class<? extends AdapterApp>, Long> map) {
 
 		/*
 		 * Obtener la tasa de llegada de todos los PEs que son emisores del PE
@@ -143,7 +151,11 @@ public class S4Monitor {
 		long λ = 0;
 		for (TopologyApp topology : getTopologySystem()) {
 			if (pECurrent.equals(topology.getPeRecibe())) {
-				λ += epochPE.get(topology.getPeSend());
+				if (topology.getAdapter() == null) {
+					λ += epochPE.get(topology.getPeSend());
+				} else {
+					λ += map.get(topology.getAdapter());
+				}
 			}
 		}
 
@@ -195,12 +207,9 @@ public class S4Monitor {
 	}
 
 	/**
-	 * sendHistoryAdapter hace referencia al envío de la historia de cada uno de
-	 * los adapter que existen en el sistema. Esto quiere decir, la cantidad de
-	 * eventos que han procesado en un período de 1 segundo. Esto servirá
-	 * posteriormente para el análisis de la Cadena de Markov, por lo que la
-	 * cantidad de períodos por cada adapter será la cantidad de muestras para
-	 * la cadena.
+	 * sendHistoryAdapter guardará en una variable auxiliar el estado del
+	 * Adapter,
+	 * 
 	 * 
 	 * @param historyPEs
 	 *            Corresponde una lista donde cada posición es un período de
@@ -208,25 +217,36 @@ public class S4Monitor {
 	 *            ese período, según la cantidad de eventos procesados.
 	 */
 	public void sendHistoryAdapter(
-			Queue<Map<Class<? extends AdapterApp>, Long>> historyAdapter) {
-		/* Solicitamos una muestra en el tiempo */
-		for (Map<Class<? extends AdapterApp>, Long> epochAdapter : historyAdapter) {
+			Map<Class<? extends AdapterApp>, Queue<Long>> historyAdapter) {
+		this.listHistoryAdapter.add(historyAdapter);
+		printfListHistoryAdapter();
+	}
 
-			/* Solicitamos el adapter que poseemos en el Map de ese período */
-			for (Class<? extends AdapterApp> adapter : epochAdapter.keySet()) {
-				/*
-				 * Donde analizaremos cada uno de los PEs en esa época en
-				 * específico
-				 */
-				// setHistoryRho(PECurrent,
-				// getRho(PECurrent, epochPE.get(PECurrent), epochPE));
+	public void printfListHistoryAdapter() {
+		List<Long> valueAdapter = new ArrayList<Long>();
 
-			}
-
+		for (Map<Class<? extends AdapterApp>, Queue<Long>> historyAdapter : this.listHistoryAdapter) {
+			set
 		}
+	}
 
-		printHistoryForPE();
-
+	private Map<Class<? extends AdapterApp>, Long> getEpochAdapter(int epoch) {
+		// Map<Class<? extends AdapterApp>, Long> epochAdapter = new
+		// HashMap<Class<? extends AdapterApp>, Long>();
+		//
+		// for (Queue<Map<Class<? extends AdapterApp>, Long>> historyAdapter :
+		// this.listHistoryAdapter) {
+		// @SuppressWarnings("unchecked")
+		// Map<Class<? extends AdapterApp>, Long> mapCurrent = (Map<Class<?
+		// extends AdapterApp>, Long>) historyAdapter
+		// .toArray()[0];
+		//
+		// for (Class<? extends AdapterApp> adapter : mapCurrent.keySet())
+		// epochAdapter.put(adapter, mapCurrent.get(adapter));
+		// }
+		//
+		// return epochAdapter;
+		return null;
 	}
 
 	/**
@@ -243,9 +263,9 @@ public class S4Monitor {
 	 */
 	public void sendHistory(
 			Queue<Map<Class<? extends ProcessingElement>, Long>> historyPEs) {
+		int epoch = 0;
 		/* Solicitamos una muestra en el tiempo */
 		for (Map<Class<? extends ProcessingElement>, Long> epochPE : historyPEs) {
-
 			/* Solicitamos todos los PEs que poseemos en el Map de ese período */
 			for (Class<? extends ProcessingElement> PECurrent : epochPE
 					.keySet()) {
@@ -253,14 +273,19 @@ public class S4Monitor {
 				 * Donde analizaremos cada uno de los PEs en esa época en
 				 * específico
 				 */
-				setHistoryRho(PECurrent,
-						getRho(PECurrent, epochPE.get(PECurrent), epochPE));
+				setHistoryRho(
+						PECurrent,
+						getRho(PECurrent, epochPE.get(PECurrent), epochPE,
+								getEpochAdapter(epoch)));
 
 			}
-
+			epoch++;
 		}
 
-		// printHistoryForPE();
+		/* Limpiamos la variable auxiliar del Adapter */
+		listHistoryAdapter.clear();
+
+		printHistoryForPE();
 
 	}
 

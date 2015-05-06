@@ -25,6 +25,8 @@ import org.apache.s4.base.Event;
 import org.apache.s4.base.Listener;
 import org.apache.s4.base.Receiver;
 import org.apache.s4.base.SerializerDeserializer;
+import org.apache.s4.core.adapter.Notification;
+import org.apache.s4.core.adapter.Statistics;
 import org.apache.s4.core.util.S4Metrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,70 +36,119 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 /**
- * The {@link ReceiverImpl} and its counterpart {@link SenderImpl} are the top level classes of the communication layer.
+ * The {@link ReceiverImpl} and its counterpart {@link SenderImpl} are the top
+ * level classes of the communication layer.
  * <p>
- * {@link ReceiverImpl} is responsible for receiving an event to a {@link ProcessingElement} instance using a hashKey.
+ * {@link ReceiverImpl} is responsible for receiving an event to a
+ * {@link ProcessingElement} instance using a hashKey.
  * <p>
- * A Listener implementation receives data from the network and passes an event as a byte array to the
- * {@link ReceiverImpl}. The byte array is deserialized and converted into an {@link Event}. Finally the event is passed
- * to the matching streams.
+ * A Listener implementation receives data from the network and passes an event
+ * as a byte array to the {@link ReceiverImpl}. The byte array is deserialized
+ * and converted into an {@link Event}. Finally the event is passed to the
+ * matching streams.
  * </p>
  * There is a single {@link ReceiverImpl} instance per node.
  * 
- * Details on how the cluster is partitioned and how events are serialized and transmitted to its destination are hidden
- * from the application developer. </p>
+ * Details on how the cluster is partitioned and how events are serialized and
+ * transmitted to its destination are hidden from the application developer.
+ * </p>
  */
 @Singleton
 public class ReceiverImpl implements Receiver {
 
-    private static final Logger logger = LoggerFactory.getLogger(ReceiverImpl.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(ReceiverImpl.class);
 
-    final private Listener listener;
-    final private SerializerDeserializer serDeser;
-    private final Map<String, Stream<? extends Event>> streams;
+	final private Listener listener;
+	final private SerializerDeserializer serDeser;
+	private final Map<String, Stream<? extends Event>> streams;
 
-    @Inject
-    S4Metrics metrics;
+	@Inject
+	S4Metrics metrics;
 
-    @Inject
-    public ReceiverImpl(Listener listener, SerializerDeserializer serDeser) {
-        this.listener = listener;
-        this.serDeser = serDeser;
+	@Inject
+	public ReceiverImpl(Listener listener, SerializerDeserializer serDeser) {
+		this.listener = listener;
+		this.serDeser = serDeser;
 
-        streams = new MapMaker().makeMap();
-    }
+		streams = new MapMaker().makeMap();
+	}
 
-    @Override
-    public int getPartitionId() {
-        return listener.getPartitionId();
-    }
+	@Override
+	public int getPartitionId() {
+		return listener.getPartitionId();
+	}
 
-    /** Save stream keyed by app id and stream id. */
-    void addStream(Stream<? extends Event> stream) {
-        streams.put(stream.getName(), stream);
-    }
+	/** Save stream keyed by app id and stream id. */
+	void addStream(Stream<? extends Event> stream) {
+		streams.put(stream.getName(), stream);
+	}
 
-    /** Remove stream when it is no longer needed. */
-    void removeStream(Stream<? extends Event> stream) {
-        streams.remove(stream.getName());
-    }
+	/** Remove stream when it is no longer needed. */
+	void removeStream(Stream<? extends Event> stream) {
+		streams.remove(stream.getName());
+	}
 
-    @Override
-    public void receive(ByteBuffer message) {
-        metrics.receivedEventFromCommLayer(message.array().length);
-        Event event = (Event) serDeser.deserialize(message);
+	@Override
+	public void receive(ByteBuffer message) {
+		Object messageObject = (Object) serDeser.deserialize(message);
 
-        String streamId = event.getStreamId();
+		if (messageObject.getClass().equals(Event.class)) {
+			metrics.receivedEventFromCommLayer(message.array().length);
 
-        /*
-         * Match streamId in event to the target stream and pass the event to the target stream. TODO: make this more
-         * efficient for the case in which we send the same event to multiple PEs.
-         */
-        try {
-            streams.get(streamId).receiveEvent(event);
-        } catch (NullPointerException e) {
-            logger.error("Could not find target stream for event with streamId={}", streamId);
-        }
-    }
+			Event event = (Event) serDeser.deserialize(message);
 
+			String streamId = event.getStreamId();
+
+			/*
+			 * Match streamId in event to the target stream and pass the event
+			 * to the target stream. TODO: make this more efficient for the case
+			 * in which we send the same event to multiple PEs.
+			 */
+			try {
+				streams.get(streamId).receiveEvent(event);
+			} catch (NullPointerException e) {
+				logger.error(
+						"Could not find target stream for event with streamId={}",
+						streamId);
+			}
+
+		} else if (messageObject.getClass().equals(Statistics.class)) {
+			Statistics statistics = (Statistics) serDeser.deserialize(message);
+
+			String streamId = statistics.getStream();
+
+			/*
+			 * Match streamId in event to the target stream and pass the event
+			 * to the target stream. TODO: make this more efficient for the case
+			 * in which we send the same event to multiple PEs.
+			 */
+			try {
+				streams.get(streamId).receiveStatistics(statistics);
+			} catch (NullPointerException e) {
+				logger.error(
+						"Could not find target stream for event with streamId={}",
+						streamId);
+			}
+		} else {
+			Notification notification = (Notification) serDeser
+					.deserialize(message);
+
+			String streamId = notification.getStream();
+
+			/*
+			 * Match streamId in event to the target stream and pass the event
+			 * to the target stream. TODO: make this more efficient for the case
+			 * in which we send the same event to multiple PEs.
+			 */
+			try {
+				streams.get(streamId).receiveNotification(notification);
+			} catch (NullPointerException e) {
+				logger.error(
+						"Could not find target stream for event with streamId={}",
+						streamId);
+			}
+		}
+
+	}
 }

@@ -18,6 +18,8 @@
 package org.apache.s4.core;
 
 import org.apache.s4.base.Event;
+import org.apache.s4.core.adapter.Notification;
+import org.apache.s4.core.adapter.Statistics;
 
 /**
  * Sends events to remote clusters. Target clusters are selected dynamically based on the stream name information from
@@ -27,5 +29,7 @@ import org.apache.s4.base.Event;
 public interface RemoteSenders {
 
     public abstract void send(String hashKey, Event event);
+    public abstract void sendNotification(Notification notification);
+    public abstract void sendStatistics(Statistics statistics);
 
 }

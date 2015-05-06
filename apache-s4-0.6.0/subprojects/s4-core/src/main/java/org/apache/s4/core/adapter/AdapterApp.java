@@ -18,7 +18,9 @@
 
 package org.apache.s4.core.adapter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.TimerTask;
@@ -32,9 +34,6 @@ import org.apache.s4.base.KeyFinder;
 import org.apache.s4.core.App;
 import org.apache.s4.core.ProcessingElement;
 import org.apache.s4.core.RemoteStream;
-import org.apache.s4.core.Streamable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -55,8 +54,8 @@ public abstract class AdapterApp extends App {
 
 	private RemoteStream remoteStream;
 	final private Map<Class<? extends ProcessingElement>, Integer> replications = new HashMap<Class<? extends ProcessingElement>, Integer>();
-	final private Queue<Map<Class<? extends AdapterApp>, Long>> historyAdapter = new CircularFifoQueue<>(
-			25);
+	final private Queue<Long> historyAdapter = new CircularFifoQueue<Long>(50);
+	final private List<Class<? extends ProcessingElement>> listPE = new ArrayList<Class<? extends ProcessingElement>>();
 
 	protected KeyFinder<Event> remoteStreamKeyFinder;
 
@@ -102,7 +101,7 @@ public abstract class AdapterApp extends App {
 
 	public void registerMonitor(Class<? extends ProcessingElement> peRecibe) {
 		// Register adapter in the monitor
-		// getMonitor().registerAdapter(this.getClass(), peRecibe);
+		this.listPE.add(peRecibe);
 
 		// Put replication with your class in the map of replications
 		this.replications.put(peRecibe, 1);
@@ -130,15 +129,24 @@ public abstract class AdapterApp extends App {
 	@Override
 	protected void onStart() {
 		/*
-		 * Esta hebra se utilizará para enviar los datos de los distintos PEs
-		 * cada un segundo, para poseer el historial de cada PE
+		 * Esta hebra se utilizará para enviar los datos del Adapter cada un
+		 * segundo, para poseer el historial del Adapter
 		 */
 
-		// ScheduledExecutorService getEventCount = Executors
-		// .newSingleThreadScheduledExecutor();
-		// getEventCount.scheduleAtFixedRate(new OnTimeGetEventCountAdapter(),
-		// 0,
-		// 1000, TimeUnit.MILLISECONDS);
+		ScheduledExecutorService getEventCountAdapter = Executors
+				.newSingleThreadScheduledExecutor();
+		getEventCountAdapter.scheduleAtFixedRate(
+				new OnTimeGetEventCountAdapter(), 0, 1000,
+				TimeUnit.MILLISECONDS);
+
+		getLogger().info("TimerMonitorAdapter get eventCount");
+
+		ScheduledExecutorService sendStatusAdapter = Executors
+				.newSingleThreadScheduledExecutor();
+		sendStatusAdapter.scheduleAtFixedRate(new OnTimeSendStatusAdapter(),
+				10000, 5000, TimeUnit.MILLISECONDS);
+
+		getLogger().info("TimerMonitorAdapter send status");
 
 	}
 
@@ -155,9 +163,9 @@ public abstract class AdapterApp extends App {
 		@Override
 		public void run() {
 			// logger.debug("OnTimeGetEventCount");
-			Map<Class<? extends AdapterApp>, Long> mapEventCount = new HashMap<Class<? extends AdapterApp>, Long>();
-			mapEventCount.put(getClassAdapter(), getEventSeg());
-			historyAdapter.add(mapEventCount);
+			historyAdapter.add(getEventSeg());
+
+			setEventSeg(0);
 		}
 	}
 
@@ -173,13 +181,19 @@ public abstract class AdapterApp extends App {
 
 		@Override
 		public void run() {
+			Statistics statistics = new Statistics();
+			statistics.setAdapter(getClassAdapter());
+			Map<Class<? extends AdapterApp>, Queue<Long>> mapAdapter = new HashMap<Class<? extends AdapterApp>, Queue<Long>>();
+				mapAdapter.put(getClassAdapter(), historyAdapter);
+			statistics.setHistory(mapAdapter);
+			statistics.setEventPeriod(getEventPeriod());
 
-			/* Envío de los datos al monitor */
-			getMonitor().sendStatusAdapter(getClassAdapter(), getEventCount());
+			/* Envío de las estadísticas al monitor */
+			remoteStream.sendStatistics(statistics);
 
-			/* Envío del historial de todos de los PEs */
-			getMonitor().sendHistoryAdapter(historyAdapter);
+			setEventPeriod(0);
 		}
+
 	}
 
 	@Override
@@ -188,9 +202,12 @@ public abstract class AdapterApp extends App {
 				remoteStreamKeyFinder);
 		setConditionAdapter(true);
 
-		Event event = new Event();
-		event.put("readyInitAdapter", Boolean.class, true);
-		remoteStream.put(event);
+		/* Notificación para indicar que se ha iniciado el Adapter */
+		Notification notification = new Notification();
+		notification.setStatus(true);
+		notification.setAdapter(getClassAdapter());
+		notification.setListPE(listPE);
+		remoteStream.notification(notification);
 	}
 
 	/**

@@ -61,12 +61,12 @@ import com.google.inject.name.Named;
  */
 public abstract class App {
 
-	static final Logger logger = LoggerFactory.getLogger(App.class);
+	private static final Logger logger = LoggerFactory.getLogger(App.class);
 
 	/* All the PE prototypes and history in this app. */
 	final private List<ProcessingElement> pePrototypes = new ArrayList<ProcessingElement>();
 	final private Queue<Map<Class<? extends ProcessingElement>, Long>> historyPE = new CircularFifoQueue<Map<Class<? extends ProcessingElement>, Long>>(
-			25);
+			50);
 
 	// /* Stream to PE prototype relations. */
 	// final private Multimap<Streamable<? extends Event>, ProcessingElement>
@@ -88,6 +88,7 @@ public abstract class App {
 	 */
 	private Object block = new Object();
 	public Object blockAdapter = new Object();
+	public Object blockSend = new Object();
 
 	@Inject
 	private Sender sender;
@@ -189,14 +190,14 @@ public abstract class App {
 	 * independientes, para realizar una acción según un determinado tiempo.
 	 */
 	private void startMonitor() {
-		logger.info("Start S4Monitor");
+		getLogger().info("Start S4Monitor");
 		monitor.startMetrics();
 
 		synchronized (blockAdapter) {
 			try {
 				blockAdapter.wait();
 			} catch (InterruptedException e) {
-				logger.error(e.getMessage());
+				getLogger().error(e.getMessage());
 			}
 
 			if (runMonitor) {
@@ -211,7 +212,7 @@ public abstract class App {
 				getEventCount.scheduleAtFixedRate(new OnTimeGetEventCount(), 0,
 						1000, TimeUnit.MILLISECONDS);
 
-				logger.info("TimerMonitor get eventCount");
+				getLogger().info("TimerMonitor get eventCount");
 
 				/*
 				 * La segunda hebra se utilizará para enviar los datos de los
@@ -220,23 +221,23 @@ public abstract class App {
 				 */
 				ScheduledExecutorService sendStatus = Executors
 						.newSingleThreadScheduledExecutor();
-				sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 0,
-						10000, TimeUnit.MILLISECONDS);
+				sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 10000,
+						5000, TimeUnit.MILLISECONDS);
 
-				logger.info("TimerMonitor send status");
+				getLogger().info("TimerMonitor send status");
 
 				/*
-				 * Finalmente, la tercera se dedicará para ser el callback del
+				 * Finalmente, la tercera se dedicará a ser el callback del
 				 * monitor. De esta manera cada cierto tiempo, preguntará al
 				 * monitor cual es el estado del sistema, enviado las réplicas
 				 * necesarias que se requieran del sistema.
 				 */
 				ScheduledExecutorService pullStatus = Executors
 						.newSingleThreadScheduledExecutor();
-				pullStatus.scheduleAtFixedRate(new OnTimeAskStatus(), 0, 10000,
-						TimeUnit.MILLISECONDS);
+				pullStatus.scheduleAtFixedRate(new OnTimeAskStatus(), 10000,
+						5000, TimeUnit.MILLISECONDS);
 
-				logger.info("TimerMonitor pull status");
+				getLogger().info("TimerMonitor pull status");
 			}
 
 		}
@@ -298,35 +299,48 @@ public abstract class App {
 		@Override
 		public void run() {
 
-			synchronized (block) {
-				/* Obtención de cada 'Stream' */
-				for (Streamable<Event> stream : getStreams()) {
-					/* Obtención de cada 'PE Prototype' */
-					for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
-						/* Obtención del flujo de cada 'PE Instances' */
-						long acumEventCount = 0;
-						for (ProcessingElement PE : PEPrototype.getInstances()) {
-							acumEventCount += PE.getEventPeriod();
-							// Reinicio del contador de eventos para períodos
-							// del
-							// análisis del monitor
-							PE.setEventPeriod(0);
-						}
-						/* Envío de los datos al monitor */
-						getMonitor().sendStatus(PEPrototype.getClass(),
-								acumEventCount);
-					}
+			synchronized (blockSend) {
+				try {
+					logger.debug("Wait for SendStatistics");
+					blockSend.wait(1000);
+					logger.debug("Continue for Send Status");
+				} catch (InterruptedException e) {
+					getLogger().error("InterruptedException: " + e.getMessage());
 				}
 
-				/* Envío del historial de todos de los PEs */
-				getMonitor().sendHistory(historyPE);
+				synchronized (block) {
+					/* Obtención de cada 'Stream' */
+					for (Streamable<Event> stream : getStreams()) {
+						/* Obtención de cada 'PE Prototype' */
+						for (ProcessingElement PEPrototype : stream
+								.getTargetPEs()) {
+							/* Obtención del flujo de cada 'PE Instances' */
+							long acumEventCount = 0;
+							for (ProcessingElement PE : PEPrototype
+									.getInstances()) {
+								acumEventCount += PE.getEventPeriod();
+								// Reinicio del contador de eventos para
+								// períodos
+								// del
+								// análisis del monitor
+								PE.setEventPeriod(0);
+							}
+							/* Envío de los datos al monitor */
+							getMonitor().sendStatus(PEPrototype.getClass(),
+									acumEventCount);
+						}
+					}
 
-				/*
-				 * Avisará al Thread de AskStatus que está disponible para
-				 * obtener los datos
-				 */
-				// logger.info("Notify to AskMonitor");
-				block.notify();
+					/* Envío del historial de todos de los PEs */
+					getMonitor().sendHistory(historyPE);
+
+					/*
+					 * Avisará al Thread de AskStatus que está disponible para
+					 * obtener los datos
+					 */
+					// logger.info("Notify to AskMonitor");
+					block.notify();
+				}
 			}
 		}
 	}
@@ -349,7 +363,7 @@ public abstract class App {
 					block.wait();
 					// logger.info("Go AskMonitor");
 				} catch (InterruptedException e) {
-					logger.error("InterruptedException: " + e.getMessage());
+					getLogger().error("InterruptedException: " + e.getMessage());
 				}
 
 				/* Consulta del estado al monitor */
@@ -436,7 +450,7 @@ public abstract class App {
 
 							if (replicationAnalyzed > replicationCurrent) {
 
-								logger.debug("Increment PE  "
+								getLogger().debug("Increment PE  "
 										+ statusPE.getPE() + " in PE "
 										+ PEPrototype.getClass());
 
@@ -450,7 +464,7 @@ public abstract class App {
 								for (ProcessingElement PE : PEPrototype
 										.getInstances()) {
 
-									logger.debug("["
+									getLogger().debug("["
 											+ PE.getClass().getCanonicalName()
 											+ "] Replication: "
 											+ PEPrototype
@@ -472,7 +486,7 @@ public abstract class App {
 								 */
 								removeReplication(statusPE);
 
-								logger.debug("Decrement PE  "
+								getLogger().debug("Decrement PE  "
 										+ statusPE.getPE() + " in PE "
 										+ PEPrototype.getClass());
 
@@ -524,9 +538,11 @@ public abstract class App {
 				/* Obtención de cada 'PE Prototype' */
 				for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
 					/* Analizamos si el PE es el que deseamos eliminar */
-						for (ProcessingElement PE : PEPrototype.getInstances()) {
-							if (statusPE.getPE().equals(PEPrototype.getClass())) {
-							//logger.debug("[{}] ID: {}", new String[]{PE.getClass().getCanonicalName(), PE.getId()});
+					for (ProcessingElement PE : PEPrototype.getInstances()) {
+						if (statusPE.getPE().equals(PEPrototype.getClass())) {
+							// logger.debug("[{}] ID: {}", new
+							// String[]{PE.getClass().getCanonicalName(),
+							// PE.getId()});
 							int replicationCurrent = Integer.parseInt(PE
 									.getId());
 							/*
@@ -565,7 +581,7 @@ public abstract class App {
 
 		/* Allow abstract PE to initialize. */
 		for (ProcessingElement pe : getPePrototypes()) {
-			logger.info("Init prototype [{}].", pe.getClass().getName());
+			getLogger().info("Init prototype [{}].", pe.getClass().getName());
 			pe.initPEPrototypeInternal();
 		}
 
@@ -604,13 +620,13 @@ public abstract class App {
 
 		/* Get the set of streams and close them. */
 		for (Streamable<?> stream : getStreams()) {
-			logger.trace("Closing stream [{}].", stream.getName());
+			getLogger().trace("Closing stream [{}].", stream.getName());
 			stream.close();
 		}
 
 		for (ProcessingElement pe : getPePrototypes()) {
 
-			logger.trace("Removing PE proto [{}].", pe.getClass().getName());
+			getLogger().trace("Removing PE proto [{}].", pe.getClass().getName());
 
 			/* Remove all instances. */
 			pe.removeAll();
@@ -618,7 +634,7 @@ public abstract class App {
 		}
 
 		/* Finally remove the entire app graph. */
-		logger.trace("Clear app graph.");
+		getLogger().trace("Clear app graph.");
 
 		pePrototypes.clear();
 		streams.clear();
@@ -667,7 +683,7 @@ public abstract class App {
 		this.clockType = clockType;
 
 		if (clockType == ClockType.EVENT_CLOCK) {
-			logger.error("Event clock not implemented yet.");
+			getLogger().error("Event clock not implemented yet.");
 			System.exit(1);
 		}
 	}
@@ -893,7 +909,7 @@ public abstract class App {
 				return pe;
 			}
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			getLogger().error(e.getMessage(), e);
 			return null;
 		}
 	}
@@ -922,10 +938,14 @@ public abstract class App {
 							slotFactory });
 			return pe;
 		} catch (Exception e) {
-			logger.error("Cannot instantiate pe for class [{}]",
+			getLogger().error("Cannot instantiate pe for class [{}]",
 					type.getName(), e);
 			return null;
 		}
+	}
+
+	public static Logger getLogger() {
+		return logger;
 	}
 
 	static private String toString(ProcessingElement pe) {

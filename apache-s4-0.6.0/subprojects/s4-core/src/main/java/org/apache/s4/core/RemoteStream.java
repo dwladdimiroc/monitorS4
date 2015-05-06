@@ -23,6 +23,8 @@ import org.apache.s4.base.Hasher;
 import org.apache.s4.base.Key;
 import org.apache.s4.base.KeyFinder;
 import org.apache.s4.comm.topology.RemoteStreams;
+import org.apache.s4.core.adapter.Notification;
+import org.apache.s4.core.adapter.Statistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,6 +79,18 @@ public class RemoteStream implements Streamable<Event> {
 		} else {
 			remoteSenders.send(null, event);
 		}
+	}
+	
+	@Override
+	public void notification(Notification notification){
+		notification.setStream(getName());
+		remoteSenders.sendNotification(notification);
+	}
+	
+	@Override
+	public void sendStatistics(Statistics statistics) {
+		statistics.setStream(getName());
+		remoteSenders.sendStatistics(statistics);
 	}
 
 	@Override

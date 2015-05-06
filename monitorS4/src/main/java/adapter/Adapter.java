@@ -18,9 +18,6 @@
 
 package adapter;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import org.apache.s4.base.Event;
 import org.apache.s4.core.adapter.AdapterApp;
 import org.slf4j.Logger;
@@ -39,16 +36,20 @@ public class Adapter extends AdapterApp implements Runnable {
 
 	@Override
 	protected void onInit() {
+		/* Este orden es importante */
 		logger.info("Create Adapter");
-		getMonitor().registerAdapter(this.getClass(), ProcessOnePE.class);
+		this.registerMonitor(ProcessOnePE.class);
 		thread = new Thread(this);
+		
 		super.onInit();
 	}
 
 	@Override
 	protected void onStart() {
+		/* Este orden es importante */
+		super.onStart();
+		
 		try {
-			registerMonitor(ProcessOnePE.class);
 			thread.start();
 		} catch (Exception e) {
 			throw new RuntimeException(e);

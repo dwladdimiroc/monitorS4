@@ -31,6 +31,8 @@ import org.apache.s4.comm.tcp.RemoteEmitters;
 import org.apache.s4.comm.topology.Clusters;
 import org.apache.s4.comm.topology.RemoteStreams;
 import org.apache.s4.comm.topology.StreamConsumer;
+import org.apache.s4.core.adapter.Notification;
+import org.apache.s4.core.adapter.Statistics;
 import org.apache.s4.core.staging.RemoteSendersExecutorServiceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,6 +101,50 @@ public class DefaultRemoteSenders implements RemoteSenders {
             executorService.execute(new SendToRemoteClusterTask(hashKey, event, sender));
         }
     }
+    
+    @Override
+    public void sendNotification(Notification notification) {
+
+        Set<StreamConsumer> consumers = remoteStreams.getConsumers(notification.getStream());
+        for (StreamConsumer consumer : consumers) {
+            // NOTE: even though there might be several ephemeral znodes for the same app and topology, they are
+            // represented by a single stream consumer
+            RemoteSender sender = sendersByTopology.get(consumer.getClusterName());
+            if (sender == null) {
+                RemoteSender newSender = new RemoteSender(remoteEmitters.getEmitter(remoteClusters.getCluster(consumer
+                        .getClusterName())), hasher, consumer.getClusterName());
+                // TODO cleanup when remote topologies die
+                sender = sendersByTopology.putIfAbsent(consumer.getClusterName(), newSender);
+                if (sender == null) {
+                    sender = newSender;
+                }
+            }
+            // NOTE: this implies multiple serializations, there might be an optimization
+            executorService.execute(new SendNotificationToRemoteClusterTask(notification, sender));
+        }
+    }
+    
+    @Override
+    public void sendStatistics(Statistics statistics) {
+
+        Set<StreamConsumer> consumers = remoteStreams.getConsumers(statistics.getStream());
+        for (StreamConsumer consumer : consumers) {
+            // NOTE: even though there might be several ephemeral znodes for the same app and topology, they are
+            // represented by a single stream consumer
+            RemoteSender sender = sendersByTopology.get(consumer.getClusterName());
+            if (sender == null) {
+                RemoteSender newSender = new RemoteSender(remoteEmitters.getEmitter(remoteClusters.getCluster(consumer
+                        .getClusterName())), hasher, consumer.getClusterName());
+                // TODO cleanup when remote topologies die
+                sender = sendersByTopology.putIfAbsent(consumer.getClusterName(), newSender);
+                if (sender == null) {
+                    sender = newSender;
+                }
+            }
+            // NOTE: this implies multiple serializations, there might be an optimization
+            executorService.execute(new SendStatisticsToRemoteClusterTask(statistics, sender));
+        }
+    }
 
     class SendToRemoteClusterTask implements Runnable {
 
@@ -119,6 +165,58 @@ public class DefaultRemoteSenders implements RemoteSenders {
                 sender.send(hashKey, serDeser.serialize(event));
             } catch (InterruptedException e) {
                 logger.error("Interrupted blocking send operation for event {}. Event is lost.", event);
+                Thread.currentThread().interrupt();
+            }
+
+        }
+
+    }
+    
+    class SendNotificationToRemoteClusterTask implements Runnable {
+
+    	String hashKey;
+        Notification notification;
+        RemoteSender sender;
+
+        public SendNotificationToRemoteClusterTask(Notification notification, RemoteSender sender) {
+            super();
+            this.hashKey = null;
+            this.notification = notification;
+            this.sender = sender;
+        }
+
+        @Override
+        public void run() {
+            try {
+                sender.send(hashKey, serDeser.serialize(notification));
+            } catch (InterruptedException e) {
+                logger.error("Interrupted blocking sendNotificacion operation for event {}. Notification is lost.", notification);
+                Thread.currentThread().interrupt();
+            }
+
+        }
+
+    }
+    
+    class SendStatisticsToRemoteClusterTask implements Runnable {
+
+    	String hashKey;
+        Statistics statistics;
+        RemoteSender sender;
+
+        public SendStatisticsToRemoteClusterTask(Statistics statistics, RemoteSender sender) {
+            super();
+            this.hashKey = null;
+            this.statistics = statistics;
+            this.sender = sender;
+        }
+
+        @Override
+        public void run() {
+            try {
+                sender.send(hashKey, serDeser.serialize(statistics));
+            } catch (InterruptedException e) {
+                logger.error("Interrupted blocking sendNotificacion operation for event {}. Statistics is lost.", statistics);
                 Thread.currentThread().interrupt();
             }
 
