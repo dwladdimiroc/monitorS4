@@ -55,7 +55,7 @@ public class Topology extends App {
 				return Arrays.asList(new String[] { event
 						.get("levelProcessOne") });
 			}
-		}, processOnePE).setParallelism(16);
+		}, processOnePE).setParallelism(1024);
 
 		Stream<Event> processTwoStream = createStream("processTwoStream",
 				new KeyFinder<Event>() {
@@ -65,7 +65,7 @@ public class Topology extends App {
 						return Arrays.asList(new String[] { event
 								.get("levelProcessTwo") });
 					}
-				}, processTwoPE).setParallelism(16);
+				}, processTwoPE).setParallelism(1024);
 
 		Stream<Event> mongoStream = createStream("mongoStream",
 				new KeyFinder<Event>() {
@@ -75,7 +75,7 @@ public class Topology extends App {
 						return Arrays.asList(new String[] { event
 								.get("levelMongo") });
 					}
-				}, mongoPE).setParallelism(16);
+				}, mongoPE).setParallelism(1024);
 			
 
 		// Register and setDownStream

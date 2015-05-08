@@ -55,7 +55,8 @@ public class TopologyApp {
 
 	@Override
 	public String toString() {
-		return "[PE Send: " + peSend.toString() + " | PE Recibe: "
-				+ peRecibe.toString() + " | Event: " + eventSend + "]";
+		return this.adapter == null ? "[PE Send: " + peSend.toString() + " | PE Recibe: "
+				+ peRecibe.toString() + " | Event: " + eventSend + "]" : "[Adapter: " + adapter.toString() + " | PE Recibe: "
+						+ peRecibe.toString() + " | Event: " + eventSend + "]";
 	}
 }

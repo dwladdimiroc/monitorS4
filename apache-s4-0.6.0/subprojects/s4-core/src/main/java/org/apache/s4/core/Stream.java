@@ -399,7 +399,6 @@ public class Stream<T extends Event> implements Streamable {
 		@Override
 		public void run() {
 			app.metrics.dequeuedEvent(name);
-			// logger.debug("Queue: " + getSizeQueue());
 
 			/* Send event to each target PE. */
 			for (int i = 0; i < targetPEs.length; i++) {
@@ -426,6 +425,14 @@ public class Stream<T extends Event> implements Streamable {
 					/* STEP 1: find the PE instance for key. */
 					ProcessingElement pe = targetPEs[i].getInstanceForKey(key
 							.get(event));
+
+					// if (name.equals("processTwoStream")) {
+					// logger.debug(
+					// "[PE] {} | [eventCount] {}",
+					// new String[] {
+					// pe.getClass().getCanonicalName(),
+					// Long.toString(pe.getEventCount()) });
+					// }
 
 					/* STEP 2: pass event to PE instance. */
 					pe.handleInputEvent(event);

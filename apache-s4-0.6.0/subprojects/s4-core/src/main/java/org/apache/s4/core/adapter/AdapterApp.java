@@ -34,6 +34,9 @@ import org.apache.s4.base.KeyFinder;
 import org.apache.s4.core.App;
 import org.apache.s4.core.ProcessingElement;
 import org.apache.s4.core.RemoteStream;
+import org.apache.s4.core.Streamable;
+import org.apache.s4.core.monitor.StatusPE;
+import org.apache.s4.core.monitor.TopologyApp;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -54,7 +57,7 @@ public abstract class AdapterApp extends App {
 
 	private RemoteStream remoteStream;
 	final private Map<Class<? extends ProcessingElement>, Integer> replications = new HashMap<Class<? extends ProcessingElement>, Integer>();
-	final private Queue<Long> historyAdapter = new CircularFifoQueue<Long>(50);
+	final private Queue<Long> historyAdapter = new CircularFifoQueue<Long>(5);
 	final private List<Class<? extends ProcessingElement>> listPE = new ArrayList<Class<? extends ProcessingElement>>();
 
 	protected KeyFinder<Event> remoteStreamKeyFinder;
@@ -144,7 +147,14 @@ public abstract class AdapterApp extends App {
 		ScheduledExecutorService sendStatusAdapter = Executors
 				.newSingleThreadScheduledExecutor();
 		sendStatusAdapter.scheduleAtFixedRate(new OnTimeSendStatusAdapter(),
-				10000, 5000, TimeUnit.MILLISECONDS);
+				10000, 15000, TimeUnit.MILLISECONDS);
+
+		getLogger().info("TimerMonitorAdapter send status");
+		
+		ScheduledExecutorService pullStatus = Executors
+				.newSingleThreadScheduledExecutor();
+		pullStatus.scheduleAtFixedRate(new OnTimeAskStatus(),
+				10000, 15000, TimeUnit.MILLISECONDS);
 
 		getLogger().info("TimerMonitorAdapter send status");
 
@@ -192,6 +202,85 @@ public abstract class AdapterApp extends App {
 			remoteStream.sendStatistics(statistics);
 
 			setEventPeriod(0);
+		}
+
+	}
+	
+	/**
+	 * Esta clase estará encargada de correr la tercera hebra, la cual
+	 * preguntará al monitor el estado de los distintos PEs, y en caso de ser
+	 * necesario realizar un cambio. Para esto se elaboró tres pasos: preguntar,
+	 * obtener PEs emisores y cambio del sistema. Siendo este último dividido en
+	 * dos etapas: aumento y disminución de las instancias de PEs.
+	 */
+	private class OnTimeAskStatus extends TimerTask {
+		List<StatusPE> statusSystem;
+
+		@Override
+		public void run() {
+			synchronized (block) {
+				logger.info("Init AskStatus");
+				try {
+					// logger.info("Wait to AskMonitor");
+					block.wait();
+					// logger.info("Go AskMonitor");
+				} catch (InterruptedException e) {
+					getLogger()
+							.error("InterruptedException: " + e.getMessage());
+				}
+				
+				logger.info("Post wait AskStatus");
+
+				/* Consulta del estado al monitor */
+				statusSystem = getMonitor().askStatus();
+				
+				logger.info("Post function AskStatus");
+
+				// logger.info("Finish AskStatus");
+
+				/* Análisis de cada PE según lo entregado por el monitor */
+				for (StatusPE statusPE : statusSystem) {
+					
+					/* Lista de PEs que proveen eventos al PE analizado */
+					List<Class<? extends ProcessingElement>> listPE = getPESend(statusPE
+							.getPE());
+
+					/* Cambio del sistema */
+					changeReplication(listPE, statusPE);
+
+					logger.debug("[statusPE] Finish ChangeReplication"
+							+ statusPE.getPE().getCanonicalName());
+				}
+				logger.info("Finish AskStatus");
+			}
+		}
+
+		/**
+		 * Este método obtendrá todos los PEs que proveen de eventos al PE
+		 * analizado. De tal manera que se pueda cambiar su llave de
+		 * replicación, en caso que el PE analizado haya cambiado su estado.
+		 * 
+		 * @param peReplication
+		 *            PE analizado que se utilizar para buscar todos los PEs que
+		 *            le proveen eventos.
+		 * @return Todos los PEs que provee eventos al PE que se utilizó como
+		 *         parámetro de la función.
+		 */
+		private List<Class<? extends ProcessingElement>> getPESend(
+				Class<? extends ProcessingElement> peReplication) {
+
+			List<Class<? extends ProcessingElement>> listPE = new ArrayList<Class<? extends ProcessingElement>>();
+
+			for (TopologyApp topology : getMonitor().getTopologySystem()) {
+				logger.debug("[peReplication] " + peReplication
+						+ " | [peRecibe] " + topology.getPeRecibe());
+				if (peReplication.equals(topology.getPeRecibe())) {
+					if (topology.getAdapter() == null)
+						listPE.add(topology.getPeSend());
+				}
+			}
+
+			return listPE;
 		}
 
 	}

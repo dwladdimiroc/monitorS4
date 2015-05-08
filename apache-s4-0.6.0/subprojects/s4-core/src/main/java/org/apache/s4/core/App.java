@@ -26,7 +26,6 @@ import java.util.Queue;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.collections4.queue.CircularFifoQueue;
@@ -66,7 +65,7 @@ public abstract class App {
 	/* All the PE prototypes and history in this app. */
 	final private List<ProcessingElement> pePrototypes = new ArrayList<ProcessingElement>();
 	final private Queue<Map<Class<? extends ProcessingElement>, Long>> historyPE = new CircularFifoQueue<Map<Class<? extends ProcessingElement>, Long>>(
-			50);
+			5);
 
 	// /* Stream to PE prototype relations. */
 	// final private Multimap<Streamable<? extends Event>, ProcessingElement>
@@ -212,7 +211,7 @@ public abstract class App {
 				getEventCount.scheduleAtFixedRate(new OnTimeGetEventCount(), 0,
 						1000, TimeUnit.MILLISECONDS);
 
-				getLogger().info("TimerMonitor get eventCount");
+				// getLogger().info("TimerMonitor get eventCount");
 
 				/*
 				 * La segunda hebra se utilizará para enviar los datos de los
@@ -222,9 +221,9 @@ public abstract class App {
 				ScheduledExecutorService sendStatus = Executors
 						.newSingleThreadScheduledExecutor();
 				sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 10000,
-						5000, TimeUnit.MILLISECONDS);
+						15000, TimeUnit.MILLISECONDS);
 
-				getLogger().info("TimerMonitor send status");
+				// getLogger().info("TimerMonitor send status");
 
 				/*
 				 * Finalmente, la tercera se dedicará a ser el callback del
@@ -235,7 +234,7 @@ public abstract class App {
 				ScheduledExecutorService pullStatus = Executors
 						.newSingleThreadScheduledExecutor();
 				pullStatus.scheduleAtFixedRate(new OnTimeAskStatus(), 10000,
-						5000, TimeUnit.MILLISECONDS);
+						15000, TimeUnit.MILLISECONDS);
 
 				getLogger().info("TimerMonitor pull status");
 			}
@@ -301,11 +300,12 @@ public abstract class App {
 
 			synchronized (blockSend) {
 				try {
-					logger.debug("Wait for SendStatistics");
+					// logger.debug("Wait for SendStatistics");
 					blockSend.wait(1000);
-					logger.debug("Continue for Send Status");
+					// logger.debug("Continue for Send Status");
 				} catch (InterruptedException e) {
-					getLogger().error("InterruptedException: " + e.getMessage());
+					getLogger()
+							.error("InterruptedException: " + e.getMessage());
 				}
 
 				synchronized (block) {
@@ -332,7 +332,9 @@ public abstract class App {
 					}
 
 					/* Envío del historial de todos de los PEs */
+					// logger.debug("Init Send History");
 					getMonitor().sendHistory(historyPE);
+					// logger.debug("Finish Send History");
 
 					/*
 					 * Avisará al Thread de AskStatus que está disponible para
@@ -342,6 +344,8 @@ public abstract class App {
 					block.notify();
 				}
 			}
+
+			// logger.debug("Finish Task Send Status");
 		}
 	}
 
@@ -358,28 +362,39 @@ public abstract class App {
 		@Override
 		public void run() {
 			synchronized (block) {
+				logger.info("Init AskStatus");
 				try {
 					// logger.info("Wait to AskMonitor");
 					block.wait();
 					// logger.info("Go AskMonitor");
 				} catch (InterruptedException e) {
-					getLogger().error("InterruptedException: " + e.getMessage());
+					getLogger()
+							.error("InterruptedException: " + e.getMessage());
 				}
+				
+				logger.info("Post wait AskStatus");
 
 				/* Consulta del estado al monitor */
 				statusSystem = getMonitor().askStatus();
+				
+				logger.info("Post function AskStatus");
 
 				// logger.info("Finish AskStatus");
 
 				/* Análisis de cada PE según lo entregado por el monitor */
 				for (StatusPE statusPE : statusSystem) {
+					
 					/* Lista de PEs que proveen eventos al PE analizado */
 					List<Class<? extends ProcessingElement>> listPE = getPESend(statusPE
 							.getPE());
+
 					/* Cambio del sistema */
 					changeReplication(listPE, statusPE);
-				}
 
+					logger.debug("[statusPE] Finish ChangeReplication"
+							+ statusPE.getPE().getCanonicalName());
+				}
+				logger.info("Finish AskStatus");
 			}
 		}
 
@@ -398,9 +413,13 @@ public abstract class App {
 				Class<? extends ProcessingElement> peReplication) {
 
 			List<Class<? extends ProcessingElement>> listPE = new ArrayList<Class<? extends ProcessingElement>>();
+
 			for (TopologyApp topology : getMonitor().getTopologySystem()) {
+				logger.debug("[peReplication] " + peReplication
+						+ " | [peRecibe] " + topology.getPeRecibe());
 				if (peReplication.equals(topology.getPeRecibe())) {
-					listPE.add(topology.getPeSend());
+					if (topology.getAdapter() == null)
+						listPE.add(topology.getPeSend());
 				}
 			}
 
@@ -413,6 +432,8 @@ public abstract class App {
 		 * ese PE deberán aumentar o disminuir su llave de replicación. Por otra
 		 * parte, en caso que disminuya, se deberá eliminar el PE con la llave
 		 * eliminada (es decir, el número mayor de los PEs instanciados).
+		 * 
+		 * @param listAdapter
 		 * 
 		 * @param listPESend
 		 * @param statusPE
@@ -448,11 +469,17 @@ public abstract class App {
 							int replicationCurrent = PEPrototype
 									.getReplicationPE(statusPE.getPE());
 
+							logger.debug("[replicationAnalyzed] "
+									+ replicationAnalyzed
+									+ " | [replicationCurrent] "
+									+ replicationCurrent);
+
 							if (replicationAnalyzed > replicationCurrent) {
 
-								getLogger().debug("Increment PE  "
-										+ statusPE.getPE() + " in PE "
-										+ PEPrototype.getClass());
+								getLogger().debug(
+										"Increment PE  " + statusPE.getPE()
+												+ " in PE "
+												+ PEPrototype.getClass());
 
 								PEPrototype.setReplicationPE(statusPE.getPE(),
 										statusPE.getReplication());
@@ -464,12 +491,14 @@ public abstract class App {
 								for (ProcessingElement PE : PEPrototype
 										.getInstances()) {
 
-									getLogger().debug("["
-											+ PE.getClass().getCanonicalName()
-											+ "] Replication: "
-											+ PEPrototype
-													.getReplicationPE(statusPE
-															.getPE()));
+									getLogger()
+											.debug("["
+													+ PE.getClass()
+															.getCanonicalName()
+													+ "] Replication: "
+													+ PEPrototype
+															.getReplicationPE(statusPE
+																	.getPE()));
 
 									PE.setReplicationPE(statusPE.getPE(),
 											statusPE.getReplication());
@@ -486,9 +515,10 @@ public abstract class App {
 								 */
 								removeReplication(statusPE);
 
-								getLogger().debug("Decrement PE  "
-										+ statusPE.getPE() + " in PE "
-										+ PEPrototype.getClass());
+								getLogger().debug(
+										"Decrement PE  " + statusPE.getPE()
+												+ " in PE "
+												+ PEPrototype.getClass());
 
 								PEPrototype.setReplicationPE(statusPE.getPE(),
 										statusPE.getReplication());
@@ -626,7 +656,8 @@ public abstract class App {
 
 		for (ProcessingElement pe : getPePrototypes()) {
 
-			getLogger().trace("Removing PE proto [{}].", pe.getClass().getName());
+			getLogger().trace("Removing PE proto [{}].",
+					pe.getClass().getName());
 
 			/* Remove all instances. */
 			pe.removeAll();

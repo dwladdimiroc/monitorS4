@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Queue;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.s4.core.ProcessingElement;
 import org.apache.s4.core.adapter.AdapterApp;
-import org.apache.s4.core.overloadgen.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -142,7 +140,7 @@ public class S4Monitor {
 	 */
 	private double getRho(Class<? extends ProcessingElement> pECurrent, long μ,
 			Map<Class<? extends ProcessingElement>, Long> epochPE,
-			Map<Class<? extends AdapterApp>, Long> map) {
+			Map<Class<? extends AdapterApp>, Long> epochAdapter) {
 
 		/*
 		 * Obtener la tasa de llegada de todos los PEs que son emisores del PE
@@ -154,7 +152,7 @@ public class S4Monitor {
 				if (topology.getAdapter() == null) {
 					λ += epochPE.get(topology.getPeSend());
 				} else {
-					λ += map.get(topology.getAdapter());
+					λ += epochAdapter.get(topology.getAdapter());
 				}
 			}
 		}
@@ -218,35 +216,57 @@ public class S4Monitor {
 	 */
 	public void sendHistoryAdapter(
 			Map<Class<? extends AdapterApp>, Queue<Long>> historyAdapter) {
+		boolean printHistory = false;
+
 		this.listHistoryAdapter.add(historyAdapter);
-		printfListHistoryAdapter();
+
+		if (printHistory)
+			printfListHistoryAdapter();
 	}
 
-	public void printfListHistoryAdapter() {
-		List<Long> valueAdapter = new ArrayList<Long>();
+	/**
+	 * Imprime el historial de los distintos Adapters en el Sistema
+	 */
+	private void printfListHistoryAdapter() {
 
 		for (Map<Class<? extends AdapterApp>, Queue<Long>> historyAdapter : this.listHistoryAdapter) {
-			set
+			for (Class<? extends AdapterApp> adapterApp : historyAdapter
+					.keySet()) {
+				logger.debug("[Adapter] {} | [History] {}",
+						new String[] { adapterApp.getCanonicalName(),
+								historyAdapter.get(adapterApp).toString() });
+			}
 		}
 	}
 
+	/**
+	 * getEpochAdapter retornará el valor de los Adapter en cierta época en
+	 * específico, de esta manera servirá para analizar el flujo de entrada a
+	 * los PEs en el grafo
+	 * 
+	 * @param epoch
+	 *            que se analizará del historial del Adapter
+	 * @return flujo de entrada de los primeros PEs en el grafo
+	 */
 	private Map<Class<? extends AdapterApp>, Long> getEpochAdapter(int epoch) {
-		// Map<Class<? extends AdapterApp>, Long> epochAdapter = new
-		// HashMap<Class<? extends AdapterApp>, Long>();
-		//
-		// for (Queue<Map<Class<? extends AdapterApp>, Long>> historyAdapter :
-		// this.listHistoryAdapter) {
-		// @SuppressWarnings("unchecked")
-		// Map<Class<? extends AdapterApp>, Long> mapCurrent = (Map<Class<?
-		// extends AdapterApp>, Long>) historyAdapter
-		// .toArray()[0];
-		//
-		// for (Class<? extends AdapterApp> adapter : mapCurrent.keySet())
-		// epochAdapter.put(adapter, mapCurrent.get(adapter));
-		// }
-		//
-		// return epochAdapter;
-		return null;
+		Map<Class<? extends AdapterApp>, Long> epochAdapter = new HashMap<Class<? extends AdapterApp>, Long>();
+
+		/* Solicitamos todos los historiales de los Adapters */
+		for (Map<Class<? extends AdapterApp>, Queue<Long>> historyAdapter : this.listHistoryAdapter) {
+			/* Analizamos que adapter vamos a sacar su flujo en cierta época */
+			for (Class<? extends AdapterApp> adapterApp : historyAdapter
+					.keySet()) {
+				/*
+				 * Para posteriormente, guardar este valor en un map, de tal
+				 * manera de obtenerlo después
+				 */
+				long eventEpoch = (long) historyAdapter.get(adapterApp)
+						.toArray()[epoch];
+				epochAdapter.put(adapterApp, eventEpoch);
+			}
+		}
+
+		return epochAdapter;
 	}
 
 	/**
@@ -263,12 +283,19 @@ public class S4Monitor {
 	 */
 	public void sendHistory(
 			Queue<Map<Class<? extends ProcessingElement>, Long>> historyPEs) {
+		boolean printHistory = false;
+
 		int epoch = 0;
 		/* Solicitamos una muestra en el tiempo */
-		for (Map<Class<? extends ProcessingElement>, Long> epochPE : historyPEs) {
+		for (int epochCurrent = 0; epochCurrent < historyPEs.size(); epochCurrent++) {
+			@SuppressWarnings("unchecked")
+			Map<Class<? extends ProcessingElement>, Long> epochPE = (Map<Class<? extends ProcessingElement>, Long>) historyPEs
+					.toArray()[epochCurrent];
+
 			/* Solicitamos todos los PEs que poseemos en el Map de ese período */
 			for (Class<? extends ProcessingElement> PECurrent : epochPE
 					.keySet()) {
+
 				/*
 				 * Donde analizaremos cada uno de los PEs en esa época en
 				 * específico
@@ -285,10 +312,14 @@ public class S4Monitor {
 		/* Limpiamos la variable auxiliar del Adapter */
 		listHistoryAdapter.clear();
 
-		printHistoryForPE();
+		if (printHistory)
+			printHistoryForPE();
 
 	}
 
+	/**
+	 * Imprime los distintos historiales de los PEs en el sistema
+	 */
 	private void printHistoryForPE() {
 		logger.debug("Print HistoryPE");
 		for (StatusPE status : statusSystem) {
@@ -328,14 +359,8 @@ public class S4Monitor {
 		for (Class<? extends ProcessingElement> recibe : listPERecibe) {
 			for (StatusPE statusPE : getStatusSystem()) {
 				if (recibe.equals(statusPE.getPE())) {
-					/*
-					 * Se debe realizar una diferencia, debido que son el total
-					 * de eventos procesos en ese período menos el ya
-					 * procesados. De esta manera, obtendremos el número de
-					 * eventos en el Δt deseado.
-					 */
-					statusPE.setRecibeEvent(eventCount
-							- statusPE.getRecibeEvent());
+					statusPE.setRecibeEvent(statusPE.getRecibeEvent()
+							+ eventCount);
 				}
 			}
 		}
@@ -556,20 +581,53 @@ public class S4Monitor {
 		 * predictor del tercer período indicaron que debe aumentar.
 		 */
 
-		// logger.debug("[{}] MarkMap: {}", new String[] {
-		// statusPE.getPE().getCanonicalName(),
-		// statusPE.getMarkMap().toString() });
+		logger.debug("[{}] MarkMap: {}", new String[] {
+				statusPE.getPE().getCanonicalName(),
+				statusPE.getMarkMap().toString() });
 
-		if (statusPE.getMarkMap().containsAll(Arrays.asList(1, 1))) {
+		if (containsCondition(statusPE.getMarkMap(), true)) {
 			statusPE.getMarkMap().clear();
 			return 1;
-		} else if (statusPE.getMarkMap().containsAll(Arrays.asList(-1, -1))) {
+		} else if (containsCondition(statusPE.getMarkMap(), false)) {
 			statusPE.getMarkMap().clear();
 			return -1;
 		}
 
 		return 0;
 
+	}
+
+	/**
+	 * containsCondition analiza si posee una secuencia que diga que
+	 * efectivamente debe generar un cambio en el sistema
+	 * 
+	 * @param queue
+	 *            historia de mark en el PE
+	 * @param condition
+	 *            de si debe buscar patrón de aumento o decremento de las
+	 *            réplicas
+	 * @return boolean que indica si encontró o no un patrón de cambio
+	 */
+	private boolean containsCondition(Queue<Integer> queue, boolean condition) {
+		int value;
+		/* Condición */
+		if (condition)
+			value = 1;
+		else
+			value = -1;
+
+		/* Contador */
+		int cont = 0;
+		for (int index : queue) {
+			/* Si existe análisis de réplica */
+			if (index == value) {
+				cont++;
+				if (cont == 2)
+					return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -697,9 +755,8 @@ public class S4Monitor {
 
 			int status = administrationLoad(statusPE);
 
-			// logger.debug("[Finish administrationLoad] PE: " +
-			// statusPE.getPE()
-			// + " | status: " + status);
+			logger.debug("[Finish administrationLoad] PE: " + statusPE.getPE()
+					+ " | status: " + status);
 
 			/*
 			 * Se entenderá que debe replicarse si retornar el valor 1, por lo
@@ -730,7 +787,7 @@ public class S4Monitor {
 
 		}
 
-		metricsStatusSystem();
+		// metricsStatusSystem();
 		clearStatusSystem();
 
 		return getStatusSystem();

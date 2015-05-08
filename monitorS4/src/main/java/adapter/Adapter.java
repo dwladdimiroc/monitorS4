@@ -31,8 +31,8 @@ public class Adapter extends AdapterApp implements Runnable {
 
 	private Thread thread;
 
-	private int[] time = { 12000, 1500, 2000, 1500, 1000, 1000, 1500, 2000,
-			1500, 1000 };
+	private int[] time = { 30000, 30000, 0, 1500, 1000, 1000, 1500, 2000, 1500,
+			1000 };
 
 	@Override
 	protected void onInit() {
@@ -40,7 +40,7 @@ public class Adapter extends AdapterApp implements Runnable {
 		logger.info("Create Adapter");
 		this.registerMonitor(ProcessOnePE.class);
 		thread = new Thread(this);
-		
+
 		super.onInit();
 	}
 
@@ -48,7 +48,7 @@ public class Adapter extends AdapterApp implements Runnable {
 	protected void onStart() {
 		/* Este orden es importante */
 		super.onStart();
-		
+
 		try {
 			thread.start();
 		} catch (Exception e) {
@@ -60,9 +60,7 @@ public class Adapter extends AdapterApp implements Runnable {
 	public void run() {
 		logger.debug("Time init (ns): " + System.nanoTime());
 
-		for (int loop = 0; loop < 2; loop++) {
-
-			logger.info("Init Bash");
+		while (true) {
 
 			for (int i = 0; i < 100; i++) {
 
@@ -84,13 +82,12 @@ public class Adapter extends AdapterApp implements Runnable {
 			}
 
 			try {
-				Thread.sleep(time[loop]);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 
 		}
 
-		logger.info("Finish Adapter");
 	}
 }

@@ -21,7 +21,6 @@ public class StatusPE {
 	private long sendEvent;
 	private long queueEvent;
 	private Queue<Double> history;
-	private String name;
 	private Class<? extends ProcessingElement> pe;
 	private int replication;
 	private Queue<Integer> markMap;
@@ -30,8 +29,7 @@ public class StatusPE {
 		recibeEvent = 0;
 		sendEvent = 0;
 		queueEvent = 0;
-		history = new CircularFifoQueue<Double>(50);
-		name = null;
+		history = new CircularFifoQueue<Double>(5);
 		pe = null;
 		replication = 0;
 		markMap = new CircularFifoQueue<Integer>(6);
