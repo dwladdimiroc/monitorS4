@@ -43,6 +43,7 @@ public class RemoteStream implements Streamable<Event> {
 	private long eventCount = 0;
 
 	RemoteSenders remoteSenders;
+	final private ReceiverImpl receiver;
 
 	Hasher hasher;
 
