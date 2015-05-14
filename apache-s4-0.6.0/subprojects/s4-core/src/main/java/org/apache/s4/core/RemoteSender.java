@@ -40,7 +40,6 @@ public class RemoteSender {
         this.emitter = emitter;
         this.hasher = hasher;
         this.remoteClusterName = clusterName;
-
     }
 
     public void send(String hashKey, ByteBuffer message) throws InterruptedException {

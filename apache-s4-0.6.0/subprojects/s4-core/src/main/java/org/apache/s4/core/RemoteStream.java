@@ -43,7 +43,7 @@ public class RemoteStream implements Streamable<Event> {
 	private long eventCount = 0;
 
 	RemoteSenders remoteSenders;
-	final private ReceiverImpl receiver;
+	ReceiverImpl receiver;
 
 	Hasher hasher;
 
@@ -51,19 +51,21 @@ public class RemoteStream implements Streamable<Event> {
 	final private App app;
 	private static Logger logger = LoggerFactory.getLogger(RemoteStream.class);
 
-	public RemoteStream(App app, String name, int eventCount, KeyFinder<Event> finder,
-			RemoteSenders remoteSenders, Hasher hasher,
-			RemoteStreams remoteStreams, String clusterName) {
+	public RemoteStream(App app, String name, int eventCount,
+			KeyFinder<Event> finder, RemoteSenders remoteSenders,
+			Hasher hasher, RemoteStreams remoteStreams, String clusterName) {
 		this.app = app;
 		this.name = name;
 		this.eventCount = eventCount;
 		this.remoteSenders = remoteSenders;
+		this.receiver = app.getReceiver();
 		this.hasher = hasher;
 		if (finder == null) {
 			this.key = null;
 		} else {
 			this.key = new Key<Event>(finder, DEFAULT_SEPARATOR);
 		}
+				
 		remoteStreams.addOutputStream(clusterName, name);
 
 	}
@@ -81,13 +83,13 @@ public class RemoteStream implements Streamable<Event> {
 			remoteSenders.send(null, event);
 		}
 	}
-	
+
 	@Override
-	public void notification(Notification notification){
+	public void notification(Notification notification) {
 		notification.setStream(getName());
 		remoteSenders.sendNotification(notification);
 	}
-	
+
 	@Override
 	public void sendStatistics(Statistics statistics) {
 		statistics.setStream(getName());

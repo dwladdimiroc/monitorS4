@@ -200,6 +200,8 @@ public abstract class App {
 			}
 
 			if (runMonitor) {
+				
+				
 
 				/*
 				 * La primera hebra se utilizará para enviar los datos de los
@@ -780,7 +782,7 @@ public abstract class App {
 	 * to.
 	 */
 	public int getPartitionCount() {
-		return cluster.getPhysicalCluster().getPartitionCount();
+		return getCluster().getPhysicalCluster().getPartitionCount();
 	}
 
 	/**
@@ -978,6 +980,11 @@ public abstract class App {
 	public static Logger getLogger() {
 		return logger;
 	}
+
+	public Cluster getCluster() {
+		return cluster;
+	}
+
 
 	static private String toString(ProcessingElement pe) {
 		return pe != null ? pe.getClass().getName() + " " : "null ";

@@ -56,6 +56,7 @@ public abstract class AdapterApp extends App {
 	String outputStreamName;
 
 	private RemoteStream remoteStream;
+	
 	final private Map<Class<? extends ProcessingElement>, Integer> replications = new HashMap<Class<? extends ProcessingElement>, Integer>();
 	final private Queue<Long> historyAdapter = new CircularFifoQueue<Long>(5);
 	final private List<Class<? extends ProcessingElement>> listPE = new ArrayList<Class<? extends ProcessingElement>>();
@@ -131,6 +132,8 @@ public abstract class AdapterApp extends App {
 
 	@Override
 	protected void onStart() {
+		getLogger().debug("Cluster" + getCluster().getPhysicalCluster().toString());
+		
 		/*
 		 * Esta hebra se utilizará para enviar los datos del Adapter cada un
 		 * segundo, para poseer el historial del Adapter
