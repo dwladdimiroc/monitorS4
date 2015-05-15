@@ -40,7 +40,6 @@ public class TCPRemoteEmitter extends TCPEmitter implements RemoteEmitter {
     @Inject
     public TCPRemoteEmitter(@Assisted Cluster topology, @Named("s4.comm.timeout") int timeout,
             @Named("s4.emitter.maxPendingWrites") int maxPendingWrites) throws InterruptedException {
-    	logger
         super(topology, timeout, maxPendingWrites);
     }
 

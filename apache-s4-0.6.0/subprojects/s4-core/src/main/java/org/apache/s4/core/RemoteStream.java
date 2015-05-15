@@ -23,6 +23,7 @@ import org.apache.s4.base.Hasher;
 import org.apache.s4.base.Key;
 import org.apache.s4.base.KeyFinder;
 import org.apache.s4.comm.topology.RemoteStreams;
+import org.apache.s4.core.Stream.StreamEventProcessingTask;
 import org.apache.s4.core.adapter.Notification;
 import org.apache.s4.core.adapter.Statistics;
 import org.slf4j.Logger;
@@ -43,7 +44,6 @@ public class RemoteStream implements Streamable<Event> {
 	private long eventCount = 0;
 
 	RemoteSenders remoteSenders;
-	ReceiverImpl receiver;
 
 	Hasher hasher;
 
@@ -58,7 +58,6 @@ public class RemoteStream implements Streamable<Event> {
 		this.name = name;
 		this.eventCount = eventCount;
 		this.remoteSenders = remoteSenders;
-		this.receiver = app.getReceiver();
 		this.hasher = hasher;
 		if (finder == null) {
 			this.key = null;

@@ -124,7 +124,7 @@ public class TCPEmitter implements Emitter, ClusterChangeListener {
 			@Named("s4.emitter.maxPendingWrites") int maxPendingWrites)
 			throws InterruptedException {
 		
-		logger.debug("Create TCP Emitter | Cluster: " + topology.getPhysicalCluster().toString());
+		// logger.debug("Create TCP Emitter | Cluster: " + topology.getPhysicalCluster().toString());
 		
 		this.nettyTimeout = timeout;
 		this.topology = topology;

@@ -17,6 +17,7 @@
  */
 package org.apache.s4.comm.topology;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -38,6 +39,11 @@ public interface RemoteStreams {
      * Lists consumers of a given stream
      */
     public abstract Set<StreamConsumer> getConsumers(String streamName);
+    
+    /**
+     * Everybody lists consumers
+     */
+    public Map<String, Map<String, Set<StreamConsumer>>> getAllConsumers();
 
     /**
      * Publishes availability of an output stream

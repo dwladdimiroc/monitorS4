@@ -79,6 +79,8 @@ public class TCPListener implements Listener {
     public TCPListener(Assignment assignment, @Named("s4.comm.timeout") int timeout, final Receiver receiver,
             final DeserializerExecutorFactory deserializerExecutorFactory) {
         // wait for an assignment
+    	// logger.debug("Cluster" + assignment.assignClusterNode().toString());
+    	
         node = assignment.assignClusterNode();
         nettyTimeout = timeout;
         ChannelFactory factory = new NioServerSocketChannelFactory(Executors.newCachedThreadPool(),

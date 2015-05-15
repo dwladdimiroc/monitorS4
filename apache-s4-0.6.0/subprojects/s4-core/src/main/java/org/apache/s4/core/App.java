@@ -18,6 +18,9 @@
 
 package org.apache.s4.core;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -86,8 +89,8 @@ public abstract class App {
 	 * sendStatus haya terminado su función.
 	 */
 	private Object block = new Object();
-	public Object blockAdapter = new Object();
-	public Object blockSend = new Object();
+	private Object blockAdapter = new Object();
+	private Object blockSend = new Object();
 
 	@Inject
 	private Sender sender;
@@ -192,16 +195,14 @@ public abstract class App {
 		getLogger().info("Start S4Monitor");
 		monitor.startMetrics();
 
-		synchronized (blockAdapter) {
+		synchronized (getBlockAdapter()) {
 			try {
-				blockAdapter.wait();
+				getBlockAdapter().wait();
 			} catch (InterruptedException e) {
 				getLogger().error(e.getMessage());
 			}
 
 			if (runMonitor) {
-				
-				
 
 				/*
 				 * La primera hebra se utilizará para enviar los datos de los
@@ -300,10 +301,10 @@ public abstract class App {
 		@Override
 		public void run() {
 
-			synchronized (blockSend) {
+			synchronized (getBlockSend()) {
 				try {
 					// logger.debug("Wait for SendStatistics");
-					blockSend.wait(1000);
+					getBlockSend().wait(1000);
 					// logger.debug("Continue for Send Status");
 				} catch (InterruptedException e) {
 					getLogger()
@@ -373,19 +374,19 @@ public abstract class App {
 					getLogger()
 							.error("InterruptedException: " + e.getMessage());
 				}
-				
+
 				logger.info("Post wait AskStatus");
 
 				/* Consulta del estado al monitor */
 				statusSystem = getMonitor().askStatus();
-				
+
 				logger.info("Post function AskStatus");
 
 				// logger.info("Finish AskStatus");
 
 				/* Análisis de cada PE según lo entregado por el monitor */
 				for (StatusPE statusPE : statusSystem) {
-					
+
 					/* Lista de PEs que proveen eventos al PE analizado */
 					List<Class<? extends ProcessingElement>> listPE = getPESend(statusPE
 							.getPE());
@@ -625,6 +626,44 @@ public abstract class App {
 			startMonitor();
 
 		onStart();
+
+		if (!getConditionAdapter()) {
+			Thread thread = new Thread(new SendEvent());
+			thread.start();
+		}
+
+	}
+
+	public class SendEvent implements Runnable {
+
+		@Override
+		public void run(){
+			while (true) {
+				String sentence;
+		        String modifiedSentence;
+
+		        Socket clientSocket = null;
+		        DataOutputStream outToServer;
+				try {
+					clientSocket = new Socket("localhost", 15000);
+					outToServer = new DataOutputStream(clientSocket.getOutputStream());
+					sentence = "Hola";
+			        outToServer.writeBytes(sentence + '\n');
+			        modifiedSentence = "Hola";
+			        System.out.println(modifiedSentence);
+			        clientSocket.close();
+				} catch (IOException eClientSocket) {
+					logger.error(eClientSocket.toString());
+				}
+
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 
 	}
 
@@ -981,10 +1020,17 @@ public abstract class App {
 		return logger;
 	}
 
+	public Object getBlockAdapter() {
+		return blockAdapter;
+	}
+
+	public Object getBlockSend() {
+		return blockSend;
+	}
+
 	public Cluster getCluster() {
 		return cluster;
 	}
-
 
 	static private String toString(ProcessingElement pe) {
 		return pe != null ? pe.getClass().getName() + " " : "null ";

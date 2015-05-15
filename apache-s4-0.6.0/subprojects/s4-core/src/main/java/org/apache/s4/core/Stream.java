@@ -253,9 +253,9 @@ public class Stream<T extends Event> implements Streamable {
 		 * entonces el monitor empezará a iniciarse
 		 */
 		if (notification.getStatus()) {
-			synchronized (this.app.blockAdapter) {
+			synchronized (this.app.getBlockAdapter()) {
 				logger.debug("InitAdapter: {}", notification.getStatus());
-				this.app.blockAdapter.notify();
+				this.app.getBlockAdapter().notify();
 			}
 		}
 		// TODO abstraction around queue and add dropped counter
@@ -272,7 +272,7 @@ public class Stream<T extends Event> implements Streamable {
 		 * En caso que llegue un mensaje que sea exclusivo de las estadísticas,
 		 * entonces el monitor empezará a iniciarse
 		 */
-		synchronized (this.app.blockSend) {
+		synchronized (this.app.getBlockSend()) {
 			logger.debug("Send statistics Adapter " + statistics.getAdapter());
 
 			this.app.getMonitor().sendHistoryAdapter(statistics.getHistory());
@@ -285,10 +285,9 @@ public class Stream<T extends Event> implements Streamable {
 				logger.error("InterruptedException: " + e);
 			}
 
-			this.app.blockSend.notify();
+			this.app.getBlockSend().notify();
 		}
 
-		// }
 		// TODO abstraction around queue and add dropped counter
 	}
 

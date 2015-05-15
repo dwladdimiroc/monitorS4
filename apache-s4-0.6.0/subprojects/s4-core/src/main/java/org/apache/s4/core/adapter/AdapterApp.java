@@ -18,7 +18,13 @@
 
 package org.apache.s4.core.adapter;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +62,7 @@ public abstract class AdapterApp extends App {
 	String outputStreamName;
 
 	private RemoteStream remoteStream;
-	
+
 	final private Map<Class<? extends ProcessingElement>, Integer> replications = new HashMap<Class<? extends ProcessingElement>, Integer>();
 	final private Queue<Long> historyAdapter = new CircularFifoQueue<Long>(5);
 	final private List<Class<? extends ProcessingElement>> listPE = new ArrayList<Class<? extends ProcessingElement>>();
@@ -132,27 +138,30 @@ public abstract class AdapterApp extends App {
 
 	@Override
 	protected void onStart() {
-		getLogger().debug("Cluster" + getCluster().getPhysicalCluster().toString());
-		
+
 		/*
 		 * Esta hebra se utilizará para enviar los datos del Adapter cada un
 		 * segundo, para poseer el historial del Adapter
 		 */
 
-		ScheduledExecutorService getEventCountAdapter = Executors
-				.newSingleThreadScheduledExecutor();
-		getEventCountAdapter.scheduleAtFixedRate(
-				new OnTimeGetEventCountAdapter(), 0, 1000,
-				TimeUnit.MILLISECONDS);
+		if (getRunMonitor()) {
 
-		getLogger().info("TimerMonitorAdapter get eventCount");
+			ScheduledExecutorService getEventCountAdapter = Executors
+					.newSingleThreadScheduledExecutor();
+			getEventCountAdapter.scheduleAtFixedRate(
+					new OnTimeGetEventCountAdapter(), 0, 1000,
+					TimeUnit.MILLISECONDS);
 
-		ScheduledExecutorService sendStatusAdapter = Executors
-				.newSingleThreadScheduledExecutor();
-		sendStatusAdapter.scheduleAtFixedRate(new OnTimeSendStatusAdapter(),
-				10000, 15000, TimeUnit.MILLISECONDS);
+			getLogger().info("TimerMonitorAdapter get eventCount");
 
-		getLogger().info("TimerMonitorAdapter send status");
+			ScheduledExecutorService sendStatusAdapter = Executors
+					.newSingleThreadScheduledExecutor();
+			sendStatusAdapter.scheduleAtFixedRate(
+					new OnTimeSendStatusAdapter(), 10000, 15000,
+					TimeUnit.MILLISECONDS);
+
+			getLogger().info("TimerMonitorAdapter send status");
+		}
 
 	}
 
@@ -190,7 +199,7 @@ public abstract class AdapterApp extends App {
 			Statistics statistics = new Statistics();
 			statistics.setAdapter(getClassAdapter());
 			Map<Class<? extends AdapterApp>, Queue<Long>> mapAdapter = new HashMap<Class<? extends AdapterApp>, Queue<Long>>();
-				mapAdapter.put(getClassAdapter(), historyAdapter);
+			mapAdapter.put(getClassAdapter(), historyAdapter);
 			statistics.setHistory(mapAdapter);
 			statistics.setEventPeriod(getEventPeriod());
 
@@ -201,11 +210,70 @@ public abstract class AdapterApp extends App {
 		}
 
 	}
-	
+
+	/**
+	 * En este thread se desea poseer un puerto que escuche los datos que estén
+	 * siendo enviados por el monitor. De esta manera, de haber una variación en
+	 * el sistema, que el adapter también los realice.
+	 */
+	private class ListenerMonitor implements Runnable {
+
+		ServerSocket serverSocket;
+		Socket connectedSocket;
+		BufferedReader in;
+
+		public ListenerMonitor() {
+			serverSocket = null;
+			connectedSocket = null;
+			in = null;
+		}
+
+		@Override
+		public void run() {
+
+			try {
+				serverSocket = new ServerSocket(15000);
+				while (true) {
+					connectedSocket = serverSocket.accept();
+					in = new BufferedReader(new InputStreamReader(
+							connectedSocket.getInputStream()));
+
+					String line = in.readLine();
+					getLogger().info("Datos: " + line);
+					connectedSocket.close();
+				}
+
+			} catch (IOException e) {
+				getLogger().error(e.toString());
+				close();
+			} finally {
+				if (in != null) {
+					try {
+						in.close();
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+				}
+				if (serverSocket != null) {
+					try {
+						serverSocket.close();
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+				}
+			}
+		}
+	}
+
 	@Override
 	protected void onInit() {
 		remoteStream = createOutputStream(outputStreamName,
 				remoteStreamKeyFinder);
+
+		/* Thread que estará escuchando los datos que envía el monitor */
+		Thread tListenerMonitor = new Thread(new ListenerMonitor());
+		tListenerMonitor.start();
+
 		setConditionAdapter(true);
 
 		/* Notificación para indicar que se ha iniciado el Adapter */

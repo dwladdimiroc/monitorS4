@@ -104,6 +104,16 @@ public class ZkRemoteStreams implements IZkStateListener, IZkChildListener, Remo
             return streams.get(streamName).get("consumers");
         }
     }
+    
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.s4.comm.topology.RemoteStreams#getConsumers(java.lang.String)
+     */
+    @Override
+    public Map<String, Map<String, Set<StreamConsumer>>> getAllConsumers() {
+        return streams;
+    }
 
     /**
      * One method to do any processing if there is a change in ZK, all callbacks will be processed sequentially

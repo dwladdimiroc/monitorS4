@@ -93,7 +93,7 @@ public class ReceiverImpl implements Receiver {
 	public void receive(ByteBuffer message) {
 		Object messageObject = (Object) serDeser.deserialize(message);
 
-		if (messageObject.getClass().equals(Event.class)) {
+		if (messageObject.getClass().equals(Event.class)) {			
 			metrics.receivedEventFromCommLayer(message.array().length);
 
 			Event event = (Event) serDeser.deserialize(message);
@@ -131,6 +131,7 @@ public class ReceiverImpl implements Receiver {
 						streamId);
 			}
 		} else {
+			
 			Notification notification = (Notification) serDeser
 					.deserialize(message);
 
