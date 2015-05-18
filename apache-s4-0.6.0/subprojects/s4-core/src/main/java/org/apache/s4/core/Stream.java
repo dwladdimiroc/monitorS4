@@ -19,8 +19,11 @@
 package org.apache.s4.core;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.Queue;
 import java.util.concurrent.Executor;
 
+import org.apache.commons.collections4.queue.CircularFifoQueue;
 import org.apache.s4.base.Event;
 import org.apache.s4.base.GenericKeyFinder;
 import org.apache.s4.base.Key;
@@ -32,6 +35,7 @@ import org.apache.s4.comm.serialize.SerializerDeserializerFactory;
 import org.apache.s4.comm.staging.BlockingThreadPoolExecutorService;
 import org.apache.s4.core.adapter.Notification;
 import org.apache.s4.core.adapter.Statistics;
+import org.apache.s4.core.monitor.StatusPE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,6 +59,7 @@ public class Stream<T extends Event> implements Streamable {
 	private String name;
 	protected Key<T> key;
 	private ProcessingElement[] targetPEs;
+	private Map<Class<? extends ProcessingElement>, Queue<Event>> queueEventPEs;
 	private Executor eventProcessingExecutor;
 	final private Sender sender;
 	final private ReceiverImpl receiver;
@@ -158,6 +163,11 @@ public class Stream<T extends Event> implements Streamable {
 	 */
 	public Stream<T> setPEs(ProcessingElement... pes) {
 		this.targetPEs = pes;
+		
+		for(ProcessingElement pe : pes) {
+			this.queueEventPEs.put(pe.getClass(), new CircularFifoQueue<Event>(10000));
+		}
+		
 		return this;
 	}
 
@@ -222,6 +232,11 @@ public class Stream<T extends Event> implements Streamable {
 		logger.error("It can't send local statistics");
 	}
 
+	@Override
+	public void sendRemovePE(StatusPE statusPE) {
+		logger.error("It can't send local statusPE");
+	}
+
 	/**
 	 * The low level {@link ReceiverImpl} object call this method when a new
 	 * {@link Event} is available.
@@ -247,6 +262,10 @@ public class Stream<T extends Event> implements Streamable {
 			this.app.getMonitor().registerAdapter(notification.getAdapter(),
 					peRecibe);
 		}
+
+		/* Registro del puerto en la App */
+		this.app.adapterbyPort.put(notification.getAdapter(),
+				notification.getPort());
 
 		/*
 		 * En caso que llegue un mensaje que sea exclusivo de notificación,
@@ -289,6 +308,15 @@ public class Stream<T extends Event> implements Streamable {
 		}
 
 		// TODO abstraction around queue and add dropped counter
+	}
+
+	/**
+	 * The low level {@link ReceiverImpl} object call this method when a new
+	 * {@link StatusPE} is available.
+	 */
+	public void receiveRemovePE(StatusPE statusPE) {
+		/* Se deberá eliminar este PE */
+		this.app.removeReplication(statusPE);
 	}
 
 	/**
@@ -413,7 +441,6 @@ public class Stream<T extends Event> implements Streamable {
 
 					/* STEP 2: iterate and pass event to PE instance. */
 					for (ProcessingElement pe : pes) {
-
 						pe.handleInputEvent(event);
 					}
 
@@ -421,10 +448,10 @@ public class Stream<T extends Event> implements Streamable {
 
 					/* We have a key, send to target PE. */
 
-					/* STEP 1: find the PE instance for key. */
-					ProcessingElement pe = targetPEs[i].getInstanceForKey(key
-							.get(event));
-
+					// /* STEP 1.A: find the PE instance for key. */
+					// ProcessingElement pe = targetPEs[i].getInstanceForKey(key
+					// .get(event));
+					//
 					// if (name.equals("processTwoStream")) {
 					// logger.debug(
 					// "[PE] {} | [eventCount] {}",
@@ -432,13 +459,31 @@ public class Stream<T extends Event> implements Streamable {
 					// pe.getClass().getCanonicalName(),
 					// Long.toString(pe.getEventCount()) });
 					// }
+					//
+					// /* STEP 2: pass event to PE instance. */
+					// pe.handleInputEvent(event);
 
-					/* STEP 2: pass event to PE instance. */
-					pe.handleInputEvent(event);
+					/*
+					 * STEP 1.B: select the PE instance for round-robin or
+					 * disponibility.
+					 */
+					for (ProcessingElement pe : targetPEs[i].getInstances()) {
+
+						if (name.equals("processTwoStream")) {
+							logger.debug("[PE] {} | [eventCount] {}",
+									new String[] {
+											pe.getClass().getCanonicalName(),
+											Long.toString(pe.getEventCount()) });
+						}
+
+						/* STEP 2: pass event to PE instance. */
+						pe.handleInputEvent(event);
+
+					}
+
 				}
 			}
 
 		}
-
 	}
 }

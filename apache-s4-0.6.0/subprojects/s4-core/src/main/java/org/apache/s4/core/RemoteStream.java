@@ -26,6 +26,7 @@ import org.apache.s4.comm.topology.RemoteStreams;
 import org.apache.s4.core.Stream.StreamEventProcessingTask;
 import org.apache.s4.core.adapter.Notification;
 import org.apache.s4.core.adapter.Statistics;
+import org.apache.s4.core.monitor.StatusPE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -93,6 +94,12 @@ public class RemoteStream implements Streamable<Event> {
 	public void sendStatistics(Statistics statistics) {
 		statistics.setStream(getName());
 		remoteSenders.sendStatistics(statistics);
+	}
+	
+	@Override
+	public void sendRemovePE(StatusPE statusPE) {
+		statusPE.setStream(getName());
+		remoteSenders.sendRemovePE(statusPE);
 	}
 
 	@Override

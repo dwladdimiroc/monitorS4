@@ -18,8 +18,8 @@
 
 package org.apache.s4.core;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +40,7 @@ import org.apache.s4.base.SerializerDeserializer;
 import org.apache.s4.comm.serialize.SerializerDeserializerFactory;
 import org.apache.s4.comm.topology.Cluster;
 import org.apache.s4.comm.topology.RemoteStreams;
+import org.apache.s4.core.adapter.AdapterApp;
 import org.apache.s4.core.ft.CheckpointingFramework;
 import org.apache.s4.core.monitor.S4Monitor;
 import org.apache.s4.core.monitor.StatusPE;
@@ -78,6 +79,10 @@ public abstract class App {
 
 	/* Pes indexed by name. */
 	final Map<String, ProcessingElement> peByName = Maps.newHashMap();
+
+	/* Adapter indexed by port */
+	final Map<Class<? extends AdapterApp>, Integer> adapterbyPort = Maps
+			.newHashMap();
 
 	private ClockType clockType = ClockType.WALL_CLOCK;
 
@@ -297,9 +302,13 @@ public abstract class App {
 	 * de cada instancia de los PEs Prototipos.
 	 */
 	private class OnTimeSendStatus extends TimerTask {
+		long timeInit;
+		long timeFinal;
 
 		@Override
 		public void run() {
+
+			// getLogger().debug("Init Task Send Status");
 
 			synchronized (getBlockSend()) {
 				try {
@@ -312,6 +321,8 @@ public abstract class App {
 				}
 
 				synchronized (block) {
+					timeInit = System.currentTimeMillis();
+
 					/* Obtención de cada 'Stream' */
 					for (Streamable<Event> stream : getStreams()) {
 						/* Obtención de cada 'PE Prototype' */
@@ -334,9 +345,20 @@ public abstract class App {
 						}
 					}
 
+					timeFinal = System.currentTimeMillis();
+
+					monitor.getMetrics().setTimeSendMonitor(
+							timeFinal - timeInit);
+
 					/* Envío del historial de todos de los PEs */
 					// logger.debug("Init Send History");
+					timeInit = System.currentTimeMillis();
 					getMonitor().sendHistory(historyPE);
+					timeFinal = System.currentTimeMillis();
+
+					monitor.getMetrics().setTimeSendHistoryMonitor(
+							timeFinal - timeInit);
+
 					// logger.debug("Finish Send History");
 
 					/*
@@ -349,6 +371,7 @@ public abstract class App {
 			}
 
 			// logger.debug("Finish Task Send Status");
+
 		}
 	}
 
@@ -361,11 +384,15 @@ public abstract class App {
 	 */
 	private class OnTimeAskStatus extends TimerTask {
 		List<StatusPE> statusSystem;
+		long timeInit;
+		long timeFinal;
 
 		@Override
 		public void run() {
+			timeInit = System.currentTimeMillis();
+
 			synchronized (block) {
-				logger.info("Init AskStatus");
+				// logger.info("Init AskStatus");
 				try {
 					// logger.info("Wait to AskMonitor");
 					block.wait();
@@ -375,30 +402,43 @@ public abstract class App {
 							.error("InterruptedException: " + e.getMessage());
 				}
 
-				logger.info("Post wait AskStatus");
+				// logger.info("Post wait AskStatus");
 
 				/* Consulta del estado al monitor */
 				statusSystem = getMonitor().askStatus();
 
-				logger.info("Post function AskStatus");
+				// logger.info("Post function AskStatus");
 
 				// logger.info("Finish AskStatus");
 
 				/* Análisis de cada PE según lo entregado por el monitor */
 				for (StatusPE statusPE : statusSystem) {
 
+					/* Lista de los Adapters que proveen eventos al PE analizado */
+					List<Class<? extends AdapterApp>> listAdapter = getAdapter(statusPE
+							.getPE());
+
 					/* Lista de PEs que proveen eventos al PE analizado */
 					List<Class<? extends ProcessingElement>> listPE = getPESend(statusPE
 							.getPE());
 
-					/* Cambio del sistema */
-					changeReplication(listPE, statusPE);
+					/* Cambio del sistema en el adapter */
+					if (!listAdapter.isEmpty())
+						changeReplicationAdapter(listAdapter, statusPE);
 
-					logger.debug("[statusPE] Finish ChangeReplication"
-							+ statusPE.getPE().getCanonicalName());
+					/* Cambio del sistema en los PEs */
+					if (!listPE.isEmpty())
+						changeReplication(listPE, statusPE);
+
+					// logger.debug("[statusPE] Finish ChangeReplication"
+					// + statusPE.getPE().getCanonicalName());
 				}
-				logger.info("Finish AskStatus");
+				// logger.info("Finish AskStatus");
 			}
+
+			timeFinal = System.currentTimeMillis();
+
+			monitor.getMetrics().setTimeAskMonitor(timeFinal - timeInit);
 		}
 
 		/**
@@ -418,8 +458,6 @@ public abstract class App {
 			List<Class<? extends ProcessingElement>> listPE = new ArrayList<Class<? extends ProcessingElement>>();
 
 			for (TopologyApp topology : getMonitor().getTopologySystem()) {
-				logger.debug("[peReplication] " + peReplication
-						+ " | [peRecibe] " + topology.getPeRecibe());
 				if (peReplication.equals(topology.getPeRecibe())) {
 					if (topology.getAdapter() == null)
 						listPE.add(topology.getPeSend());
@@ -430,16 +468,78 @@ public abstract class App {
 		}
 
 		/**
+		 * Este método obtendrá todos los Adapters que proveen de eventos al PE
+		 * analizado. De tal manera que se pueda cambiar su llave de
+		 * replicación, en caso que el PE analizado haya cambiado su estado.
+		 * 
+		 * @param peReplication
+		 *            PE analizado que se utilizar para buscar todos los PEs que
+		 *            le proveen eventos.
+		 * @return Todos los Adapters que provee eventos al PE que se utilizó
+		 *         como parámetro de la función.
+		 */
+		private List<Class<? extends AdapterApp>> getAdapter(
+				Class<? extends ProcessingElement> peReplication) {
+
+			List<Class<? extends AdapterApp>> listAdapter = new ArrayList<Class<? extends AdapterApp>>();
+
+			for (TopologyApp topology : getMonitor().getTopologySystem()) {
+				if (peReplication.equals(topology.getPeRecibe())) {
+					if (topology.getAdapter() != null)
+						listAdapter.add(topology.getAdapter());
+				}
+			}
+
+			return listAdapter;
+		}
+
+		/**
+		 * Este método analizará si el estado del PE debe aumentar o disminuir
+		 * de tal manera que si aumenta o disminuye, todos los Adapters emisores
+		 * a ese PE deberán aumentar o disminuir su llave de replicación. Por
+		 * otra parte, en caso que disminuya, se deberá eliminar el PE con la
+		 * llave eliminada (es decir, el número mayor de los PEs instanciados).
+		 * 
+		 * @param listAdapter
+		 * 
+		 * @param listPESend
+		 * @param statusPE
+		 */
+		private void changeReplicationAdapter(
+				List<Class<? extends AdapterApp>> listAdapter, StatusPE statusPE) {
+
+			/* Se analiza cada uno de los distintos Adapter que envían datos */
+			for (Class<? extends AdapterApp> adapter : listAdapter) {
+
+				Socket clientSocket = null;
+				ObjectOutputStream outputStream;
+				try {
+					clientSocket = new Socket("localhost",
+							adapterbyPort.get(adapter));
+
+					outputStream = new ObjectOutputStream(
+							clientSocket.getOutputStream());
+					outputStream.writeObject(statusPE);
+
+					clientSocket.close();
+				} catch (IOException eClientSocket) {
+					logger.error(eClientSocket.toString());
+				}
+
+			}
+
+		}
+
+		/**
 		 * Este método analizará si el estado del PE debe aumentar o disminuir
 		 * de tal manera que si aumenta o disminuye, todos los PEs emisores a
 		 * ese PE deberán aumentar o disminuir su llave de replicación. Por otra
 		 * parte, en caso que disminuya, se deberá eliminar el PE con la llave
 		 * eliminada (es decir, el número mayor de los PEs instanciados).
 		 * 
-		 * @param listAdapter
-		 * 
 		 * @param listPESend
 		 * @param statusPE
+		 *            estado del PE analizado
 		 */
 		private void changeReplication(
 				List<Class<? extends ProcessingElement>> listPESend,
@@ -448,7 +548,7 @@ public abstract class App {
 			/* Se analiza cada uno de los distintos PE que envían datos */
 			for (Class<? extends ProcessingElement> peSend : listPESend) {
 
-				nextPESend:
+				// nextPESend:
 				/* Obtención de cada 'Stream' */
 				for (Streamable<Event> stream : getStreams()) {
 					/* Obtención de cada 'PE Prototype' */
@@ -472,10 +572,10 @@ public abstract class App {
 							int replicationCurrent = PEPrototype
 									.getReplicationPE(statusPE.getPE());
 
-							logger.debug("[replicationAnalyzed] "
-									+ replicationAnalyzed
-									+ " | [replicationCurrent] "
-									+ replicationCurrent);
+							// logger.debug("[replicationAnalyzed] "
+							// + replicationAnalyzed
+							// + " | [replicationCurrent] "
+							// + replicationCurrent);
 
 							if (replicationAnalyzed > replicationCurrent) {
 
@@ -486,6 +586,12 @@ public abstract class App {
 
 								PEPrototype.setReplicationPE(statusPE.getPE(),
 										statusPE.getReplication());
+
+								/* Crea los PEs que son necesarios */
+								for (int i = replicationCurrent + 1; i <= replicationAnalyzed; i++) {
+									PEPrototype.getInstanceForKey(Integer
+											.toString(i));
+								}
 
 								/*
 								 * Realizando esa modificación en cada instancia
@@ -543,55 +649,16 @@ public abstract class App {
 							/*
 							 * Dejará de analizar, debido que ya encontró el PE
 							 * solicitado.
+							 * 
+							 * Obs: Sólo esto sucede cuando un PE está en un
+							 * sólo Stream, pero puede darse el caso que esté en
+							 * más de un Stream.
 							 */
-							break nextPESend;
+							// break nextPESend;
 
 						}
 
 					}
-				}
-			}
-
-		}
-
-		/**
-		 * Función que estará encargada de eliminar la réplica con el valor de
-		 * la llave más alto. Es decir, en caso que el PE posee número de
-		 * réplica n, significa que habrá 0 a n-1 llaves, de esta manera, se
-		 * eliminarán m réplicas, como n-m réplicas diga que existen ahora en el
-		 * sistema.
-		 * 
-		 * @param statusPE
-		 *            Estado del PE analizado
-		 */
-		private void removeReplication(StatusPE statusPE) {
-
-			/* Obtención de cada 'Stream' */
-			for (Streamable<Event> stream : getStreams()) {
-				/* Obtención de cada 'PE Prototype' */
-				for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
-					/* Analizamos si el PE es el que deseamos eliminar */
-					for (ProcessingElement PE : PEPrototype.getInstances()) {
-						if (statusPE.getPE().equals(PEPrototype.getClass())) {
-							// logger.debug("[{}] ID: {}", new
-							// String[]{PE.getClass().getCanonicalName(),
-							// PE.getId()});
-							int replicationCurrent = Integer.parseInt(PE
-									.getId());
-							/*
-							 * En caso que el 'id' del PE sea mayor o igual a la
-							 * réplica que se desea, se deberá eliminar el PE.
-							 * Esto se debe a que se posee 'id' de 0 a n-1
-							 * réplicas, por lo tanto toda 'id' que sea n o
-							 * superior serán réplicas que sobran en el sistema.
-							 */
-							if (statusPE.getReplication() <= replicationCurrent) {
-								PE.close();
-							}
-						}
-						return;
-					}
-
 				}
 			}
 
@@ -627,44 +694,6 @@ public abstract class App {
 
 		onStart();
 
-		if (!getConditionAdapter()) {
-			Thread thread = new Thread(new SendEvent());
-			thread.start();
-		}
-
-	}
-
-	public class SendEvent implements Runnable {
-
-		@Override
-		public void run(){
-			while (true) {
-				String sentence;
-		        String modifiedSentence;
-
-		        Socket clientSocket = null;
-		        DataOutputStream outToServer;
-				try {
-					clientSocket = new Socket("localhost", 15000);
-					outToServer = new DataOutputStream(clientSocket.getOutputStream());
-					sentence = "Hola";
-			        outToServer.writeBytes(sentence + '\n');
-			        modifiedSentence = "Hola";
-			        System.out.println(modifiedSentence);
-			        clientSocket.close();
-				} catch (IOException eClientSocket) {
-					logger.error(eClientSocket.toString());
-				}
-
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-
 	}
 
 	/**
@@ -685,6 +714,47 @@ public abstract class App {
 
 		onClose();
 		removeAll();
+	}
+
+	/**
+	 * Función que estará encargada de eliminar la réplica con el valor de la
+	 * llave más alto. Es decir, en caso que el PE posee número de réplica n,
+	 * significa que habrá 0 a n-1 llaves, de esta manera, se eliminarán m
+	 * réplicas, como n-m réplicas diga que existen ahora en el sistema.
+	 * 
+	 * @param statusPE
+	 *            Estado del PE analizado
+	 */
+	public void removeReplication(StatusPE statusPE) {
+
+		/* Obtención de cada 'Stream' */
+		for (Streamable<Event> stream : getStreams()) {
+			/* Obtención de cada 'PE Prototype' */
+			for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
+				/* Analizamos si el PE es el que deseamos eliminar */
+				for (ProcessingElement PE : PEPrototype.getInstances()) {
+					if (statusPE.getPE().equals(PEPrototype.getClass())) {
+						// logger.debug("[{}] ID: {}", new
+						// String[]{PE.getClass().getCanonicalName(),
+						// PE.getId()});
+						int replicationCurrent = Integer.parseInt(PE.getId());
+						/*
+						 * En caso que el 'id' del PE sea mayor o igual a la
+						 * réplica que se desea, se deberá eliminar el PE. Esto
+						 * se debe a que se posee 'id' de 0 a n-1 réplicas, por
+						 * lo tanto toda 'id' que sea n o superior serán
+						 * réplicas que sobran en el sistema.
+						 */
+						if (statusPE.getReplication() <= replicationCurrent) {
+							PE.close();
+						}
+					}
+					return;
+				}
+
+			}
+		}
+
 	}
 
 	private void removeAll() {

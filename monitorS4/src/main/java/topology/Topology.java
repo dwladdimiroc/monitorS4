@@ -82,7 +82,7 @@ public class Topology extends App {
 		processOnePE.setDownStream(processTwoStream);
 		processTwoPE.setDownStream(mongoStream);
 
-		setRunMonitor(false);
+		setRunMonitor(true);
 	}
 	
 	@Override

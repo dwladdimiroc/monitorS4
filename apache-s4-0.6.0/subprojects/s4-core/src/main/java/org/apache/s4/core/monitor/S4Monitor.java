@@ -41,7 +41,7 @@ public class S4Monitor {
 	}
 
 	public void startMetrics() {
-		metrics = new MonitorMetrics();
+		setMetrics(new MonitorMetrics());
 	}
 
 	/**
@@ -114,12 +114,12 @@ public class S4Monitor {
 			getStatusSystem().add(statusPE);
 
 			/* Además, se crearán los contadores y estadísticas para el PE */
-			metrics.createCounterReplicationPE(peSend.getCanonicalName());
-			metrics.createGaugeAvgEventSystem(peSend.getCanonicalName());
-			metrics.createGaugeAvgEventQueue(peSend.getCanonicalName());
-			metrics.createGaugeAvgTimeResident(peSend.getCanonicalName());
-			metrics.createGaugeAvgTimeQueue(peSend.getCanonicalName());
-			metrics.createGaugeAvgTimeProcess(peSend.getCanonicalName());
+			getMetrics().createCounterReplicationPE(peSend.getCanonicalName());
+			getMetrics().createGaugeAvgEventSystem(peSend.getCanonicalName());
+			getMetrics().createGaugeAvgEventQueue(peSend.getCanonicalName());
+			getMetrics().createGaugeAvgTimeResident(peSend.getCanonicalName());
+			getMetrics().createGaugeAvgTimeQueue(peSend.getCanonicalName());
+			getMetrics().createGaugeAvgTimeProcess(peSend.getCanonicalName());
 		}
 	}
 
@@ -675,7 +675,7 @@ public class S4Monitor {
 					}
 
 					if (ρ > 1.5) {
-						metrics.counterReplicationPE(statusPE.getPE()
+						getMetrics().counterReplicationPE(statusPE.getPE()
 								.getCanonicalName(), true);
 						statusPE.setReplication(statusPE.getReplication() + 1);
 						return true;
@@ -693,7 +693,7 @@ public class S4Monitor {
 					}
 
 					if (ρ < 0.5) {
-						metrics.counterReplicationPE(statusPE.getPE()
+						getMetrics().counterReplicationPE(statusPE.getPE()
 								.getCanonicalName(), false);
 						statusPE.setReplication(statusPE.getReplication() - 1);
 						return true;
@@ -769,7 +769,7 @@ public class S4Monitor {
 			 */
 			if (status == 1) {
 
-				metrics.counterReplicationPE(statusPE.getPE()
+				getMetrics().counterReplicationPE(statusPE.getPE()
 						.getCanonicalName(), true);
 				statusPE.setReplication(statusPE.getReplication() + 1);
 				intelligentReplication(statusPE, true);
@@ -777,7 +777,7 @@ public class S4Monitor {
 			} else if (status == -1) {
 
 				if (statusPE.getReplication() > 1) {
-					metrics.counterReplicationPE(statusPE.getPE()
+					getMetrics().counterReplicationPE(statusPE.getPE()
 							.getCanonicalName(), false);
 					statusPE.setReplication(statusPE.getReplication() - 1);
 					intelligentReplication(statusPE, false);
@@ -813,24 +813,24 @@ public class S4Monitor {
 
 			/* Número promedio de eventos en el sistema */
 			double En = ρ / (1 - ρ);
-			metrics.gaugeAvgEventSystem(statusPE.getPE().getCanonicalName(), En);
+			getMetrics().gaugeAvgEventSystem(statusPE.getPE().getCanonicalName(), En);
 
 			/* Número esperado de eventos en la cola */
 			double Eq = (Math.pow(λ, 2)) / ((μ - λ) * μ);
-			metrics.gaugeAvgEventQueue(statusPE.getPE().getCanonicalName(), Eq);
+			getMetrics().gaugeAvgEventQueue(statusPE.getPE().getCanonicalName(), Eq);
 
 			/* Tiempo promedio de residencia */
 			double Et = 1 / (μ - λ);
-			metrics.gaugeAvgTimeResident(statusPE.getPE().getCanonicalName(),
+			getMetrics().gaugeAvgTimeResident(statusPE.getPE().getCanonicalName(),
 					Et);
 
 			/* Tiempo promedio de espera en la cola */
 			double Ed = ρ / (μ - λ);
-			metrics.gaugeAvgTimeQueue(statusPE.getPE().getCanonicalName(), Ed);
+			getMetrics().gaugeAvgTimeQueue(statusPE.getPE().getCanonicalName(), Ed);
 
 			/* Tiempo promedio en el sistema */
 			double Ep = Et + Ed;
-			metrics.gaugeAvgTimeProcess(statusPE.getPE().getCanonicalName(), Ep);
+			getMetrics().gaugeAvgTimeProcess(statusPE.getPE().getCanonicalName(), Ep);
 		}
 	}
 
@@ -903,6 +903,14 @@ public class S4Monitor {
 
 	public void setReady(boolean ready) {
 		this.ready = ready;
+	}
+
+	public MonitorMetrics getMetrics() {
+		return metrics;
+	}
+
+	public void setMetrics(MonitorMetrics metrics) {
+		this.metrics = metrics;
 	}
 
 }

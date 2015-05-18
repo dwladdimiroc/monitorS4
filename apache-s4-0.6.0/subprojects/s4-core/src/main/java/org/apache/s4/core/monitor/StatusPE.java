@@ -1,5 +1,6 @@
 package org.apache.s4.core.monitor;
 
+import java.io.Serializable;
 import java.util.Queue;
 
 import org.apache.commons.collections4.queue.CircularFifoQueue;
@@ -16,7 +17,11 @@ import org.apache.s4.core.ProcessingElement;
  *
  */
 
-public class StatusPE {
+public class StatusPE implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	private String stream;
+	
 	private long recibeEvent;
 	private long sendEvent;
 	private long queueEvent;
@@ -33,6 +38,14 @@ public class StatusPE {
 		pe = null;
 		replication = 0;
 		markMap = new CircularFifoQueue<Integer>(6);
+	}
+
+	public String getStream() {
+		return stream;
+	}
+
+	public void setStream(String stream) {
+		this.stream = stream;
 	}
 
 	public long getRecibeEvent() {

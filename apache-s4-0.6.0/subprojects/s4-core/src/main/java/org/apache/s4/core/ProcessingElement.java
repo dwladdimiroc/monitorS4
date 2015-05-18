@@ -135,6 +135,7 @@ public abstract class ProcessingElement implements Cloneable {
 	 * concrete classes from updating the collection.
 	 */
 	transient LoadingCache<String, ProcessingElement> peInstances;
+	transient int turnPE;
 
 	/* This map is initialized in the prototype and cloned to instances. */
 	transient Map<Class<? extends Event>, Trigger> triggers;
@@ -183,9 +184,10 @@ public abstract class ProcessingElement implements Cloneable {
 						return createPE(key);
 					}
 				});
+		turnPE = 0;
 		triggers = new MapMaker().makeMap();
 		replications = new HashMap<Class<? extends ProcessingElement>, Integer>();
-		
+
 		/*
 		 * Only the PE Prototype uses the constructor. The PEPrototype field
 		 * will be cloned by the instances and point to the prototype.
@@ -521,6 +523,7 @@ public abstract class ProcessingElement implements Cloneable {
 	}
 
 	protected void handleInputEvent(Event event) {
+
 		TimerContext timerContext = null;
 		if (processingTimer != null) {
 			// if timing enabled
@@ -560,6 +563,7 @@ public abstract class ProcessingElement implements Cloneable {
 			// if timing enabled
 			timerContext.stop();
 		}
+		
 	}
 
 	protected boolean isCheckpointable() {
@@ -1049,19 +1053,19 @@ public abstract class ProcessingElement implements Cloneable {
 			return active;
 		}
 	}
-	
+
 	public long getEventSeg() {
 		return eventSeg;
 	}
-	
+
 	public void setEventSeg(long eventSeg) {
 		this.eventSeg = eventSeg;
 	}
-	
+
 	public long getEventPeriod() {
 		return eventPeriod;
 	}
-	
+
 	public void setEventPeriod(long eventPeriod) {
 		this.eventPeriod = eventPeriod;
 	}

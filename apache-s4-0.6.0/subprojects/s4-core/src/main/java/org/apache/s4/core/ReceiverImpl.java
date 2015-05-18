@@ -27,6 +27,7 @@ import org.apache.s4.base.Receiver;
 import org.apache.s4.base.SerializerDeserializer;
 import org.apache.s4.core.adapter.Notification;
 import org.apache.s4.core.adapter.Statistics;
+import org.apache.s4.core.monitor.StatusPE;
 import org.apache.s4.core.util.S4Metrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,7 +94,7 @@ public class ReceiverImpl implements Receiver {
 	public void receive(ByteBuffer message) {
 		Object messageObject = (Object) serDeser.deserialize(message);
 
-		if (messageObject.getClass().equals(Event.class)) {			
+		if (messageObject.getClass().equals(Event.class)) {
 			metrics.receivedEventFromCommLayer(message.array().length);
 
 			Event event = (Event) serDeser.deserialize(message);
@@ -130,8 +131,25 @@ public class ReceiverImpl implements Receiver {
 						"Could not find target stream for event with streamId={}",
 						streamId);
 			}
+		} else if (messageObject.getClass().equals(StatusPE.class)) {
+			StatusPE statusPE = (StatusPE) serDeser.deserialize(message);
+
+			String streamId = statusPE.getStream();
+
+			/*
+			 * Match streamId in event to the target stream and pass the event
+			 * to the target stream. TODO: make this more efficient for the case
+			 * in which we send the same event to multiple PEs.
+			 */
+			try {
+				streams.get(streamId).receiveRemovePE(statusPE);
+			} catch (NullPointerException e) {
+				logger.error(
+						"Could not find target stream for event with streamId={}",
+						streamId);
+			}
 		} else {
-			
+
 			Notification notification = (Notification) serDeser
 					.deserialize(message);
 

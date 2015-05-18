@@ -21,6 +21,7 @@ package org.apache.s4.core;
 import org.apache.s4.base.Event;
 import org.apache.s4.core.adapter.Notification;
 import org.apache.s4.core.adapter.Statistics;
+import org.apache.s4.core.monitor.StatusPE;
 
 /**
  * We use this interface to put events into objects.
@@ -47,13 +48,21 @@ public interface Streamable<T extends Event> {
 	 * @param notification
 	 */
 	public void notification(Notification notification);
-	
+
 	/**
 	 * Statistics al monitor que el adapter está disponible.
 	 * 
 	 * @param statistics
 	 */
 	public void sendStatistics(Statistics statistics);
+
+	/**
+	 * PE que debe remover la App
+	 *
+	 * @param statusPE
+	 *            PE a remover
+	 */
+	void sendRemovePE(StatusPE statusPE);
 
 	/**
 	 * Stop and close all the streams.

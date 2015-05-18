@@ -38,6 +38,7 @@ public class Adapter extends AdapterApp implements Runnable {
 	protected void onInit() {
 		/* Este orden es importante */
 		logger.info("Create Adapter");
+		setRunMonitor(true);
 		this.registerMonitor(ProcessOnePE.class);
 		thread = new Thread(this);
 
@@ -58,36 +59,38 @@ public class Adapter extends AdapterApp implements Runnable {
 
 	@Override
 	public void run() {
-		logger.debug("Time init (ns): " + System.nanoTime());
+		logger.debug("Time init (ns): " + System.currentTimeMillis());
 
-		while (true) {
+		// while (true) {
 
-			for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 20; i++) {
 
-				Event event = new Event();
+			Event event = new Event();
 
-				event.put("levelProcessOne", Long.class, getEventCount()
-						% getReplicationPE(ProcessOnePE.class));
-				// event.put("levelProcessOne", Integer.class, 1);
-				// event.put("id", Long.class, getEventCount());
-				// event.put("time", Long.class, System.nanoTime());
-				// event.put("date", Date.class,
-				// Calendar.getInstance().getTime());
+			event.put("levelProcessOne", Long.class, getEventCount()
+					% getReplicationPE(ProcessOnePE.class));
+			// event.put("levelProcessOne", Integer.class, 1);
+			// event.put("id", Long.class, getEventCount());
+			// event.put("time", Long.class, System.nanoTime());
+			// event.put("date", Date.class,
+			// Calendar.getInstance().getTime());
 
-				if (showEvent) {
-					logger.debug(event.getAttributesAsMap().toString());
-				}
-
-				getRemoteStream().put(event);
+			if (showEvent) {
+				logger.debug(event.getAttributesAsMap().toString());
 			}
 
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-
+			getRemoteStream().put(event);
 		}
+
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		logger.debug("Time final (ns): " + System.currentTimeMillis());
+
+		// }
 
 	}
 }

@@ -18,13 +18,11 @@
 
 package org.apache.s4.core.adapter;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +40,6 @@ import org.apache.s4.core.ProcessingElement;
 import org.apache.s4.core.RemoteStream;
 import org.apache.s4.core.Streamable;
 import org.apache.s4.core.monitor.StatusPE;
-import org.apache.s4.core.monitor.TopologyApp;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -62,6 +59,8 @@ public abstract class AdapterApp extends App {
 	String outputStreamName;
 
 	private RemoteStream remoteStream;
+
+	int portSocket;
 
 	final private Map<Class<? extends ProcessingElement>, Integer> replications = new HashMap<Class<? extends ProcessingElement>, Integer>();
 	final private Queue<Long> historyAdapter = new CircularFifoQueue<Long>(5);
@@ -220,36 +219,132 @@ public abstract class AdapterApp extends App {
 
 		ServerSocket serverSocket;
 		Socket connectedSocket;
-		BufferedReader in;
+		ObjectInputStream inStream;
 
 		public ListenerMonitor() {
+			/*
+			 * Se considerará el siguiente puerto, tomando como referencia el
+			 * puerto del puerto que utilizá al nodo único del adapter
+			 */
+			// portSocket = getCluster().getPhysicalCluster().getNodes().get(0)
+			// .getPort() + 1;
+			portSocket = 15000;
+
 			serverSocket = null;
 			connectedSocket = null;
-			in = null;
+			inStream = null;
+		}
+
+		/**
+		 * Este método analizará si el estado del PE debe aumentar o disminuir
+		 * de tal manera que si aumenta o disminuye, todos los PEs emisores a
+		 * ese PE deberán aumentar o disminuir su llave de replicación. Por otra
+		 * parte, en caso que disminuya, se deberá eliminar el PE con la llave
+		 * eliminada (es decir, el número mayor de los PEs instanciados).
+		 * 
+		 * @param statusPE
+		 *            estado del PE analizado
+		 */
+		private void changeReplication(StatusPE statusPE) {
+
+			for (Class<? extends ProcessingElement> peCurrent : replications
+					.keySet()) {
+
+				if (statusPE.getPE().equals(peCurrent)) {
+
+					/*
+					 * De ser mayor la cantidad de replicas del estado del
+					 * monitor, se deberá aumentar la cantidad de réplicas
+					 */
+
+					int replicationAnalyzed = statusPE.getReplication();
+					int replicationCurrent = replications.get(peCurrent);
+
+					getLogger().debug(
+							"[replicationAnalyzed] " + replicationAnalyzed
+									+ " | [replicationCurrent] "
+									+ replicationCurrent);
+
+					if (replicationAnalyzed > replicationCurrent) {
+
+						getLogger().debug(
+								"Increment PE  " + statusPE.getPE()
+										+ " in Adapter " + this.getClass());
+
+						replications.put(statusPE.getPE(),
+								statusPE.getReplication());
+
+					}
+					/* De ser menor, se deberá disminuir */
+					else if (replicationAnalyzed < replicationCurrent) {
+
+						/*
+						 * Para esto, es necesario eliminar una de las
+						 * instancias del PE analizado
+						 */
+						removeReplication(statusPE);
+
+						getLogger().debug(
+								"Decrement PE  " + statusPE.getPE()
+										+ " in Adapter " + this.getClass());
+
+						replications.put(statusPE.getPE(),
+								statusPE.getReplication());
+
+					}
+				}
+			}
+		}
+
+		/**
+		 * Función que estará encargada de eliminar la réplica con el valor de
+		 * la llave más alto. Es decir, en caso que el PE posee número de
+		 * réplica n, significa que habrá 0 a n-1 llaves, de esta manera, se
+		 * eliminarán m réplicas, como n-m réplicas diga que existen ahora en el
+		 * sistema.
+		 * 
+		 * @param statusPE
+		 *            Estado del PE analizado
+		 */
+		private void removeReplication(StatusPE statusPE) {
+
+			int replication = replications.get(statusPE.getPE());
+			
+			/*
+			 * Enviará un mensaje 
+			 */
+			if (replication > 1) {
+				getRemoteStream().sendRemovePE(statusPE);
+			}
+
 		}
 
 		@Override
 		public void run() {
 
 			try {
-				serverSocket = new ServerSocket(15000);
+				serverSocket = new ServerSocket(portSocket);
 				while (true) {
 					connectedSocket = serverSocket.accept();
-					in = new BufferedReader(new InputStreamReader(
-							connectedSocket.getInputStream()));
+					inStream = new ObjectInputStream(
+							connectedSocket.getInputStream());
 
-					String line = in.readLine();
-					getLogger().info("Datos: " + line);
+					StatusPE statusPE = (StatusPE) inStream.readObject();
+
+					getLogger().debug(statusPE.toString());
+
+					changeReplication(statusPE);
+
 					connectedSocket.close();
 				}
 
-			} catch (IOException e) {
+			} catch (IOException | ClassNotFoundException e) {
 				getLogger().error(e.toString());
 				close();
 			} finally {
-				if (in != null) {
+				if (inStream != null) {
 					try {
-						in.close();
+						inStream.close();
 					} catch (IOException e) {
 						throw new RuntimeException(e);
 					}
@@ -281,6 +376,7 @@ public abstract class AdapterApp extends App {
 		notification.setStatus(true);
 		notification.setAdapter(getClassAdapter());
 		notification.setListPE(listPE);
+		notification.setPort(portSocket);
 		remoteStream.notification(notification);
 	}
 
