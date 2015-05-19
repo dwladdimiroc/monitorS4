@@ -26,19 +26,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
-import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.collections4.queue.CircularFifoQueue;
 import org.apache.s4.base.Event;
 import org.apache.s4.base.KeyFinder;
 import org.apache.s4.core.App;
 import org.apache.s4.core.ProcessingElement;
 import org.apache.s4.core.RemoteStream;
-import org.apache.s4.core.Streamable;
 import org.apache.s4.core.monitor.StatusPE;
 
 import com.google.inject.Inject;
@@ -275,7 +268,7 @@ public abstract class AdapterApp extends App {
 
 						getLogger().debug(
 								"Increment PE  " + statusPE.getPE()
-										+ " in Adapter " + this.getClass());
+										+ " in Adapter " + this.getClass().getCanonicalName());
 
 						replications.put(statusPE.getPE(),
 								statusPE.getReplication());
@@ -292,7 +285,7 @@ public abstract class AdapterApp extends App {
 
 						getLogger().debug(
 								"Decrement PE  " + statusPE.getPE()
-										+ " in Adapter " + this.getClass());
+										+ " in Adapter " + this.getClass().getCanonicalName());
 
 						replications.put(statusPE.getPE(),
 								statusPE.getReplication());

@@ -14,8 +14,7 @@ import com.yammer.metrics.core.Gauge;
 import com.yammer.metrics.reporting.CsvReporter;
 
 public class MonitorMetrics {
-	static final Logger logger = LoggerFactory
-			.getLogger(MonitorMetrics.class);
+	static final Logger logger = LoggerFactory.getLogger(MonitorMetrics.class);
 
 	/*
 	 * Estadísticas del monitor replicationPE: Cantidad de réplicas por PE
@@ -36,6 +35,9 @@ public class MonitorMetrics {
 	private final Map<String, Double> avgTimeResident = Maps.newHashMap();
 	private final Map<String, Double> avgTimeQueue = Maps.newHashMap();
 	private final Map<String, Double> avgTimeProcess = Maps.newHashMap();
+
+	private long avgTimeTotal;
+	private long nEvent;
 
 	private long timeSendHistoryMonitor;
 	private long timeSendMonitor;
@@ -60,6 +62,14 @@ public class MonitorMetrics {
 		CsvReporter.enable(new File(outputDir), period, timeUnit);
 
 		/* Init gauge of the system */
+		Metrics.newGauge(S4Monitor.class, "avgTimeTotal", "ms",
+				new Gauge<Long>() {
+					@Override
+					public Long value() {
+						return avgTimeTotal;
+					}
+				});
+
 		Metrics.newGauge(S4Monitor.class, "timeSendHistoryMonitor", "ms",
 				new Gauge<Long>() {
 					@Override
@@ -83,12 +93,13 @@ public class MonitorMetrics {
 						return timeAskMonitor;
 					}
 				});
+
 	}
 
 	public void createCounterReplicationPE(String name) {
 		replicationPE.put(name,
 				Metrics.newCounter(S4Monitor.class, "replication@" + name));
-		replicationPE.get(name).inc(); 
+		replicationPE.get(name).inc();
 	}
 
 	public void counterReplicationPE(String name, boolean status) {
@@ -176,6 +187,11 @@ public class MonitorMetrics {
 
 	public void gaugeAvgTimeProcess(String name, double avg) {
 		avgTimeProcess.put(name, avg);
+	}
+
+	public void setAvgTimeTotal(long avgTimeTotal) {
+		nEvent++;
+		this.avgTimeTotal = (this.avgTimeTotal + avgTimeTotal) / nEvent;
 	}
 
 	public void setTimeSendHistoryMonitor(long timeSendHistoryMonitor) {

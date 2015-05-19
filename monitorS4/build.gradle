@@ -59,7 +59,9 @@ project.ext["libraries"] = [
            s4_base:            'org.apache.s4:s4-base:'+ s4Version,
            s4_comm:            'org.apache.s4:s4-comm:'+ s4Version,
            s4_core:            'org.apache.s4:s4-core:'+ s4Version,
-           mongo_db:           'org.mongodb:mongo-java-driver:2.12.4'
+           mongo_db:           'org.mongodb:mongo-java-driver:2.12.4',
+		   opencsv:            'com.opencsv:opencsv:3.3'
+
        ]
 
 
@@ -71,6 +73,7 @@ dependencies {
    compile (libraries.s4_comm)
    compile (libraries.s4_core)
    compile (libraries.mongo_db)
+   compile (libraries.opencsv)
 
    // if you need to use the twitter4j lib defined above, you must reference it here as a dependency
    // compile (libraries.twitter4j_core)

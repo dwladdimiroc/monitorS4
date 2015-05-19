@@ -1,19 +1,10 @@
 package processElements;
 
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.util.Calendar;
-import java.util.Date;
-
 import org.apache.s4.base.Event;
 import org.apache.s4.core.ProcessingElement;
 import org.apache.s4.core.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-
 import utilities.MongoConnection;
 
 public class ProcessTwoPE extends ProcessingElement {
@@ -47,6 +38,7 @@ public class ProcessTwoPE extends ProcessingElement {
 
 		eventOutput.put("levelMongo", Long.class, getEventCount()
 				% getReplicationPE(MongoPE.class));
+		eventOutput.put("time", Long.class, event.get("time", Long.class));
 		// eventOutput.put("levelMongo", Integer.class, 1);
 		// eventOutput.put("id", Long.class, event.get("id", Long.class));
 

@@ -20,7 +20,6 @@ package org.apache.s4.core;
 
 import org.apache.s4.base.Event;
 import org.apache.s4.core.adapter.Notification;
-import org.apache.s4.core.adapter.Statistics;
 import org.apache.s4.core.monitor.StatusPE;
 
 /**

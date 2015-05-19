@@ -19,11 +19,8 @@
 package org.apache.s4.core;
 
 import java.util.Collection;
-import java.util.Map;
-import java.util.Queue;
 import java.util.concurrent.Executor;
 
-import org.apache.commons.collections4.queue.CircularFifoQueue;
 import org.apache.s4.base.Event;
 import org.apache.s4.base.GenericKeyFinder;
 import org.apache.s4.base.Key;
@@ -34,7 +31,6 @@ import org.apache.s4.base.SerializerDeserializer;
 import org.apache.s4.comm.serialize.SerializerDeserializerFactory;
 import org.apache.s4.comm.staging.BlockingThreadPoolExecutorService;
 import org.apache.s4.core.adapter.Notification;
-import org.apache.s4.core.adapter.Statistics;
 import org.apache.s4.core.monitor.StatusPE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -293,34 +289,34 @@ public class Stream<T extends Event> implements Streamable {
 		// TODO abstraction around queue and add dropped counter
 	}
 
-	/**
-	 * The low level {@link ReceiverImpl} object call this method when a new
-	 * {@link Statistics} is available.
-	 */
-	public void receiveStatistics(Statistics statistics) {
-		// NOTE: ArrayBlockingQueue.size is O(1).
+	// /**
+	// * The low level {@link ReceiverImpl} object call this method when a new
+	// * {@link Statistics} is available.
+	// */
+	// public void receiveStatistics(Statistics statistics) {
+	// NOTE: ArrayBlockingQueue.size is O(1).
 
-		// /*
-		// * En caso que llegue un mensaje que sea exclusivo de las
-		// estadísticas,
-		// * entonces el monitor empezará a iniciarse
-		// */
-		// synchronized (this.app.getBlockSend()) {
-		// logger.debug("Send statistics Adapter " + statistics.getAdapter());
-		//
-		// this.app.getMonitor().sendHistoryAdapter(statistics.getHistory());
-		// this.app.getMonitor().sendStatusAdapter(statistics.getAdapter(),
-		// statistics.getEventPeriod());
-		//
-		// try {
-		// Thread.sleep(1000);
-		// } catch (InterruptedException e) {
-		// logger.error("InterruptedException: " + e);
-		// }
-		//
-		// this.app.getBlockSend().notify();
-		// }
-	}
+	// /*
+	// * En caso que llegue un mensaje que sea exclusivo de las
+	// estadísticas,
+	// * entonces el monitor empezará a iniciarse
+	// */
+	// synchronized (this.app.getBlockSend()) {
+	// logger.debug("Send statistics Adapter " + statistics.getAdapter());
+	//
+	// this.app.getMonitor().sendHistoryAdapter(statistics.getHistory());
+	// this.app.getMonitor().sendStatusAdapter(statistics.getAdapter(),
+	// statistics.getEventPeriod());
+	//
+	// try {
+	// Thread.sleep(1000);
+	// } catch (InterruptedException e) {
+	// logger.error("InterruptedException: " + e);
+	// }
+	//
+	// this.app.getBlockSend().notify();
+	// }
+	// }
 
 	/**
 	 * The low level {@link ReceiverImpl} object call this method when a new

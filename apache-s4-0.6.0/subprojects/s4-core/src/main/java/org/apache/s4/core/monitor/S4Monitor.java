@@ -21,6 +21,8 @@ public class S4Monitor {
 
 	static final Logger logger = LoggerFactory.getLogger(S4Monitor.class);
 
+	private int period;
+
 	private final List<TopologyApp> topologySystem = new ArrayList<TopologyApp>();
 	private final Map<Class<? extends ProcessingElement>, StatusPE> statusSystem = new HashMap<Class<? extends ProcessingElement>, StatusPE>();
 
@@ -38,6 +40,7 @@ public class S4Monitor {
 	@Inject
 	private void init() {
 		logger.info("Init Monitor");
+		period = 1;
 		ready = false;
 	}
 
@@ -505,12 +508,16 @@ public class S4Monitor {
 		rho = statusPE.getHistory().toArray(rho);
 
 		/* Cálculo de la predicción por parte de la Cadena de Markov */
-		double distEstacionaria[] = markovChain.calculatePrediction(rho, 10,
+		double distEstacionaria[] = markovChain.calculatePrediction(rho, 100,
 				100000);
 
 		/* Análisis estadístico de los resultados de la predicción */
 		DescriptiveStatistics descriptiveStatistics = new DescriptiveStatistics(
 				distEstacionaria);
+
+		logger.debug("[distEstacionaria] " + distEstacionaria.toString()
+				+ " | [Statistics] "
+				+ descriptiveStatistics.getStandardDeviation());
 
 		/*
 		 * En caso de existir una desviación estándar mayor al umbral, se tomará
@@ -519,12 +526,33 @@ public class S4Monitor {
 		if (descriptiveStatistics.getStandardDeviation() > 0.25) {
 			for (int i = 0; i < distEstacionaria.length; i++) {
 				if (distEstacionaria[i] == descriptiveStatistics.getMax()) {
-					if (i == 0)
-						return -1;
-					else if (i == 1)
+
+					if ((i == 0) || (i == 2)) {
+
+						/*
+						 * Se analiza la cantidad de réplicas que serían
+						 * necesarias según el predictor. Esto se tomó un
+						 * cantidad entre [0.6 - 1], en períodos de 0.4, de tal
+						 * manera que a medida de ir aumentando el período, va
+						 * aumentando la cantidad de réplicas. En caso que sea
+						 * menor a 0.6, se considerará solo una réplica.
+						 */
+						int coef = (int) (Math
+								.ceil((distEstacionaria[i] - 0.6) / 0.04));
+
+						if (coef == 0)
+							coef = 1;
+
+						if (i == 0) {
+							return -1 * coef;
+						} else {
+							return coef;
+						}
+
+					} else {
 						return 0;
-					else
-						return 1;
+					}
+
 				}
 			}
 		}
@@ -545,72 +573,87 @@ public class S4Monitor {
 	 * 
 	 */
 	private int administrationLoad(StatusPE statusPE) {
+		int numReplica = 0;
 
-		/*
-		 * Se analiza el cálculo reactivo de cierto PE, en caso de necesitar
-		 * alguna modificación se marca que esto es necesario de no ser asi. Se
-		 * prosigue con el siguiente cálculo de predicción
-		 */
+		if ((period % 20) != 0) {
 
-		int resultReactive = reactiveLoad(statusPE);
+			/*
+			 * Se analiza el cálculo reactivo de cierto PE, en caso de necesitar
+			 * alguna modificación se marca que esto es necesario de no ser asi.
+			 * Se prosigue con el siguiente cálculo de predicción
+			 */
 
-		if (resultReactive == 1) {
-			statusPE.getMarkMap().add(1);
-		} else if (resultReactive == -1) {
-			statusPE.getMarkMap().add(-1);
+			int resultReactive = reactiveLoad(statusPE);
+
+			if (resultReactive == 1) {
+				statusPE.getMarkMap().add(1);
+			} else if (resultReactive == -1) {
+				statusPE.getMarkMap().add(-1);
+			} else {
+				statusPE.getMarkMap().add(0);
+			}
+			
+			/*
+			 * En caso de aumentar ese umbral, se proceserá a realizar una
+			 * modificación de este procedimiento. En este caso, si se notifica dos
+			 * veces que es necesario un incremento o decremento de las réplicas del
+			 * PE, se tomará una decisión.
+			 */
+
+			/*
+			 * Para análisis de prueba, se considerarán los últimos 3 períodos para
+			 * verificar si es necesario replicar.
+			 * 
+			 * Ej: Historia = [1,0,0,-1,0,1] Donde el primer período de tiempo dio
+			 * (1,0), el segundo período (0,-1) y el tercero (0,1). Por lo tanto,
+			 * encuentra que existen 2 señales de que debe aumentar, por lo tanto,
+			 * aumentará. Esto debido que el reactivo del primero período y el
+			 * predictor del tercer período indicaron que debe aumentar.
+			 */
+
+			logger.debug("[{}] MarkMap: {}", new String[] {
+					statusPE.getPE().getCanonicalName(),
+					statusPE.getMarkMap().toString() });
+
+			if (containsCondition(statusPE.getMarkMap(), true)) {
+				statusPE.getMarkMap().clear();
+				numReplica++;
+			} else if (containsCondition(statusPE.getMarkMap(), false)) {
+				statusPE.getMarkMap().clear();
+				numReplica--;
+			}
+
 		} else {
-			statusPE.getMarkMap().add(0);
+
+			/*
+			 * En el cálculo de predicción se toma en consideración el mismo
+			 * procedimiento. De realizarse esto, se tomará en consideración el
+			 * procesamiento para poder analizar si efectivamente, es necesario
+			 * una replicación.
+			 */
+
+			int resultPredictive = predictiveLoad(statusPE);
+
+			/* Cambiar */
+			if (resultPredictive <= 1) {
+				numReplica += resultPredictive;
+			} else if (resultPredictive == -1) {
+				numReplica += resultPredictive;
+			}
+
 		}
 
 		/*
-		 * En el cálculo de predicción se toma en consideración el mismo
-		 * procedimiento. De realizarse esto, se tomará en consideración el
-		 * procesamiento para poder analizar si efectivamente, es necesario una
-		 * replicación.
+		 * Aumento del período, y en caso de ser negativo, volverá a su período
+		 * inicial. Nota: se considerará 2147483640 como el máximo valor posible
+		 * en 32 bits para JVM.
 		 */
-
-		// int resultPredictive = predictiveLoad(statusPE);
-		int resultPredictive = 0;
-
-		if (resultPredictive == 1) {
-			statusPE.getMarkMap().add(1);
-		} else if (resultPredictive == -1) {
-			statusPE.getMarkMap().add(-1);
-		} else {
-			statusPE.getMarkMap().add(0);
+		period++;
+		if (period > 2147483640) {
+			period = 1;
 		}
 
-		/*
-		 * En caso de aumentar ese umbral, se proceserá a realizar una
-		 * modificación de este procedimiento. En este caso, si se notifica dos
-		 * veces que es necesario un incremento o decremento de las réplicas del
-		 * PE, se tomará una decisión.
-		 */
-
-		/*
-		 * Para análisis de prueba, se considerarán los últimos 3 períodos para
-		 * verificar si es necesario replicar.
-		 * 
-		 * Ej: Historia = [1,0,0,-1,0,1] Donde el primer período de tiempo dio
-		 * (1,0), el segundo período (0,-1) y el tercero (0,1). Por lo tanto,
-		 * encuentra que existen 2 señales de que debe aumentar, por lo tanto,
-		 * aumentará. Esto debido que el reactivo del primero período y el
-		 * predictor del tercer período indicaron que debe aumentar.
-		 */
-
-		logger.debug("[{}] MarkMap: {}", new String[] {
-				statusPE.getPE().getCanonicalName(),
-				statusPE.getMarkMap().toString() });
-
-		if (containsCondition(statusPE.getMarkMap(), true)) {
-			statusPE.getMarkMap().clear();
-			return 1;
-		} else if (containsCondition(statusPE.getMarkMap(), false)) {
-			statusPE.getMarkMap().clear();
-			return -1;
-		}
-
-		return 0;
+		return numReplica;
 
 	}
 
@@ -795,7 +838,7 @@ public class S4Monitor {
 			 */
 			if (status == 1) {
 				logger.debug("Increment PE " + statusPE.getPE());
-				
+
 				getMetrics().counterReplicationPE(
 						statusPE.getPE().getCanonicalName(), true);
 				statusPE.setReplication(statusPE.getReplication() + 1);
@@ -805,7 +848,7 @@ public class S4Monitor {
 
 				if (statusPE.getReplication() > 1) {
 					logger.debug("Decrement PE " + statusPE.getPE());
-					
+
 					getMetrics().counterReplicationPE(
 							statusPE.getPE().getCanonicalName(), false);
 					statusPE.setReplication(statusPE.getReplication() - 1);

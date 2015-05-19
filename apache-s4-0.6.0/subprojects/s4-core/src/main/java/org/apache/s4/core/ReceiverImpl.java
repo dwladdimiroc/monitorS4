@@ -26,7 +26,6 @@ import org.apache.s4.base.Listener;
 import org.apache.s4.base.Receiver;
 import org.apache.s4.base.SerializerDeserializer;
 import org.apache.s4.core.adapter.Notification;
-import org.apache.s4.core.adapter.Statistics;
 import org.apache.s4.core.monitor.StatusPE;
 import org.apache.s4.core.util.S4Metrics;
 import org.slf4j.Logger;

@@ -37,7 +37,7 @@ public class StatusPE implements Serializable {
 		sendEvent = 0;
 		processEvent = 0;
 		queueEvent = 0;
-		history = new CircularFifoQueue<Double>(5);
+		history = new CircularFifoQueue<Double>(100);
 		pe = null;
 		replication = 0;
 		markMap = new CircularFifoQueue<Integer>(6);

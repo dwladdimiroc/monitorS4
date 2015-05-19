@@ -32,7 +32,6 @@ import org.apache.s4.comm.topology.Clusters;
 import org.apache.s4.comm.topology.RemoteStreams;
 import org.apache.s4.comm.topology.StreamConsumer;
 import org.apache.s4.core.adapter.Notification;
-import org.apache.s4.core.adapter.Statistics;
 import org.apache.s4.core.monitor.StatusPE;
 import org.apache.s4.core.staging.RemoteSendersExecutorServiceFactory;
 import org.slf4j.Logger;

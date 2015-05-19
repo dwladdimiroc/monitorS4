@@ -2,25 +2,21 @@ package processElements;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Calendar;
-import java.util.Date;
 
 import org.apache.s4.base.Event;
 import org.apache.s4.core.ProcessingElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-
-import utilities.MongoConnection;
+import com.opencsv.CSVWriter;
 
 public class MongoPE extends ProcessingElement {
 	private static Logger logger = LoggerFactory.getLogger(MongoPE.class);
 	private boolean showEvent = false;
 
-	MongoConnection mongo, mongoR;
+	CSVWriter writer;
+	FileWriter fileWriter;
+	String path = "/home/daniel/Proyectos/monitorS4/statistics/avgTimeTotalEvent.csv";
 
 	public void onEvent(Event event) {
 
@@ -35,6 +31,15 @@ public class MongoPE extends ProcessingElement {
 		if (showEvent) {
 			logger.debug(event.getAttributesAsMap().toString());
 		}
+
+		long timeInit = event.get("time", Long.class);
+		long timeFinal = System.currentTimeMillis();
+
+		long time = timeFinal - timeInit;
+		
+		getApp().getMonitor().getMetrics().setAvgTimeTotal(time);
+			
+
 
 		// DBObject objMongo = new BasicDBObject();
 		// objMongo.put("id", event.get("id", Long.class));
@@ -58,17 +63,13 @@ public class MongoPE extends ProcessingElement {
 		 * getReplication());
 		 */
 
-		if (getEventCount() == 100 || getEventCount() == 200
-				|| getEventCount() == 300 || getEventCount() == 400
-				|| getEventCount() == 500) {
-			logger.debug("Time final (ns): " + System.nanoTime());
-		}
-
 	}
 
 	@Override
 	protected void onCreate() {
 		logger.info("Create Mongo PE");
+
+
 		// this.replicationPE();
 
 		// mongo = new MongoConnection();
@@ -90,7 +91,6 @@ public class MongoPE extends ProcessingElement {
 	@Override
 	protected void onRemove() {
 		logger.info("Remove Mongo PE");
-		// TODO Auto-generated method stub
 
 	}
 

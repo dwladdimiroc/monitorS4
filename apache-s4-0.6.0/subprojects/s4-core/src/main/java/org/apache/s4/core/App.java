@@ -25,13 +25,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.collections4.queue.CircularFifoQueue;
 import org.apache.s4.base.Event;
 import org.apache.s4.base.Hasher;
 import org.apache.s4.base.KeyFinder;
@@ -225,8 +223,8 @@ public abstract class App {
 				 */
 				ScheduledExecutorService sendStatus = Executors
 						.newSingleThreadScheduledExecutor();
-				sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 10100,
-						15000, TimeUnit.MILLISECONDS);
+				sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 6100,
+						5000, TimeUnit.MILLISECONDS);
 
 				// getLogger().info("TimerMonitor send status");
 
@@ -238,8 +236,8 @@ public abstract class App {
 				 */
 				ScheduledExecutorService pullStatus = Executors
 						.newSingleThreadScheduledExecutor();
-				pullStatus.scheduleAtFixedRate(new OnTimeAskStatus(), 10000,
-						15000, TimeUnit.MILLISECONDS);
+				pullStatus.scheduleAtFixedRate(new OnTimeAskStatus(), 6000,
+						5000, TimeUnit.MILLISECONDS);
 
 				getLogger().info("TimerMonitor pull status");
 			}

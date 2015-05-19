@@ -59,16 +59,15 @@ public class Adapter extends AdapterApp implements Runnable {
 
 	@Override
 	public void run() {
-		logger.debug("Time init (ns): " + System.currentTimeMillis());
+		// logger.debug("Time init (ns): " + System.currentTimeMillis());
 
-		// while (true) {
-
-		for (int i = 0; i < 60; i++) {
+		while (true) {
 
 			Event event = new Event();
 
 			event.put("levelProcessOne", Long.class, getEventCount()
 					% getReplicationPE(ProcessOnePE.class));
+			event.put("time", Long.class, System.currentTimeMillis());
 			// event.put("levelProcessOne", Integer.class, 1);
 			// event.put("id", Long.class, getEventCount());
 			// event.put("time", Long.class, System.nanoTime());
@@ -80,17 +79,16 @@ public class Adapter extends AdapterApp implements Runnable {
 			}
 
 			getRemoteStream().put(event);
-		}
 
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
-		logger.debug("Time final (ns): " + System.currentTimeMillis());
+			try {
+				Thread.sleep(400);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 
-		// }
+			// logger.debug("Time final (ns): " + System.currentTimeMillis());
+
+		}
 
 	}
 }
