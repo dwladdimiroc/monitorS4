@@ -114,23 +114,26 @@ public class ReceiverImpl implements Receiver {
 						streamId);
 			}
 
-		} else if (messageObject.getClass().equals(Statistics.class)) {
-			Statistics statistics = (Statistics) serDeser.deserialize(message);
+			// } else if (messageObject.getClass().equals(Statistics.class)) {
+			// Statistics statistics = (Statistics)
+			// serDeser.deserialize(message);
+			//
+			// String streamId = statistics.getStream();
+			//
+			// /*
+			// * Match streamId in event to the target stream and pass the event
+			// * to the target stream. TODO: make this more efficient for the
+			// case
+			// * in which we send the same event to multiple PEs.
+			// */
+			// try {
+			// streams.get(streamId).receiveStatistics(statistics);
+			// } catch (NullPointerException e) {
+			// logger.error(
+			// "Could not find target stream for event with streamId={}",
+			// streamId);
+			// }
 
-			String streamId = statistics.getStream();
-
-			/*
-			 * Match streamId in event to the target stream and pass the event
-			 * to the target stream. TODO: make this more efficient for the case
-			 * in which we send the same event to multiple PEs.
-			 */
-			try {
-				streams.get(streamId).receiveStatistics(statistics);
-			} catch (NullPointerException e) {
-				logger.error(
-						"Could not find target stream for event with streamId={}",
-						streamId);
-			}
 		} else if (messageObject.getClass().equals(StatusPE.class)) {
 			StatusPE statusPE = (StatusPE) serDeser.deserialize(message);
 

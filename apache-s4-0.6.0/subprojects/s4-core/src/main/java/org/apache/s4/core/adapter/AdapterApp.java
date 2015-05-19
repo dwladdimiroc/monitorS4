@@ -63,7 +63,8 @@ public abstract class AdapterApp extends App {
 	int portSocket;
 
 	final private Map<Class<? extends ProcessingElement>, Integer> replications = new HashMap<Class<? extends ProcessingElement>, Integer>();
-	final private Queue<Long> historyAdapter = new CircularFifoQueue<Long>(5);
+	// final private Queue<Long> historyAdapter = new
+	// CircularFifoQueue<Long>(5);
 	final private List<Class<? extends ProcessingElement>> listPE = new ArrayList<Class<? extends ProcessingElement>>();
 
 	protected KeyFinder<Event> remoteStreamKeyFinder;
@@ -138,77 +139,82 @@ public abstract class AdapterApp extends App {
 	@Override
 	protected void onStart() {
 
-		/*
-		 * Esta hebra se utilizará para enviar los datos del Adapter cada un
-		 * segundo, para poseer el historial del Adapter
-		 */
+		// /*
+		// * Esta hebra se utilizará para enviar los datos del Adapter cada un
+		// * segundo, para poseer el historial del Adapter
+		// */
 
-		if (getRunMonitor()) {
-
-			ScheduledExecutorService getEventCountAdapter = Executors
-					.newSingleThreadScheduledExecutor();
-			getEventCountAdapter.scheduleAtFixedRate(
-					new OnTimeGetEventCountAdapter(), 0, 1000,
-					TimeUnit.MILLISECONDS);
-
-			getLogger().info("TimerMonitorAdapter get eventCount");
-
-			ScheduledExecutorService sendStatusAdapter = Executors
-					.newSingleThreadScheduledExecutor();
-			sendStatusAdapter.scheduleAtFixedRate(
-					new OnTimeSendStatusAdapter(), 10000, 15000,
-					TimeUnit.MILLISECONDS);
-
-			getLogger().info("TimerMonitorAdapter send status");
-		}
-
-	}
-
-	/**
-	 * Esta clase estará encargada de la correr la primera hebra, la cual
-	 * enviará los eventCount de cada uno de los PEs cada un segundo. Para
-	 * obtenerlos, se recurrirá a los distintos 'Streams' creandos en la
-	 * aplicación de S4. Al obtener cada 'Stream', se extraerá los distintos PEs
-	 * Prototipos de cada uno de los 'Streams', enviado después los eventos
-	 * procesados y enviados (a la vez) de cada instancia de los PEs Prototipos.
-	 */
-	private class OnTimeGetEventCountAdapter extends TimerTask {
-
-		@Override
-		public void run() {
-			// logger.debug("OnTimeGetEventCount");
-			historyAdapter.add(getEventSeg());
-
-			setEventSeg(0);
-		}
-	}
-
-	/**
-	 * Esta clase estará encargada de la correr la segunda hebra, la cual
-	 * enviará los datos de cada uno de los PEs. Para obtenerlos, se recurrirá a
-	 * los distintos 'Streams' creandos en la aplicación de S4. Al obtener cada
-	 * 'Stream', se extraerá los distintos PEs Prototipos de cada uno de los
-	 * 'Streams', enviado después los eventos procesados y enviados (a la vez)
-	 * de cada instancia de los PEs Prototipos.
-	 */
-	private class OnTimeSendStatusAdapter extends TimerTask {
-
-		@Override
-		public void run() {
-			Statistics statistics = new Statistics();
-			statistics.setAdapter(getClassAdapter());
-			Map<Class<? extends AdapterApp>, Queue<Long>> mapAdapter = new HashMap<Class<? extends AdapterApp>, Queue<Long>>();
-			mapAdapter.put(getClassAdapter(), historyAdapter);
-			statistics.setHistory(mapAdapter);
-			statistics.setEventPeriod(getEventPeriod());
-
-			/* Envío de las estadísticas al monitor */
-			remoteStream.sendStatistics(statistics);
-
-			setEventPeriod(0);
-		}
+		// if (getRunMonitor()) {
+		//
+		// ScheduledExecutorService getEventCountAdapter = Executors
+		// .newSingleThreadScheduledExecutor();
+		// getEventCountAdapter.scheduleAtFixedRate(
+		// new OnTimeGetEventCountAdapter(), 0, 1000,
+		// TimeUnit.MILLISECONDS);
+		//
+		// getLogger().info("TimerMonitorAdapter get eventCount");
+		//
+		// ScheduledExecutorService sendStatusAdapter = Executors
+		// .newSingleThreadScheduledExecutor();
+		// sendStatusAdapter.scheduleAtFixedRate(
+		// new OnTimeSendStatusAdapter(), 10000, 15000,
+		// TimeUnit.MILLISECONDS);
+		//
+		// getLogger().info("TimerMonitorAdapter send status");
+		// }
 
 	}
+
+	// /**
+	// * Esta clase estará encargada de la correr la primera hebra, la cual
+	// * enviará los eventCount de cada uno de los PEs cada un segundo. Para
+	// * obtenerlos, se recurrirá a los distintos 'Streams' creandos en la
+	// * aplicación de S4. Al obtener cada 'Stream', se extraerá los distintos
+	// PEs
+	// * Prototipos de cada uno de los 'Streams', enviado después los eventos
+	// * procesados y enviados (a la vez) de cada instancia de los PEs
+	// Prototipos.
+	// */
+	// private class OnTimeGetEventCountAdapter extends TimerTask {
+	//
+	// @Override
+	// public void run() {
+	// // logger.debug("OnTimeGetEventCount");
+	// historyAdapter.add(getEventSeg());
+	//
+	// setEventSeg(0);
+	// }
+	// }
+
+	// /**
+	// * Esta clase estará encargada de la correr la segunda hebra, la cual
+	// * enviará los datos de cada uno de los PEs. Para obtenerlos, se recurrirá
+	// a
+	// * los distintos 'Streams' creandos en la aplicación de S4. Al obtener
+	// cada
+	// * 'Stream', se extraerá los distintos PEs Prototipos de cada uno de los
+	// * 'Streams', enviado después los eventos procesados y enviados (a la vez)
+	// * de cada instancia de los PEs Prototipos.
+	// */
+	// private class OnTimeSendStatusAdapter extends TimerTask {
+	//
+	// @Override
+	// public void run() {
+	// Statistics statistics = new Statistics();
+	// statistics.setAdapter(getClassAdapter());
+	// Map<Class<? extends AdapterApp>, Queue<Long>> mapAdapter = new
+	// HashMap<Class<? extends AdapterApp>, Queue<Long>>();
+	// mapAdapter.put(getClassAdapter(), historyAdapter);
+	// statistics.setHistory(mapAdapter);
+	// statistics.setEventPeriod(getEventPeriod());
+	//
+	// /* Envío de las estadísticas al monitor */
+	//	 remoteStream.sendStatistics(statistics);
+	//
+	// setEventPeriod(0);
+	// }
+	//
+	// }
 
 	/**
 	 * En este thread se desea poseer un puerto que escuche los datos que estén
@@ -309,9 +315,9 @@ public abstract class AdapterApp extends App {
 		private void removeReplication(StatusPE statusPE) {
 
 			int replication = replications.get(statusPE.getPE());
-			
+
 			/*
-			 * Enviará un mensaje 
+			 * Enviará un mensaje
 			 */
 			if (replication > 1) {
 				getRemoteStream().sendRemovePE(statusPE);
@@ -330,8 +336,6 @@ public abstract class AdapterApp extends App {
 							connectedSocket.getInputStream());
 
 					StatusPE statusPE = (StatusPE) inStream.readObject();
-
-					getLogger().debug(statusPE.toString());
 
 					changeReplication(statusPE);
 

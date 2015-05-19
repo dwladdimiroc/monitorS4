@@ -68,8 +68,6 @@ public abstract class App {
 
 	/* All the PE prototypes and history in this app. */
 	final private List<ProcessingElement> pePrototypes = new ArrayList<ProcessingElement>();
-	final private Queue<Map<Class<? extends ProcessingElement>, Long>> historyPE = new CircularFifoQueue<Map<Class<? extends ProcessingElement>, Long>>(
-			5);
 
 	// /* Stream to PE prototype relations. */
 	// final private Multimap<Streamable<? extends Event>, ProcessingElement>
@@ -95,7 +93,6 @@ public abstract class App {
 	 */
 	private Object block = new Object();
 	private Object blockAdapter = new Object();
-	private Object blockSend = new Object();
 
 	@Inject
 	private Sender sender;
@@ -216,8 +213,8 @@ public abstract class App {
 				 */
 				ScheduledExecutorService getEventCount = Executors
 						.newSingleThreadScheduledExecutor();
-				getEventCount.scheduleAtFixedRate(new OnTimeGetEventCount(), 0,
-						1000, TimeUnit.MILLISECONDS);
+				getEventCount.scheduleAtFixedRate(new OnTimeGetEventCount(),
+						1000, 1000, TimeUnit.MILLISECONDS);
 
 				// getLogger().info("TimerMonitor get eventCount");
 
@@ -228,7 +225,7 @@ public abstract class App {
 				 */
 				ScheduledExecutorService sendStatus = Executors
 						.newSingleThreadScheduledExecutor();
-				sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 10000,
+				sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 10100,
 						15000, TimeUnit.MILLISECONDS);
 
 				// getLogger().info("TimerMonitor send status");
@@ -260,36 +257,55 @@ public abstract class App {
 	 * procesados y enviados (a la vez) de cada instancia de los PEs Prototipos.
 	 */
 	private class OnTimeGetEventCount extends TimerTask {
+		long timeInit;
+		long timeFinal;
 
 		@Override
 		public void run() {
+			timeInit = System.currentTimeMillis();
+
 			// logger.debug("OnTimeGetEventCount");
 
-			Map<Class<? extends ProcessingElement>, Long> mapEventCount = new HashMap<Class<? extends ProcessingElement>, Long>();
+			Map<Class<? extends ProcessingElement>, Double> mapEventSeg = new HashMap<Class<? extends ProcessingElement>, Double>();
 
 			/* Obtención de cada 'Stream' */
 			for (Streamable<Event> stream : getStreams()) {
 				/* Obtención de cada 'PE Prototype' */
 				for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
-					/* Obtención del flujo de cada 'PE Instances' */
-					long acumEventCount = 0;
+					/* Obtención de la tasa de procesamiento */
+					long μ = 0;
 					for (ProcessingElement PE : PEPrototype.getInstances()) {
-						acumEventCount += PE.getEventSeg();
+						μ += PE.getEventSeg();
 						// Reinicio del contador de eventos para períodos de un
 						// segundo
 						PE.setEventSeg(0);
 					}
 
-					// logger.debug("[History PE] PE: " + PEPrototype.getClass()
-					// + " | acumEventCount: " + acumEventCount);
+					/* Obtención de la tasa de llegada */
+					long λ = PEPrototype.getEventSegQueue();
+					PEPrototype.setEventSegQueue(0);
+
+					/* Cálculo de la tasa de rendimiento */
+					double ρ = 0;
+					if (μ != 0) {
+						ρ = (double) λ / (double) μ;
+					} else if ((μ == 0) && (λ == 0)) {
+						ρ = 1;
+					} else {
+						ρ = Double.POSITIVE_INFINITY;
+					}
 
 					/* Para luego guardarlos en el historial del período */
-					mapEventCount.put(PEPrototype.getClass(), acumEventCount);
+					mapEventSeg.put(PEPrototype.getClass(), ρ);
 				}
 			}
 
 			/* Donde finalmente, se irán al historial colectivo */
-			historyPE.add(mapEventCount);
+			monitor.sendHistory(mapEventSeg);
+
+			timeFinal = System.currentTimeMillis();
+			monitor.getMetrics()
+					.setTimeSendHistoryMonitor(timeFinal - timeInit);
 		}
 	}
 
@@ -310,69 +326,61 @@ public abstract class App {
 
 			// getLogger().debug("Init Task Send Status");
 
-			synchronized (getBlockSend()) {
-				try {
-					// logger.debug("Wait for SendStatistics");
-					getBlockSend().wait(1000);
-					// logger.debug("Continue for Send Status");
-				} catch (InterruptedException e) {
-					getLogger()
-							.error("InterruptedException: " + e.getMessage());
-				}
+			// synchronized (getBlockSend()) {
+			// try {
+			// // logger.debug("Wait for SendStatistics");
+			// getBlockSend().wait(1000);
+			// // logger.debug("Continue for Send Status");
+			// } catch (InterruptedException e) {
+			// getLogger().error("InterruptedException: " + e.getMessage());
+			// }
 
-				synchronized (block) {
-					timeInit = System.currentTimeMillis();
+			synchronized (block) {
+				timeInit = System.currentTimeMillis();
 
-					/* Obtención de cada 'Stream' */
-					for (Streamable<Event> stream : getStreams()) {
-						/* Obtención de cada 'PE Prototype' */
-						for (ProcessingElement PEPrototype : stream
-								.getTargetPEs()) {
-							/* Obtención del flujo de cada 'PE Instances' */
-							long acumEventCount = 0;
-							for (ProcessingElement PE : PEPrototype
-									.getInstances()) {
-								acumEventCount += PE.getEventPeriod();
-								// Reinicio del contador de eventos para
-								// períodos
-								// del
-								// análisis del monitor
-								PE.setEventPeriod(0);
-							}
-							/* Envío de los datos al monitor */
-							getMonitor().sendStatus(PEPrototype.getClass(),
-									acumEventCount);
+				/* Obtención de cada 'Stream' */
+				for (Streamable<Event> stream : getStreams()) {
+					/* Obtención de cada 'PE Prototype' */
+					for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
+						/* Obtención del flujo de cada 'PE Instances' */
+						long μ = 0;
+						for (ProcessingElement PE : PEPrototype.getInstances()) {
+							μ += PE.getEventPeriod();
+							// Reinicio del contador de eventos para
+							// períodos del análisis del monitor
+							PE.setEventPeriod(0);
 						}
+
+						long λ = PEPrototype.getEventPeriodQueue();
+						PEPrototype.setEventPeriodQueue(0);
+
+						/* Envío de los datos al monitor */
+						if (!getMonitor().sendStatus(PEPrototype.getClass(), λ,
+								μ))
+							logger.error("Error en el sendStatus");
 					}
-
-					timeFinal = System.currentTimeMillis();
-
-					monitor.getMetrics().setTimeSendMonitor(
-							timeFinal - timeInit);
-
-					/* Envío del historial de todos de los PEs */
-					// logger.debug("Init Send History");
-					timeInit = System.currentTimeMillis();
-					getMonitor().sendHistory(historyPE);
-					timeFinal = System.currentTimeMillis();
-
-					monitor.getMetrics().setTimeSendHistoryMonitor(
-							timeFinal - timeInit);
-
-					// logger.debug("Finish Send History");
-
-					/*
-					 * Avisará al Thread de AskStatus que está disponible para
-					 * obtener los datos
-					 */
-					// logger.info("Notify to AskMonitor");
-					block.notify();
 				}
+
+				// logger.debug("Finish Send History");
+
+				// logger.debug(monitor.getStatusSystem().toString());
+
+				/*
+				 * Avisará al Thread de AskStatus que está disponible para
+				 * obtener los datos
+				 */
+				// logger.info("Notify to AskMonitor");
+				block.notify();
+
+				timeFinal = System.currentTimeMillis();
+				monitor.getMetrics().setTimeSendMonitor(timeFinal - timeInit);
 			}
+			// }
 
 			// logger.debug("Finish Task Send Status");
 
 		}
+
 	}
 
 	/**
@@ -383,15 +391,17 @@ public abstract class App {
 	 * dos etapas: aumento y disminución de las instancias de PEs.
 	 */
 	private class OnTimeAskStatus extends TimerTask {
-		List<StatusPE> statusSystem;
+		Map<Class<? extends ProcessingElement>, StatusPE> statusSystem;
 		long timeInit;
 		long timeFinal;
 
 		@Override
 		public void run() {
-			timeInit = System.currentTimeMillis();
 
 			synchronized (block) {
+
+				timeInit = System.currentTimeMillis();
+
 				// logger.info("Init AskStatus");
 				try {
 					// logger.info("Wait to AskMonitor");
@@ -412,7 +422,10 @@ public abstract class App {
 				// logger.info("Finish AskStatus");
 
 				/* Análisis de cada PE según lo entregado por el monitor */
-				for (StatusPE statusPE : statusSystem) {
+				// for (StatusPE statusPE : statusSystem) {
+				for (Class<? extends ProcessingElement> peCurrent : statusSystem
+						.keySet()) {
+					StatusPE statusPE = statusSystem.get(peCurrent);
 
 					/* Lista de los Adapters que proveen eventos al PE analizado */
 					List<Class<? extends AdapterApp>> listAdapter = getAdapter(statusPE
@@ -434,11 +447,11 @@ public abstract class App {
 					// + statusPE.getPE().getCanonicalName());
 				}
 				// logger.info("Finish AskStatus");
+
+				timeFinal = System.currentTimeMillis();
+				monitor.getMetrics().setTimeAskMonitor(timeFinal - timeInit);
 			}
 
-			timeFinal = System.currentTimeMillis();
-
-			monitor.getMetrics().setTimeAskMonitor(timeFinal - timeInit);
 		}
 
 		/**
@@ -572,10 +585,10 @@ public abstract class App {
 							int replicationCurrent = PEPrototype
 									.getReplicationPE(statusPE.getPE());
 
-							// logger.debug("[replicationAnalyzed] "
-							// + replicationAnalyzed
-							// + " | [replicationCurrent] "
-							// + replicationCurrent);
+							logger.debug("[replicationAnalyzed] "
+									+ replicationAnalyzed
+									+ " | [replicationCurrent] "
+									+ replicationCurrent);
 
 							if (replicationAnalyzed > replicationCurrent) {
 
@@ -587,11 +600,8 @@ public abstract class App {
 								PEPrototype.setReplicationPE(statusPE.getPE(),
 										statusPE.getReplication());
 
-								/* Crea los PEs que son necesarios */
-								for (int i = replicationCurrent + 1; i <= replicationAnalyzed; i++) {
-									PEPrototype.getInstanceForKey(Integer
-											.toString(i));
-								}
+								/* Crea los PEs que sean necesarios */
+								addReplication(statusPE);
 
 								/*
 								 * Realizando esa modificación en cada instancia
@@ -714,6 +724,32 @@ public abstract class App {
 
 		onClose();
 		removeAll();
+	}
+
+	/**
+	 * Función que estará encargada de agregar réplicas entre el valor del
+	 * número de instancias + 1 y el número de réplicas deseadas. Es decir, en
+	 * caso que el PE posee número de réplica n, significa que habrá 0 a n-1
+	 * llaves, de esta manera, se agregará m réplicas, de n a m-1, como n+m
+	 * réplicas diga que existen ahora en el sistema.
+	 * 
+	 * @param statusPE
+	 *            Estado del PE analizado
+	 */
+	public void addReplication(StatusPE statusPE) {
+		/* Obtención de cada 'Stream' */
+		for (Streamable<Event> stream : getStreams()) {
+			/* Obtención de cada 'PE Prototype' */
+			for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
+				if (PEPrototype.getClass().equals(statusPE.getPE())) {
+					for (long i = PEPrototype.getNumPEInstances(); i < statusPE
+							.getReplication(); i++) {
+						PEPrototype.getInstanceForKey(Long.toString(i));
+					}
+				}
+
+			}
+		}
 	}
 
 	/**
@@ -1092,10 +1128,6 @@ public abstract class App {
 
 	public Object getBlockAdapter() {
 		return blockAdapter;
-	}
-
-	public Object getBlockSend() {
-		return blockSend;
 	}
 
 	public Cluster getCluster() {

@@ -59,7 +59,6 @@ public class Stream<T extends Event> implements Streamable {
 	private String name;
 	protected Key<T> key;
 	private ProcessingElement[] targetPEs;
-	private Map<Class<? extends ProcessingElement>, Queue<Event>> queueEventPEs;
 	private Executor eventProcessingExecutor;
 	final private Sender sender;
 	final private ReceiverImpl receiver;
@@ -163,11 +162,7 @@ public class Stream<T extends Event> implements Streamable {
 	 */
 	public Stream<T> setPEs(ProcessingElement... pes) {
 		this.targetPEs = pes;
-		
-		for(ProcessingElement pe : pes) {
-			this.queueEventPEs.put(pe.getClass(), new CircularFifoQueue<Event>(10000));
-		}
-		
+
 		return this;
 	}
 
@@ -194,6 +189,12 @@ public class Stream<T extends Event> implements Streamable {
 			 */
 			if (!sender.checkAndSendIfNotLocal(key.get((T) event), event)) {
 
+				/* Se analiza la tasa de llegada */
+				for (ProcessingElement pe : targetPEs) {
+					pe.setEventSegQueue(pe.getEventSegQueue() + 1);
+					pe.setEventPeriodQueue(pe.getEventPeriodQueue() + 1);
+				}
+
 				/*
 				 * Sender checked and decided that the target is local so we
 				 * simply put the event in the queue and we save the trip over
@@ -213,6 +214,12 @@ public class Stream<T extends Event> implements Streamable {
 			 */
 			sender.sendToAllRemotePartitions(event);
 
+			/* Se analiza la tasa de llegada */
+			for (ProcessingElement pe : targetPEs) {
+				pe.setEventSegQueue(pe.getEventSegQueue() + 1);
+				pe.setEventPeriodQueue(pe.getEventPeriodQueue() + 1);
+			}
+
 			// now send to local queue
 			eventProcessingExecutor.execute(new StreamEventProcessingTask(
 					(T) event));
@@ -227,10 +234,10 @@ public class Stream<T extends Event> implements Streamable {
 		logger.error("It can't send local notification");
 	}
 
-	@Override
-	public void sendStatistics(Statistics statistics) {
-		logger.error("It can't send local statistics");
-	}
+	// @Override
+	// public void sendStatistics(Statistics statistics) {
+	// logger.error("It can't send local statistics");
+	// }
 
 	@Override
 	public void sendRemovePE(StatusPE statusPE) {
@@ -243,6 +250,12 @@ public class Stream<T extends Event> implements Streamable {
 	 */
 	public void receiveEvent(Event event) {
 		// NOTE: ArrayBlockingQueue.size is O(1).
+
+		/* Se analiza la tasa de llegada */
+		for (ProcessingElement pe : targetPEs) {
+			pe.setEventSegQueue(pe.getEventSegQueue() + 1);
+			pe.setEventPeriodQueue(pe.getEventPeriodQueue() + 1);
+		}
 
 		eventProcessingExecutor
 				.execute(new StreamEventProcessingTask((T) event));
@@ -287,27 +300,26 @@ public class Stream<T extends Event> implements Streamable {
 	public void receiveStatistics(Statistics statistics) {
 		// NOTE: ArrayBlockingQueue.size is O(1).
 
-		/*
-		 * En caso que llegue un mensaje que sea exclusivo de las estadísticas,
-		 * entonces el monitor empezará a iniciarse
-		 */
-		synchronized (this.app.getBlockSend()) {
-			logger.debug("Send statistics Adapter " + statistics.getAdapter());
-
-			this.app.getMonitor().sendHistoryAdapter(statistics.getHistory());
-			this.app.getMonitor().sendStatusAdapter(statistics.getAdapter(),
-					statistics.getEventPeriod());
-
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				logger.error("InterruptedException: " + e);
-			}
-
-			this.app.getBlockSend().notify();
-		}
-
-		// TODO abstraction around queue and add dropped counter
+		// /*
+		// * En caso que llegue un mensaje que sea exclusivo de las
+		// estadísticas,
+		// * entonces el monitor empezará a iniciarse
+		// */
+		// synchronized (this.app.getBlockSend()) {
+		// logger.debug("Send statistics Adapter " + statistics.getAdapter());
+		//
+		// this.app.getMonitor().sendHistoryAdapter(statistics.getHistory());
+		// this.app.getMonitor().sendStatusAdapter(statistics.getAdapter(),
+		// statistics.getEventPeriod());
+		//
+		// try {
+		// Thread.sleep(1000);
+		// } catch (InterruptedException e) {
+		// logger.error("InterruptedException: " + e);
+		// }
+		//
+		// this.app.getBlockSend().notify();
+		// }
 	}
 
 	/**
@@ -454,10 +466,12 @@ public class Stream<T extends Event> implements Streamable {
 					//
 					// if (name.equals("processTwoStream")) {
 					// logger.debug(
-					// "[PE] {} | [eventCount] {}",
+					// "[PE] {} | [eventCount] {} | [eventQueue] {}",
 					// new String[] {
 					// pe.getClass().getCanonicalName(),
-					// Long.toString(pe.getEventCount()) });
+					// Long.toString(pe.getEventCount()),
+					// Long.toString(targetPEs[i]
+					// .getEventPeriodQueue()) });
 					// }
 					//
 					// /* STEP 2: pass event to PE instance. */
@@ -467,16 +481,37 @@ public class Stream<T extends Event> implements Streamable {
 					 * STEP 1.B: select the PE instance for round-robin or
 					 * disponibility.
 					 */
-					for (ProcessingElement pe : targetPEs[i].getInstances()) {
+					if (targetPEs[i].getNumPEInstances() != 0) {
 
-						if (name.equals("processTwoStream")) {
-							logger.debug("[PE] {} | [eventCount] {}",
-									new String[] {
-											pe.getClass().getCanonicalName(),
-											Long.toString(pe.getEventCount()) });
+						long minEventQueue = (long) Double.POSITIVE_INFINITY;
+						ProcessingElement peMin = targetPEs[i];
+
+						for (ProcessingElement pe : targetPEs[i].getInstances()) {
+
+							// if (name.equals("processTwoStream")) {
+							// logger.debug("[PE Instance] " + pe.getId()
+							// + " | [eventQueue] " + pe.eventQueue
+							// + " | [eventProcess] " + pe.eventCount);
+							// }
+
+							if (minEventQueue > pe.eventQueue) {
+								minEventQueue = pe.eventQueue;
+								peMin = pe;
+							}
 						}
 
+						// if (name.equals("processTwoStream")) {
+						// logger.debug("[SendPE Instance] " + peMin.getId());
+						// }
+
 						/* STEP 2: pass event to PE instance. */
+						peMin.handleInputEvent(event);
+
+					} else {
+
+						ProcessingElement pe = targetPEs[i]
+								.getInstanceForKey(key.get(event));
+
 						pe.handleInputEvent(event);
 
 					}

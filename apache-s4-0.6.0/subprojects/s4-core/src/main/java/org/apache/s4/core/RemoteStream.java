@@ -65,7 +65,7 @@ public class RemoteStream implements Streamable<Event> {
 		} else {
 			this.key = new Key<Event>(finder, DEFAULT_SEPARATOR);
 		}
-				
+
 		remoteStreams.addOutputStream(clusterName, name);
 
 	}
@@ -90,12 +90,12 @@ public class RemoteStream implements Streamable<Event> {
 		remoteSenders.sendNotification(notification);
 	}
 
-	@Override
-	public void sendStatistics(Statistics statistics) {
-		statistics.setStream(getName());
-		remoteSenders.sendStatistics(statistics);
-	}
-	
+	// @Override
+	// public void sendStatistics(Statistics statistics) {
+	// statistics.setStream(getName());
+	// remoteSenders.sendStatistics(statistics);
+	// }
+
 	@Override
 	public void sendRemovePE(StatusPE statusPE) {
 		statusPE.setStream(getName());

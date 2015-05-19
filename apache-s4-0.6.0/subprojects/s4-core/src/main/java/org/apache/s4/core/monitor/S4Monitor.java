@@ -1,7 +1,6 @@
 package org.apache.s4.core.monitor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,13 +22,15 @@ public class S4Monitor {
 	static final Logger logger = LoggerFactory.getLogger(S4Monitor.class);
 
 	private final List<TopologyApp> topologySystem = new ArrayList<TopologyApp>();
-	private final List<StatusPE> statusSystem = new ArrayList<StatusPE>();
+	private final Map<Class<? extends ProcessingElement>, StatusPE> statusSystem = new HashMap<Class<? extends ProcessingElement>, StatusPE>();
 
 	/* Clase que se hara cargo de almacenar las estadísticas de S4Monitor */
 	private MonitorMetrics metrics;
 
 	/* Variables del adapter */
-	private final List<Map<Class<? extends AdapterApp>, Queue<Long>>> listHistoryAdapter = new ArrayList<Map<Class<? extends AdapterApp>, Queue<Long>>>();
+	// private final List<Map<Class<? extends AdapterApp>, Queue<Double>>>
+	// listHistoryAdapter = new ArrayList<Map<Class<? extends AdapterApp>,
+	// Queue<Long>>>();
 
 	/**
 	 * Inicialización del monitor, dada la inyección de la clase
@@ -98,11 +99,16 @@ public class S4Monitor {
 		 * del PE de entrada.
 		 */
 		boolean exist = false;
-		for (StatusPE statusPE : getStatusSystem()) {
-			if (peSend.equals(statusPE.getPE())) {
-				exist = true;
-				break;
-			}
+
+		// for (StatusPE statusPE : getStatusSystem()) {
+		// if (peSend.equals(statusPE.getPE())) {
+		// exist = true;
+		// break;
+		// }
+		// }
+
+		if (getStatusSystem().containsKey(peSend)) {
+			exist = true;
 		}
 
 		if (!exist) {
@@ -111,7 +117,7 @@ public class S4Monitor {
 			statusPE.setRecibeEvent(0);
 			statusPE.setSendEvent(0);
 			statusPE.setReplication(1);
-			getStatusSystem().add(statusPE);
+			getStatusSystem().put(peSend, statusPE);
 
 			/* Además, se crearán los contadores y estadísticas para el PE */
 			getMetrics().createCounterReplicationPE(peSend.getCanonicalName());
@@ -123,150 +129,183 @@ public class S4Monitor {
 		}
 	}
 
-	/**
-	 * getRho hace referencia a la función que obtendrá el valor de Rho, esto
-	 * significa que la tasa de rendimiento, que se obtendrá con la tasa de
-	 * llegada de todos los PEs emisores al PE analizado y la tasa de
-	 * rendimiento del PE analizado.
-	 * 
-	 * @param pECurrent
-	 *            PE analizado
-	 * @param μ
-	 *            Tasa de procesamiento
-	 * @param epochPE
-	 *            Tasa de procesamiento de todos los PEs en la época analizada
-	 * @param map
-	 * @return
-	 */
-	private double getRho(Class<? extends ProcessingElement> pECurrent, long μ,
-			Map<Class<? extends ProcessingElement>, Long> epochPE,
-			Map<Class<? extends AdapterApp>, Long> epochAdapter) {
+	// /**
+	// * getRho hace referencia a la función que obtendrá el valor de Rho, esto
+	// * significa que la tasa de rendimiento, que se obtendrá con la tasa de
+	// * llegada de todos los PEs emisores al PE analizado y la tasa de
+	// * rendimiento del PE analizado.
+	// *
+	// * @param pECurrent
+	// * PE analizado
+	// * @param μ
+	// * Tasa de procesamiento
+	// * @param epochPE
+	// * Tasa de procesamiento de todos los PEs en la época analizada
+	// * @param map
+	// * @return
+	// */
+	// private double getRho(Class<? extends ProcessingElement> pECurrent, long
+	// μ,
+	// Map<Class<? extends ProcessingElement>, Long> epochPE,
+	// Map<Class<? extends AdapterApp>, Long> epochAdapter) {
+	//
+	// /*
+	// * Obtener la tasa de llegada de todos los PEs que son emisores del PE
+	// * analizado
+	// */
+	// long λ = 0;
+	// for (TopologyApp topology : getTopologySystem()) {
+	// if (pECurrent.equals(topology.getPeRecibe())) {
+	// if (topology.getAdapter() == null) {
+	// λ += epochPE.get(topology.getPeSend());
+	// } else {
+	// λ += epochAdapter.get(topology.getAdapter());
+	// }
+	// }
+	// }
+	//
+	// /*
+	// * Después de poseer la tasa de llegada, podemos calcular ρ (tasa de
+	// * procesamiento). Un detalle importante, es que en caso que la tasa de
+	// * procesamiento sea 0, se considerará un valor infinito, debido que no
+	// * es posible la división por 0.
+	// */
+	// double ρ;
+	// if (μ != 0) {
+	// ρ = (double) λ / (double) μ;
+	// } else if ((μ == 0) && (λ == 0)) {
+	// ρ = 1;
+	// } else {
+	// ρ = Double.POSITIVE_INFINITY;
+	// }
+	//
+	// return ρ;
+	// }
 
-		/*
-		 * Obtener la tasa de llegada de todos los PEs que son emisores del PE
-		 * analizado
-		 */
-		long λ = 0;
-		for (TopologyApp topology : getTopologySystem()) {
-			if (pECurrent.equals(topology.getPeRecibe())) {
-				if (topology.getAdapter() == null) {
-					λ += epochPE.get(topology.getPeSend());
-				} else {
-					λ += epochAdapter.get(topology.getAdapter());
-				}
-			}
+	// /**
+	// * setHistoryRho hace referencia a asignar a cada PE el estado de un
+	// período
+	// * determinado su Rho, es decir, su tasa de rendimiento.
+	// *
+	// * @param pECurrent
+	// * El PE analizado
+	// * @param rho
+	// * Tasa de rendimiento de ese PE en ese período
+	// */
+	// private void setHistoryRho(Class<? extends ProcessingElement> pECurrent,
+	// double rho) {
+	// /*
+	// * Asignar el valor de procesamiento de si mismo. Es decir, μ tasa de
+	// * servicio.
+	// */
+	// for (StatusPE statusPE : getStatusSystem()) {
+	// if (pECurrent.equals(statusPE.getPE())) {
+	// // logger.debug("StatusSystem " + statusSystem.get(i).getPe());
+	// /*
+	// * Se debe realizar una diferencia, debido que son el total de
+	// * eventos procesos en ese período menos el ya procesados. De
+	// * esta manera, obtendremos el número de eventos en el Δt
+	// * deseado.
+	// */
+	// statusPE.getHistory().add(rho);
+	// }
+	// }
+	// }
+
+	// /**
+	// * sendHistoryAdapter guardará en una variable auxiliar el estado del
+	// * Adapter,
+	// *
+	// *
+	// * @param historyPEs
+	// * Corresponde una lista donde cada posición es un período de
+	// * tiempo, y cada período analizará el estado de un adapter en
+	// * ese período, según la cantidad de eventos procesados.
+	// */
+	// public void sendHistoryAdapter(
+	// Map<Class<? extends AdapterApp>, Queue<Long>> historyAdapter) {
+	// boolean printHistory = false;
+	//
+	// this.listHistoryAdapter.add(historyAdapter);
+	//
+	// if (printHistory)
+	// printfListHistoryAdapter();
+	// }
+
+	// /**
+	// * Imprime el historial de los distintos Adapters en el Sistema
+	// */
+	// private void printfListHistoryAdapter() {
+	//
+	// for (Map<Class<? extends AdapterApp>, Queue<Long>> historyAdapter :
+	// this.listHistoryAdapter) {
+	// for (Class<? extends AdapterApp> adapterApp : historyAdapter
+	// .keySet()) {
+	// logger.debug("[Adapter] {} | [History] {}",
+	// new String[] { adapterApp.getCanonicalName(),
+	// historyAdapter.get(adapterApp).toString() });
+	// }
+	// }
+	// }
+
+	// /**
+	// * getEpochAdapter retornará el valor de los Adapter en cierta época en
+	// * específico, de esta manera servirá para analizar el flujo de entrada a
+	// * los PEs en el grafo
+	// *
+	// * @param epoch
+	// * que se analizará del historial del Adapter
+	// * @return flujo de entrada de los primeros PEs en el grafo
+	// */
+	// private Map<Class<? extends AdapterApp>, Long> getEpochAdapter(int epoch)
+	// {
+	// Map<Class<? extends AdapterApp>, Long> epochAdapter = new HashMap<Class<?
+	// extends AdapterApp>, Long>();
+	//
+	// /* Solicitamos todos los historiales de los Adapters */
+	// for (Map<Class<? extends AdapterApp>, Queue<Long>> historyAdapter :
+	// this.listHistoryAdapter) {
+	// /* Analizamos que adapter vamos a sacar su flujo en cierta época */
+	// for (Class<? extends AdapterApp> adapterApp : historyAdapter
+	// .keySet()) {
+	// /*
+	// * Para posteriormente, guardar este valor en un map, de tal
+	// * manera de obtenerlo después
+	// */
+	// long eventEpoch = (long) historyAdapter.get(adapterApp)
+	// .toArray()[epoch];
+	// epochAdapter.put(adapterApp, eventEpoch);
+	// }
+	// }
+	//
+	// return epochAdapter;
+	// }
+
+	/**
+	 * Agregará al historial de cierto PE la tasa de procesamiento en cierto
+	 * período
+	 * 
+	 * @param pe
+	 *            analizado
+	 * @param ρ
+	 *            tasa de procesamiento
+	 * @return Estado de si se guardó o no la tasa de procesamiento
+	 */
+	private boolean setRho(Class<? extends ProcessingElement> pe, double ρ) {
+		// for (StatusPE statusPE : statusSystem) {
+		// if (statusPE.getPE().equals(pe)) {
+		// statusPE.getHistory().add(ρ);
+		// return true;
+		// }
+		// }
+
+		StatusPE statusPE = statusSystem.get(pe);
+		if (statusPE != null) {
+			statusPE.getHistory().add(ρ);
+			return true;
 		}
 
-		/*
-		 * Después de poseer la tasa de llegada, podemos calcular ρ (tasa de
-		 * procesamiento). Un detalle importante, es que en caso que la tasa de
-		 * procesamiento sea 0, se considerará un valor infinito, debido que no
-		 * es posible la división por 0.
-		 */
-		double ρ;
-		if (μ != 0) {
-			ρ = (double) λ / (double) μ;
-		} else if ((μ == 0) && (λ == 0)) {
-			ρ = 1;
-		} else {
-			ρ = Double.POSITIVE_INFINITY;
-		}
-
-		return ρ;
-	}
-
-	/**
-	 * setHistoryRho hace referencia a asignar a cada PE el estado de un período
-	 * determinado su Rho, es decir, su tasa de rendimiento.
-	 * 
-	 * @param pECurrent
-	 *            El PE analizado
-	 * @param rho
-	 *            Tasa de rendimiento de ese PE en ese período
-	 */
-	private void setHistoryRho(Class<? extends ProcessingElement> pECurrent,
-			double rho) {
-		/*
-		 * Asignar el valor de procesamiento de si mismo. Es decir, μ tasa de
-		 * servicio.
-		 */
-		for (StatusPE statusPE : getStatusSystem()) {
-			if (pECurrent.equals(statusPE.getPE())) {
-				// logger.debug("StatusSystem " + statusSystem.get(i).getPe());
-				/*
-				 * Se debe realizar una diferencia, debido que son el total de
-				 * eventos procesos en ese período menos el ya procesados. De
-				 * esta manera, obtendremos el número de eventos en el Δt
-				 * deseado.
-				 */
-				statusPE.getHistory().add(rho);
-			}
-		}
-	}
-
-	/**
-	 * sendHistoryAdapter guardará en una variable auxiliar el estado del
-	 * Adapter,
-	 * 
-	 * 
-	 * @param historyPEs
-	 *            Corresponde una lista donde cada posición es un período de
-	 *            tiempo, y cada período analizará el estado de un adapter en
-	 *            ese período, según la cantidad de eventos procesados.
-	 */
-	public void sendHistoryAdapter(
-			Map<Class<? extends AdapterApp>, Queue<Long>> historyAdapter) {
-		boolean printHistory = false;
-
-		this.listHistoryAdapter.add(historyAdapter);
-
-		if (printHistory)
-			printfListHistoryAdapter();
-	}
-
-	/**
-	 * Imprime el historial de los distintos Adapters en el Sistema
-	 */
-	private void printfListHistoryAdapter() {
-
-		for (Map<Class<? extends AdapterApp>, Queue<Long>> historyAdapter : this.listHistoryAdapter) {
-			for (Class<? extends AdapterApp> adapterApp : historyAdapter
-					.keySet()) {
-				logger.debug("[Adapter] {} | [History] {}",
-						new String[] { adapterApp.getCanonicalName(),
-								historyAdapter.get(adapterApp).toString() });
-			}
-		}
-	}
-
-	/**
-	 * getEpochAdapter retornará el valor de los Adapter en cierta época en
-	 * específico, de esta manera servirá para analizar el flujo de entrada a
-	 * los PEs en el grafo
-	 * 
-	 * @param epoch
-	 *            que se analizará del historial del Adapter
-	 * @return flujo de entrada de los primeros PEs en el grafo
-	 */
-	private Map<Class<? extends AdapterApp>, Long> getEpochAdapter(int epoch) {
-		Map<Class<? extends AdapterApp>, Long> epochAdapter = new HashMap<Class<? extends AdapterApp>, Long>();
-
-		/* Solicitamos todos los historiales de los Adapters */
-		for (Map<Class<? extends AdapterApp>, Queue<Long>> historyAdapter : this.listHistoryAdapter) {
-			/* Analizamos que adapter vamos a sacar su flujo en cierta época */
-			for (Class<? extends AdapterApp> adapterApp : historyAdapter
-					.keySet()) {
-				/*
-				 * Para posteriormente, guardar este valor en un map, de tal
-				 * manera de obtenerlo después
-				 */
-				long eventEpoch = (long) historyAdapter.get(adapterApp)
-						.toArray()[epoch];
-				epochAdapter.put(adapterApp, eventEpoch);
-			}
-		}
-
-		return epochAdapter;
+		return false;
 	}
 
 	/**
@@ -277,40 +316,19 @@ public class S4Monitor {
 	 * períodos por cada PEs será la cantidad de muestras para la cadena.
 	 * 
 	 * @param historyPEs
-	 *            Corresponde una lista donde cada posición es un período de
-	 *            tiempo, y cada período analizará el estado de un PE en ese
-	 *            período, según la cantidad de eventos procesados.
+	 *            Corresponde a la tasa de rendimiento de todos los PEs en un
+	 *            período determinado
 	 */
 	public void sendHistory(
-			Queue<Map<Class<? extends ProcessingElement>, Long>> historyPEs) {
+			Map<Class<? extends ProcessingElement>, Double> historyPEs) {
 		boolean printHistory = false;
 
-		int epoch = 0;
-		/* Solicitamos una muestra en el tiempo */
-		for (int epochCurrent = 0; epochCurrent < historyPEs.size(); epochCurrent++) {
-			@SuppressWarnings("unchecked")
-			Map<Class<? extends ProcessingElement>, Long> epochPE = (Map<Class<? extends ProcessingElement>, Long>) historyPEs
-					.toArray()[epochCurrent];
-
-			/* Solicitamos todos los PEs que poseemos en el Map de ese período */
-			for (Class<? extends ProcessingElement> PECurrent : epochPE
-					.keySet()) {
-
-				/*
-				 * Donde analizaremos cada uno de los PEs en esa época en
-				 * específico
-				 */
-				setHistoryRho(
-						PECurrent,
-						getRho(PECurrent, epochPE.get(PECurrent), epochPE,
-								getEpochAdapter(epoch)));
-
-			}
-			epoch++;
+		for (Class<? extends ProcessingElement> peCurrent : historyPEs.keySet()) {
+			double ρ = historyPEs.get(peCurrent);
+			if (!setRho(peCurrent, ρ))
+				logger.error("Error en guardar la variable ρ en el PE "
+						+ peCurrent.getCanonicalName());
 		}
-
-		/* Limpiamos la variable auxiliar del Adapter */
-		listHistoryAdapter.clear();
 
 		if (printHistory)
 			printHistoryForPE();
@@ -322,49 +340,51 @@ public class S4Monitor {
 	 */
 	private void printHistoryForPE() {
 		logger.debug("Print HistoryPE");
-		for (StatusPE status : statusSystem) {
+		for (Class<? extends ProcessingElement> key : statusSystem.keySet()) {
+			StatusPE status = statusSystem.get(key);
 			logger.debug("Status: " + status.getPE() + " | EventCount: "
 					+ status.getSendEvent() + " | History: "
 					+ status.getHistory().toString());
 		}
 	}
 
-	/**
-	 * sendStatusAdapter hace referencia al 'Monitor de carga', pero según el
-	 * adapter. Esto debido que es una excepción en la forma de analizarlo en
-	 * S4.
-	 * 
-	 * @param adapter
-	 *            Corresponde al Adapter que se está analizando.
-	 * @param eventCount
-	 *            La cantidad de eventos totales procesados en ese período.
-	 */
-	public void sendStatusAdapter(Class<? extends AdapterApp> adapter,
-			long eventCount) {
-		List<Class<? extends ProcessingElement>> listPERecibe = new ArrayList<Class<? extends ProcessingElement>>();
-
-		/*
-		 * Obtener todos las clases a donde debe ir el Adapter.
-		 */
-		for (TopologyApp topology : getTopologySystem()) {
-			if (adapter.equals(topology.getAdapter())) {
-				listPERecibe.add(topology.getPeRecibe());
-			}
-		}
-
-		/*
-		 * Asignar el valor de la tasa de llegada de cada uno de los distintos
-		 * PE. Es decir, λ Tasa de llegada.
-		 */
-		for (Class<? extends ProcessingElement> recibe : listPERecibe) {
-			for (StatusPE statusPE : getStatusSystem()) {
-				if (recibe.equals(statusPE.getPE())) {
-					statusPE.setRecibeEvent(statusPE.getRecibeEvent()
-							+ eventCount);
-				}
-			}
-		}
-	}
+	// /**
+	// * sendStatusAdapter hace referencia al 'Monitor de carga', pero según el
+	// * adapter. Esto debido que es una excepción en la forma de analizarlo en
+	// * S4.
+	// *
+	// * @param adapter
+	// * Corresponde al Adapter que se está analizando.
+	// * @param eventCount
+	// * La cantidad de eventos totales procesados en ese período.
+	// */
+	// public void sendStatusAdapter(Class<? extends AdapterApp> adapter,
+	// long eventCount) {
+	// List<Class<? extends ProcessingElement>> listPERecibe = new
+	// ArrayList<Class<? extends ProcessingElement>>();
+	//
+	// /*
+	// * Obtener todos las clases a donde debe ir el Adapter.
+	// */
+	// for (TopologyApp topology : getTopologySystem()) {
+	// if (adapter.equals(topology.getAdapter())) {
+	// listPERecibe.add(topology.getPeRecibe());
+	// }
+	// }
+	//
+	// /*
+	// * Asignar el valor de la tasa de llegada de cada uno de los distintos
+	// * PE. Es decir, λ Tasa de llegada.
+	// */
+	// for (Class<? extends ProcessingElement> recibe : listPERecibe) {
+	// for (StatusPE statusPE : getStatusSystem()) {
+	// if (recibe.equals(statusPE.getPE())) {
+	// statusPE.setRecibeEvent(statusPE.getRecibeEvent()
+	// + eventCount);
+	// }
+	// }
+	// }
+	// }
 
 	/**
 	 * sendStatus hace referencia al 'Monitor de carga', donde se analizarán
@@ -376,51 +396,61 @@ public class S4Monitor {
 	 * @param eventCount
 	 *            La cantidad de eventos totales procesados en ese período.
 	 */
-	public void sendStatus(Class<? extends ProcessingElement> data,
-			Long eventCount) {
-
-		List<Class<? extends ProcessingElement>> listPERecibe = new ArrayList<Class<? extends ProcessingElement>>();
-
-		/*
-		 * Obtener todos las clases a donde debe ir el PE.
-		 */
-		for (TopologyApp topology : getTopologySystem()) {
-			if (data.equals(topology.getPeSend())) {
-				listPERecibe.add(topology.getPeRecibe());
-			}
-		}
+	public boolean sendStatus(Class<? extends ProcessingElement> data, long λ,
+			long μ) {
 
 		/*
 		 * Asignar el valor de procesamiento de si mismo. Es decir, μ tasa de
 		 * servicio.
 		 */
-		for (StatusPE statusPE : getStatusSystem()) {
-			if (data.equals(statusPE.getPE())) {
-				statusPE.setSendEvent(eventCount);
-				/* Analizamos la cola del PE */
-				long queuePE = statusPE.getQueueEvent() - eventCount;
-				if (queuePE > 0)
-					statusPE.setQueueEvent(queuePE);
-				else
-					statusPE.setQueueEvent(0);
+		// for (StatusPE statusPE : getStatusSystem()) {
+		// if (data.equals(statusPE.getPE())) {
+		// statusPE.setSendEvent(eventCount);
+		// /* Analizamos la cola del PE */
+		// long queuePE = statusPE.getQueueEvent() - eventCount;
+		// if (queuePE > 0)
+		// statusPE.setQueueEvent(queuePE);
+		// else
+		// statusPE.setQueueEvent(0);
+		// }
+		// }
+
+		StatusPE statusPE = statusSystem.get(data);
+
+		if (statusPE != null) {
+			/*
+			 * Se guardará tanto la tasa de llegada, como la tasa de
+			 * procesamiento. Esto para poder realizar estadísticas del sistema
+			 */
+			statusPE.setSendEvent(μ);
+			statusPE.setRecibeEvent(λ);
+
+			/*
+			 * Posteriormente, se analiza la tasa de rendimiento del PE, para
+			 * verificar si efectivamente es necesario una replicación. Es decir
+			 * ρ = λ / (s*μ) ; donde s cantidad de replicas del PE
+			 */
+			double ρ = 0;
+			if (μ != 0) {
+				ρ = (double) λ / (double) μ;
+			} else if ((μ == 0) && (λ == 0)) {
+				ρ = 1;
+			} else {
+				ρ = Double.POSITIVE_INFINITY;
 			}
+			statusPE.setProcessEvent(ρ);
+
+			/* Analizamos la cola del PE */
+			long queuePE = λ - μ;
+			if (queuePE > 0)
+				statusPE.setQueueEvent(queuePE);
+			else
+				statusPE.setQueueEvent(0);
+		} else {
+			return false;
 		}
 
-		/*
-		 * Asignar el valor de la tasa de llegada de cada uno de los distintos
-		 * PE. Es decir, λ Tasa de llegada.
-		 */
-		for (Class<? extends ProcessingElement> recibe : listPERecibe) {
-			for (StatusPE statusPE : getStatusSystem()) {
-				if (recibe.equals(statusPE.getPE())) {
-					statusPE.setRecibeEvent(statusPE.getRecibeEvent()
-							+ eventCount);
-					/* Analizamos la cola del PE */
-					statusPE.setQueueEvent(statusPE.getQueueEvent()
-							+ eventCount);
-				}
-			}
-		}
+		return true;
 	}
 
 	/**
@@ -437,21 +467,8 @@ public class S4Monitor {
 	 */
 	private int reactiveLoad(StatusPE statusPE) {
 
-		/*
-		 * Posteriormente, se analiza la tasa de rendimiento del PE, para
-		 * verificar si efectivamente es necesario una replicación. Es decir ρ =
-		 * λ / (s*μ) ; donde s cantidad de replicas del PE
-		 */
-		long λ = statusPE.getRecibeEvent();
-		long μ = statusPE.getSendEvent();
-		double ρ = 0;
-		if (μ != 0) {
-			ρ = (double) λ / (double) μ;
-		} else if ((λ == 0) && (μ == 0)) {
-			ρ = 1;
-		} else {
-			ρ = Double.POSITIVE_INFINITY;
-		}
+		/* Análisis de la tasa de rendimiento */
+		double ρ = statusPE.getProcessEvent();
 
 		/*
 		 * Análisis de ρ para ver si debe aumentar, mantener o disminuir la
@@ -647,7 +664,11 @@ public class S4Monitor {
 	private boolean analyzeStatus(Class<? extends ProcessingElement> data,
 			long recibeEvent, boolean replication) {
 
-		for (StatusPE statusPE : getStatusSystem()) {
+		for (Class<? extends ProcessingElement> peCurrent : getStatusSystem()
+				.keySet()) {
+
+			StatusPE statusPE = getStatusSystem().get(peCurrent);
+
 			if (statusPE.getPE().equals(data)) {
 
 				/*
@@ -675,8 +696,8 @@ public class S4Monitor {
 					}
 
 					if (ρ > 1.5) {
-						getMetrics().counterReplicationPE(statusPE.getPE()
-								.getCanonicalName(), true);
+						getMetrics().counterReplicationPE(
+								statusPE.getPE().getCanonicalName(), true);
 						statusPE.setReplication(statusPE.getReplication() + 1);
 						return true;
 					}
@@ -693,8 +714,8 @@ public class S4Monitor {
 					}
 
 					if (ρ < 0.5) {
-						getMetrics().counterReplicationPE(statusPE.getPE()
-								.getCanonicalName(), false);
+						getMetrics().counterReplicationPE(
+								statusPE.getPE().getCanonicalName(), false);
 						statusPE.setReplication(statusPE.getReplication() - 1);
 						return true;
 					}
@@ -749,9 +770,14 @@ public class S4Monitor {
 	 * @return Estado del sistema
 	 */
 
-	public List<StatusPE> askStatus() {
+	public Map<Class<? extends ProcessingElement>, StatusPE> askStatus() {
 
-		for (StatusPE statusPE : getStatusSystem()) {
+		// for (StatusPE statusPE : getStatusSystem()) {
+
+		for (Class<? extends ProcessingElement> peCurrent : getStatusSystem()
+				.keySet()) {
+
+			StatusPE statusPE = getStatusSystem().get(peCurrent);
 
 			int status = administrationLoad(statusPE);
 
@@ -768,17 +794,20 @@ public class S4Monitor {
 			 * afectados por la replicación.
 			 */
 			if (status == 1) {
-
-				getMetrics().counterReplicationPE(statusPE.getPE()
-						.getCanonicalName(), true);
+				logger.debug("Increment PE " + statusPE.getPE());
+				
+				getMetrics().counterReplicationPE(
+						statusPE.getPE().getCanonicalName(), true);
 				statusPE.setReplication(statusPE.getReplication() + 1);
 				intelligentReplication(statusPE, true);
 
 			} else if (status == -1) {
 
 				if (statusPE.getReplication() > 1) {
-					getMetrics().counterReplicationPE(statusPE.getPE()
-							.getCanonicalName(), false);
+					logger.debug("Decrement PE " + statusPE.getPE());
+					
+					getMetrics().counterReplicationPE(
+							statusPE.getPE().getCanonicalName(), false);
 					statusPE.setReplication(statusPE.getReplication() - 1);
 					intelligentReplication(statusPE, false);
 				}
@@ -798,7 +827,13 @@ public class S4Monitor {
 	 * solicitadas por parte de MonitorMetrics
 	 */
 	private void metricsStatusSystem() {
-		for (StatusPE statusPE : statusSystem) {
+		// for (StatusPE statusPE : statusSystem) {
+
+		for (Class<? extends ProcessingElement> peCurrent : getStatusSystem()
+				.keySet()) {
+
+			StatusPE statusPE = getStatusSystem().get(peCurrent);
+
 			double λ = (double) statusPE.getRecibeEvent();
 			double μ = (double) statusPE.getSendEvent();
 			double ρ = λ / μ;
@@ -813,24 +848,28 @@ public class S4Monitor {
 
 			/* Número promedio de eventos en el sistema */
 			double En = ρ / (1 - ρ);
-			getMetrics().gaugeAvgEventSystem(statusPE.getPE().getCanonicalName(), En);
+			getMetrics().gaugeAvgEventSystem(
+					statusPE.getPE().getCanonicalName(), En);
 
 			/* Número esperado de eventos en la cola */
 			double Eq = (Math.pow(λ, 2)) / ((μ - λ) * μ);
-			getMetrics().gaugeAvgEventQueue(statusPE.getPE().getCanonicalName(), Eq);
+			getMetrics().gaugeAvgEventQueue(
+					statusPE.getPE().getCanonicalName(), Eq);
 
 			/* Tiempo promedio de residencia */
 			double Et = 1 / (μ - λ);
-			getMetrics().gaugeAvgTimeResident(statusPE.getPE().getCanonicalName(),
-					Et);
+			getMetrics().gaugeAvgTimeResident(
+					statusPE.getPE().getCanonicalName(), Et);
 
 			/* Tiempo promedio de espera en la cola */
 			double Ed = ρ / (μ - λ);
-			getMetrics().gaugeAvgTimeQueue(statusPE.getPE().getCanonicalName(), Ed);
+			getMetrics().gaugeAvgTimeQueue(statusPE.getPE().getCanonicalName(),
+					Ed);
 
 			/* Tiempo promedio en el sistema */
 			double Ep = Et + Ed;
-			getMetrics().gaugeAvgTimeProcess(statusPE.getPE().getCanonicalName(), Ep);
+			getMetrics().gaugeAvgTimeProcess(
+					statusPE.getPE().getCanonicalName(), Ep);
 		}
 	}
 
@@ -840,9 +879,14 @@ public class S4Monitor {
 	 * analizado.
 	 */
 	private void clearStatusSystem() {
-		for (StatusPE statusPE : statusSystem) {
+		// for (StatusPE statusPE : statusSystem) {
+		for (Class<? extends ProcessingElement> peCurrent : getStatusSystem()
+				.keySet()) {
+			StatusPE statusPE = getStatusSystem().get(peCurrent);
+
 			statusPE.setRecibeEvent(0);
 			statusPE.setSendEvent(0);
+			statusPE.setProcessEvent(0);
 		}
 	}
 
@@ -853,7 +897,11 @@ public class S4Monitor {
 	 *            PE a replicar
 	 */
 	public void replicationPE(Class<? extends ProcessingElement> pe) {
-		for (StatusPE statusPE : getStatusSystem()) {
+		// for (StatusPE statusPE : getStatusSystem()) {
+		for (Class<? extends ProcessingElement> peCurrent : getStatusSystem()
+				.keySet()) {
+			StatusPE statusPE = getStatusSystem().get(peCurrent);
+
 			if (pe.equals(statusPE.getPE())) {
 				statusPE.setReplication(statusPE.getReplication() + 1);
 				break;
@@ -875,7 +923,7 @@ public class S4Monitor {
 	 * 
 	 * @return Estadp del sistema
 	 */
-	public List<StatusPE> getStatusSystem() {
+	public Map<Class<? extends ProcessingElement>, StatusPE> getStatusSystem() {
 		return statusSystem;
 	}
 

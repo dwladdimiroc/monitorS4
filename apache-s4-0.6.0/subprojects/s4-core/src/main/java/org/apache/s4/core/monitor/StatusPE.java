@@ -24,6 +24,7 @@ public class StatusPE implements Serializable {
 	
 	private long recibeEvent;
 	private long sendEvent;
+	private double processEvent;
 	private long queueEvent;
 	private Queue<Double> history;
 	private Class<? extends ProcessingElement> pe;
@@ -31,8 +32,10 @@ public class StatusPE implements Serializable {
 	private Queue<Integer> markMap;
 
 	public StatusPE() {
+		stream = null;
 		recibeEvent = 0;
 		sendEvent = 0;
+		processEvent = 0;
 		queueEvent = 0;
 		history = new CircularFifoQueue<Double>(5);
 		pe = null;
@@ -62,6 +65,14 @@ public class StatusPE implements Serializable {
 
 	public void setSendEvent(long sendEvent) {
 		this.sendEvent = sendEvent;
+	}
+
+	public double getProcessEvent() {
+		return processEvent;
+	}
+
+	public void setProcessEvent(double processEvent) {
+		this.processEvent = processEvent;
 	}
 
 	public long getQueueEvent() {

@@ -63,7 +63,7 @@ public class Adapter extends AdapterApp implements Runnable {
 
 		// while (true) {
 
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 60; i++) {
 
 			Event event = new Event();
 

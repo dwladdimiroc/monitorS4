@@ -49,12 +49,12 @@ public interface Streamable<T extends Event> {
 	 */
 	public void notification(Notification notification);
 
-	/**
-	 * Statistics al monitor que el adapter está disponible.
-	 * 
-	 * @param statistics
-	 */
-	public void sendStatistics(Statistics statistics);
+	// /**
+	// * Statistics al monitor que el adapter está disponible.
+	// *
+	// * @param statistics
+	// */
+	// public void sendStatistics(Statistics statistics);
 
 	/**
 	 * PE que debe remover la App

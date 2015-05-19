@@ -154,6 +154,11 @@ public abstract class ProcessingElement implements Cloneable {
 	transient private boolean isThreadSafe = false;
 	transient private String name = null;
 	transient private boolean isSingleton = false;
+
+	transient long eventSegQueue = 0;
+	transient long eventPeriodQueue = 0;
+	transient long eventQueue = 0;
+
 	transient long eventSeg = 0;
 	transient long eventPeriod = 0;
 	transient long eventCount = 0;
@@ -523,18 +528,21 @@ public abstract class ProcessingElement implements Cloneable {
 	}
 
 	protected void handleInputEvent(Event event) {
+		eventQueue++;
 
 		TimerContext timerContext = null;
 		if (processingTimer != null) {
 			// if timing enabled
 			timerContext = processingTimer.time();
 		}
+
 		Object object;
 		if (isThreadSafe) {
 			object = new Object(); // a dummy object TODO improve this.
 		} else {
 			object = this;
 		}
+
 		synchronized (object) {
 			if (!recoveryAttempted) {
 				recover();
@@ -559,11 +567,14 @@ public abstract class ProcessingElement implements Cloneable {
 				checkpoint();
 			}
 		}
+		
 		if (timerContext != null) {
 			// if timing enabled
 			timerContext.stop();
 		}
-		
+
+		eventQueue--;
+
 	}
 
 	protected boolean isCheckpointable() {
@@ -1052,6 +1063,22 @@ public abstract class ProcessingElement implements Cloneable {
 		boolean isActive() {
 			return active;
 		}
+	}
+
+	public long getEventSegQueue() {
+		return eventSegQueue;
+	}
+
+	public void setEventSegQueue(long eventSegQueue) {
+		this.eventSegQueue = eventSegQueue;
+	}
+
+	public long getEventPeriodQueue() {
+		return eventPeriodQueue;
+	}
+
+	public void setEventPeriodQueue(long eventPeriodQueue) {
+		this.eventPeriodQueue = eventPeriodQueue;
 	}
 
 	public long getEventSeg() {

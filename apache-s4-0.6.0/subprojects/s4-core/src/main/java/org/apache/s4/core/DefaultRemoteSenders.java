@@ -97,7 +97,7 @@ public class DefaultRemoteSenders implements RemoteSenders {
 			// represented by a single stream consumer
 			RemoteSender sender = sendersByTopology.get(consumer
 					.getClusterName());
-			
+
 			if (sender == null) {
 				RemoteSender newSender = new RemoteSender(
 						remoteEmitters.getEmitter(remoteClusters
@@ -147,36 +147,36 @@ public class DefaultRemoteSenders implements RemoteSenders {
 		}
 	}
 
-	@Override
-	public void sendStatistics(Statistics statistics) {
+	// @Override
+	// public void sendStatistics(Statistics statistics) {
+	//
+	// Set<StreamConsumer> consumers = remoteStreams.getConsumers(statistics
+	// .getStream());
+	// for (StreamConsumer consumer : consumers) {
+	// // NOTE: even though there might be several ephemeral znodes for the
+	// // same app and topology, they are
+	// // represented by a single stream consumer
+	// RemoteSender sender = sendersByTopology.get(consumer
+	// .getClusterName());
+	// if (sender == null) {
+	// RemoteSender newSender = new RemoteSender(
+	// remoteEmitters.getEmitter(remoteClusters
+	// .getCluster(consumer.getClusterName())),
+	// hasher, consumer.getClusterName());
+	// // TODO cleanup when remote topologies die
+	// sender = sendersByTopology.putIfAbsent(
+	// consumer.getClusterName(), newSender);
+	// if (sender == null) {
+	// sender = newSender;
+	// }
+	// }
+	// // NOTE: this implies multiple serializations, there might be an
+	// // optimization
+	// executorService.execute(new SendStatisticsToRemoteClusterTask(
+	// statistics, sender));
+	// }
+	// }
 
-		Set<StreamConsumer> consumers = remoteStreams.getConsumers(statistics
-				.getStream());
-		for (StreamConsumer consumer : consumers) {
-			// NOTE: even though there might be several ephemeral znodes for the
-			// same app and topology, they are
-			// represented by a single stream consumer
-			RemoteSender sender = sendersByTopology.get(consumer
-					.getClusterName());
-			if (sender == null) {
-				RemoteSender newSender = new RemoteSender(
-						remoteEmitters.getEmitter(remoteClusters
-								.getCluster(consumer.getClusterName())),
-						hasher, consumer.getClusterName());
-				// TODO cleanup when remote topologies die
-				sender = sendersByTopology.putIfAbsent(
-						consumer.getClusterName(), newSender);
-				if (sender == null) {
-					sender = newSender;
-				}
-			}
-			// NOTE: this implies multiple serializations, there might be an
-			// optimization
-			executorService.execute(new SendStatisticsToRemoteClusterTask(
-					statistics, sender));
-		}
-	}
-	
 	@Override
 	public void sendRemovePE(StatusPE statusPE) {
 
@@ -265,35 +265,35 @@ public class DefaultRemoteSenders implements RemoteSenders {
 
 	}
 
-	class SendStatisticsToRemoteClusterTask implements Runnable {
+	// class SendStatisticsToRemoteClusterTask implements Runnable {
+	//
+	// String hashKey;
+	// Statistics statistics;
+	// RemoteSender sender;
+	//
+	// public SendStatisticsToRemoteClusterTask(Statistics statistics,
+	// RemoteSender sender) {
+	// super();
+	// this.hashKey = null;
+	// this.statistics = statistics;
+	// this.sender = sender;
+	// }
+	//
+	// @Override
+	// public void run() {
+	// try {
+	// sender.send(hashKey, serDeser.serialize(statistics));
+	// } catch (InterruptedException e) {
+	// logger.error(
+	// "Interrupted blocking sendNotificacion operation for event {}. Statistics is lost.",
+	// statistics);
+	// Thread.currentThread().interrupt();
+	// }
+	//
+	// }
+	//
+	// }
 
-		String hashKey;
-		Statistics statistics;
-		RemoteSender sender;
-
-		public SendStatisticsToRemoteClusterTask(Statistics statistics,
-				RemoteSender sender) {
-			super();
-			this.hashKey = null;
-			this.statistics = statistics;
-			this.sender = sender;
-		}
-
-		@Override
-		public void run() {
-			try {
-				sender.send(hashKey, serDeser.serialize(statistics));
-			} catch (InterruptedException e) {
-				logger.error(
-						"Interrupted blocking sendNotificacion operation for event {}. Statistics is lost.",
-						statistics);
-				Thread.currentThread().interrupt();
-			}
-
-		}
-
-	}
-	
 	class SendRemovePEToRemoteClusterTask implements Runnable {
 
 		String hashKey;
