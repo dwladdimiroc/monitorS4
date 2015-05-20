@@ -80,10 +80,18 @@ public class Adapter extends AdapterApp implements Runnable {
 
 			getRemoteStream().put(event);
 
-			try {
-				Thread.sleep(400);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			if (getEventCount() < 30000) {
+				try {
+					Thread.sleep(4);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			} else {
+				try {
+					Thread.sleep(8);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 
 			// logger.debug("Time final (ns): " + System.currentTimeMillis());

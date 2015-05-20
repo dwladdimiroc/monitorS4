@@ -29,7 +29,7 @@ public class ProcessTwoPE extends ProcessingElement {
 		// Processing
 		try {
 			// wait(1000);
-			Thread.sleep(3000);
+			Thread.sleep(30);
 		} catch (InterruptedException e) {
 			logger.error(e.toString());
 		}

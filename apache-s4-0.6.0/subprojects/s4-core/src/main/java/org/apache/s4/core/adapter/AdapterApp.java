@@ -202,7 +202,7 @@ public abstract class AdapterApp extends App {
 	// statistics.setEventPeriod(getEventPeriod());
 	//
 	// /* Envío de las estadísticas al monitor */
-	//	 remoteStream.sendStatistics(statistics);
+	// remoteStream.sendStatistics(statistics);
 	//
 	// setEventPeriod(0);
 	// }
@@ -259,16 +259,17 @@ public abstract class AdapterApp extends App {
 					int replicationAnalyzed = statusPE.getReplication();
 					int replicationCurrent = replications.get(peCurrent);
 
-					getLogger().debug(
-							"[replicationAnalyzed] " + replicationAnalyzed
-									+ " | [replicationCurrent] "
-									+ replicationCurrent);
+					// getLogger().debug(
+					// "[replicationAnalyzed] " + replicationAnalyzed
+					// + " | [replicationCurrent] "
+					// + replicationCurrent);
 
 					if (replicationAnalyzed > replicationCurrent) {
 
 						getLogger().debug(
 								"Increment PE  " + statusPE.getPE()
-										+ " in Adapter " + this.getClass().getCanonicalName());
+										+ " in Adapter "
+										+ this.getClass().getCanonicalName());
 
 						replications.put(statusPE.getPE(),
 								statusPE.getReplication());
@@ -285,7 +286,8 @@ public abstract class AdapterApp extends App {
 
 						getLogger().debug(
 								"Decrement PE  " + statusPE.getPE()
-										+ " in Adapter " + this.getClass().getCanonicalName());
+										+ " in Adapter "
+										+ this.getClass().getCanonicalName());
 
 						replications.put(statusPE.getPE(),
 								statusPE.getReplication());

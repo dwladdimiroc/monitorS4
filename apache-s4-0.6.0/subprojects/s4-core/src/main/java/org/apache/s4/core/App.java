@@ -85,11 +85,9 @@ public abstract class App {
 	private boolean conditionAdapter = false;
 
 	/*
-	 * Objecto para poder sincronizar los datos enviados con los datos obtenidos
-	 * por parte del monitor. De estar manera, askStatus esperará hasta que
-	 * sendStatus haya terminado su función.
+	 * Objecto para poder sincronizar el monitor desde el momento que el adapter
+	 * envía los datos.
 	 */
-	private Object block = new Object();
 	private Object blockAdapter = new Object();
 
 	@Inject
@@ -223,23 +221,11 @@ public abstract class App {
 				 */
 				ScheduledExecutorService sendStatus = Executors
 						.newSingleThreadScheduledExecutor();
-				sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 6100,
+				sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 6000,
 						5000, TimeUnit.MILLISECONDS);
 
 				// getLogger().info("TimerMonitor send status");
 
-				/*
-				 * Finalmente, la tercera se dedicará a ser el callback del
-				 * monitor. De esta manera cada cierto tiempo, preguntará al
-				 * monitor cual es el estado del sistema, enviado las réplicas
-				 * necesarias que se requieran del sistema.
-				 */
-				ScheduledExecutorService pullStatus = Executors
-						.newSingleThreadScheduledExecutor();
-				pullStatus.scheduleAtFixedRate(new OnTimeAskStatus(), 6000,
-						5000, TimeUnit.MILLISECONDS);
-
-				getLogger().info("TimerMonitor pull status");
 			}
 
 		}
@@ -333,122 +319,112 @@ public abstract class App {
 			// getLogger().error("InterruptedException: " + e.getMessage());
 			// }
 
-			synchronized (block) {
-				timeInit = System.currentTimeMillis();
+			timeInit = System.currentTimeMillis();
 
-				/* Obtención de cada 'Stream' */
-				for (Streamable<Event> stream : getStreams()) {
-					/* Obtención de cada 'PE Prototype' */
-					for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
-						/* Obtención del flujo de cada 'PE Instances' */
-						long μ = 0;
-						for (ProcessingElement PE : PEPrototype.getInstances()) {
-							μ += PE.getEventPeriod();
-							// Reinicio del contador de eventos para
-							// períodos del análisis del monitor
-							PE.setEventPeriod(0);
-						}
-
-						long λ = PEPrototype.getEventPeriodQueue();
-						PEPrototype.setEventPeriodQueue(0);
-
-						/* Envío de los datos al monitor */
-						if (!getMonitor().sendStatus(PEPrototype.getClass(), λ,
-								μ))
-							logger.error("Error en el sendStatus");
+			/* Obtención de cada 'Stream' */
+			for (Streamable<Event> stream : getStreams()) {
+				/* Obtención de cada 'PE Prototype' */
+				for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
+					/* Obtención del flujo de cada 'PE Instances' */
+					long μ = 0;
+					for (ProcessingElement PE : PEPrototype.getInstances()) {
+						μ += PE.getEventPeriod();
+						// Reinicio del contador de eventos para
+						// períodos del análisis del monitor
+						PE.setEventPeriod(0);
 					}
+
+					long λ = PEPrototype.getEventPeriodQueue();
+					PEPrototype.setEventPeriodQueue(0);
+
+					/* Envío de los datos al monitor */
+					if (!getMonitor().sendStatus(PEPrototype.getClass(), λ, μ))
+						logger.error("Error en el sendStatus");
 				}
-
-				// logger.debug("Finish Send History");
-
-				// logger.debug(monitor.getStatusSystem().toString());
-
-				/*
-				 * Avisará al Thread de AskStatus que está disponible para
-				 * obtener los datos
-				 */
-				// logger.info("Notify to AskMonitor");
-				block.notify();
-
-				timeFinal = System.currentTimeMillis();
-				monitor.getMetrics().setTimeSendMonitor(timeFinal - timeInit);
 			}
+
+			// logger.debug("Finish Send History");
+
+			// logger.debug(monitor.getStatusSystem().toString());
+
+			/*
+			 * Avisará al Thread de AskStatus que está disponible para obtener
+			 * los datos
+			 */
+			// logger.info("Notify to AskMonitor");
+
+			timeFinal = System.currentTimeMillis();
+			monitor.getMetrics().setTimeSendMonitor(timeFinal - timeInit);
 			// }
 
 			// logger.debug("Finish Task Send Status");
 
-		}
+			/*
+			 * Finalmente, la tercera clase se dedicará a ser el callback del
+			 * monitor. De esta manera cada cierto tiempo, preguntará al monitor
+			 * cual es el estado del sistema, enviado las réplicas necesarias
+			 * que se requieran del sistema.
+			 */
+			OnTimeAskStatus timeAskStatus = new OnTimeAskStatus();
+			timeAskStatus.start();
 
+		}
 	}
 
 	/**
-	 * Esta clase estará encargada de correr la tercera hebra, la cual
+	 * Esta clase estará encargada de correr el callback del Monitor, la cual
 	 * preguntará al monitor el estado de los distintos PEs, y en caso de ser
 	 * necesario realizar un cambio. Para esto se elaboró tres pasos: preguntar,
 	 * obtener PEs emisores y cambio del sistema. Siendo este último dividido en
 	 * dos etapas: aumento y disminución de las instancias de PEs.
 	 */
-	private class OnTimeAskStatus extends TimerTask {
+	private class OnTimeAskStatus {
 		Map<Class<? extends ProcessingElement>, StatusPE> statusSystem;
 		long timeInit;
 		long timeFinal;
 
-		@Override
-		public void run() {
+		public void start() {
 
-			synchronized (block) {
+			timeInit = System.currentTimeMillis();
 
-				timeInit = System.currentTimeMillis();
+			// logger.info("Init AskStatus");
 
-				// logger.info("Init AskStatus");
-				try {
-					// logger.info("Wait to AskMonitor");
-					block.wait();
-					// logger.info("Go AskMonitor");
-				} catch (InterruptedException e) {
-					getLogger()
-							.error("InterruptedException: " + e.getMessage());
-				}
+			/* Consulta del estado al monitor */
+			statusSystem = getMonitor().askStatus();
 
-				// logger.info("Post wait AskStatus");
+			// logger.info("Post function AskStatus");
 
-				/* Consulta del estado al monitor */
-				statusSystem = getMonitor().askStatus();
+			// logger.info("Finish AskStatus");
 
-				// logger.info("Post function AskStatus");
+			/* Análisis de cada PE según lo entregado por el monitor */
+			// for (StatusPE statusPE : statusSystem) {
+			for (Class<? extends ProcessingElement> peCurrent : statusSystem
+					.keySet()) {
+				StatusPE statusPE = statusSystem.get(peCurrent);
 
-				// logger.info("Finish AskStatus");
+				/* Lista de los Adapters que proveen eventos al PE analizado */
+				List<Class<? extends AdapterApp>> listAdapter = getAdapter(statusPE
+						.getPE());
 
-				/* Análisis de cada PE según lo entregado por el monitor */
-				// for (StatusPE statusPE : statusSystem) {
-				for (Class<? extends ProcessingElement> peCurrent : statusSystem
-						.keySet()) {
-					StatusPE statusPE = statusSystem.get(peCurrent);
+				/* Lista de PEs que proveen eventos al PE analizado */
+				List<Class<? extends ProcessingElement>> listPE = getPESend(statusPE
+						.getPE());
 
-					/* Lista de los Adapters que proveen eventos al PE analizado */
-					List<Class<? extends AdapterApp>> listAdapter = getAdapter(statusPE
-							.getPE());
+				/* Cambio del sistema en el adapter */
+				if (!listAdapter.isEmpty())
+					changeReplicationAdapter(listAdapter, statusPE);
 
-					/* Lista de PEs que proveen eventos al PE analizado */
-					List<Class<? extends ProcessingElement>> listPE = getPESend(statusPE
-							.getPE());
+				/* Cambio del sistema en los PEs */
+				if (!listPE.isEmpty())
+					changeReplication(listPE, statusPE);
 
-					/* Cambio del sistema en el adapter */
-					if (!listAdapter.isEmpty())
-						changeReplicationAdapter(listAdapter, statusPE);
-
-					/* Cambio del sistema en los PEs */
-					if (!listPE.isEmpty())
-						changeReplication(listPE, statusPE);
-
-					// logger.debug("[statusPE] Finish ChangeReplication"
-					// + statusPE.getPE().getCanonicalName());
-				}
-				// logger.info("Finish AskStatus");
-
-				timeFinal = System.currentTimeMillis();
-				monitor.getMetrics().setTimeAskMonitor(timeFinal - timeInit);
+				// logger.debug("[statusPE] Finish ChangeReplication"
+				// + statusPE.getPE().getCanonicalName());
 			}
+			// logger.info("Finish AskStatus");
+
+			timeFinal = System.currentTimeMillis();
+			monitor.getMetrics().setTimeAskMonitor(timeFinal - timeInit);
 
 		}
 
@@ -519,6 +495,9 @@ public abstract class App {
 		private void changeReplicationAdapter(
 				List<Class<? extends AdapterApp>> listAdapter, StatusPE statusPE) {
 
+			/* Crea los PEs que sean necesarios */
+
+			addReplication(statusPE);
 			/* Se analiza cada uno de los distintos Adapter que envían datos */
 			for (Class<? extends AdapterApp> adapter : listAdapter) {
 
@@ -608,14 +587,14 @@ public abstract class App {
 								for (ProcessingElement PE : PEPrototype
 										.getInstances()) {
 
-									getLogger()
-											.debug("["
-													+ PE.getClass()
-															.getCanonicalName()
-													+ "] Replication: "
-													+ PEPrototype
-															.getReplicationPE(statusPE
-																	.getPE()));
+									// getLogger()
+									// .debug("["
+									// + PE.getClass()
+									// .getCanonicalName()
+									// + "] Replication: "
+									// + PEPrototype
+									// .getReplicationPE(statusPE
+									// .getPE()));
 
 									PE.setReplicationPE(statusPE.getPE(),
 											statusPE.getReplication());

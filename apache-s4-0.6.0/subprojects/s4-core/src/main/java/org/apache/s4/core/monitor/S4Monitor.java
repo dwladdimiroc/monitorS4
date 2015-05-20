@@ -1,7 +1,8 @@
 package org.apache.s4.core.monitor;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -24,7 +25,7 @@ public class S4Monitor {
 	private int period;
 
 	private final List<TopologyApp> topologySystem = new ArrayList<TopologyApp>();
-	private final Map<Class<? extends ProcessingElement>, StatusPE> statusSystem = new HashMap<Class<? extends ProcessingElement>, StatusPE>();
+	private final Map<Class<? extends ProcessingElement>, StatusPE> statusSystem = new LinkedHashMap<Class<? extends ProcessingElement>, StatusPE>();
 
 	/* Clase que se hara cargo de almacenar las estadísticas de S4Monitor */
 	private MonitorMetrics metrics;
@@ -473,11 +474,13 @@ public class S4Monitor {
 		/* Análisis de la tasa de rendimiento */
 		double ρ = statusPE.getProcessEvent();
 
+		logger.debug("[PE] " + statusPE.getPE() + " | [ρ] " + ρ);
+
 		/*
 		 * Análisis de ρ para ver si debe aumentar, mantener o disminuir la
 		 * cantidad de réplicas de cierto PE
 		 */
-		if (ρ > 1.5) {
+		if (ρ > 1.01) {
 			// logger.debug("Increment");
 			return 1;
 		} else if (ρ < 0.5) {
@@ -515,7 +518,7 @@ public class S4Monitor {
 		DescriptiveStatistics descriptiveStatistics = new DescriptiveStatistics(
 				distEstacionaria);
 
-		logger.debug("[distEstacionaria] " + distEstacionaria.toString()
+		logger.debug("[distEstacionaria] " + Arrays.toString(distEstacionaria)
 				+ " | [Statistics] "
 				+ descriptiveStatistics.getStandardDeviation());
 
@@ -592,23 +595,24 @@ public class S4Monitor {
 			} else {
 				statusPE.getMarkMap().add(0);
 			}
-			
+
 			/*
 			 * En caso de aumentar ese umbral, se proceserá a realizar una
-			 * modificación de este procedimiento. En este caso, si se notifica dos
-			 * veces que es necesario un incremento o decremento de las réplicas del
-			 * PE, se tomará una decisión.
+			 * modificación de este procedimiento. En este caso, si se notifica
+			 * dos veces que es necesario un incremento o decremento de las
+			 * réplicas del PE, se tomará una decisión.
 			 */
 
 			/*
-			 * Para análisis de prueba, se considerarán los últimos 3 períodos para
-			 * verificar si es necesario replicar.
+			 * Para análisis de prueba, se considerarán los últimos 3 períodos
+			 * para verificar si es necesario replicar.
 			 * 
-			 * Ej: Historia = [1,0,0,-1,0,1] Donde el primer período de tiempo dio
-			 * (1,0), el segundo período (0,-1) y el tercero (0,1). Por lo tanto,
-			 * encuentra que existen 2 señales de que debe aumentar, por lo tanto,
-			 * aumentará. Esto debido que el reactivo del primero período y el
-			 * predictor del tercer período indicaron que debe aumentar.
+			 * Ej: Historia = [1,0,0,-1,0,1] Donde el primer período de tiempo
+			 * dio (1,0), el segundo período (0,-1) y el tercero (0,1). Por lo
+			 * tanto, encuentra que existen 2 señales de que debe aumentar, por
+			 * lo tanto, aumentará. Esto debido que el reactivo del primero
+			 * período y el predictor del tercer período indicaron que debe
+			 * aumentar.
 			 */
 
 			logger.debug("[{}] MarkMap: {}", new String[] {
@@ -637,20 +641,12 @@ public class S4Monitor {
 			/* Cambiar */
 			if (resultPredictive <= 1) {
 				numReplica += resultPredictive;
+				numReplica = 0;
 			} else if (resultPredictive == -1) {
-				numReplica += resultPredictive;
+				numReplica -= resultPredictive;
+				numReplica = 0;
 			}
 
-		}
-
-		/*
-		 * Aumento del período, y en caso de ser negativo, volverá a su período
-		 * inicial. Nota: se considerará 2147483640 como el máximo valor posible
-		 * en 32 bits para JVM.
-		 */
-		period++;
-		if (period > 2147483640) {
-			period = 1;
 		}
 
 		return numReplica;
@@ -704,7 +700,7 @@ public class S4Monitor {
 	 *         nada
 	 */
 
-	private boolean analyzeStatus(Class<? extends ProcessingElement> data,
+	private boolean analyzeStatus(Class<? extends ProcessingElement> peAnalyze,
 			long recibeEvent, boolean replication) {
 
 		for (Class<? extends ProcessingElement> peCurrent : getStatusSystem()
@@ -712,7 +708,7 @@ public class S4Monitor {
 
 			StatusPE statusPE = getStatusSystem().get(peCurrent);
 
-			if (statusPE.getPE().equals(data)) {
+			if (statusPE.getPE().equals(peAnalyze)) {
 
 				/*
 				 * Análisis de ρ para ver si debe aumentar, mantener o disminuir
@@ -738,7 +734,10 @@ public class S4Monitor {
 						ρ = Double.POSITIVE_INFINITY;
 					}
 
-					if (ρ > 1.5) {
+					logger.debug("[intelligentReplication] | [PE Analyze] "
+							+ peAnalyze.getCanonicalName() + " | [ρ] " + ρ);
+
+					if (ρ > 1) {
 						getMetrics().counterReplicationPE(
 								statusPE.getPE().getCanonicalName(), true);
 						statusPE.setReplication(statusPE.getReplication() + 1);
@@ -789,15 +788,32 @@ public class S4Monitor {
 	private void intelligentReplication(StatusPE peEmitter, boolean replication) {
 
 		for (TopologyApp topology : getTopologySystem()) {
-			if (peEmitter.getClass().equals(topology.getPeSend())) {
+			if (peEmitter.getPE().equals(topology.getPeSend())) {
+
+				/*
+				 * Análisis de la tasa de procesamiento futuro, dado la tasa de
+				 * llegada que posee el PE emisor. En caso la réplica y su
+				 * intancia original posea una tasa de procesamiento mayor que
+				 * la tasa de llegada, deberá considerar que no procesarán más
+				 * de lo que ya poseen.
+				 */
+				long μ = peEmitter.getSendEvent();
+				long λ = peEmitter.getRecibeEvent();
+
+				long μFuture = μ;
+				if ((2 * μ) > λ) {
+					μFuture = λ;
+				}
+
 				/*
 				 * En caso que el análisis del nuevo flujo haya modificado el PE
 				 * receptor, se deberá realizar el mismo procedimiento con los
 				 * PE receptores de PE receptor analizado.
 				 */
-				if (analyzeStatus(topology.getPeRecibe(),
-						peEmitter.getSendEvent(), replication)) {
-					intelligentReplication(peEmitter, replication);
+				if (analyzeStatus(topology.getPeRecibe(), μFuture, replication)) {
+					intelligentReplication(
+							statusSystem.get(topology.getPeRecibe()),
+							replication);
 				}
 			}
 		}
@@ -822,6 +838,8 @@ public class S4Monitor {
 
 			StatusPE statusPE = getStatusSystem().get(peCurrent);
 
+			logger.debug(statusPE.toString());
+
 			int status = administrationLoad(statusPE);
 
 			logger.debug("[Finish administrationLoad] PE: " + statusPE.getPE()
@@ -842,7 +860,7 @@ public class S4Monitor {
 				getMetrics().counterReplicationPE(
 						statusPE.getPE().getCanonicalName(), true);
 				statusPE.setReplication(statusPE.getReplication() + 1);
-				intelligentReplication(statusPE, true);
+				// intelligentReplication(statusPE, true);
 
 			} else if (status == -1) {
 
@@ -852,11 +870,20 @@ public class S4Monitor {
 					getMetrics().counterReplicationPE(
 							statusPE.getPE().getCanonicalName(), false);
 					statusPE.setReplication(statusPE.getReplication() - 1);
-					intelligentReplication(statusPE, false);
+					// intelligentReplication(statusPE, false);
 				}
 
 			}
 
+		}
+
+		/*
+		 * Aumento del período, y en caso de lograr el punto deseado, volverá a
+		 * su estado inicial.
+		 */
+		period++;
+		if (period == 21) {
+			period = 1;
 		}
 
 		// metricsStatusSystem();

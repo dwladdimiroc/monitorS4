@@ -1,0 +1,627 @@
+[H[2Jcalling referenced s4 script : /home/daniel/Proyectos/monitorS4/apache-s4-0.6.0/s4
+17:42:18.897 [main] INFO  o.a.s.comm.topology.AssignmentFromZK - New session:93857915738521602; state is : SyncConnected
+17:42:18.952 [main] INFO  o.a.s.comm.topology.AssignmentFromZK - Successfully acquired task:Task-0 by hp4-HP-EliteDesk-800-G1-SFF
+17:42:22.062 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Initializing S4 app with : []]
+17:42:22.147 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Loading application [monitorS4] from file [/tmp/tmp8691563851733282775s4r]
+17:42:22.147 [S4 platform loader] WARN  org.apache.s4.core.DefaultCoreModule - s4.tmp.dir not specified, using temporary directory [/tmp/1432158142147-0] for unpacking S4R. You may want to specify a parent non-temporary directory.
+17:42:22.147 [S4 platform loader] INFO  o.a.s4.base.util.S4RLoaderFactory - Unzipping S4R archive in [/tmp/1432158142147-0/tmp8691563851733282775s4r-1432158142147]
+17:42:22.237 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - App class name is: topology.Topology
+17:42:22.269 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster1,mode=unicast,type=,nodes=[{partition=0,port=12000,machineName=hp4-HP-EliteDesk-800-G1-SFF,taskId=Task-0}]} from null
+17:42:22.304 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.comm.tcp.TCPEmitter@238ddb87
+17:42:22.353 [S4 platform loader] INFO  o.a.s.c.s.ThrottlingSenderExecutorServiceFactory - Creating a throttling executor with a pool size of 1 and max rate of 200000 events / s
+17:42:22.361 [S4 platform loader] INFO  org.apache.s4.core.util.S4Metrics - Metrics reporting not configured
+17:42:22.362 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.core.SenderImpl@6b5506c1
+17:42:22.381 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - New session:93857915738521602
+17:42:22.387 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - New session:93857915738521602
+17:42:22.393 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster1,mode=unicast,type=,nodes=[{partition=0,port=12000,machineName=hp4-HP-EliteDesk-800-G1-SFF,taskId=Task-0}]} from null
+17:42:22.396 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=0,name=unknown,mode=unicast,type=,nodes=[]} from null
+17:42:22.398 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Init Monitor
+17:42:22.398 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Loaded application from file /tmp/tmp8691563851733282775s4r
+17:42:22.425 [S4 platform loader] DEBUG o.a.s4.comm.topology.ClustersFromZK - Adding input stream [textInput] in cluster [cluster1]
+17:42:22.483 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - Detected new stream [textInput]
+17:42:22.489 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.ProcessOnePE].
+17:42:22.489 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.ProcessTwoPE].
+17:42:22.490 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.MongoPE].
+17:42:22.490 [S4 platform loader] INFO  org.apache.s4.core.App - Start S4Monitor
+17:42:22.492 [S4 platform loader] INFO  o.a.s4.core.monitor.MonitorMetrics - Init S4Monitor Metrics
+17:42:22.492 [S4 platform loader] INFO  o.a.s4.core.monitor.MonitorMetrics - Reporting metrics of the monitor through csv files in directory [/home/daniel/Proyectos/monitorS4/statistics/] with frequency of [1] [SECONDS]
+17:42:25.871 [ZkClient-EventThread-12-localhost:2181] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster2,mode=unicast,type=,nodes=[{partition=0,port=13000,machineName=hp4-HP-EliteDesk-800-G1-SFF,taskId=Task-0}]} from { nbNodes=0,name=unknown,mode=unicast,type=,nodes=[]}
+17:42:26.197 [deserializer-0] DEBUG org.apache.s4.core.monitor.S4Monitor - Register Adapter
+17:42:26.197 [deserializer-0] DEBUG org.apache.s4.core.Stream - InitAdapter: true
+17:42:26.198 [S4 platform loader] INFO  topology.Topology - Start Topology
+17:42:26.199 [S4 platform loader] DEBUG org.apache.s4.core.monitor.S4Monitor - Register PE
+17:42:26.202 [S4 platform loader] DEBUG org.apache.s4.core.monitor.S4Monitor - Register PE
+17:42:26.202 [S4 platform loader] DEBUG org.apache.s4.core.monitor.S4Monitor - Register PE
+17:42:26.205 [textInput] INFO  processElements.ProcessOnePE - Create ProcessOne PE
+17:42:26.217 [processTwoStream] INFO  processElements.ProcessTwoPE - Create ProcessTwo PE
+17:42:26.247 [mongoStream] INFO  processElements.MongoPE - Create Mongo PE
+17:42:32.201 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1455 | Send: 572 | Replication: 1]
+17:42:32.201 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 2.5437062937062938
+17:42:32.203 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [1]
+17:42:32.204 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:42:32.204 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 572 | Send: 196 | Replication: 1]
+17:42:32.204 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 2.9183673469387754
+17:42:32.205 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [1]
+17:42:32.205 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:42:32.205 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 196 | Send: 195 | Replication: 1]
+17:42:32.205 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 1.005128205128205
+17:42:32.205 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0]
+17:42:32.206 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:42:32.230 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 1 | [replicationCurrent] 1
+17:42:32.230 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 1 | [replicationCurrent] 1
+17:42:37.198 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1207 | Send: 480 | Replication: 1]
+17:42:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 2.5145833333333334
+17:42:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [1, 1]
+17:42:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 1
+17:42:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Increment PE class processElements.ProcessOnePE
+17:42:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 480 | Send: 163 | Replication: 1]
+17:42:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 2.9447852760736195
+17:42:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [1, 1]
+17:42:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 1
+17:42:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Increment PE class processElements.ProcessTwoPE
+17:42:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 163 | Send: 163 | Replication: 1]
+17:42:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 1.0
+17:42:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:42:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:42:37.199 [pool-7-thread-1] INFO  processElements.ProcessOnePE - Create ProcessOne PE
+17:42:37.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 2 | [replicationCurrent] 1
+17:42:37.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - Increment PE  class processElements.ProcessTwoPE in PE class processElements.ProcessOnePE
+17:42:37.200 [pool-7-thread-1] INFO  processElements.ProcessTwoPE - Create ProcessTwo PE
+17:42:37.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 1 | [replicationCurrent] 1
+17:42:42.198 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1217 | Send: 985 | Replication: 2]
+17:42:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 1.2355329949238578
+17:42:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [1]
+17:42:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:42:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 984 | Send: 329 | Replication: 2]
+17:42:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 2.9908814589665655
+17:42:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [1]
+17:42:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:42:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 329 | Send: 329 | Replication: 1]
+17:42:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 1.0
+17:42:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:42:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:42:42.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 2 | [replicationCurrent] 2
+17:42:42.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 1 | [replicationCurrent] 1
+17:42:47.198 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1213 | Send: 986 | Replication: 2]
+17:42:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 1.2302231237322516
+17:42:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [1, 1]
+17:42:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 1
+17:42:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Increment PE class processElements.ProcessOnePE
+17:42:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 943 | Send: 330 | Replication: 2]
+17:42:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 2.8575757575757574
+17:42:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [1, 1]
+17:42:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 1
+17:42:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Increment PE class processElements.ProcessTwoPE
+17:42:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 330 | Send: 329 | Replication: 1]
+17:42:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 1.0030395136778116
+17:42:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:42:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:42:47.199 [pool-7-thread-1] INFO  processElements.ProcessOnePE - Create ProcessOne PE
+17:42:47.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 3 | [replicationCurrent] 2
+17:42:47.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - Increment PE  class processElements.ProcessTwoPE in PE class processElements.ProcessOnePE
+17:42:47.200 [pool-7-thread-1] INFO  processElements.ProcessTwoPE - Create ProcessTwo PE
+17:42:47.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 1 | [replicationCurrent] 1
+17:42:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1217 | Send: 1478 | Replication: 3]
+17:42:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 0.8234100135317998
+17:42:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0]
+17:42:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:42:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 1383 | Send: 496 | Replication: 3]
+17:42:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 2.788306451612903
+17:42:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [1]
+17:42:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:42:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 484 | Send: 331 | Replication: 1]
+17:42:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 1.4622356495468278
+17:42:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 1]
+17:42:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:42:52.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 3 | [replicationCurrent] 3
+17:42:52.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 1 | [replicationCurrent] 1
+17:42:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1217 | Send: 1478 | Replication: 3]
+17:42:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 0.8234100135317998
+17:42:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:42:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:42:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 1426 | Send: 496 | Replication: 3]
+17:42:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 2.875
+17:42:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [1, 1]
+17:42:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 1
+17:42:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Increment PE class processElements.ProcessTwoPE
+17:42:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 490 | Send: 330 | Replication: 1]
+17:42:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 1.4848484848484849
+17:42:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [1, 1]
+17:42:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 1
+17:42:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Increment PE class processElements.MongoPE
+17:42:57.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 3
+17:42:57.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - Increment PE  class processElements.ProcessTwoPE in PE class processElements.ProcessOnePE
+17:42:57.200 [pool-7-thread-1] INFO  processElements.ProcessTwoPE - Create ProcessTwo PE
+17:42:57.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 2 | [replicationCurrent] 1
+17:42:57.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - Increment PE  class processElements.MongoPE in PE class processElements.ProcessTwoPE
+17:42:57.201 [pool-7-thread-1] INFO  processElements.MongoPE - Create Mongo PE
+17:43:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1213 | Send: 1482 | Replication: 3]
+17:43:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 0.8184885290148448
+17:43:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:43:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:43:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 1446 | Send: 662 | Replication: 4]
+17:43:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 2.1842900302114803
+17:43:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [1]
+17:43:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:43:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 657 | Send: 659 | Replication: 2]
+17:43:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9969650986342944
+17:43:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0]
+17:43:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:43:02.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:43:02.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 2 | [replicationCurrent] 2
+17:43:07.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1211 | Send: 1482 | Replication: 3]
+17:43:07.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 0.8171390013495277
+17:43:07.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:43:07.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:43:07.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 1439 | Send: 664 | Replication: 4]
+17:43:07.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 2.1671686746987953
+17:43:07.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [1, 1]
+17:43:07.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 1
+17:43:07.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Increment PE class processElements.ProcessTwoPE
+17:43:07.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 659 | Send: 660 | Replication: 2]
+17:43:07.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9984848484848485
+17:43:07.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:43:07.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:43:07.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 5 | [replicationCurrent] 4
+17:43:07.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - Increment PE  class processElements.ProcessTwoPE in PE class processElements.ProcessOnePE
+17:43:07.200 [pool-7-thread-1] INFO  processElements.ProcessTwoPE - Create ProcessTwo PE
+17:43:07.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 2 | [replicationCurrent] 2
+17:43:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1215 | Send: 1479 | Replication: 3]
+17:43:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 0.821501014198783
+17:43:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:43:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:43:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 1441 | Send: 828 | Replication: 5]
+17:43:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 1.7403381642512077
+17:43:12.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [1]
+17:43:12.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:43:12.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 819 | Send: 660 | Replication: 2]
+17:43:12.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 1.240909090909091
+17:43:12.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 1]
+17:43:12.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:43:12.202 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 5 | [replicationCurrent] 5
+17:43:12.202 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 2 | [replicationCurrent] 2
+17:43:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1221 | Send: 1485 | Replication: 3]
+17:43:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 0.8222222222222222
+17:43:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:43:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:43:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 1453 | Send: 831 | Replication: 5]
+17:43:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 1.7484957882069796
+17:43:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [1, 1]
+17:43:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 1
+17:43:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Increment PE class processElements.ProcessTwoPE
+17:43:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 825 | Send: 662 | Replication: 2]
+17:43:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 1.2462235649546827
+17:43:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [1, 1]
+17:43:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 1
+17:43:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Increment PE class processElements.MongoPE
+17:43:17.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 6 | [replicationCurrent] 5
+17:43:17.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - Increment PE  class processElements.ProcessTwoPE in PE class processElements.ProcessOnePE
+17:43:17.200 [pool-7-thread-1] INFO  processElements.ProcessTwoPE - Create ProcessTwo PE
+17:43:17.201 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 3 | [replicationCurrent] 2
+17:43:17.201 [pool-7-thread-1] DEBUG org.apache.s4.core.App - Increment PE  class processElements.MongoPE in PE class processElements.ProcessTwoPE
+17:43:17.201 [pool-7-thread-1] INFO  processElements.MongoPE - Create Mongo PE
+17:43:22.198 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1212 | Send: 1474 | Replication: 3]
+17:43:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 0.8222523744911805
+17:43:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:43:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:43:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 1434 | Send: 993 | Replication: 6]
+17:43:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 1.444108761329305
+17:43:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [1]
+17:43:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:43:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 982 | Send: 989 | Replication: 3]
+17:43:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9929221435793731
+17:43:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0]
+17:43:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:43:22.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 6 | [replicationCurrent] 6
+17:43:22.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 3 | [replicationCurrent] 3
+17:43:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1212 | Send: 1407 | Replication: 3]
+17:43:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 0.8614072494669509
+17:43:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:43:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:43:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 1356 | Send: 996 | Replication: 6]
+17:43:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 1.3614457831325302
+17:43:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [1, 1]
+17:43:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 1
+17:43:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Increment PE class processElements.ProcessTwoPE
+17:43:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 985 | Send: 993 | Replication: 3]
+17:43:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9919436052366566
+17:43:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:43:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:43:27.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 7 | [replicationCurrent] 6
+17:43:27.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - Increment PE  class processElements.ProcessTwoPE in PE class processElements.ProcessOnePE
+17:43:27.201 [pool-7-thread-1] INFO  processElements.ProcessTwoPE - Create ProcessTwo PE
+17:43:27.201 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 3 | [replicationCurrent] 3
+17:43:32.198 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1214 | Send: 1213 | Replication: 3]
+17:43:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 1.0008244023083264
+17:43:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:43:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:43:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 1213 | Send: 1161 | Replication: 7]
+17:43:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 1.0447889750215331
+17:43:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [1]
+17:43:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:43:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 1145 | Send: 990 | Replication: 3]
+17:43:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 1.1565656565656566
+17:43:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 1]
+17:43:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:43:32.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 7 | [replicationCurrent] 7
+17:43:32.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 3 | [replicationCurrent] 3
+17:43:37.198 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1204 | Send: 1205 | Replication: 3]
+17:43:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 0.9991701244813278
+17:43:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:43:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:43:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 1205 | Send: 1160 | Replication: 7]
+17:43:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 1.0387931034482758
+17:43:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [1, 1]
+17:43:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 1
+17:43:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Increment PE class processElements.ProcessTwoPE
+17:43:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 1147 | Send: 990 | Replication: 3]
+17:43:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 1.1585858585858586
+17:43:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [1, 1]
+17:43:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 1
+17:43:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Increment PE class processElements.MongoPE
+17:43:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 8 | [replicationCurrent] 7
+17:43:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.App - Increment PE  class processElements.ProcessTwoPE in PE class processElements.ProcessOnePE
+17:43:37.200 [pool-7-thread-1] INFO  processElements.ProcessTwoPE - Create ProcessTwo PE
+17:43:37.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 3
+17:43:37.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - Increment PE  class processElements.MongoPE in PE class processElements.ProcessTwoPE
+17:43:37.200 [pool-7-thread-1] INFO  processElements.MongoPE - Create Mongo PE
+17:43:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1208 | Send: 1208 | Replication: 3]
+17:43:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 1.0
+17:43:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:43:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:43:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 1208 | Send: 1327 | Replication: 8]
+17:43:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 0.9103240391861341
+17:43:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [0]
+17:43:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:43:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 1317 | Send: 1322 | Replication: 4]
+17:43:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9962178517397882
+17:43:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0]
+17:43:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:43:42.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 8 | [replicationCurrent] 8
+17:43:42.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:43:47.198 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1222 | Send: 1222 | Replication: 3]
+17:43:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 1.0
+17:43:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:43:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:43:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 1222 | Send: 1328 | Replication: 8]
+17:43:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 0.9201807228915663
+17:43:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [0, 0]
+17:43:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:43:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 1320 | Send: 1324 | Replication: 4]
+17:43:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9969788519637462
+17:43:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:43:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:43:47.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 8 | [replicationCurrent] 8
+17:43:47.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:43:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1217 | Send: 1217 | Replication: 3]
+17:43:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 1.0
+17:43:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:43:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:43:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 1217 | Send: 1328 | Replication: 8]
+17:43:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 0.9164156626506024
+17:43:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [0, 0]
+17:43:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:43:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 1321 | Send: 1325 | Replication: 4]
+17:43:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9969811320754717
+17:43:52.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:43:52.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:43:52.201 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 8 | [replicationCurrent] 8
+17:43:52.201 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:43:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1218 | Send: 1217 | Replication: 3]
+17:43:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 1.000821692686935
+17:43:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:43:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:43:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 1217 | Send: 1328 | Replication: 8]
+17:43:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 0.9164156626506024
+17:43:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [0, 0]
+17:43:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:43:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 1317 | Send: 1320 | Replication: 4]
+17:43:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9977272727272727
+17:43:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:43:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:43:57.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 8 | [replicationCurrent] 8
+17:43:57.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:44:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1218 | Send: 1215 | Replication: 3]
+17:44:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 1.002469135802469
+17:44:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:44:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:44:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 1214 | Send: 1326 | Replication: 8]
+17:44:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 0.9155354449472096
+17:44:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [0, 0]
+17:44:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:44:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 1314 | Send: 1316 | Replication: 4]
+17:44:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9984802431610942
+17:44:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:44:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:44:02.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 8 | [replicationCurrent] 8
+17:44:02.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:44:07.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1202 | Send: 1205 | Replication: 3]
+17:44:07.236 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [distEstacionaria] [0.0, 1.0, 0.0] | [Statistics] 0.5773502691896258
+17:44:07.236 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:44:07.236 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 1204 | Send: 1327 | Replication: 8]
+17:44:07.239 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [distEstacionaria] [0.0, 1.0, 0.0] | [Statistics] 0.5773502691896258
+17:44:07.239 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:44:07.239 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 1301 | Send: 1323 | Replication: 4]
+17:44:07.243 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [distEstacionaria] [0.0, 0.98886, 0.01114] | [Statistics] 0.5677300704853788
+17:44:07.243 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:44:07.244 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 8 | [replicationCurrent] 8
+17:44:07.244 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:44:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1200 | Send: 1201 | Replication: 3]
+17:44:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 0.9991673605328892
+17:44:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:44:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:44:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 1201 | Send: 1328 | Replication: 8]
+17:44:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 0.9043674698795181
+17:44:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [0, 0]
+17:44:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:44:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 1307 | Send: 1317 | Replication: 4]
+17:44:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9924069855732726
+17:44:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:44:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:44:12.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 8 | [replicationCurrent] 8
+17:44:12.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:44:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1197 | Send: 1198 | Replication: 3]
+17:44:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 0.9991652754590985
+17:44:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:44:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:44:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 1198 | Send: 1321 | Replication: 8]
+17:44:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 0.906888720666162
+17:44:17.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [0, 0]
+17:44:17.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:44:17.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 1299 | Send: 1320 | Replication: 4]
+17:44:17.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9840909090909091
+17:44:17.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:44:17.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:44:17.203 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 8 | [replicationCurrent] 8
+17:44:17.203 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:44:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1204 | Send: 1203 | Replication: 3]
+17:44:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 1.0008312551953449
+17:44:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:44:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:44:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 1203 | Send: 1327 | Replication: 8]
+17:44:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 0.9065561416729465
+17:44:22.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [0, 0]
+17:44:22.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:44:22.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 1295 | Send: 1320 | Replication: 4]
+17:44:22.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9810606060606061
+17:44:22.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:44:22.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:44:22.203 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 8 | [replicationCurrent] 8
+17:44:22.203 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:44:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 1199 | Send: 1198 | Replication: 3]
+17:44:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 1.0008347245409015
+17:44:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:44:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:44:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 1198 | Send: 1328 | Replication: 8]
+17:44:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 0.9021084337349398
+17:44:27.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [0, 0]
+17:44:27.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:44:27.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 1289 | Send: 1320 | Replication: 4]
+17:44:27.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9765151515151516
+17:44:27.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:44:27.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:44:27.202 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 8 | [replicationCurrent] 8
+17:44:27.202 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:44:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 947 | Send: 950 | Replication: 3]
+17:44:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 0.9968421052631579
+17:44:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:44:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:44:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 950 | Send: 1328 | Replication: 8]
+17:44:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 0.7153614457831325
+17:44:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [0, 0]
+17:44:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:44:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 1275 | Send: 1320 | Replication: 4]
+17:44:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9659090909090909
+17:44:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:44:32.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:44:32.202 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 8 | [replicationCurrent] 8
+17:44:32.202 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:44:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 612 | Send: 611 | Replication: 3]
+17:44:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 1.0016366612111294
+17:44:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:44:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:44:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 611 | Send: 1321 | Replication: 8]
+17:44:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 0.46252838758516274
+17:44:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [0, -1]
+17:44:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:44:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 1274 | Send: 1320 | Replication: 4]
+17:44:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9651515151515152
+17:44:37.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:44:37.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:44:37.202 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 8 | [replicationCurrent] 8
+17:44:37.202 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:44:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 612 | Send: 612 | Replication: 3]
+17:44:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 1.0
+17:44:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:44:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:44:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 612 | Send: 1327 | Replication: 8]
+17:44:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 0.4611906556141673
+17:44:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [-1, -1]
+17:44:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: -1
+17:44:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Decrement PE class processElements.ProcessTwoPE
+17:44:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 1284 | Send: 1316 | Replication: 4]
+17:44:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9756838905775076
+17:44:42.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:44:42.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:44:42.202 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 7 | [replicationCurrent] 8
+17:44:42.202 [pool-7-thread-1] DEBUG org.apache.s4.core.App - Decrement PE  class processElements.ProcessTwoPE in PE class processElements.ProcessOnePE
+17:44:42.202 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:44:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 612 | Send: 613 | Replication: 3]
+17:44:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 0.99836867862969
+17:44:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:44:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:44:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 613 | Send: 1328 | Replication: 7]
+17:44:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 0.4615963855421687
+17:44:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [-1]
+17:44:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:44:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 1271 | Send: 1320 | Replication: 4]
+17:44:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9628787878787879
+17:44:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:44:47.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:44:47.202 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 7 | [replicationCurrent] 7
+17:44:47.202 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:44:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 612 | Send: 611 | Replication: 3]
+17:44:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 1.0016366612111294
+17:44:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:44:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:44:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 611 | Send: 1180 | Replication: 7]
+17:44:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 0.5177966101694915
+17:44:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [-1, 0]
+17:44:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:44:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 1173 | Send: 1313 | Replication: 4]
+17:44:52.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.8933739527798934
+17:44:52.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:44:52.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:44:52.203 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 7 | [replicationCurrent] 7
+17:44:52.203 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:44:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 611 | Send: 611 | Replication: 3]
+17:44:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 1.0
+17:44:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:44:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:44:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 611 | Send: 1160 | Replication: 7]
+17:44:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 0.5267241379310345
+17:44:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [0, 0]
+17:44:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:44:57.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 1157 | Send: 1319 | Replication: 4]
+17:44:57.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.8771796815769523
+17:44:57.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:44:57.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:44:57.202 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 7 | [replicationCurrent] 7
+17:44:57.203 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:45:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 611 | Send: 612 | Replication: 3]
+17:45:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 0.9983660130718954
+17:45:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:45:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:45:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 612 | Send: 1158 | Replication: 7]
+17:45:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 0.5284974093264249
+17:45:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [0, 0]
+17:45:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:45:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 1154 | Send: 1316 | Replication: 4]
+17:45:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.8768996960486323
+17:45:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:45:02.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:45:02.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 7 | [replicationCurrent] 7
+17:45:02.200 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:45:07.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 612 | Send: 611 | Replication: 3]
+17:45:07.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 1.0016366612111294
+17:45:07.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:45:07.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:45:07.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 611 | Send: 1159 | Replication: 7]
+17:45:07.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 0.5271786022433133
+17:45:07.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [0, 0]
+17:45:07.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:45:07.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 1141 | Send: 1320 | Replication: 4]
+17:45:07.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.8643939393939394
+17:45:07.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:45:07.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:45:07.202 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 7 | [replicationCurrent] 7
+17:45:07.202 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:45:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 613 | Send: 613 | Replication: 3]
+17:45:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 1.0
+17:45:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:45:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:45:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 613 | Send: 1162 | Replication: 7]
+17:45:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 0.5275387263339071
+17:45:12.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [0, 0]
+17:45:12.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:45:12.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 1134 | Send: 1316 | Replication: 4]
+17:45:12.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.8617021276595744
+17:45:12.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:45:12.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:45:12.202 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 7 | [replicationCurrent] 7
+17:45:12.202 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:45:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 611 | Send: 611 | Replication: 3]
+17:45:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 1.0
+17:45:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:45:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:45:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 611 | Send: 1158 | Replication: 7]
+17:45:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 0.5276338514680483
+17:45:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [0, 0]
+17:45:17.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:45:17.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 1127 | Send: 1316 | Replication: 4]
+17:45:17.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.8563829787234043
+17:45:17.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:45:17.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:45:17.202 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 7 | [replicationCurrent] 7
+17:45:17.202 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:45:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 611 | Send: 611 | Replication: 3]
+17:45:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 1.0
+17:45:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:45:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:45:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 611 | Send: 1156 | Replication: 7]
+17:45:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 0.5285467128027682
+17:45:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [0, 0]
+17:45:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:45:22.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 1119 | Send: 1173 | Replication: 4]
+17:45:22.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9539641943734015
+17:45:22.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:45:22.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:45:22.202 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 7 | [replicationCurrent] 7
+17:45:22.202 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:45:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 611 | Send: 612 | Replication: 3]
+17:45:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 0.9983660130718954
+17:45:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:45:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:45:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 612 | Send: 838 | Replication: 7]
+17:45:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 0.7303102625298329
+17:45:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [0, 0]
+17:45:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:45:27.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 817 | Send: 901 | Replication: 4]
+17:45:27.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9067702552719201
+17:45:27.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:45:27.200 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:45:27.203 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 7 | [replicationCurrent] 7
+17:45:27.203 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:45:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 611 | Send: 610 | Replication: 3]
+17:45:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 1.001639344262295
+17:45:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:45:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:45:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 610 | Send: 609 | Replication: 7]
+17:45:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 1.0016420361247949
+17:45:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [0, 0]
+17:45:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:45:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 603 | Send: 643 | Replication: 4]
+17:45:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.937791601866252
+17:45:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:45:32.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:45:32.201 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 7 | [replicationCurrent] 7
+17:45:32.201 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:45:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 612 | Send: 612 | Replication: 3]
+17:45:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 1.0
+17:45:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:45:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:45:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 612 | Send: 612 | Replication: 7]
+17:45:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 1.0
+17:45:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [0, 0]
+17:45:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:45:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 611 | Send: 612 | Replication: 4]
+17:45:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9983660130718954
+17:45:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:45:37.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:45:37.201 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 7 | [replicationCurrent] 7
+17:45:37.202 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:45:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 611 | Send: 611 | Replication: 3]
+17:45:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessOnePE | [ρ] 1.0
+17:45:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessOnePE] MarkMap: [0, 0]
+17:45:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:45:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 611 | Send: 611 | Replication: 7]
+17:45:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.ProcessTwoPE | [ρ] 1.0
+17:45:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.ProcessTwoPE] MarkMap: [0, 0]
+17:45:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:45:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 611 | Send: 611 | Replication: 4]
+17:45:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 1.0
+17:45:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:45:42.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:45:42.201 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 7 | [replicationCurrent] 7
+17:45:42.201 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
+17:45:47.199 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessOnePE | Recibe: 612 | Send: 612 | Replication: 3]
+17:45:47.209 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [distEstacionaria] [0.0, 1.0, 0.0] | [Statistics] 0.5773502691896258
+17:45:47.210 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessOnePE | status: 0
+17:45:47.210 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.ProcessTwoPE | Recibe: 612 | Send: 613 | Replication: 7]
+17:45:47.212 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [distEstacionaria] [0.17783, 0.82217, 0.0] | [Statistics] 0.4325816018202038
+17:45:47.212 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.ProcessTwoPE | status: 0
+17:45:47.212 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 613 | Send: 612 | Replication: 4]
+17:45:47.214 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [distEstacionaria] [0.0, 1.0, 0.0] | [Statistics] 0.5773502691896258
+17:45:47.214 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:45:47.215 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 7 | [replicationCurrent] 7
+17:45:47.215 [pool-7-thread-1] DEBUG org.apache.s4.core.App - [replicationAnalyzed] 4 | [replicationCurrent] 4
