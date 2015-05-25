@@ -397,27 +397,12 @@ public class S4Monitor {
 	 * 
 	 * @param data
 	 *            Corresponde al PE que se está analizando.
+	 * @param μUnit
 	 * @param eventCount
 	 *            La cantidad de eventos totales procesados en ese período.
 	 */
 	public boolean sendStatus(Class<? extends ProcessingElement> data, long λ,
-			long μ) {
-
-		/*
-		 * Asignar el valor de procesamiento de si mismo. Es decir, μ tasa de
-		 * servicio.
-		 */
-		// for (StatusPE statusPE : getStatusSystem()) {
-		// if (data.equals(statusPE.getPE())) {
-		// statusPE.setSendEvent(eventCount);
-		// /* Analizamos la cola del PE */
-		// long queuePE = statusPE.getQueueEvent() - eventCount;
-		// if (queuePE > 0)
-		// statusPE.setQueueEvent(queuePE);
-		// else
-		// statusPE.setQueueEvent(0);
-		// }
-		// }
+			long μ, long μUnit) {
 
 		StatusPE statusPE = statusSystem.get(data);
 
@@ -430,6 +415,24 @@ public class S4Monitor {
 			statusPE.setRecibeEvent(λ);
 
 			/*
+			 * Un análisis importante que se tuvo a la hora de realizar el
+			 * monitoreo, fue el promedio de la tasa de procesamiento. Esto se
+			 * hizo dado que la sumatoria de todas las tasas de procesamiento de
+			 * los PEs va a dar un valor igual o menor a la tasa de llegada de
+			 * los PEs, por lo tanto, nunca se analizará si existe un
+			 * comportamiento ocioso. Por lo tanto, al poseer el período
+			 */
+			if ((period % 20) != 0) {
+				statusPE.setSendEventPeriod(μUnit, period);
+			} else {
+				statusPE.setSendEventPeriod(μUnit, period);
+				statusPE.setSendEventUnit(statusPE.getSendEventPeriod());
+				statusPE.setSendEventPeriod(0);
+				
+				logger.debug("[μUnit] " + statusPE.getSendEventUnit());
+			}
+
+			/*
 			 * Posteriormente, se analiza la tasa de rendimiento del PE, para
 			 * verificar si efectivamente es necesario una replicación. Es decir
 			 * ρ = λ / (s*μ) ; donde s cantidad de replicas del PE
@@ -437,6 +440,12 @@ public class S4Monitor {
 			double ρ = 0;
 			if (μ != 0) {
 				ρ = (double) λ / (double) μ;
+				if ((ρ < 1.001) && (statusPE.getSendEventUnit() != 0)) {
+					double μPE = statusPE.getSendEventUnit();
+					long s = statusPE.getReplication();
+					ρ = (double) λ / ((double) s * μPE);
+					logger.debug("[ρ] " + ρ);
+				}
 			} else if ((μ == 0) && (λ == 0)) {
 				ρ = 1;
 			} else {

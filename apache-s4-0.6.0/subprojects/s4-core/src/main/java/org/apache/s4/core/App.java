@@ -325,6 +325,10 @@ public abstract class App {
 			for (Streamable<Event> stream : getStreams()) {
 				/* Obtención de cada 'PE Prototype' */
 				for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
+					/* Tasa de procesamiento unitaria */
+					long μUnit = ((ProcessingElement) PEPrototype
+							.getInstances().toArray()[0]).getEventPeriod();
+
 					/* Obtención del flujo de cada 'PE Instances' */
 					long μ = 0;
 					for (ProcessingElement PE : PEPrototype.getInstances()) {
@@ -338,7 +342,8 @@ public abstract class App {
 					PEPrototype.setEventPeriodQueue(0);
 
 					/* Envío de los datos al monitor */
-					if (!getMonitor().sendStatus(PEPrototype.getClass(), λ, μ))
+					if (!getMonitor().sendStatus(PEPrototype.getClass(), λ, μ,
+							μUnit))
 						logger.error("Error en el sendStatus");
 				}
 			}
@@ -362,7 +367,7 @@ public abstract class App {
 			/*
 			 * Finalmente, la tercera clase se dedicará a ser el callback del
 			 * monitor. De esta manera cada cierto tiempo, preguntará al monitor
-			 * cual es el estado del sistema, enviado las réplicas necesarias
+			 * cual es el estado del sistema, realizando las réplicas necesarias
 			 * que se requieran del sistema.
 			 */
 			OnTimeAskStatus timeAskStatus = new OnTimeAskStatus();

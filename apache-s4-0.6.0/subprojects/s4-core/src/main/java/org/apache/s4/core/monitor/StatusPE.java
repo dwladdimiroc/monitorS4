@@ -10,20 +10,20 @@ import org.apache.s4.core.ProcessingElement;
  * Clase para analizar el estado de cada uno de los PE, según su tasa de llegada
  * y tasa de servicio, además de su replicación.
  * 
- * Un dato importante es que markMap está inicializado con 6, debido que se
- * consideran los últimos 3 períodos de análisis de los PE. Son 6 debido que se
- * considerán tanto el del predictor como el del reactivo, por lo tanto cada par
- * es un período de tiempo.
+ * Un dato importante es que markMap está inicializado con 3, debido que se
+ * consideran los últimos 3 períodos de análisis de los PE.
  *
  */
 
 public class StatusPE implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 	private String stream;
-	
+
 	private long recibeEvent;
 	private long sendEvent;
+	private double sendEventUnit;
+	private double sendEventPeriod;
 	private double processEvent;
 	private long queueEvent;
 	private long maxSendEvent;
@@ -36,6 +36,8 @@ public class StatusPE implements Serializable {
 		stream = null;
 		recibeEvent = 0;
 		sendEvent = 0;
+		setSendEventUnit(0);
+		sendEventPeriod = 0;
 		processEvent = 0;
 		queueEvent = 0;
 		setMaxSendEvent(0);
@@ -67,6 +69,27 @@ public class StatusPE implements Serializable {
 
 	public void setSendEvent(long sendEvent) {
 		this.sendEvent = sendEvent;
+	}
+
+	public double getSendEventUnit() {
+		return sendEventUnit;
+	}
+
+	public void setSendEventUnit(double sendEventUnit) {
+		this.sendEventUnit = sendEventUnit;
+	}
+
+	public double getSendEventPeriod() {
+		return sendEventPeriod;
+	}
+
+	public void setSendEventPeriod(double sendEventPeriod) {
+		this.sendEventPeriod = sendEventPeriod;
+	}
+
+	public void setSendEventPeriod(long sendEventPeriod, int period) {
+		this.sendEventPeriod = (double) (this.sendEventPeriod * (period - 1) + sendEventPeriod)
+				/ (double) period;
 	}
 
 	public double getProcessEvent() {
