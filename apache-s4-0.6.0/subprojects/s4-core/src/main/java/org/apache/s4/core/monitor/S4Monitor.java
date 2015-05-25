@@ -426,10 +426,16 @@ public class S4Monitor {
 				statusPE.setSendEventPeriod(μUnit, period);
 			} else {
 				statusPE.setSendEventPeriod(μUnit, period);
-				statusPE.setSendEventUnit(statusPE.getSendEventPeriod());
+				/*
+				 * En caso que se encuentre una tasa de procesamiento mayor, se
+				 * cambia el valor de la tasa de procesamiento del historial
+				 */
+				if (statusPE.getSendEventUnit() < statusPE.getSendEventPeriod()) {
+					statusPE.setSendEventUnit(statusPE.getSendEventPeriod());
+				}
 				statusPE.setSendEventPeriod(0);
-				
-				logger.debug("[μUnit] " + statusPE.getSendEventUnit());
+
+				// logger.debug("[μUnit] " + statusPE.getSendEventUnit());
 			}
 
 			/*
@@ -440,11 +446,14 @@ public class S4Monitor {
 			double ρ = 0;
 			if (μ != 0) {
 				ρ = (double) λ / (double) μ;
-				if ((ρ < 1.001) && (statusPE.getSendEventUnit() != 0)) {
+				if ((ρ < 1) && (statusPE.getSendEventUnit() != 0)) {
 					double μPE = statusPE.getSendEventUnit();
 					long s = statusPE.getReplication();
+					// logger.debug("[s] " + s + " | [μPE] " + μPE +
+					// " | [s*μPE] "
+					// + ((double) s * μPE));
 					ρ = (double) λ / ((double) s * μPE);
-					logger.debug("[ρ] " + ρ);
+					// logger.debug("[ρ] " + ρ);
 				}
 			} else if ((μ == 0) && (λ == 0)) {
 				ρ = 1;
@@ -489,7 +498,7 @@ public class S4Monitor {
 		 * Análisis de ρ para ver si debe aumentar, mantener o disminuir la
 		 * cantidad de réplicas de cierto PE
 		 */
-		if (ρ > 1.01) {
+		if (ρ > 1) {
 			// logger.debug("Increment");
 			return 1;
 		} else if (ρ < 0.5) {
@@ -519,6 +528,9 @@ public class S4Monitor {
 		Double rho[] = new Double[statusPE.getHistory().size() - 1];
 		rho = statusPE.getHistory().toArray(rho);
 
+		// logger.debug("[" + statusPE.getPE().getCanonicalName()
+		// + "] | [PE History] " + statusPE.getHistory().toString());
+
 		/* Cálculo de la predicción por parte de la Cadena de Markov */
 		double distEstacionaria[] = markovChain.calculatePrediction(rho, 100,
 				100000);
@@ -527,7 +539,11 @@ public class S4Monitor {
 		DescriptiveStatistics descriptiveStatistics = new DescriptiveStatistics(
 				distEstacionaria);
 
-		logger.debug("[distEstacionaria] " + Arrays.toString(distEstacionaria)
+		logger.debug("[transitionMatrix] {"
+				+ Arrays.toString(markovChain.getTransitionMatrix()[0]) + ","
+				+ Arrays.toString(markovChain.getTransitionMatrix()[1]) + ","
+				+ Arrays.toString(markovChain.getTransitionMatrix()[2]) + "}"
+				+ " | [distEstacionaria] " + Arrays.toString(distEstacionaria)
 				+ " | [Statistics] "
 				+ descriptiveStatistics.getStandardDeviation());
 

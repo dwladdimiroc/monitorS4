@@ -364,19 +364,23 @@ public abstract class AdapterApp extends App {
 		remoteStream = createOutputStream(outputStreamName,
 				remoteStreamKeyFinder);
 
-		/* Thread que estará escuchando los datos que envía el monitor */
-		Thread tListenerMonitor = new Thread(new ListenerMonitor());
-		tListenerMonitor.start();
+		if (getRunMonitor()) {
+			/* Thread que estará escuchando los datos que envía el monitor */
+			Thread tListenerMonitor = new Thread(new ListenerMonitor());
+			tListenerMonitor.start();
+		}
 
 		setConditionAdapter(true);
 
-		/* Notificación para indicar que se ha iniciado el Adapter */
-		Notification notification = new Notification();
-		notification.setStatus(true);
-		notification.setAdapter(getClassAdapter());
-		notification.setListPE(listPE);
-		notification.setPort(portSocket);
-		remoteStream.notification(notification);
+		if (getRunMonitor()) {
+			/* Notificación para indicar que se ha iniciado el Adapter */
+			Notification notification = new Notification();
+			notification.setStatus(true);
+			notification.setAdapter(getClassAdapter());
+			notification.setListPE(listPE);
+			notification.setPort(portSocket);
+			remoteStream.notification(notification);
+		}
 	}
 
 	/**

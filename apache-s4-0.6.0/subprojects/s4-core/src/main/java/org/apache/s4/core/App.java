@@ -190,17 +190,17 @@ public abstract class App {
 	 * independientes, para realizar una acción según un determinado tiempo.
 	 */
 	private void startMonitor() {
-		getLogger().info("Start S4Monitor");
-		monitor.startMetrics();
+		if (runMonitor) {
 
-		synchronized (getBlockAdapter()) {
-			try {
-				getBlockAdapter().wait();
-			} catch (InterruptedException e) {
-				getLogger().error(e.getMessage());
-			}
+			getLogger().info("Start S4Monitor");
+			monitor.startMetrics();
 
-			if (runMonitor) {
+			synchronized (getBlockAdapter()) {
+				try {
+					getBlockAdapter().wait();
+				} catch (InterruptedException e) {
+					getLogger().error(e.getMessage());
+				}
 
 				/*
 				 * La primera hebra se utilizará para enviar los datos de los
@@ -325,16 +325,21 @@ public abstract class App {
 			for (Streamable<Event> stream : getStreams()) {
 				/* Obtención de cada 'PE Prototype' */
 				for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
-					/* Tasa de procesamiento unitaria */
-					long μUnit = ((ProcessingElement) PEPrototype
-							.getInstances().toArray()[0]).getEventPeriod();
 
 					/* Obtención del flujo de cada 'PE Instances' */
 					long μ = 0;
+					long μUnit = 0;
 					for (ProcessingElement PE : PEPrototype.getInstances()) {
 						μ += PE.getEventPeriod();
-						// Reinicio del contador de eventos para
-						// períodos del análisis del monitor
+
+						/* Tasa de procesamiento unitaria */
+						if (μUnit < PE.getEventPeriod())
+							μUnit = PE.getEventPeriod();
+
+						/*
+						 * Reinicio del contador de eventos para períodos del
+						 * análisis del monitor
+						 */
 						PE.setEventPeriod(0);
 					}
 
@@ -567,17 +572,17 @@ public abstract class App {
 							int replicationCurrent = PEPrototype
 									.getReplicationPE(statusPE.getPE());
 
-							logger.debug("[replicationAnalyzed] "
-									+ replicationAnalyzed
-									+ " | [replicationCurrent] "
-									+ replicationCurrent);
+							// logger.debug("[replicationAnalyzed] "
+							// + replicationAnalyzed
+							// + " | [replicationCurrent] "
+							// + replicationCurrent);
 
 							if (replicationAnalyzed > replicationCurrent) {
 
-								getLogger().debug(
-										"Increment PE  " + statusPE.getPE()
-												+ " in PE "
-												+ PEPrototype.getClass());
+								// getLogger().debug(
+								// "Increment PE  " + statusPE.getPE()
+								// + " in PE "
+								// + PEPrototype.getClass());
 
 								PEPrototype.setReplicationPE(statusPE.getPE(),
 										statusPE.getReplication());
@@ -616,10 +621,10 @@ public abstract class App {
 								 */
 								removeReplication(statusPE);
 
-								getLogger().debug(
-										"Decrement PE  " + statusPE.getPE()
-												+ " in PE "
-												+ PEPrototype.getClass());
+								// getLogger().debug(
+								// "Decrement PE  " + statusPE.getPE()
+								// + " in PE "
+								// + PEPrototype.getClass());
 
 								PEPrototype.setReplicationPE(statusPE.getPE(),
 										statusPE.getReplication());
@@ -744,18 +749,23 @@ public abstract class App {
 	 *            Estado del PE analizado
 	 */
 	public void removeReplication(StatusPE statusPE) {
+		// logger.debug("Start Remove PE " +
+		// statusPE.getPE().getCanonicalName());
 
 		/* Obtención de cada 'Stream' */
 		for (Streamable<Event> stream : getStreams()) {
 			/* Obtención de cada 'PE Prototype' */
 			for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
 				/* Analizamos si el PE es el que deseamos eliminar */
-				for (ProcessingElement PE : PEPrototype.getInstances()) {
-					if (statusPE.getPE().equals(PEPrototype.getClass())) {
-						// logger.debug("[{}] ID: {}", new
-						// String[]{PE.getClass().getCanonicalName(),
-						// PE.getId()});
+				if (statusPE.getPE().equals(PEPrototype.getClass())) {
+					// logger.info("[RemovePE] In " + statusPE.getPE());
+					for (ProcessingElement PE : PEPrototype.getInstances()) {
 						int replicationCurrent = Integer.parseInt(PE.getId());
+						// logger.debug("[RemovePE] "
+						// + statusPE.getPE().getCanonicalName()
+						// + " | [Replication] "
+						// + statusPE.getReplication() + " | [ID] "
+						// + replicationCurrent);
 						/*
 						 * En caso que el 'id' del PE sea mayor o igual a la
 						 * réplica que se desea, se deberá eliminar el PE. Esto
@@ -767,7 +777,6 @@ public abstract class App {
 							PE.close();
 						}
 					}
-					return;
 				}
 
 			}

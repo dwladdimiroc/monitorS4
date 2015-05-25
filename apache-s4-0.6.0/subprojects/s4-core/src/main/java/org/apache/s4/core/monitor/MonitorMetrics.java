@@ -53,7 +53,7 @@ public class MonitorMetrics {
 
 		/* Init registry */
 		String outputDir = "/home/daniel/Proyectos/monitorS4/statistics/";
-		long period = 1;
+		long period = 5;
 		TimeUnit timeUnit = TimeUnit.SECONDS;
 		logger.info(
 				"Reporting metrics of the monitor through csv files in directory [{}] with frequency of [{}] [{}]",

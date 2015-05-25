@@ -80,7 +80,7 @@ public class Adapter extends AdapterApp implements Runnable {
 
 			getRemoteStream().put(event);
 
-			if (getEventCount() < 30000) {
+			if (getEventCount() < 40000) {
 				try {
 					Thread.sleep(4);
 				} catch (InterruptedException e) {
