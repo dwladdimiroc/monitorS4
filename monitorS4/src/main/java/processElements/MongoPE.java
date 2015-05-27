@@ -14,10 +14,6 @@ public class MongoPE extends ProcessingElement {
 	private static Logger logger = LoggerFactory.getLogger(MongoPE.class);
 	private boolean showEvent = false;
 
-	CSVWriter writer;
-	FileWriter fileWriter;
-	String path = "/home/daniel/Proyectos/monitorS4/statistics/avgTimeTotalEvent.csv";
-
 	public void onEvent(Event event) {
 
 		// Processing
@@ -36,10 +32,10 @@ public class MongoPE extends ProcessingElement {
 		long timeFinal = System.currentTimeMillis();
 
 		long time = timeFinal - timeInit;
-		
-		getApp().getMonitor().getMetrics().setAvgTimeTotal(time);
-			
 
+		getApp().getMonitor().getMetrics().setAvgTimeTotal(time);
+
+		// logger.debug("Time final (ms): " + System.currentTimeMillis());
 
 		// DBObject objMongo = new BasicDBObject();
 		// objMongo.put("id", event.get("id", Long.class));
@@ -68,7 +64,6 @@ public class MongoPE extends ProcessingElement {
 	@Override
 	protected void onCreate() {
 		logger.info("Create Mongo PE");
-
 
 		// this.replicationPE();
 

@@ -34,14 +34,14 @@ import processElements.ProcessTwoPE;
 
 public class Topology extends App {
 	private static Logger logger = LoggerFactory.getLogger(Topology.class);
-	
-	/* PEs de la App */ 
+
+	/* PEs de la App */
 	ProcessOnePE processOnePE;
 	ProcessTwoPE processTwoPE;
 	MongoPE mongoPE;
 
 	@Override
-	protected void onInit() {		
+	protected void onInit() {
 		// Create the PE prototype
 		processOnePE = createPE(ProcessOnePE.class);
 		processTwoPE = createPE(ProcessTwoPE.class);
@@ -76,7 +76,6 @@ public class Topology extends App {
 								.get("levelMongo") });
 					}
 				}, mongoPE).setParallelism(1024);
-			
 
 		// Register and setDownStream
 		processOnePE.setDownStream(processTwoStream);
@@ -84,11 +83,11 @@ public class Topology extends App {
 
 		setRunMonitor(true);
 	}
-	
+
 	@Override
 	protected void onStart() {
 		logger.info("Start Topology");
-		
+
 		processOnePE.registerMonitor(processTwoPE.getClass());
 		processTwoPE.registerMonitor(mongoPE.getClass());
 		mongoPE.registerMonitor(null);

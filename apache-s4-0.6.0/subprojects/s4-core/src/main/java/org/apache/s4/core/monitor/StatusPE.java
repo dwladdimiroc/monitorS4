@@ -26,25 +26,25 @@ public class StatusPE implements Serializable {
 	private double sendEventPeriod;
 	private double processEvent;
 	private long queueEvent;
-	private long maxSendEvent;
 	private Queue<Double> history;
 	private Class<? extends ProcessingElement> pe;
 	private int replication;
 	private Queue<Integer> markMap;
+	private long eventCount;
 
 	public StatusPE() {
 		stream = null;
 		recibeEvent = 0;
 		sendEvent = 0;
-		setSendEventUnit(0);
+		sendEventUnit = 0;
 		sendEventPeriod = 0;
 		processEvent = 0;
 		queueEvent = 0;
-		setMaxSendEvent(0);
 		history = new CircularFifoQueue<Double>(100);
 		pe = null;
 		replication = 0;
 		markMap = new CircularFifoQueue<Integer>(2);
+		eventCount = 0;
 	}
 
 	public String getStream() {
@@ -108,14 +108,6 @@ public class StatusPE implements Serializable {
 		this.queueEvent = queueEvent;
 	}
 
-	public long getMaxSendEvent() {
-		return maxSendEvent;
-	}
-
-	public void setMaxSendEvent(long maxSendEvent) {
-		this.maxSendEvent = maxSendEvent;
-	}
-
 	public Queue<Double> getHistory() {
 		return history;
 	}
@@ -146,6 +138,14 @@ public class StatusPE implements Serializable {
 
 	public void setMarkMap(Queue<Integer> markMap) {
 		this.markMap = markMap;
+	}
+
+	public long getEventCount() {
+		return eventCount;
+	}
+
+	public void setEventCount(long eventCount) {
+		this.eventCount = eventCount;
 	}
 
 	@Override

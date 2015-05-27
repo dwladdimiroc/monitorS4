@@ -125,11 +125,16 @@ public class S4Monitor {
 
 			/* Además, se crearán los contadores y estadísticas para el PE */
 			getMetrics().createCounterReplicationPE(peSend.getCanonicalName());
-			getMetrics().createGaugeAvgEventSystem(peSend.getCanonicalName());
-			getMetrics().createGaugeAvgEventQueue(peSend.getCanonicalName());
-			getMetrics().createGaugeAvgTimeResident(peSend.getCanonicalName());
-			getMetrics().createGaugeAvgTimeQueue(peSend.getCanonicalName());
-			getMetrics().createGaugeAvgTimeProcess(peSend.getCanonicalName());
+			getMetrics().createGaugeRhoPE(peSend.getCanonicalName());
+			getMetrics().createGaugeLambdaPE(peSend.getCanonicalName());
+			getMetrics().createGaugeMuPE(peSend.getCanonicalName());
+			getMetrics().createGaugeQueuePE(peSend.getCanonicalName());
+			getMetrics().createGaugeEventCountPE(peSend.getCanonicalName());
+			// getMetrics().createGaugeAvgEventSystem(peSend.getCanonicalName());
+			// getMetrics().createGaugeAvgEventQueue(peSend.getCanonicalName());
+			// getMetrics().createGaugeAvgTimeResident(peSend.getCanonicalName());
+			// getMetrics().createGaugeAvgTimeQueue(peSend.getCanonicalName());
+			// getMetrics().createGaugeAvgTimeProcess(peSend.getCanonicalName());
 		}
 	}
 
@@ -399,10 +404,11 @@ public class S4Monitor {
 	 *            Corresponde al PE que se está analizando.
 	 * @param μUnit
 	 * @param eventCount
+	 * @param eventCount
 	 *            La cantidad de eventos totales procesados en ese período.
 	 */
 	public boolean sendStatus(Class<? extends ProcessingElement> data, long λ,
-			long μ, long μUnit) {
+			long μ, long μUnit, long eventCount) {
 
 		StatusPE statusPE = statusSystem.get(data);
 
@@ -413,6 +419,7 @@ public class S4Monitor {
 			 */
 			statusPE.setSendEvent(μ);
 			statusPE.setRecibeEvent(λ);
+			statusPE.setEventCount(eventCount);
 
 			/*
 			 * Un análisis importante que se tuvo a la hora de realizar el
@@ -454,6 +461,14 @@ public class S4Monitor {
 					// + ((double) s * μPE));
 					ρ = (double) λ / ((double) s * μPE);
 					// logger.debug("[ρ] " + ρ);
+
+					/* Get Statistics */
+					getMetrics().gaugeMuPE(statusPE.getPE().getCanonicalName(),
+							(long) Math.floor((double) s * μPE));
+				} else {
+					/* Get Statistics */
+					getMetrics().gaugeMuPE(statusPE.getPE().getCanonicalName(),
+							μ);
 				}
 			} else if ((μ == 0) && (λ == 0)) {
 				ρ = 1;
@@ -468,6 +483,14 @@ public class S4Monitor {
 				statusPE.setQueueEvent(queuePE);
 			else
 				statusPE.setQueueEvent(0);
+
+			/* Get Statistics */
+			getMetrics().gaugeRhoPE(statusPE.getPE().getCanonicalName(), ρ);
+			getMetrics().gaugeLambdaPE(statusPE.getPE().getCanonicalName(), λ);
+			getMetrics().gaugeQueuePE(statusPE.getPE().getCanonicalName(),
+					queuePE);
+			getMetrics().gaugeEventCountPE(statusPE.getPE().getCanonicalName(),
+					statusPE.getEventCount());
 		} else {
 			return false;
 		}

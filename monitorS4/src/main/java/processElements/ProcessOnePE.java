@@ -30,6 +30,8 @@ public class ProcessOnePE extends ProcessingElement {
 	private static Logger logger = LoggerFactory.getLogger(ProcessOnePE.class);
 	private boolean showEvent = false;
 
+	long timeFinal, timeInit;
+
 	int count = 0;
 
 	Stream<Event> downStream;
@@ -41,6 +43,13 @@ public class ProcessOnePE extends ProcessingElement {
 	}
 
 	public void onEvent(Event event) {
+
+		timeFinal = System.currentTimeMillis();
+		if ((timeFinal - timeInit) >= 900000) {
+			app.close();
+			System.exit(0);
+		}
+
 		// if(showEvent){logger.debug(event.getAttributesAsMap().toString());}
 		// logger.debug("Replication: " + getReplication());
 		// logger.debug("EventCount: " + getEventCount());
@@ -59,7 +68,7 @@ public class ProcessOnePE extends ProcessingElement {
 				% getReplicationPE(ProcessTwoPE.class));
 		// logger.debug("[Replication] " + eventOutput.get("levelProcessTwo"));
 		// eventOutput.put("levelProcessTwo", Integer.class, 1);
-		 eventOutput.put("time", Long.class, event.get("time", Long.class));
+		eventOutput.put("time", Long.class, event.get("time", Long.class));
 		// eventOutput.put("time", Long.class, event.get("time", Long.class));
 		// eventOutput.put("dateAdapter", Date.class,
 		// event.get("date", Date.class));
@@ -82,6 +91,7 @@ public class ProcessOnePE extends ProcessingElement {
 
 	@Override
 	protected void onCreate() {
+		timeInit = System.currentTimeMillis();
 		logger.info("Create ProcessOne PE");
 		// this.replicationPE();
 

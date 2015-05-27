@@ -13,31 +13,43 @@ import com.yammer.metrics.core.Counter;
 import com.yammer.metrics.core.Gauge;
 import com.yammer.metrics.reporting.CsvReporter;
 
+/**
+ * 
+ * Estadísticas del monitor replicationPE: Cantidad de réplicas por PE
+ * avgEventSystem: Número promedio de eventos en el sistema avgEventQueue:
+ * Número promedio de eventos en cola avgTimeResident: Tiempo promedio de
+ * residencia avgTimeQueue: Tiempo promedio de espera avgTimeProcess: Tiempo
+ * promedio de procesamiento timeSendHistoryMonitor: Tiempo que se demora en
+ * enviar el historial de los PEs timeSendMonitor: Tiempo que se demora en
+ * enviar los PEs timeAskMonitor: Tiempo que se demora en consultar el estado de
+ * los PEs
+ * 
+ * @author daniel
+ *
+ */
+
 public class MonitorMetrics {
 	static final Logger logger = LoggerFactory.getLogger(MonitorMetrics.class);
 
-	/*
-	 * Estadísticas del monitor replicationPE: Cantidad de réplicas por PE
-	 * avgEventSystem: Número promedio de eventos en el sistema avgEventQueue:
-	 * Número promedio de eventos en cola avgTimeResident: Tiempo promedio de
-	 * residencia avgTimeQueue: Tiempo promedio de espera avgTimeProcess: Tiempo
-	 * promedio de procesamiento timeSendHistoryMonitor: Tiempo que se demora en
-	 * enviar el historial de los PEs timeSendMonitor: Tiempo que se demora en
-	 * enviar los PEs timeAskMonitor: Tiempo que se demora en consultar el
-	 * estado de los PEs
-	 */
-
 	private final Map<String, Counter> replicationPE = Maps.newHashMap();
+	
+	private final Map<String, Double> rhoPE = Maps.newHashMap();
+	private final Map<String, Long> lambdaPE = Maps.newHashMap();
+	private final Map<String, Long> muPE = Maps.newHashMap();
+	private final Map<String, Long> queuePE = Maps.newHashMap();
+	
+	private final Map<String, Long> eventCountPE = Maps.newHashMap();
 
-	private final Map<String, Double> avgEventSystem = Maps.newHashMap();
-	private final Map<String, Double> avgEventQueue = Maps.newHashMap();
+	 private final Map<String, Double> avgEventSystem = Maps.newHashMap();
+	 private final Map<String, Double> avgEventQueue = Maps.newHashMap();
 
-	private final Map<String, Double> avgTimeResident = Maps.newHashMap();
-	private final Map<String, Double> avgTimeQueue = Maps.newHashMap();
-	private final Map<String, Double> avgTimeProcess = Maps.newHashMap();
+	 private final Map<String, Double> avgTimeResident = Maps.newHashMap();
+	 private final Map<String, Double> avgTimeQueue = Maps.newHashMap();
+	 private final Map<String, Double> avgTimeProcess = Maps.newHashMap();
 
 	private long avgTimeTotal;
 	private long nEvent;
+	private long nEventPast;
 
 	private long timeSendHistoryMonitor;
 	private long timeSendMonitor;
@@ -47,6 +59,10 @@ public class MonitorMetrics {
 		logger.info("Init S4Monitor Metrics");
 
 		/* Init value */
+		avgTimeTotal = 0;
+		nEvent = 0;
+		nEventPast = 0;
+
 		timeSendHistoryMonitor = 0;
 		timeSendMonitor = 0;
 		timeAskMonitor = 0;
@@ -67,6 +83,17 @@ public class MonitorMetrics {
 					@Override
 					public Long value() {
 						return avgTimeTotal;
+					}
+				});
+
+		Metrics.newGauge(S4Monitor.class, "avgEventProcess", "# event",
+				new Gauge<Long>() {
+					@Override
+					public Long value() {
+						/* Se considerará el delta de eventos procesados */
+						long avgEventProcess = nEvent - nEventPast;
+						nEventPast = nEvent;
+						return avgEventProcess;
 					}
 				});
 
@@ -107,6 +134,86 @@ public class MonitorMetrics {
 			replicationPE.get(name).inc();
 		else
 			replicationPE.get(name).dec();
+	}
+	
+	public void createGaugeRhoPE(final String name) {
+		rhoPE.put(name, Double.valueOf(0));
+
+		Metrics.newGauge(S4Monitor.class, "rho@" + name, "rho",
+				new Gauge<Double>() {
+					@Override
+					public Double value() {
+						return rhoPE.get(name);
+					}
+				});
+	}
+
+	public void gaugeRhoPE(String name, double rho) {
+		rhoPE.put(name, rho);
+	}
+	
+	public void createGaugeLambdaPE(final String name) {
+		lambdaPE.put(name, Long.valueOf(0));
+
+		Metrics.newGauge(S4Monitor.class, "lambda@" + name, "lambda",
+				new Gauge<Long>() {
+					@Override
+					public Long value() {
+						return lambdaPE.get(name);
+					}
+				});
+	}
+
+	public void gaugeLambdaPE(String name, long lambda) {
+		lambdaPE.put(name, lambda);
+	}
+	
+	public void createGaugeMuPE(final String name) {
+		muPE.put(name, Long.valueOf(0));
+
+		Metrics.newGauge(S4Monitor.class, "mu@" + name, "mu",
+				new Gauge<Long>() {
+					@Override
+					public Long value() {
+						return muPE.get(name);
+					}
+				});
+	}
+
+	public void gaugeMuPE(String name, long mu) {
+		muPE.put(name, mu);
+	}
+	
+	public void createGaugeQueuePE(final String name) {
+		queuePE.put(name, Long.valueOf(0));
+
+		Metrics.newGauge(S4Monitor.class, "queue@" + name, "queue",
+				new Gauge<Long>() {
+					@Override
+					public Long value() {
+						return queuePE.get(name);
+					}
+				});
+	}
+
+	public void gaugeQueuePE(String name, long queue) {
+		lambdaPE.put(name, queue);
+	}
+	
+	public void createGaugeEventCountPE(final String name) {
+		eventCountPE.put(name, Long.valueOf(0));
+
+		Metrics.newGauge(S4Monitor.class, "eventCount@" + name, "eventCount",
+				new Gauge<Long>() {
+					@Override
+					public Long value() {
+						return eventCountPE.get(name);
+					}
+				});
+	}
+
+	public void gaugeEventCountPE(String name, long eventCount) {
+		eventCountPE.put(name, eventCount);
 	}
 
 	public void createGaugeAvgEventSystem(final String name) {

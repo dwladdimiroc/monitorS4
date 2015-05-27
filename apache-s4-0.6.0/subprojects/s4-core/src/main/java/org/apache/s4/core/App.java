@@ -190,10 +190,11 @@ public abstract class App {
 	 * independientes, para realizar una acción según un determinado tiempo.
 	 */
 	private void startMonitor() {
-		if (runMonitor) {
 
-			getLogger().info("Start S4Monitor");
-			monitor.startMetrics();
+		getLogger().info("Start S4Monitor");
+		monitor.startMetrics();
+
+		if (runMonitor) {
 
 			synchronized (getBlockAdapter()) {
 				try {
@@ -329,8 +330,10 @@ public abstract class App {
 					/* Obtención del flujo de cada 'PE Instances' */
 					long μ = 0;
 					long μUnit = 0;
+					long eventCount = 0;
 					for (ProcessingElement PE : PEPrototype.getInstances()) {
 						μ += PE.getEventPeriod();
+						eventCount += PE.getEventCount();
 
 						/* Tasa de procesamiento unitaria */
 						if (μUnit < PE.getEventPeriod())
@@ -348,7 +351,7 @@ public abstract class App {
 
 					/* Envío de los datos al monitor */
 					if (!getMonitor().sendStatus(PEPrototype.getClass(), λ, μ,
-							μUnit))
+							μUnit, eventCount))
 						logger.error("Error en el sendStatus");
 				}
 			}

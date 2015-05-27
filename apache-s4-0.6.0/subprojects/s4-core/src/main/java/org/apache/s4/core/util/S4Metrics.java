@@ -131,7 +131,8 @@ public class S4Metrics {
 		}
 
 		senderMeters = new Meter[emitter.getPartitionCount()];
-		// int localPartitionId = assignment.assignClusterNode().getPartition();
+		// int localPartitionId =
+		assignment.assignClusterNode().getPartition();
 		for (int i = 0; i < senderMeters.length; i++) {
 			senderMeters[i] = Metrics.newMeter(SenderImpl.class, "sender",
 					"sent-to-" + (i), TimeUnit.SECONDS);
