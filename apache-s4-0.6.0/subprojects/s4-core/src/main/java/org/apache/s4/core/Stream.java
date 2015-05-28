@@ -185,9 +185,9 @@ public class Stream<T extends Event> implements Streamable {
 			if (!sender.checkAndSendIfNotLocal(key.get((T) event), event)) {
 
 				/* Se analiza la tasa de llegada */
-				for (ProcessingElement pe : targetPEs) {
-					pe.setEventSegQueue(pe.getEventSegQueue() + 1);
-					pe.setEventPeriodQueue(pe.getEventPeriodQueue() + 1);
+				for (ProcessingElement PEPrototype : getTargetPEs()) {
+					PEPrototype.setEventSegQueue(PEPrototype.getEventSegQueue() + 1);
+					PEPrototype.setEventPeriodQueue(PEPrototype.getEventPeriodQueue() + 1);
 				}
 
 				/*

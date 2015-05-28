@@ -197,7 +197,7 @@ public class MonitorMetrics {
 	}
 
 	public void gaugeQueuePE(String name, long queue) {
-		lambdaPE.put(name, queue);
+		queuePE.put(name, queue);
 	}
 	
 	public void createGaugeEventCountPE(final String name) {

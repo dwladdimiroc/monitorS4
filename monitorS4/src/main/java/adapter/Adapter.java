@@ -37,7 +37,7 @@ public class Adapter extends AdapterApp implements Runnable {
 	protected void onInit() {
 		/* Este orden es importante */
 		logger.info("Create Adapter");
-		setRunMonitor(true);
+		setRunMonitor(false);
 		this.registerMonitor(ProcessOnePE.class);
 		thread = new Thread(this);
 

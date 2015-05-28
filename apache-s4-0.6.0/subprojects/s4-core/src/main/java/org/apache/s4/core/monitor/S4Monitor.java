@@ -421,6 +421,8 @@ public class S4Monitor {
 			statusPE.setRecibeEvent(λ);
 			statusPE.setEventCount(eventCount);
 
+			/* Get Statistics */
+
 			/*
 			 * Un análisis importante que se tuvo a la hora de realizar el
 			 * monitoreo, fue el promedio de la tasa de procesamiento. Esto se
@@ -453,22 +455,15 @@ public class S4Monitor {
 			double ρ = 0;
 			if (μ != 0) {
 				ρ = (double) λ / (double) μ;
-				if ((ρ < 1) && (statusPE.getSendEventUnit() != 0)) {
+				if ((ρ < 1.1) && (statusPE.getSendEventUnit() != 0)) {
 					double μPE = statusPE.getSendEventUnit();
 					long s = statusPE.getReplication();
 					// logger.debug("[s] " + s + " | [μPE] " + μPE +
 					// " | [s*μPE] "
 					// + ((double) s * μPE));
+					statusPE.setSendEvent(s * (long) Math.floor(μPE));
 					ρ = (double) λ / ((double) s * μPE);
 					// logger.debug("[ρ] " + ρ);
-
-					/* Get Statistics */
-					getMetrics().gaugeMuPE(statusPE.getPE().getCanonicalName(),
-							(long) Math.floor((double) s * μPE));
-				} else {
-					/* Get Statistics */
-					getMetrics().gaugeMuPE(statusPE.getPE().getCanonicalName(),
-							μ);
 				}
 			} else if ((μ == 0) && (λ == 0)) {
 				ρ = 1;
@@ -484,13 +479,6 @@ public class S4Monitor {
 			else
 				statusPE.setQueueEvent(0);
 
-			/* Get Statistics */
-			getMetrics().gaugeRhoPE(statusPE.getPE().getCanonicalName(), ρ);
-			getMetrics().gaugeLambdaPE(statusPE.getPE().getCanonicalName(), λ);
-			getMetrics().gaugeQueuePE(statusPE.getPE().getCanonicalName(),
-					queuePE);
-			getMetrics().gaugeEventCountPE(statusPE.getPE().getCanonicalName(),
-					statusPE.getEventCount());
 		} else {
 			return false;
 		}
@@ -887,6 +875,18 @@ public class S4Monitor {
 			StatusPE statusPE = getStatusSystem().get(peCurrent);
 
 			logger.debug(statusPE.toString());
+
+			/* Get Statistics */
+			getMetrics().gaugeRhoPE(statusPE.getPE().getCanonicalName(),
+					statusPE.getProcessEvent());
+			getMetrics().gaugeLambdaPE(statusPE.getPE().getCanonicalName(),
+					statusPE.getRecibeEvent());
+			getMetrics().gaugeMuPE(statusPE.getPE().getCanonicalName(),
+					statusPE.getSendEvent());
+			getMetrics().gaugeQueuePE(statusPE.getPE().getCanonicalName(),
+					statusPE.getQueueEvent());
+			getMetrics().gaugeEventCountPE(statusPE.getPE().getCanonicalName(),
+					statusPE.getEventCount());
 
 			int status = administrationLoad(statusPE);
 
