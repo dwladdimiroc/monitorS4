@@ -229,6 +229,14 @@ public abstract class App {
 
 			}
 
+		} else {
+			/*
+			 * Dedica solo para las estadísticas del monitor
+			 */
+			ScheduledExecutorService getEventCount = Executors
+					.newSingleThreadScheduledExecutor();
+			getEventCount.scheduleAtFixedRate(new OnTimeGetEventCount(), 1000,
+					1000, TimeUnit.MILLISECONDS);
 		}
 
 	}

@@ -802,6 +802,19 @@ public class S4Monitor {
 				return false;
 
 			}
+
+			/* Get Statistics */
+			getMetrics().gaugeRhoPE(statusPE.getPE().getCanonicalName(),
+					statusPE.getProcessEvent());
+			getMetrics().gaugeLambdaPE(statusPE.getPE().getCanonicalName(),
+					statusPE.getRecibeEvent());
+			getMetrics().gaugeMuPE(statusPE.getPE().getCanonicalName(),
+					statusPE.getSendEvent());
+			getMetrics().gaugeQueuePE(statusPE.getPE().getCanonicalName(),
+					statusPE.getQueueEvent());
+			getMetrics().gaugeEventCountPE(statusPE.getPE().getCanonicalName(),
+					statusPE.getEventCount());
+
 		}
 
 		return false;
@@ -875,18 +888,6 @@ public class S4Monitor {
 			StatusPE statusPE = getStatusSystem().get(peCurrent);
 
 			logger.debug(statusPE.toString());
-
-			/* Get Statistics */
-			getMetrics().gaugeRhoPE(statusPE.getPE().getCanonicalName(),
-					statusPE.getProcessEvent());
-			getMetrics().gaugeLambdaPE(statusPE.getPE().getCanonicalName(),
-					statusPE.getRecibeEvent());
-			getMetrics().gaugeMuPE(statusPE.getPE().getCanonicalName(),
-					statusPE.getSendEvent());
-			getMetrics().gaugeQueuePE(statusPE.getPE().getCanonicalName(),
-					statusPE.getQueueEvent());
-			getMetrics().gaugeEventCountPE(statusPE.getPE().getCanonicalName(),
-					statusPE.getEventCount());
 
 			int status = administrationLoad(statusPE);
 
