@@ -23,9 +23,9 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import eda.Tweet;
 
-public class NecesidadNecessityPE extends ProcessingElement {
+public class AnalyzePE extends ProcessingElement {
 	private static Logger logger = LoggerFactory
-			.getLogger(NecesidadNecessityPE.class);
+			.getLogger(AnalyzePE.class);
 
 	private boolean showEvent = false;
 	

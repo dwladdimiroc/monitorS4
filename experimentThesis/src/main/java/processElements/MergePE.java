@@ -13,18 +13,18 @@ import utilities.Words;
 import eda.Configuration;
 import eda.Tweet;
 
-public class FiltrosCountryPE extends ProcessingElement {
+public class MergePE extends ProcessingElement {
 	private static Logger logger = LoggerFactory
-			.getLogger(FiltrosCountryPE.class);
+			.getLogger(MergePE.class);
 
 	private boolean showEvent = false;
-
+	
 	List<String> keywordsExclusionary;
 	Stream<Event> downStream;
 
 	Configuration configuration;
 	EventFactory eventFactory;
-
+	
 	Words utilitiesWords;
 
 	public void setDownStream(Stream<Event> stream) {
@@ -33,34 +33,38 @@ public class FiltrosCountryPE extends ProcessingElement {
 
 	public void onEvent(Event event) {
 		Tweet tweet = event.get("tweet", Tweet.class);
-		if (showEvent) {
-			logger.debug(tweet.toString());
-		}
+		if(showEvent){logger.debug(tweet.toString());}
+		
+//		for (String word : configuration.getKeyword()) {
+//			logger.debug(word);
+//		}
 
-		if (tweet.getCountry().equals(configuration.getCountry())) {
+		//System.out.println("FIRST Inclusive tweet.getText(): " +tweet.getText());
+		
+		if(utilitiesWords.contains(configuration.getKeyword(), tweet.getText())){
 
+			//System.out.println("SECOND Inclusive tweet.getText(): " +tweet.getText());
+			
 			Tweet newTweet = tweet.getClone();
-			// logger.debug(newTweet.toString());
 			Event eventOutput = eventFactory.newEvent(newTweet);
-
-			// eventOutput.put("levelTweet", Integer.class, getEventCount() %
-			// configuration.getReplication());
-			downStream.put(eventOutput);
-
+			
+			eventOutput.put("levelTweet", Integer.class, getEventCount() % configuration.getReplication());
+			downStream.put(eventOutput);			
+			
+			//event.put("levelLanguage", Integer.class, 1);
+			//downStream.put(event);
 		}
 	}
 
 	@Override
 	protected void onCreate() {
-		logger.info("Create Filter Country PE");
-
+		logger.info("Create Filter Keyword Inclusive PE");
+		
 		configuration = new Configuration();
 		configuration.settingPE(Integer.parseInt(this.getName()));
-
+		
 		eventFactory = new EventFactory();
-
-		// logger.debug(configuration.toString());
-
+		
 		utilitiesWords = new Words();
 	}
 

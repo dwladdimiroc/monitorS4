@@ -58,7 +58,17 @@ project.ext["libraries"] = [
             // you always need the s4 libraries for building your app
            s4_base:            'org.apache.s4:s4-base:'+ s4Version,
            s4_comm:            'org.apache.s4:s4-comm:'+ s4Version,
-           s4_core:            'org.apache.s4:s4-core:'+ s4Version
+           s4_core:            'org.apache.s4:s4-core:'+ s4Version,
+           twitter4j_core:     'org.twitter4j:twitter4j-core:4.0.2',
+           twitter4j_stream:   'org.twitter4j:twitter4j-stream:4.0.2',
+           mongodb: 'org.mongodb:mongo-java-driver:2.10.1',
+           languaje: 'com.cybozu.labs:langdetect:1.1-20120112',
+           jsonic: 'net.arnx:jsonic:1.2.10',
+           json: 'org.json:json:20131018',
+           ark: 'edu.cmu.cs:ark-tweet-nlp:0.3.2',
+           jsonsimple: 'com.googlecode.json-simple:json-simple:1.1.1',
+           weka: 'nz.ac.waikato.cms.weka:weka-stable:3.6.12',
+           math: 'org.apache.commons:commons-math3:3.4'           
        ]
 
 
@@ -72,6 +82,20 @@ dependencies {
 
    // if you need to use the twitter4j lib defined above, you must reference it here as a dependency
    // compile (libraries.twitter4j_core)
+
+   compile (libraries.twitter4j_core)
+   compile (libraries.twitter4j_stream)
+   
+   compile (libraries.mongodb)
+   compile (libraries.languaje)
+   compile (libraries.jsonic)
+   compile (libraries.json)
+   compile (libraries.ark)
+   compile (libraries.jsonsimple)
+   compile (libraries.weka)
+   compile (libraries.math)
+
+   compile files('./lib/SentiStrength.jar')
 
 
 }

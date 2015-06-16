@@ -8,6 +8,8 @@ public class Tweet implements Cloneable {
 	private int idTweet;
 	private String text;
 	
+	// Data statistics
+	private String language;
 	private String tweetClean;
 	private int counterNeed;
 	private String type;
@@ -16,6 +18,7 @@ public class Tweet implements Cloneable {
 		this.idTweet = 0;
 		this.text = "";
 		
+		this.setLanguage("");
 		this.tweetClean = "";
 		this.counterNeed = 0;
 		this.type = "";
@@ -51,6 +54,14 @@ public class Tweet implements Cloneable {
 		objMongo.put("type", type);
 
 		return objMongo;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 
 	public int getIdTweet() {

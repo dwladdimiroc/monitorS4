@@ -13,19 +13,18 @@ import utilities.Words;
 import eda.Configuration;
 import eda.Tweet;
 
-public class FiltrosKeywordInclusivePE extends ProcessingElement {
+public class CounterPE extends ProcessingElement {
 	private static Logger logger = LoggerFactory
-			.getLogger(FiltrosKeywordInclusivePE.class);
+			.getLogger(CounterPE.class);
 
 	private boolean showEvent = false;
 	
 	List<String> keywordsExclusionary;
-	Stream<Event> downStream;
-
-	Configuration configuration;
-	EventFactory eventFactory;
 	
+	EventFactory eventFactory;	
 	Words utilitiesWords;
+	
+	Stream<Event> downStream;
 
 	public void setDownStream(Stream<Event> stream) {
 		downStream = stream;

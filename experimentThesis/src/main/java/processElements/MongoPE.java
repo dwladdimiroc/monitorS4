@@ -11,9 +11,9 @@ import utilities.MongoConnection;
 import eda.Configuration;
 import eda.Tweet;
 
-public class AppMongoPE extends ProcessingElement {
+public class MongoPE extends ProcessingElement {
 	private static Logger logger = LoggerFactory
-			.getLogger(AppMongoPE.class);
+			.getLogger(MongoPE.class);
 	
 	private boolean showEvent = false;
 	

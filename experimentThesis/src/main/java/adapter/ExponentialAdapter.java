@@ -23,17 +23,23 @@ import org.slf4j.LoggerFactory;
 import eda.Tweet;
 import utilities.MongoRead;
 
-public class UniformAdapter extends AdapterApp implements Runnable {
+public class ExponentialAdapter extends AdapterApp implements Runnable {
 
 	private static Logger logger = LoggerFactory
-			.getLogger(UniformAdapter.class);
+			.getLogger(ExponentialAdapter.class);
 
 	private Thread thread;
 	private Stack<Tweet> tweets;
+	private Stack<Tweet> cantTweets;
 
 	public Stack<Tweet> readTweet() {
 		MongoRead mongoRead = new MongoRead();
 		return mongoRead.getAllTweets();
+	}
+	
+	public Stack<Integer> cantTweets(){
+		
+		return 
 	}
 
 	@Override
@@ -44,6 +50,7 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 		// this.registerMonitor();
 		thread = new Thread(this);
 		tweets = readTweet();
+		
 
 		super.onInit();
 	}
@@ -76,7 +83,12 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 				Tweet tweetCurrent = tweets.pop();
 
 				Event event = new Event();
-				event.put("tweet", Tweet.class, tweetCurrent);
+				event.put("idTweet", Integer.class, tweetCurrent.getIdTweet());
+				event.put("text", String.class, tweetCurrent.getText());
+
+				// if (showEvent) {
+				// logger.debug(event.getAttributesAsMap().toString());
+				// }
 
 				getRemoteStream().put(event);
 			}

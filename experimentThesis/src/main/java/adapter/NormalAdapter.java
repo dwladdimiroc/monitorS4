@@ -23,10 +23,10 @@ import org.slf4j.LoggerFactory;
 import eda.Tweet;
 import utilities.MongoRead;
 
-public class UniformAdapter extends AdapterApp implements Runnable {
+public class NormalAdapter extends AdapterApp implements Runnable {
 
 	private static Logger logger = LoggerFactory
-			.getLogger(UniformAdapter.class);
+			.getLogger(NormalAdapter.class);
 
 	private Thread thread;
 	private Stack<Tweet> tweets;
@@ -77,6 +77,10 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 
 				Event event = new Event();
 				event.put("tweet", Tweet.class, tweetCurrent);
+
+				// if (showEvent) {
+				// logger.debug(event.getAttributesAsMap().toString());
+				// }
 
 				getRemoteStream().put(event);
 			}

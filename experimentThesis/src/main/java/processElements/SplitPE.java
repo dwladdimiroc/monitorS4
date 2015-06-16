@@ -8,24 +8,23 @@ import org.apache.s4.core.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import twitter4j.GeoLocation;
 import utilities.EventFactory;
 import utilities.Words;
 import eda.Configuration;
 import eda.Tweet;
 
-public class FiltrosGeolocationPE extends ProcessingElement {
+public class SplitPE extends ProcessingElement {
 	private static Logger logger = LoggerFactory
-			.getLogger(FiltrosGeolocationPE.class);
-	
-	private boolean showEvent = false;
+			.getLogger(MergePE.class);
 
+	private boolean showEvent = false;
+	
 	List<String> keywordsExclusionary;
 	Stream<Event> downStream;
 
 	Configuration configuration;
 	EventFactory eventFactory;
-
+	
 	Words utilitiesWords;
 
 	public void setDownStream(Stream<Event> stream) {
@@ -36,36 +35,31 @@ public class FiltrosGeolocationPE extends ProcessingElement {
 		Tweet tweet = event.get("tweet", Tweet.class);
 		if(showEvent){logger.debug(tweet.toString());}
 		
-		if (geolocationSuccessful(tweet.isGeolocation())) {
-					
+//		for (String word : configuration.getKeyword()) {
+//			logger.debug(word);
+//		}
+
+		//System.out.println("FIRST Inclusive tweet.getText(): " +tweet.getText());
+		
+		if(utilitiesWords.contains(configuration.getKeyword(), tweet.getText())){
+
+			//System.out.println("SECOND Inclusive tweet.getText(): " +tweet.getText());
 			
 			Tweet newTweet = tweet.getClone();
 			Event eventOutput = eventFactory.newEvent(newTweet);
 			
-			
 			eventOutput.put("levelTweet", Integer.class, getEventCount() % configuration.getReplication());
-			downStream.put(eventOutput);
+			downStream.put(eventOutput);			
 			
-			//event.put("levelKeywordEx", Integer.class, 1);
+			//event.put("levelLanguage", Integer.class, 1);
 			//downStream.put(event);
 		}
 	}
 
-	private boolean geolocationSuccessful(GeoLocation geolocation) {
-		//logger.debug(Double.toString(configuration.getGeolocation()[0]));
-		//logger.debug(Double.toString(configuration.getGeolocation()[1]));
-		
-		if (geolocation != null)
-			if (configuration.getGeolocation()[0] != geolocation.getLatitude())
-				if (configuration.getGeolocation()[1] != geolocation.getLongitude())
-					return true;
-		return false;
-	}
-
 	@Override
 	protected void onCreate() {
-		logger.info("Create Filter Geolocation PE");
-
+		logger.info("Create Filter Keyword Inclusive PE");
+		
 		configuration = new Configuration();
 		configuration.settingPE(Integer.parseInt(this.getName()));
 		
@@ -76,6 +70,8 @@ public class FiltrosGeolocationPE extends ProcessingElement {
 
 	@Override
 	protected void onRemove() {
+		// TODO Auto-generated method stub
+
 	}
 
 }

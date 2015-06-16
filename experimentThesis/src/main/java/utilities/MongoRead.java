@@ -1,7 +1,7 @@
 package utilities;
 
 import java.net.UnknownHostException;
-import java.util.ArrayList;
+import java.util.Stack;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,9 +47,9 @@ public class MongoRead {
 
 	}
 
-	public ArrayList<Tweet> getAllTweets() {
+	public Stack<Tweet> getAllTweets() {
 
-		ArrayList<Tweet> tweets = new ArrayList<Tweet>();
+		Stack<Tweet> tweets = new Stack<Tweet>();
 
 		try {
 
@@ -63,7 +63,7 @@ public class MongoRead {
 				auxTweet.setIdTweet((int) var.get("ID"));
 				auxTweet.setText((String) var.get("Tweet"));
 
-				tweets.add(auxTweet);
+				tweets.push(auxTweet);
 			}
 
 			this.setStatus(1);
