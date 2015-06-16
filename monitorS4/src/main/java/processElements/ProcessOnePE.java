@@ -41,9 +41,6 @@ public class ProcessOnePE extends ProcessingElement {
 	}
 
 	public void onEvent(Event event) {
-
-
-
 		// if(showEvent){logger.debug(event.getAttributesAsMap().toString());}
 		// logger.debug("Replication: " + getReplication());
 		// logger.debug("EventCount: " + getEventCount());

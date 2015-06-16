@@ -1,0 +1,34 @@
+[
+    {
+        "id": 0,
+        "replication": 1,
+        "connections": [
+            {
+                "connection": 1
+            }
+        ]
+    },
+    {
+        "id": 1,
+        "replication": 1,
+        "type": "All",
+        "category": "Adapters",
+        "connections": [
+            {
+                "connection": 2
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "replication": 1,
+        "type": "Mongo",
+        "category": "App",
+        "tableMongoDB": "jeff",
+        "connections": [
+            {
+                "connection": 0
+            }
+        ]
+    }
+]
