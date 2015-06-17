@@ -8,40 +8,30 @@ import org.slf4j.LoggerFactory;
 import utilities.EventFactory;
 import utilities.MongoConnection;
 
-import eda.Configuration;
 import eda.Tweet;
 
 public class MongoPE extends ProcessingElement {
-	private static Logger logger = LoggerFactory
-			.getLogger(MongoPE.class);
-	
-	private boolean showEvent = false;
-	
-	Configuration configuration;
+	private static Logger logger = LoggerFactory.getLogger(MongoPE.class);
+
 	EventFactory eventFactory;
-	
+
 	MongoConnection mongo;
 
 	public void onEvent(Event event) {
-		
+
 		Tweet tweet = event.get("tweet", Tweet.class);
-		if(showEvent){logger.debug(tweet.toString());}
-				
 		mongo.insert(tweet.storeEvent());
-		
+
 	}
 
 	@Override
 	protected void onCreate() {
-		logger.info("Create Store Raw Mongo PE");
-		
-		configuration = new Configuration();
-		configuration.settingPE(Integer.parseInt(this.getName()));
-		
+		logger.info("Create Mongo PE");
+
 		eventFactory = new EventFactory();
-		
+
 		mongo = new MongoConnection();
-		mongo.setCollectionName(configuration.getTableMongoDB());
+		mongo.setCollectionName("tweetsProcess");
 		mongo.setupMongo();
 	}
 

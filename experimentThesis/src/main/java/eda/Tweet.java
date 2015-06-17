@@ -18,7 +18,7 @@ public class Tweet implements Cloneable {
 		this.idTweet = 0;
 		this.text = "";
 		
-		this.setLanguage("");
+		this.language = "";
 		this.tweetClean = "";
 		this.counterNeed = 0;
 		this.type = "";
@@ -49,6 +49,7 @@ public class Tweet implements Cloneable {
 		objMongo.put("idTweet", idTweet);
 		objMongo.put("text", text);
 		
+		objMongo.put("language", language);
 		objMongo.put("tweetClean", tweetClean);
 		objMongo.put("counterNeed", counterNeed);
 		objMongo.put("type", type);

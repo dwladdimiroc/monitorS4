@@ -67,7 +67,7 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 
 		while (true) {
 			long timeFinal = System.currentTimeMillis();
-			if ((timeFinal - timeInit) >= 9000000) {
+			if ((timeFinal - timeInit) >= 10800000) {
 				close();
 				System.exit(0);
 			}

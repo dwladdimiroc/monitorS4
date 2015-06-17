@@ -1,31 +1,19 @@
 package processElements;
 
-import java.util.List;
-
 import org.apache.s4.base.Event;
 import org.apache.s4.core.ProcessingElement;
 import org.apache.s4.core.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import utilities.EventFactory;
-import utilities.Words;
-import eda.Configuration;
 import eda.Tweet;
 
 public class SplitPE extends ProcessingElement {
-	private static Logger logger = LoggerFactory
-			.getLogger(MergePE.class);
+	private static Logger logger = LoggerFactory.getLogger(SplitPE.class);
 
-	private boolean showEvent = false;
-	
-	List<String> keywordsExclusionary;
-	Stream<Event> downStream;
-
-	Configuration configuration;
 	EventFactory eventFactory;
-	
-	Words utilitiesWords;
+
+	Stream<Event> downStream;
 
 	public void setDownStream(Stream<Event> stream) {
 		downStream = stream;
@@ -33,39 +21,26 @@ public class SplitPE extends ProcessingElement {
 
 	public void onEvent(Event event) {
 		Tweet tweet = event.get("tweet", Tweet.class);
-		if(showEvent){logger.debug(tweet.toString());}
-		
-//		for (String word : configuration.getKeyword()) {
-//			logger.debug(word);
-//		}
 
-		//System.out.println("FIRST Inclusive tweet.getText(): " +tweet.getText());
-		
-		if(utilitiesWords.contains(configuration.getKeyword(), tweet.getText())){
+		Tweet newTweet = tweet.getClone();
+		Event eventOutput = eventFactory.newEvent(newTweet);
 
-			//System.out.println("SECOND Inclusive tweet.getText(): " +tweet.getText());
-			
-			Tweet newTweet = tweet.getClone();
-			Event eventOutput = eventFactory.newEvent(newTweet);
-			
-			eventOutput.put("levelTweet", Integer.class, getEventCount() % configuration.getReplication());
-			downStream.put(eventOutput);			
-			
-			//event.put("levelLanguage", Integer.class, 1);
-			//downStream.put(event);
+		eventOutput.put("levelCounter", Long.class, getEventCount()
+				% getReplicationPE(CounterPE.class));
+		downStream.put(eventOutput);
+
+		if ((getEventCount() % 10000) == 0) {
+			eventOutput.put("levelCounter", null, null);
+			eventOutput.put("notificationCounter", Boolean.class, true);
+			downStream.put(eventOutput);
 		}
 	}
 
 	@Override
 	protected void onCreate() {
-		logger.info("Create Filter Keyword Inclusive PE");
-		
-		configuration = new Configuration();
-		configuration.settingPE(Integer.parseInt(this.getName()));
-		
+		logger.info("Create Split PE");
+
 		eventFactory = new EventFactory();
-		
-		utilitiesWords = new Words();
 	}
 
 	@Override

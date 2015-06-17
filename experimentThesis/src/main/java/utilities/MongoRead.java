@@ -19,7 +19,7 @@ public class MongoRead {
 
 	public static final String HOST = "localhost";  // Database host
 	public static final int PORT = 27017;			// Database port
-	public static final String DB_NAME = "thesis";  // Database name
+	public static final String DB_NAME = "Thesis";  // Database name
 	private String COLLECTION_NAME = "tweets";		// Collection name
 	private MongoClient mongo;
 	private DB db;

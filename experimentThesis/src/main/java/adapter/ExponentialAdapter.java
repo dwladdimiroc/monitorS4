@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eda.Tweet;
+import utilities.Distribution;
 import utilities.MongoRead;
 
 public class ExponentialAdapter extends AdapterApp implements Runnable {
@@ -30,7 +31,7 @@ public class ExponentialAdapter extends AdapterApp implements Runnable {
 
 	private Thread thread;
 	private Stack<Tweet> tweets;
-	private Stack<Tweet> cantTweets;
+	private Stack<Integer> cantTweets;
 
 	public Stack<Tweet> readTweet() {
 		MongoRead mongoRead = new MongoRead();
@@ -38,19 +39,22 @@ public class ExponentialAdapter extends AdapterApp implements Runnable {
 	}
 	
 	public Stack<Integer> cantTweets(){
-		
-		return 
+		Distribution distribution = new Distribution();
+		return distribution.exponentialTweets();
 	}
 
 	@Override
 	protected void onInit() {
 		/* Este orden es importante */
-		logger.info("Create Uniform Adapter");
+		logger.info("Create Exponential Adapter");
 		setRunMonitor(false);
 		// this.registerMonitor();
 		thread = new Thread(this);
+		
 		tweets = readTweet();
 		
+		Distribution distribution = new Distribution();
+		cantTweets = distribution.exponentialTweets();
 
 		super.onInit();
 	}
@@ -74,21 +78,19 @@ public class ExponentialAdapter extends AdapterApp implements Runnable {
 
 		while (true) {
 			long timeFinal = System.currentTimeMillis();
-			if ((timeFinal - timeInit) >= 9000000) {
+			if ((timeFinal - timeInit) >= 10800000) {
 				close();
 				System.exit(0);
 			}
 
-			for (int i = 1; i <= 4; i++) {
+			int cantCurrent = cantTweets.pop();
+					
+			for (int i = 1; i <= cantCurrent; i++) {
 				Tweet tweetCurrent = tweets.pop();
 
 				Event event = new Event();
 				event.put("idTweet", Integer.class, tweetCurrent.getIdTweet());
 				event.put("text", String.class, tweetCurrent.getText());
-
-				// if (showEvent) {
-				// logger.debug(event.getAttributesAsMap().toString());
-				// }
 
 				getRemoteStream().put(event);
 			}

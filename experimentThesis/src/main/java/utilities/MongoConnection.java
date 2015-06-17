@@ -11,7 +11,7 @@ public class MongoConnection
 {
 	public static final String HOST = "localhost"; // database host
 	public static final int PORT = 27017; // database port
-	public static final String DB_NAME = "Kudaw"; // database name
+	public static final String DB_NAME = "Thesis"; // database name
 	private String COLLECTION_NAME = "CollectionDefault";
 	private MongoClient mongo;
 	private DB db;

@@ -1,7 +1,5 @@
 package processElements;
 
-import java.util.List;
-
 import org.apache.s4.base.Event;
 import org.apache.s4.core.ProcessingElement;
 import org.apache.s4.core.Stream;
@@ -9,23 +7,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import utilities.EventFactory;
-import utilities.Words;
-import eda.Configuration;
 import eda.Tweet;
 
 public class MergePE extends ProcessingElement {
-	private static Logger logger = LoggerFactory
-			.getLogger(MergePE.class);
+	private static Logger logger = LoggerFactory.getLogger(MergePE.class);
 
-	private boolean showEvent = false;
-	
-	List<String> keywordsExclusionary;
-	Stream<Event> downStream;
-
-	Configuration configuration;
+	int counterMerge;
 	EventFactory eventFactory;
-	
-	Words utilitiesWords;
+	Stream<Event> downStream;
 
 	public void setDownStream(Stream<Event> stream) {
 		downStream = stream;
@@ -33,39 +22,27 @@ public class MergePE extends ProcessingElement {
 
 	public void onEvent(Event event) {
 		Tweet tweet = event.get("tweet", Tweet.class);
-		if(showEvent){logger.debug(tweet.toString());}
-		
-//		for (String word : configuration.getKeyword()) {
-//			logger.debug(word);
-//		}
 
-		//System.out.println("FIRST Inclusive tweet.getText(): " +tweet.getText());
-		
-		if(utilitiesWords.contains(configuration.getKeyword(), tweet.getText())){
-
-			//System.out.println("SECOND Inclusive tweet.getText(): " +tweet.getText());
-			
-			Tweet newTweet = tweet.getClone();
-			Event eventOutput = eventFactory.newEvent(newTweet);
-			
-			eventOutput.put("levelTweet", Integer.class, getEventCount() % configuration.getReplication());
-			downStream.put(eventOutput);			
-			
-			//event.put("levelLanguage", Integer.class, 1);
-			//downStream.put(event);
+		if (event.containsKey("merge")) {
+			counterMerge += event.get("counter", Integer.class);
+			logger.info("[Counter] " + counterMerge);
 		}
+		
+		Tweet newTweet = tweet.getClone();
+		Event eventOutput = eventFactory.newEvent(newTweet);
+		eventOutput.put("levelAnalyze", Long.class, getEventCount()
+				% getReplicationPE(AnalyzePE.class));
+		downStream.put(eventOutput);
+
 	}
 
 	@Override
 	protected void onCreate() {
-		logger.info("Create Filter Keyword Inclusive PE");
-		
-		configuration = new Configuration();
-		configuration.settingPE(Integer.parseInt(this.getName()));
-		
+		logger.info("Create Merge PE");
+
+		counterMerge = 0;
 		eventFactory = new EventFactory();
-		
-		utilitiesWords = new Words();
+
 	}
 
 	@Override

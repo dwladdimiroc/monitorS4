@@ -26,6 +26,16 @@ public class Words {
 		}
 		return words;
 	}
+	
+	public int counterContains(List<String> keywords, String text) {
+		int counter = 0;
+		for (String word : keywords) {
+			String Pattern = ".*\\b" + word + "\\b.*";
+			if (text.toLowerCase().matches(Pattern))
+				counter++;
+		}
+		return counter;
+	}
 
 	public String replace(List<String> keywords, String text) {
 
@@ -56,10 +66,10 @@ public class Words {
 		return counter;
 	}
 
-	public List<String> readStopwords() {
+	public List<String> readWords(String path) {
 		List<String> stopwords = new ArrayList<String>();
 
-		String fileName = "../experimentalThesis/config/stopwords.txt";
+		String fileName = path;
 		String line = null;
 
 		try {

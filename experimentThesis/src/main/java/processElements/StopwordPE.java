@@ -36,7 +36,7 @@ public class StopwordPE extends ProcessingElement {
 		Event eventOutput = eventFactory.newEvent(newTweet);
 
 		eventOutput.put("levelSplit", Long.class, getEventCount()
-				% getReplicationPE(CounterPE.class));
+				% getReplicationPE(SplitPE.class));
 		downStream.put(eventOutput);
 
 	}
@@ -48,7 +48,7 @@ public class StopwordPE extends ProcessingElement {
 		eventFactory = new EventFactory();
 		utilitiesWords = new Words();
 
-		stopwords = utilitiesWords.readStopwords();
+		stopwords = utilitiesWords.readWords("../experimentalThesis/config/stopwords.txt");
 	}
 
 	@Override
