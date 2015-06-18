@@ -33,8 +33,6 @@ public class AnalyzePE extends ProcessingElement {
 	Instances instances;
 	FilteredClassifier classifier;
 
-	// NecesidadNecessityPE classifierMe;
-
 	public void setDownStream(Stream<Event> stream) {
 		downStream = stream;
 	}
@@ -138,7 +136,6 @@ public class AnalyzePE extends ProcessingElement {
 	}
 
 	public void onEvent(Event event) {
-
 		Tweet tweet = event.get("tweet", Tweet.class);
 		if (showEvent) {
 			logger.debug(tweet.toString());
@@ -170,7 +167,7 @@ public class AnalyzePE extends ProcessingElement {
 
 	@Override
 	protected void onRemove() {
-
+		logger.info("Remove Analyze PE");
 	}
 
 }

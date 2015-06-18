@@ -27,6 +27,7 @@ public class StopwordPE extends ProcessingElement {
 	}
 
 	public void onEvent(Event event) {
+		
 		Tweet tweet = event.get("tweet", Tweet.class);
 
 		String tweetClean = utilitiesWords.replace(stopwords, tweet.getText());
@@ -48,13 +49,12 @@ public class StopwordPE extends ProcessingElement {
 		eventFactory = new EventFactory();
 		utilitiesWords = new Words();
 
-		stopwords = utilitiesWords.readWords("../experimentalThesis/config/stopwords.txt");
+		stopwords = utilitiesWords.readWords("/home/daniel/Proyectos/monitorS4/experimentThesis/config/stopwords.txt");
 	}
 
 	@Override
 	protected void onRemove() {
-		// TODO Auto-generated method stub
-
+		logger.info("Remove Stopword PE");
 	}
 
 }

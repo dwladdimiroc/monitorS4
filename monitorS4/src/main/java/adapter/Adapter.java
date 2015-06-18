@@ -37,7 +37,7 @@ public class Adapter extends AdapterApp implements Runnable {
 	protected void onInit() {
 		/* Este orden es importante */
 		logger.info("Create Adapter");
-		setRunMonitor(true);
+		setRunMonitor(false);
 		this.registerMonitor(ProcessOnePE.class);
 		thread = new Thread(this);
 
@@ -88,7 +88,7 @@ public class Adapter extends AdapterApp implements Runnable {
 
 			// if (getEventCount() < 40000) {
 			try {
-				Thread.sleep(4);
+				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

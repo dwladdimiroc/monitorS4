@@ -145,6 +145,7 @@ public abstract class AdapterApp extends App {
 		ObjectInputStream inStream;
 
 		public ListenerMonitor() {
+			getLogger().info("Create Listener Monitor");
 			/*
 			 * Se considerará el siguiente puerto, tomando como referencia el
 			 * puerto del puerto que utilizá al nodo único del adapter

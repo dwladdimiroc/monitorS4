@@ -186,8 +186,10 @@ public class Stream<T extends Event> implements Streamable {
 
 				/* Se analiza la tasa de llegada */
 				for (ProcessingElement PEPrototype : getTargetPEs()) {
-					PEPrototype.setEventSegQueue(PEPrototype.getEventSegQueue() + 1);
-					PEPrototype.setEventPeriodQueue(PEPrototype.getEventPeriodQueue() + 1);
+					PEPrototype
+							.setEventSegQueue(PEPrototype.getEventSegQueue() + 1);
+					PEPrototype.setEventPeriodQueue(PEPrototype
+							.getEventPeriodQueue() + 1);
 				}
 
 				/*
@@ -265,10 +267,13 @@ public class Stream<T extends Event> implements Streamable {
 		// NOTE: ArrayBlockingQueue.size is O(1).
 
 		/* Registro del Adaptar en el Monitor */
-		for (Class<? extends ProcessingElement> peRecibe : notification
-				.getListPE()) {
-			this.app.getMonitor().registerAdapter(notification.getAdapter(),
-					peRecibe);
+		for (String peRecibe : notification.getListPE()) {
+			for (ProcessingElement peCurrent : getTargetPEs()) {
+				if (peRecibe.equals(peCurrent.getClass().getCanonicalName())) {
+					this.app.getMonitor().registerAdapter(
+							notification.getAdapter(), peCurrent.getClass());
+				}
+			}
 		}
 
 		/* Registro del puerto en la App */

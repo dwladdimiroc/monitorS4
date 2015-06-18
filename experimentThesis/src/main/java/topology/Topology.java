@@ -77,7 +77,7 @@ public class Topology extends App {
 								.get("levelStopword") });
 					}
 				}, stopwordPE).setParallelism(1024);
-		
+
 		Stream<Event> splitStream = createStream("splitStream",
 				new KeyFinder<Event>() {
 					@Override
@@ -151,10 +151,42 @@ public class Topology extends App {
 		analyzePE.registerMonitor(mongoPE.getClass());
 		mongoPE.registerMonitor(null);
 
+		ClockTime clockTime = new ClockTime();
+		clockTime.run();
+
 	}
 
 	@Override
 	protected void onClose() {
+	}
+
+	public class ClockTime implements Runnable {
+		long timeInit;
+		long timeFinal;
+
+		public ClockTime() {
+			logger.info("Init ClockTime");
+			timeInit = System.currentTimeMillis();
+			timeFinal = 0;
+		}
+
+		@Override
+		public void run() {
+			try {
+				Thread.sleep(10795000);
+			} catch (InterruptedException e) {
+				logger.error(e.toString());
+			}
+
+			while (true) {
+				timeFinal = System.currentTimeMillis();
+				if ((timeFinal - timeInit) >= 10800000) {
+					close();
+					System.exit(0);
+				}
+
+			}
+		}
 	}
 
 }

@@ -20,6 +20,7 @@ public class SplitPE extends ProcessingElement {
 	}
 
 	public void onEvent(Event event) {
+		
 		Tweet tweet = event.get("tweet", Tweet.class);
 
 		Tweet newTweet = tweet.getClone();
@@ -30,7 +31,7 @@ public class SplitPE extends ProcessingElement {
 		downStream.put(eventOutput);
 
 		if ((getEventCount() % 10000) == 0) {
-			eventOutput.put("levelCounter", null, null);
+			eventOutput.put("levelCounter", String.class, null);
 			eventOutput.put("notificationCounter", Boolean.class, true);
 			downStream.put(eventOutput);
 		}
@@ -45,8 +46,7 @@ public class SplitPE extends ProcessingElement {
 
 	@Override
 	protected void onRemove() {
-		// TODO Auto-generated method stub
-
+		logger.info("Remove Split PE");
 	}
 
 }

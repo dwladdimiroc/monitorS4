@@ -29,6 +29,7 @@ public class CounterPE extends ProcessingElement {
 	}
 
 	public void onEvent(Event event) {
+
 		if (event.containsKey("notificationCounter")) {
 			Event eventMerge = new Event();
 			eventMerge.put("levelMerge", Long.class, getEventCount()
@@ -41,7 +42,7 @@ public class CounterPE extends ProcessingElement {
 
 			int counterNeed = utilitiesWords.counterContains(keywords,
 					tweet.getText());
-			
+
 			counter += counterNeed;
 
 			Tweet newTweet = tweet.getClone();
@@ -64,13 +65,19 @@ public class CounterPE extends ProcessingElement {
 		utilitiesWords = new Words();
 
 		keywords = utilitiesWords
-				.readWords("../experimentalThesis/config/bag.txt");
+				.readWords("/home/daniel/Proyectos/monitorS4/experimentThesis/config/bag.txt");
 	}
 
 	@Override
 	protected void onRemove() {
-		// TODO Auto-generated method stub
+		logger.info("Remove Counter PE");
 
+		Event eventMerge = new Event();
+		eventMerge.put("levelMerge", Long.class, getEventCount()
+				% getReplicationPE(MergePE.class));
+		eventMerge.put("merge", Boolean.class, true);
+		eventMerge.put("counter", Integer.class, counter);
+		downStream.put(eventMerge);
 	}
 
 }

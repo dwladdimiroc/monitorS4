@@ -37,6 +37,8 @@ public class MongoPE extends ProcessingElement {
 
 	@Override
 	protected void onRemove() {
+		logger.info("Remove Mongo PE");
+		logger.info("[EventCount] " + getEventCount());
 		mongo.disconnect();
 	}
 

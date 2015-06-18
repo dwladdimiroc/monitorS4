@@ -26,9 +26,11 @@ public class MongoRead {
 	private DBCollection table;
 
 	private int status;
+	private int id;
 
 	public MongoRead() {
 		this.setStatus(0);
+		this.id = 0;
 	}
 
 	public long tweetRawCount() {
@@ -60,8 +62,10 @@ public class MongoRead {
 			for (DBObject var : this.table.find()) {
 				Tweet auxTweet = new Tweet();
 
-				auxTweet.setIdTweet((int) var.get("ID"));
-				auxTweet.setText((String) var.get("Tweet"));
+				id++;
+				auxTweet.setIdTweet(id);
+				if(var.get("text").getClass().equals(String.class))
+					auxTweet.setText((String) var.get("text"));
 
 				tweets.push(auxTweet);
 			}

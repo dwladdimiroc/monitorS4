@@ -21,19 +21,18 @@ public class MergePE extends ProcessingElement {
 	}
 
 	public void onEvent(Event event) {
-		Tweet tweet = event.get("tweet", Tweet.class);
-
 		if (event.containsKey("merge")) {
 			counterMerge += event.get("counter", Integer.class);
 			logger.info("[Counter] " + counterMerge);
-		}
-		
-		Tweet newTweet = tweet.getClone();
-		Event eventOutput = eventFactory.newEvent(newTweet);
-		eventOutput.put("levelAnalyze", Long.class, getEventCount()
-				% getReplicationPE(AnalyzePE.class));
-		downStream.put(eventOutput);
+		} else {
+			Tweet tweet = event.get("tweet", Tweet.class);
 
+			Tweet newTweet = tweet.getClone();
+			Event eventOutput = eventFactory.newEvent(newTweet);
+			eventOutput.put("levelAnalyze", Long.class, getEventCount()
+					% getReplicationPE(AnalyzePE.class));
+			downStream.put(eventOutput);
+		}	
 	}
 
 	@Override
@@ -47,8 +46,7 @@ public class MergePE extends ProcessingElement {
 
 	@Override
 	protected void onRemove() {
-		// TODO Auto-generated method stub
-
+		logger.info("Remove Merge PE");
 	}
 
 }

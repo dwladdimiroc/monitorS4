@@ -6,17 +6,18 @@ import java.util.List;
 import org.apache.s4.core.ProcessingElement;
 
 public class Notification {
+
 	private boolean status;
 	private Class<? extends AdapterApp> adapter;
 	private int port;
-	private List<Class<? extends ProcessingElement>> listPE;
+	private List<String> listPE;
 	private String stream;
-	
-	public Notification(){
+
+	public Notification() {
 		setStatus(false);
 		setAdapter(null);
 		setPort(0);
-		setListPE(new ArrayList<Class<? extends ProcessingElement>>());
+		setListPE(new ArrayList<String>());
 		setStream(null);
 	}
 
@@ -44,12 +45,19 @@ public class Notification {
 		this.port = port;
 	}
 
-	public List<Class<? extends ProcessingElement>> getListPE() {
+	public List<String> getListPE() {
 		return listPE;
 	}
 
-	public void setListPE(List<Class<? extends ProcessingElement>> listPE) {
+	private void setListPE(ArrayList<String> listPE) {
 		this.listPE = listPE;
+	}
+
+	public void setListPE(List<Class<? extends ProcessingElement>> listPE) {
+		System.out.println(listPE.toString());
+		for (Class<? extends ProcessingElement> peCurrent : listPE) {
+			this.listPE.add(peCurrent.getCanonicalName());
+		}
 	}
 
 	public String getStream() {
@@ -59,6 +67,5 @@ public class Notification {
 	public void setStream(String stream) {
 		this.stream = stream;
 	}
-	
-	
+
 }

@@ -211,7 +211,7 @@ public abstract class App {
 				ScheduledExecutorService getEventCount = Executors
 						.newSingleThreadScheduledExecutor();
 				getEventCount.scheduleAtFixedRate(new OnTimeGetEventCount(),
-						1000, 1000, TimeUnit.MILLISECONDS);
+						30000, 1000, TimeUnit.MILLISECONDS);
 
 				// getLogger().info("TimerMonitor get eventCount");
 
@@ -222,21 +222,13 @@ public abstract class App {
 				 */
 				ScheduledExecutorService sendStatus = Executors
 						.newSingleThreadScheduledExecutor();
-				sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 6000,
+				sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 30000,
 						5000, TimeUnit.MILLISECONDS);
 
 				// getLogger().info("TimerMonitor send status");
 
 			}
 
-		} else {
-			/*
-			 * Dedica solo para las estadísticas del monitor
-			 */
-			ScheduledExecutorService getEventCount = Executors
-					.newSingleThreadScheduledExecutor();
-			getEventCount.scheduleAtFixedRate(new OnTimeGetEventCount(), 1000,
-					1000, TimeUnit.MILLISECONDS);
 		}
 
 	}
@@ -699,7 +691,7 @@ public abstract class App {
 		 */
 		if (!getConditionAdapter())
 			startMonitor();
-
+		
 		onStart();
 
 	}
@@ -807,6 +799,10 @@ public abstract class App {
 
 			getLogger().trace("Removing PE proto [{}].",
 					pe.getClass().getName());
+
+			for (ProcessingElement peCurrent : pe.getInstances()) {
+				peCurrent.onRemove();
+			}
 
 			/* Remove all instances. */
 			pe.removeAll();

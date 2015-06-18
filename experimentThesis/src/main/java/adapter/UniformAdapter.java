@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eda.Tweet;
+import processElements.LanguagePE;
 import utilities.MongoRead;
 
 public class UniformAdapter extends AdapterApp implements Runnable {
@@ -40,10 +41,9 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 	protected void onInit() {
 		/* Este orden es importante */
 		logger.info("Create Uniform Adapter");
-		setRunMonitor(false);
-		// this.registerMonitor();
+		setRunMonitor(true);
+		this.registerMonitor(LanguagePE.class);
 		thread = new Thread(this);
-		tweets = readTweet();
 
 		super.onInit();
 	}
@@ -52,30 +52,30 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 	protected void onStart() {
 		/* Este orden es importante */
 		super.onStart();
+		
+		tweets = readTweet();
 
 		try {
 			thread.start();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+
+		ClockTime clockTime = new ClockTime();
+		clockTime.run();
 	}
 
 	@Override
 	public void run() {
-		long timeInit = System.currentTimeMillis();
-		logger.info("Time init (ms): " + timeInit);
 
 		while (true) {
-			long timeFinal = System.currentTimeMillis();
-			if ((timeFinal - timeInit) >= 10800000) {
-				close();
-				System.exit(0);
-			}
 
 			for (int i = 1; i <= 4; i++) {
 				Tweet tweetCurrent = tweets.pop();
 
 				Event event = new Event();
+				event.put("levelLanguage", Long.class, getEventCount()
+						% getReplicationPE(LanguagePE.class));
 				event.put("tweet", Tweet.class, tweetCurrent);
 
 				getRemoteStream().put(event);
@@ -89,6 +89,36 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 
 		}
 
+	}
+
+	public class ClockTime implements Runnable {
+		long timeInit;
+		long timeFinal;
+
+		public ClockTime() {
+			logger.info("Init ClockTime");
+			timeInit = System.currentTimeMillis();
+			timeFinal = 0;
+		}
+
+		@Override
+		public void run() {
+			try {
+				Thread.sleep(10795000);
+			} catch (InterruptedException e) {
+				logger.error(e.toString());
+			}
+
+			while (true) {
+
+				timeFinal = System.currentTimeMillis();
+				if ((timeFinal - timeInit) >= 10800000) {
+					close();
+					System.exit(0);
+				}
+
+			}
+		}
 	}
 
 }

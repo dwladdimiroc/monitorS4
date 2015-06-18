@@ -1,0 +1,80 @@
+[H[2Jcalling referenced s4 script : /home/daniel/Proyectos/monitorS4/apache-s4-0.6.0/s4
+20:01:03.503 [main] INFO  o.a.s.comm.topology.AssignmentFromZK - New session:94017005913767938; state is : SyncConnected
+20:01:03.551 [main] INFO  o.a.s.comm.topology.AssignmentFromZK - Successfully acquired task:Task-0 by hp4-HP-EliteDesk-800-G1-SFF
+20:01:21.275 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Initializing S4 app with : []]
+20:01:21.394 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Loading application [monitorS4] from file [/tmp/tmp3053010974424934384s4r]
+20:01:21.395 [S4 platform loader] WARN  org.apache.s4.core.DefaultCoreModule - s4.tmp.dir not specified, using temporary directory [/tmp/1434585681394-0] for unpacking S4R. You may want to specify a parent non-temporary directory.
+20:01:21.395 [S4 platform loader] INFO  o.a.s4.base.util.S4RLoaderFactory - Unzipping S4R archive in [/tmp/1434585681394-0/tmp3053010974424934384s4r-1434585681395]
+20:01:21.687 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - App class name is: topology.Topology
+20:01:21.712 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster1,mode=unicast,type=,nodes=[{partition=0,port=12000,machineName=hp4-HP-EliteDesk-800-G1-SFF,taskId=Task-0}]} from null
+20:01:21.746 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.comm.tcp.TCPEmitter@79548bad
+20:01:21.776 [S4 platform loader] INFO  o.a.s.c.s.ThrottlingSenderExecutorServiceFactory - Creating a throttling executor with a pool size of 1 and max rate of 200000 events / s
+20:01:21.781 [S4 platform loader] INFO  org.apache.s4.core.util.S4Metrics - Metrics reporting not configured
+20:01:21.782 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.core.SenderImpl@6e32e6c4
+20:01:21.797 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - New session:94017005913767938
+20:01:21.799 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - New session:94017005913767938
+20:01:21.802 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster1,mode=unicast,type=,nodes=[{partition=0,port=12000,machineName=hp4-HP-EliteDesk-800-G1-SFF,taskId=Task-0}]} from null
+20:01:21.803 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Init Monitor
+20:01:21.803 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Loaded application from file /tmp/tmp3053010974424934384s4r
+20:01:21.829 [S4 platform loader] DEBUG o.a.s4.comm.topology.ClustersFromZK - Adding input stream [textInput] in cluster [cluster1]
+20:01:21.879 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - Detected new stream [textInput]
+20:01:21.894 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.LanguagePE].
+20:01:21.894 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.StopwordPE].
+20:01:21.894 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.SplitPE].
+20:01:21.894 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.CounterPE].
+20:01:21.894 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.MergePE].
+20:01:21.894 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.AnalyzePE].
+20:01:21.894 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.MongoPE].
+20:01:21.894 [S4 platform loader] INFO  org.apache.s4.core.App - Start S4Monitor
+20:01:21.896 [S4 platform loader] INFO  o.a.s4.core.monitor.MonitorMetrics - Init S4Monitor Metrics
+20:01:21.896 [S4 platform loader] INFO  o.a.s4.core.monitor.MonitorMetrics - Reporting metrics of the monitor through csv files in directory [/home/daniel/Proyectos/monitorS4/statistics/] with frequency of [5] [SECONDS]
+20:01:21.898 [S4 platform loader] INFO  topology.Topology - Start Topology
+20:01:21.898 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Register PE
+20:01:21.900 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Register PE
+20:01:21.901 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Register PE
+20:01:21.901 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Register PE
+20:01:21.901 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Register PE
+20:01:21.902 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Register PE
+20:01:21.902 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Register PE
+20:01:47.784 [textInput] INFO  processElements.LanguagePE - Create Language PE
+20:01:48.089 [stopwordStream] INFO  processElements.StopwordPE - Create Stopword PE
+20:01:48.095 [splitStream] INFO  processElements.SplitPE - Create Split PE
+20:01:48.095 [counterStream] INFO  processElements.CounterPE - Create Counter PE
+20:01:48.098 [mergeStream] INFO  processElements.MergePE - Create Merge PE
+20:01:48.098 [mergeStream] INFO  processElements.MergePE - [Counter] 0
+20:01:48.104 [mergeStream] INFO  processElements.MergePE - [Counter] 0
+20:01:48.112 [analyzeStream] INFO  processElements.AnalyzePE - Create Analyze PE
+20:01:48.740 [mongoStream] INFO  processElements.MongoPE - Create Mongo PE
+20:02:13.707 [mergeStream] INFO  processElements.MergePE - [Counter] 278
+20:02:13.708 [mergeStream] INFO  processElements.MergePE - [Counter] 556
+20:14:15.004 [mergeStream] INFO  processElements.MergePE - [Counter] 1131
+20:14:15.080 [mergeStream] INFO  processElements.MergePE - [Counter] 1706
+20:23:34.210 [mergeStream] INFO  processElements.MergePE - [Counter] 2571
+20:23:34.210 [mergeStream] INFO  processElements.MergePE - [Counter] 3436
+20:39:04.903 [mergeStream] INFO  processElements.MergePE - [Counter] 4640
+20:39:04.929 [mergeStream] INFO  processElements.MergePE - [Counter] 5844
+20:46:40.137 [mergeStream] INFO  processElements.MergePE - [Counter] 7346
+20:47:24.646 [mergeStream] INFO  processElements.MergePE - [Counter] 8848
+21:01:07.069 [mergeStream] INFO  processElements.MergePE - [Counter] 10690
+21:01:07.143 [mergeStream] INFO  processElements.MergePE - [Counter] 12532
+21:11:42.418 [mergeStream] INFO  processElements.MergePE - [Counter] 14607
+21:11:42.418 [mergeStream] INFO  processElements.MergePE - [Counter] 16682
+21:22:31.912 [mergeStream] INFO  processElements.MergePE - [Counter] 19078
+21:22:31.986 [mergeStream] INFO  processElements.MergePE - [Counter] 21474
+21:35:47.967 [mergeStream] INFO  processElements.MergePE - [Counter] 24250
+21:35:47.967 [mergeStream] INFO  processElements.MergePE - [Counter] 27026
+21:44:08.770 [mergeStream] INFO  processElements.MergePE - [Counter] 30068
+21:46:30.950 [mergeStream] INFO  processElements.MergePE - [Counter] 33130
+21:57:00.662 [mergeStream] INFO  processElements.MergePE - [Counter] 36536
+22:00:01.523 [mergeStream] INFO  processElements.MergePE - [Counter] 40016
+22:10:43.767 [mergeStream] INFO  processElements.MergePE - [Counter] 43763
+22:10:43.850 [mergeStream] INFO  processElements.MergePE - [Counter] 47510
+22:19:20.062 [mergeStream] INFO  processElements.MergePE - [Counter] 51479
+22:21:28.222 [mergeStream] INFO  processElements.MergePE - [Counter] 55461
+22:34:36.976 [mergeStream] INFO  processElements.MergePE - [Counter] 59865
+22:34:37.058 [mergeStream] INFO  processElements.MergePE - [Counter] 64269
+22:45:39.628 [mergeStream] INFO  processElements.MergePE - [Counter] 68989
+22:45:39.628 [mergeStream] INFO  processElements.MergePE - [Counter] 73709
+22:56:36.305 [mergeStream] INFO  processElements.MergePE - [Counter] 78697
+22:56:36.491 [mergeStream] INFO  processElements.MergePE - [Counter] 83685
+23:01:47.810 [textInput] INFO  processElements.LanguagePE - Remove Language PE
