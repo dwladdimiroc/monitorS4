@@ -94,11 +94,11 @@ public class RemoteStream implements Streamable<Event> {
 	// remoteSenders.sendStatistics(statistics);
 	// }
 
-	@Override
-	public void sendRemovePE(StatusPE statusPE) {
-		statusPE.setStream(getName());
-		remoteSenders.sendRemovePE(statusPE);
-	}
+	// @Override
+	// public void sendRemovePE(StatusPE statusPE) {
+	// statusPE.setStream(getName());
+	// remoteSenders.sendRemovePE(statusPE);
+	// }
 
 	@Override
 	public String getName() {

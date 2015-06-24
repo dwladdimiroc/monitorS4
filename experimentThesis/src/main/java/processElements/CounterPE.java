@@ -30,29 +30,21 @@ public class CounterPE extends ProcessingElement {
 
 	public void onEvent(Event event) {
 
-		if (event.containsKey("notificationCounter")) {
-			Event eventMerge = new Event();
-			eventMerge.put("levelMerge", Long.class, getEventCount()
-					% getReplicationPE(MergePE.class));
-			eventMerge.put("merge", Boolean.class, true);
-			eventMerge.put("counter", Integer.class, counter);
-			downStream.put(eventMerge);
-		} else {
-			Tweet tweet = event.get("tweet", Tweet.class);
+		Tweet tweet = event.get("tweet", Tweet.class);
 
-			int counterNeed = utilitiesWords.counterContains(keywords,
-					tweet.getText());
+		int counterNeed = utilitiesWords.counterContains(keywords,
+				tweet.getText());
 
-			counter += counterNeed;
+		counter += counterNeed;
 
-			Tweet newTweet = tweet.getClone();
-			newTweet.setCounterNeed(counterNeed);
-			Event eventOutput = eventFactory.newEvent(newTweet);
+		Tweet newTweet = tweet.getClone();
+		newTweet.setCounterNeed(counterNeed);
+		Event eventOutput = eventFactory.newEvent(newTweet);
 
-			eventOutput.put("levelMerge", Long.class, getEventCount()
-					% getReplicationPE(MergePE.class));
-			downStream.put(eventOutput);
-		}
+		eventOutput.put("levelAnalyze", Long.class, getEventCount()
+				% getReplicationPE(AnalyzePE.class));
+		downStream.put(eventOutput);
+		
 	}
 
 	@Override
@@ -71,13 +63,6 @@ public class CounterPE extends ProcessingElement {
 	@Override
 	protected void onRemove() {
 		logger.info("Remove Counter PE");
-
-		Event eventMerge = new Event();
-		eventMerge.put("levelMerge", Long.class, getEventCount()
-				% getReplicationPE(MergePE.class));
-		eventMerge.put("merge", Boolean.class, true);
-		eventMerge.put("counter", Integer.class, counter);
-		downStream.put(eventMerge);
 	}
 
 }

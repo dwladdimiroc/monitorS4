@@ -1,3 +1,3 @@
 clear
-#./gradlew install -DskipTests
+./gradlew install -DskipTests
 ./gradlew s4-tools:installApp

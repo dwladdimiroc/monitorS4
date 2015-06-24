@@ -1,0 +1,1 @@
+./s4 newApp $1 -parentDir=../

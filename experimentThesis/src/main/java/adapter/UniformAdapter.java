@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eda.Tweet;
-import processElements.LanguagePE;
+import processElements.StopwordPE;
 import utilities.MongoRead;
 
 public class UniformAdapter extends AdapterApp implements Runnable {
@@ -41,9 +41,10 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 	protected void onInit() {
 		/* Este orden es importante */
 		logger.info("Create Uniform Adapter");
-		setRunMonitor(true);
-		this.registerMonitor(LanguagePE.class);
+		setRunMonitor(false);
+		this.registerMonitor(StopwordPE.class);
 		thread = new Thread(this);
+		tweets = readTweet();
 
 		super.onInit();
 	}
@@ -52,8 +53,6 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 	protected void onStart() {
 		/* Este orden es importante */
 		super.onStart();
-		
-		tweets = readTweet();
 
 		try {
 			thread.start();
@@ -61,8 +60,8 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 			throw new RuntimeException(e);
 		}
 
-		ClockTime clockTime = new ClockTime();
-		clockTime.run();
+		Thread clockTime = new Thread(new ClockTime());
+		clockTime.start();
 	}
 
 	@Override
@@ -72,10 +71,11 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 
 			for (int i = 1; i <= 4; i++) {
 				Tweet tweetCurrent = tweets.pop();
+				// logger.info(tweetCurrent.toString());
 
 				Event event = new Event();
-				event.put("levelLanguage", Long.class, getEventCount()
-						% getReplicationPE(LanguagePE.class));
+				event.put("levelStopword", Long.class, getEventCount()
+						% getReplicationPE(StopwordPE.class));
 				event.put("tweet", Tweet.class, tweetCurrent);
 
 				getRemoteStream().put(event);
@@ -118,6 +118,7 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 				}
 
 			}
+
 		}
 	}
 

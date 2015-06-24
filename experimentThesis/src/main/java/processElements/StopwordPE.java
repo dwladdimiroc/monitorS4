@@ -1,5 +1,6 @@
 package processElements;
 
+
 import java.util.List;
 
 import org.apache.s4.base.Event;
@@ -36,8 +37,8 @@ public class StopwordPE extends ProcessingElement {
 		newTweet.setTweetClean(tweetClean);
 		Event eventOutput = eventFactory.newEvent(newTweet);
 
-		eventOutput.put("levelSplit", Long.class, getEventCount()
-				% getReplicationPE(SplitPE.class));
+		eventOutput.put("levelLanguage", Long.class, getEventCount()
+				% getReplicationPE(LanguagePE.class));
 		downStream.put(eventOutput);
 
 	}

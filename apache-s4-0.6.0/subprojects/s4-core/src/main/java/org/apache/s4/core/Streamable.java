@@ -55,13 +55,13 @@ public interface Streamable<T extends Event> {
 	// */
 	// public void sendStatistics(Statistics statistics);
 
-	/**
-	 * PE que debe remover la App
-	 *
-	 * @param statusPE
-	 *            PE a remover
-	 */
-	void sendRemovePE(StatusPE statusPE);
+	// /**
+	// * PE que debe remover la App
+	// *
+	// * @param statusPE
+	// * PE a remover
+	// */
+	// void sendRemovePE(StatusPE statusPE);
 
 	/**
 	 * Stop and close all the streams.

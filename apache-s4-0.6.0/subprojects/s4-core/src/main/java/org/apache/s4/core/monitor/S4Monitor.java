@@ -314,6 +314,18 @@ public class S4Monitor {
 			else
 				statusPE.setQueueEvent(0);
 
+			/* Get Statistics */
+			getMetrics().gaugeRhoPE(statusPE.getPE().getCanonicalName(),
+					statusPE.getProcessEvent());
+			getMetrics().gaugeLambdaPE(statusPE.getPE().getCanonicalName(),
+					statusPE.getRecibeEvent());
+			getMetrics().gaugeMuPE(statusPE.getPE().getCanonicalName(),
+					statusPE.getSendEvent());
+			getMetrics().gaugeQueuePE(statusPE.getPE().getCanonicalName(),
+					statusPE.getQueueEvent());
+			getMetrics().gaugeEventCountPE(statusPE.getPE().getCanonicalName(),
+					statusPE.getEventCount());
+
 		} else {
 			return false;
 		}
@@ -430,6 +442,8 @@ public class S4Monitor {
 	 */
 	private int administrationLoad(StatusPE statusPE) {
 		int numReplica = 0;
+
+		logger.debug("[Period] " + period);
 
 		if ((period % 20) != 0) {
 
@@ -610,18 +624,6 @@ public class S4Monitor {
 				return false;
 
 			}
-
-			/* Get Statistics */
-			getMetrics().gaugeRhoPE(statusPE.getPE().getCanonicalName(),
-					statusPE.getProcessEvent());
-			getMetrics().gaugeLambdaPE(statusPE.getPE().getCanonicalName(),
-					statusPE.getRecibeEvent());
-			getMetrics().gaugeMuPE(statusPE.getPE().getCanonicalName(),
-					statusPE.getSendEvent());
-			getMetrics().gaugeQueuePE(statusPE.getPE().getCanonicalName(),
-					statusPE.getQueueEvent());
-			getMetrics().gaugeEventCountPE(statusPE.getPE().getCanonicalName(),
-					statusPE.getEventCount());
 
 		}
 

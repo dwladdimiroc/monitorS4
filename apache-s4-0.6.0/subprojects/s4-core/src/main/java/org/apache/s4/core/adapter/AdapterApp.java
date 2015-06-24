@@ -203,12 +203,6 @@ public abstract class AdapterApp extends App {
 					/* De ser menor, se deberá disminuir */
 					else if (replicationAnalyzed < replicationCurrent) {
 
-						/*
-						 * Para esto, es necesario eliminar una de las
-						 * instancias del PE analizado
-						 */
-						removeReplication(statusPE);
-
 						getLogger().debug(
 								"Decrement PE  " + statusPE.getPE()
 										+ " in Adapter "
@@ -222,28 +216,29 @@ public abstract class AdapterApp extends App {
 			}
 		}
 
-		/**
-		 * Función que estará encargada de eliminar la réplica con el valor de
-		 * la llave más alto. Es decir, en caso que el PE posee número de
-		 * réplica n, significa que habrá 0 a n-1 llaves, de esta manera, se
-		 * eliminarán m réplicas, como n-m réplicas diga que existen ahora en el
-		 * sistema.
-		 * 
-		 * @param statusPE
-		 *            Estado del PE analizado
-		 */
-		private void removeReplication(StatusPE statusPE) {
-
-			int replication = replications.get(statusPE.getPE());
-
-			/*
-			 * Enviará un mensaje
-			 */
-			if (replication > 1) {
-				getRemoteStream().sendRemovePE(statusPE);
-			}
-
-		}
+		// /**
+		// * Función que estará encargada de eliminar la réplica con el valor de
+		// * la llave más alto. Es decir, en caso que el PE posee número de
+		// * réplica n, significa que habrá 0 a n-1 llaves, de esta manera, se
+		// * eliminarán m réplicas, como n-m réplicas diga que existen ahora en
+		// el
+		// * sistema.
+		// *
+		// * @param statusPE
+		// * Estado del PE analizado
+		// */
+		// private void removeReplication(StatusPE statusPE) {
+		//
+		// int replication = replications.get(statusPE.getPE());
+		//
+		// /*
+		// * Enviará un mensaje
+		// */
+		// if (replication > 1) {
+		// getRemoteStream().sendRemovePE(statusPE);
+		// }
+		//
+		// }
 
 		@Override
 		public void run() {

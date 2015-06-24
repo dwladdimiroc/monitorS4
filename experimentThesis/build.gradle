@@ -62,7 +62,7 @@ project.ext["libraries"] = [
            twitter4j_core:     'org.twitter4j:twitter4j-core:4.0.2',
            twitter4j_stream:   'org.twitter4j:twitter4j-stream:4.0.2',
            mongodb: 'org.mongodb:mongo-java-driver:2.10.1',
-           languaje: 'com.cybozu.labs:langdetect:1.1-20120112',
+           languaje: 'org.apache.tika:tika-core:1.8',
            jsonic: 'net.arnx:jsonic:1.2.10',
            json: 'org.json:json:20131018',
            ark: 'edu.cmu.cs:ark-tweet-nlp:0.3.2',

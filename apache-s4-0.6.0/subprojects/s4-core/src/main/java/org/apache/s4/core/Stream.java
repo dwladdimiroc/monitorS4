@@ -236,10 +236,10 @@ public class Stream<T extends Event> implements Streamable {
 	// logger.error("It can't send local statistics");
 	// }
 
-	@Override
-	public void sendRemovePE(StatusPE statusPE) {
-		logger.error("It can't send local statusPE");
-	}
+	// @Override
+	// public void sendRemovePE(StatusPE statusPE) {
+	// logger.error("It can't send local statusPE");
+	// }
 
 	/**
 	 * The low level {@link ReceiverImpl} object call this method when a new
@@ -322,14 +322,14 @@ public class Stream<T extends Event> implements Streamable {
 	// }
 	// }
 
-	/**
-	 * The low level {@link ReceiverImpl} object call this method when a new
-	 * {@link StatusPE} is available.
-	 */
-	public void receiveRemovePE(StatusPE statusPE) {
-		/* Se deberá eliminar este PE */
-		this.app.removeReplication(statusPE);
-	}
+	// /**
+	// * The low level {@link ReceiverImpl} object call this method when a new
+	// * {@link StatusPE} is available.
+	// */
+	// public void receiveRemovePE(StatusPE statusPE) {
+	// /* Se deberá eliminar este PE */
+	// this.app.removeReplication(statusPE);
+	// }
 
 	/**
 	 * @return the name
@@ -452,25 +452,8 @@ public class Stream<T extends Event> implements Streamable {
 
 					/* We have a key, send to target PE. */
 
-					// /* STEP 1.A: find the PE instance for key. */
-					// ProcessingElement pe = targetPEs[i].getInstanceForKey(key
-					// .get(event));
-					//
-					// if (name.equals("processTwoStream")) {
-					// logger.debug(
-					// "[PE] {} | [eventCount] {} | [eventQueue] {}",
-					// new String[] {
-					// pe.getClass().getCanonicalName(),
-					// Long.toString(pe.getEventCount()),
-					// Long.toString(targetPEs[i]
-					// .getEventPeriodQueue()) });
-					// }
-					//
-					// /* STEP 2: pass event to PE instance. */
-					// pe.handleInputEvent(event);
-
 					/*
-					 * STEP 1.B: select the PE instance for round-robin or
+					 * STEP 1: select the PE instance for round-robin or
 					 * disponibility.
 					 */
 					if (targetPEs[i].getNumPEInstances() != 0) {
@@ -491,10 +474,6 @@ public class Stream<T extends Event> implements Streamable {
 								peMin = pe;
 							}
 						}
-
-						// if (name.equals("processTwoStream")) {
-						// logger.debug("[SendPE Instance] " + peMin.getId());
-						// }
 
 						/* STEP 2: pass event to PE instance. */
 						peMin.handleInputEvent(event);

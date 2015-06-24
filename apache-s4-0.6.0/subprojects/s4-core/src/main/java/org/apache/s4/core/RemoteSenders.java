@@ -29,8 +29,9 @@ import org.apache.s4.core.monitor.StatusPE;
 public interface RemoteSenders {
 
 	public abstract void send(String hashKey, Event event);
+
 	public abstract void sendNotification(Notification notification);
 	// public abstract void sendStatistics(Statistics statistics);
-	public abstract void sendRemovePE(StatusPE statusPE);
+	// public abstract void sendRemovePE(StatusPE statusPE);
 
 }

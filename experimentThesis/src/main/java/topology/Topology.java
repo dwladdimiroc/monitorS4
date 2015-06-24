@@ -25,37 +25,32 @@ import org.apache.s4.base.Event;
 import org.apache.s4.base.KeyFinder;
 import org.apache.s4.core.App;
 import org.apache.s4.core.Stream;
+import org.apache.s4.core.monitor.StatusPE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import processElements.AnalyzePE;
 import processElements.CounterPE;
 import processElements.LanguagePE;
-import processElements.MergePE;
 import processElements.MongoPE;
-import processElements.SplitPE;
 import processElements.StopwordPE;
 
 public class Topology extends App {
 	private static Logger logger = LoggerFactory.getLogger(Topology.class);
 
 	/* PEs de la App */
-	LanguagePE languagePE;
 	StopwordPE stopwordPE;
-	SplitPE splitPE;
+	LanguagePE languagePE;
 	CounterPE counterPE;
-	MergePE mergePE;
 	AnalyzePE analyzePE;
 	MongoPE mongoPE;
 
 	@Override
 	protected void onInit() {
 		// Create the PE prototype
-		languagePE = createPE(LanguagePE.class);
 		stopwordPE = createPE(StopwordPE.class);
-		splitPE = createPE(SplitPE.class);
+		languagePE = createPE(LanguagePE.class);
 		counterPE = createPE(CounterPE.class);
-		mergePE = createPE(MergePE.class);
 		analyzePE = createPE(AnalyzePE.class);
 		mongoPE = createPE(MongoPE.class);
 
@@ -64,29 +59,19 @@ public class Topology extends App {
 		createInputStream("textInput", new KeyFinder<Event>() {
 			@Override
 			public List<String> get(Event event) {
-				return Arrays.asList(new String[] { event.get("levelLanguage") });
+				return Arrays.asList(new String[] { event.get("levelStopword") });
 			}
-		}, languagePE).setParallelism(1024);
+		}, stopwordPE).setParallelism(1024);
 
-		Stream<Event> stopwordStream = createStream("stopwordStream",
+		Stream<Event> languageStream = createStream("languageStream",
 				new KeyFinder<Event>() {
 					@Override
 					public List<String> get(Event event) {
 
 						return Arrays.asList(new String[] { event
-								.get("levelStopword") });
+								.get("levelLanguage") });
 					}
-				}, stopwordPE).setParallelism(1024);
-
-		Stream<Event> splitStream = createStream("splitStream",
-				new KeyFinder<Event>() {
-					@Override
-					public List<String> get(Event event) {
-
-						return Arrays.asList(new String[] { event
-								.get("levelSplit") });
-					}
-				}, splitPE).setParallelism(1024);
+				}, languagePE).setParallelism(1024);
 
 		Stream<Event> counterStream = createStream("counterStream",
 				new KeyFinder<Event>() {
@@ -97,16 +82,6 @@ public class Topology extends App {
 								.get("levelCounter") });
 					}
 				}, counterPE).setParallelism(1024);
-
-		Stream<Event> mergeStream = createStream("mergeStream",
-				new KeyFinder<Event>() {
-					@Override
-					public List<String> get(Event event) {
-
-						return Arrays.asList(new String[] { event
-								.get("levelMerge") });
-					}
-				}, mergePE).setParallelism(1024);
 
 		Stream<Event> analyzeStream = createStream("analyzeStream",
 				new KeyFinder<Event>() {
@@ -129,35 +104,37 @@ public class Topology extends App {
 				}, mongoPE).setParallelism(1024);
 
 		// Register and setDownStream
-		languagePE.setDownStream(stopwordStream);
-		stopwordPE.setDownStream(splitStream);
-		splitPE.setDownStream(counterStream);
-		counterPE.setDownStream(mergeStream);
-		mergePE.setDownStream(analyzeStream);
+		stopwordPE.setDownStream(languageStream);
+		languagePE.setDownStream(counterStream);
+		counterPE.setDownStream(analyzeStream);
 		analyzePE.setDownStream(mongoStream);
 
-		setRunMonitor(true);
+		setRunMonitor(false);
 	}
 
 	@Override
 	protected void onStart() {
 		logger.info("Start Topology");
 
-		languagePE.registerMonitor(stopwordPE.getClass());
-		stopwordPE.registerMonitor(splitPE.getClass());
-		splitPE.registerMonitor(counterPE.getClass());
-		counterPE.registerMonitor(mergePE.getClass());
-		mergePE.registerMonitor(analyzePE.getClass());
+		stopwordPE.registerMonitor(languagePE.getClass());
+		languagePE.registerMonitor(counterPE.getClass());
+		counterPE.registerMonitor(analyzePE.getClass());
 		analyzePE.registerMonitor(mongoPE.getClass());
 		mongoPE.registerMonitor(null);
 
-		ClockTime clockTime = new ClockTime();
-		clockTime.run();
+		Thread clockTime = new Thread(new ClockTime());
+		clockTime.start();
+		
+		StatusPE statusPE = new StatusPE();
+		statusPE.setPE(stopwordPE.getClass());
+		statusPE.setReplication(15);
+		this.addReplication(statusPE);
 
 	}
 
 	@Override
 	protected void onClose() {
+		logger.info("Finish experiment");
 	}
 
 	public class ClockTime implements Runnable {
