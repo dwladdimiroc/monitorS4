@@ -125,10 +125,10 @@ public class Topology extends App {
 		Thread clockTime = new Thread(new ClockTime());
 		clockTime.start();
 		
-		StatusPE statusPE = new StatusPE();
+		/*StatusPE statusPE = new StatusPE();
 		statusPE.setPE(stopwordPE.getClass());
 		statusPE.setReplication(15);
-		this.addReplication(statusPE);
+		this.addReplication(statusPE);*/
 
 	}
 
