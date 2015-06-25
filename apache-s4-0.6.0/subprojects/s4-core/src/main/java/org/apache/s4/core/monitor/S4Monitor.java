@@ -58,8 +58,7 @@ public class S4Monitor {
 	 * @param peRecibe
 	 *            PE receptor
 	 */
-	public void registerAdapter(Class<? extends AdapterApp> adapter,
-			Class<? extends ProcessingElement> peRecibe) {
+	public void registerAdapter(Class<? extends AdapterApp> adapter, Class<? extends ProcessingElement> peRecibe) {
 		logger.info("Register Adapter");
 
 		/*
@@ -81,8 +80,7 @@ public class S4Monitor {
 	 * @param peRecibe
 	 *            PE receptor
 	 */
-	public void registerPE(Class<? extends ProcessingElement> peSend,
-			Class<? extends ProcessingElement> peRecibe) {
+	public void registerPE(Class<? extends ProcessingElement> peSend, Class<? extends ProcessingElement> peRecibe) {
 
 		logger.info("Register PE");
 
@@ -163,15 +161,13 @@ public class S4Monitor {
 	 *            Corresponde a la tasa de rendimiento de todos los PEs en un
 	 *            período determinado
 	 */
-	public void sendHistory(
-			Map<Class<? extends ProcessingElement>, Double> historyPEs) {
+	public void sendHistory(Map<Class<? extends ProcessingElement>, Double> historyPEs) {
 		// boolean printHistory = false;
 
 		for (Class<? extends ProcessingElement> peCurrent : historyPEs.keySet()) {
 			double ρ = historyPEs.get(peCurrent);
 			if (!setRho(peCurrent, ρ))
-				logger.error("Error en guardar la variable ρ en el PE "
-						+ peCurrent.getCanonicalName());
+				logger.error("Error en guardar la variable ρ en el PE " + peCurrent.getCanonicalName());
 		}
 
 		// if (printHistory)
@@ -186,8 +182,7 @@ public class S4Monitor {
 		logger.debug("Print HistoryPE");
 		for (Class<? extends ProcessingElement> key : statusSystem.keySet()) {
 			StatusPE status = statusSystem.get(key);
-			logger.debug("Status: " + status.getPE() + " | EventCount: "
-					+ status.getSendEvent() + " | History: "
+			logger.debug("Status: " + status.getPE() + " | EventCount: " + status.getSendEvent() + " | History: "
 					+ status.getHistory().toString());
 		}
 	}
@@ -242,8 +237,7 @@ public class S4Monitor {
 	 * @param eventCount
 	 *            La cantidad de eventos totales procesados en ese período.
 	 */
-	public boolean sendStatus(Class<? extends ProcessingElement> data, long λ,
-			long μ, long μUnit, long eventCount) {
+	public boolean sendStatus(Class<? extends ProcessingElement> data, long λ, long μ, long μUnit, long eventCount) {
 
 		StatusPE statusPE = statusSystem.get(data);
 
@@ -290,12 +284,12 @@ public class S4Monitor {
 			double ρ = 0;
 			if (μ != 0) {
 				ρ = (double) λ / (double) μ;
-				if ((ρ < 1.1) && (statusPE.getSendEventUnit() != 0)) {
+				logger.debug("[PE] " + statusPE.getPE().getCanonicalName() + " | [ρ] " + ρ);
+				if ((ρ < 1.5) && (statusPE.getSendEventUnit() != 0)) {
 					double μPE = statusPE.getSendEventUnit();
 					long s = statusPE.getReplication();
-					// logger.debug("[s] " + s + " | [μPE] " + μPE +
-					// " | [s*μPE] "
-					// + ((double) s * μPE));
+					logger.debug("[PE] " + statusPE.getPE().getCanonicalName() + " | [s] " + s + " | [μPE] " + μPE
+							+ " | [s*μPE] " + ((double) s * μPE));
 					statusPE.setSendEvent(s * (long) Math.floor(μPE));
 					ρ = (double) λ / ((double) s * μPE);
 					// logger.debug("[ρ] " + ρ);
@@ -315,16 +309,11 @@ public class S4Monitor {
 				statusPE.setQueueEvent(0);
 
 			/* Get Statistics */
-			getMetrics().gaugeRhoPE(statusPE.getPE().getCanonicalName(),
-					statusPE.getProcessEvent());
-			getMetrics().gaugeLambdaPE(statusPE.getPE().getCanonicalName(),
-					statusPE.getRecibeEvent());
-			getMetrics().gaugeMuPE(statusPE.getPE().getCanonicalName(),
-					statusPE.getSendEvent());
-			getMetrics().gaugeQueuePE(statusPE.getPE().getCanonicalName(),
-					statusPE.getQueueEvent());
-			getMetrics().gaugeEventCountPE(statusPE.getPE().getCanonicalName(),
-					statusPE.getEventCount());
+			getMetrics().gaugeRhoPE(statusPE.getPE().getCanonicalName(), statusPE.getProcessEvent());
+			getMetrics().gaugeLambdaPE(statusPE.getPE().getCanonicalName(), statusPE.getRecibeEvent());
+			getMetrics().gaugeMuPE(statusPE.getPE().getCanonicalName(), statusPE.getSendEvent());
+			getMetrics().gaugeQueuePE(statusPE.getPE().getCanonicalName(), statusPE.getQueueEvent());
+			getMetrics().gaugeEventCountPE(statusPE.getPE().getCanonicalName(), statusPE.getEventCount());
 
 		} else {
 			return false;
@@ -390,19 +379,15 @@ public class S4Monitor {
 		// + "] | [PE History] " + statusPE.getHistory().toString());
 
 		/* Cálculo de la predicción por parte de la Cadena de Markov */
-		double distEstacionaria[] = markovChain.calculatePrediction(rho, 100,
-				100000);
+		double distEstacionaria[] = markovChain.calculatePrediction(rho, 100, 100000);
 
 		/* Análisis estadístico de los resultados de la predicción */
-		DescriptiveStatistics descriptiveStatistics = new DescriptiveStatistics(
-				distEstacionaria);
+		DescriptiveStatistics descriptiveStatistics = new DescriptiveStatistics(distEstacionaria);
 
-		logger.debug("[transitionMatrix] {"
-				+ Arrays.toString(markovChain.getTransitionMatrix()[0]) + ","
+		logger.debug("[transitionMatrix] {" + Arrays.toString(markovChain.getTransitionMatrix()[0]) + ","
 				+ Arrays.toString(markovChain.getTransitionMatrix()[1]) + ","
-				+ Arrays.toString(markovChain.getTransitionMatrix()[2]) + "}"
-				+ " | [distEstacionaria] " + Arrays.toString(distEstacionaria)
-				+ " | [Statistics] "
+				+ Arrays.toString(markovChain.getTransitionMatrix()[2]) + "}" + " | [distEstacionaria] "
+				+ Arrays.toString(distEstacionaria) + " | [Statistics] "
 				+ descriptiveStatistics.getStandardDeviation());
 
 		/*
@@ -414,9 +399,9 @@ public class S4Monitor {
 				if (distEstacionaria[i] == descriptiveStatistics.getMax()) {
 
 					if (i == 0) {
-						return -10;
+						return -5;
 					} else if (i == 2) {
-						return 10;
+						return 5;
 					} else {
 						return 0;
 					}
@@ -482,9 +467,8 @@ public class S4Monitor {
 			 * aumentar.
 			 */
 
-			logger.debug("[{}] MarkMap: {}", new String[] {
-					statusPE.getPE().getCanonicalName(),
-					statusPE.getMarkMap().toString() });
+			logger.debug("[{}] MarkMap: {}",
+					new String[] { statusPE.getPE().getCanonicalName(), statusPE.getMarkMap().toString() });
 
 			if (containsCondition(statusPE.getMarkMap(), true)) {
 				statusPE.getMarkMap().clear();
@@ -558,11 +542,9 @@ public class S4Monitor {
 	 *         nada
 	 */
 
-	private boolean analyzeStatus(Class<? extends ProcessingElement> peAnalyze,
-			long recibeEvent, boolean replication) {
+	private boolean analyzeStatus(Class<? extends ProcessingElement> peAnalyze, long recibeEvent, boolean replication) {
 
-		for (Class<? extends ProcessingElement> peCurrent : getStatusSystem()
-				.keySet()) {
+		for (Class<? extends ProcessingElement> peCurrent : getStatusSystem().keySet()) {
 
 			StatusPE statusPE = getStatusSystem().get(peCurrent);
 
@@ -583,39 +565,33 @@ public class S4Monitor {
 				 */
 				if (replication) {
 					if (statusPE.getSendEvent() != 0) {
-						ρ = (double) (statusPE.getRecibeEvent() + recibeEvent)
-								/ (double) statusPE.getSendEvent();
-					} else if ((statusPE.getRecibeEvent() == 0)
-							&& (statusPE.getSendEvent() == 0)) {
+						ρ = (double) (statusPE.getRecibeEvent() + recibeEvent) / (double) statusPE.getSendEvent();
+					} else if ((statusPE.getRecibeEvent() == 0) && (statusPE.getSendEvent() == 0)) {
 						ρ = 1;
 					} else {
 						ρ = Double.POSITIVE_INFINITY;
 					}
 
-					logger.debug("[intelligentReplication] | [PE Analyze] "
-							+ peAnalyze.getCanonicalName() + " | [ρ] " + ρ);
+					logger.debug(
+							"[intelligentReplication] | [PE Analyze] " + peAnalyze.getCanonicalName() + " | [ρ] " + ρ);
 
 					if (ρ > 1) {
-						getMetrics().counterReplicationPE(
-								statusPE.getPE().getCanonicalName(), true);
+						getMetrics().counterReplicationPE(statusPE.getPE().getCanonicalName(), true);
 						statusPE.setReplication(statusPE.getReplication() + 1);
 						return true;
 					}
 
 				} else {
 					if (statusPE.getSendEvent() != 0) {
-						ρ = (double) (statusPE.getRecibeEvent() - recibeEvent)
-								/ (double) statusPE.getSendEvent();
-					} else if ((statusPE.getRecibeEvent() == 0)
-							&& ((statusPE.getRecibeEvent() - recibeEvent) == 0)) {
+						ρ = (double) (statusPE.getRecibeEvent() - recibeEvent) / (double) statusPE.getSendEvent();
+					} else if ((statusPE.getRecibeEvent() == 0) && ((statusPE.getRecibeEvent() - recibeEvent) == 0)) {
 						ρ = 1;
 					} else {
 						ρ = Double.POSITIVE_INFINITY;
 					}
 
 					if (ρ < 0.5) {
-						getMetrics().counterReplicationPE(
-								statusPE.getPE().getCanonicalName(), false);
+						getMetrics().counterReplicationPE(statusPE.getPE().getCanonicalName(), false);
 						statusPE.setReplication(statusPE.getReplication() - 1);
 						return true;
 					}
@@ -670,9 +646,7 @@ public class S4Monitor {
 				 * PE receptores de PE receptor analizado.
 				 */
 				if (analyzeStatus(topology.getPeRecibe(), μFuture, replication)) {
-					intelligentReplication(
-							statusSystem.get(topology.getPeRecibe()),
-							replication);
+					intelligentReplication(statusSystem.get(topology.getPeRecibe()), replication);
 				}
 			}
 		}
@@ -692,8 +666,7 @@ public class S4Monitor {
 
 		// for (StatusPE statusPE : getStatusSystem()) {
 
-		for (Class<? extends ProcessingElement> peCurrent : getStatusSystem()
-				.keySet()) {
+		for (Class<? extends ProcessingElement> peCurrent : getStatusSystem().keySet()) {
 
 			StatusPE statusPE = getStatusSystem().get(peCurrent);
 
@@ -701,8 +674,7 @@ public class S4Monitor {
 
 			int status = administrationLoad(statusPE);
 
-			logger.debug("[Finish administrationLoad] PE: " + statusPE.getPE()
-					+ " | status: " + status);
+			logger.debug("[Finish administrationLoad] PE: " + statusPE.getPE() + " | status: " + status);
 
 			/*
 			 * Se entenderá que debe replicarse si retornar el valor 1, por lo
@@ -717,8 +689,7 @@ public class S4Monitor {
 				logger.debug("Increment PE " + statusPE.getPE());
 
 				for (int i = 1; i <= status; i++) {
-					getMetrics().counterReplicationPE(
-							statusPE.getPE().getCanonicalName(), true);
+					getMetrics().counterReplicationPE(statusPE.getPE().getCanonicalName(), true);
 				}
 				statusPE.setReplication(statusPE.getReplication() + status);
 				// intelligentReplication(statusPE, true);
@@ -729,8 +700,7 @@ public class S4Monitor {
 					logger.debug("Decrement PE " + statusPE.getPE());
 
 					for (int i = 1; i <= (-1 * status); i++) {
-						getMetrics().counterReplicationPE(
-								statusPE.getPE().getCanonicalName(), false);
+						getMetrics().counterReplicationPE(statusPE.getPE().getCanonicalName(), false);
 					}
 					statusPE.setReplication(statusPE.getReplication() + status);
 					if (statusPE.getReplication() < 1) {
@@ -765,8 +735,7 @@ public class S4Monitor {
 	private void metricsStatusSystem() {
 		// for (StatusPE statusPE : statusSystem) {
 
-		for (Class<? extends ProcessingElement> peCurrent : getStatusSystem()
-				.keySet()) {
+		for (Class<? extends ProcessingElement> peCurrent : getStatusSystem().keySet()) {
 
 			StatusPE statusPE = getStatusSystem().get(peCurrent);
 
@@ -784,28 +753,23 @@ public class S4Monitor {
 
 			/* Número promedio de eventos en el sistema */
 			double En = ρ / (1 - ρ);
-			getMetrics().gaugeAvgEventSystem(
-					statusPE.getPE().getCanonicalName(), En);
+			getMetrics().gaugeAvgEventSystem(statusPE.getPE().getCanonicalName(), En);
 
 			/* Número esperado de eventos en la cola */
 			double Eq = (Math.pow(λ, 2)) / ((μ - λ) * μ);
-			getMetrics().gaugeAvgEventQueue(
-					statusPE.getPE().getCanonicalName(), Eq);
+			getMetrics().gaugeAvgEventQueue(statusPE.getPE().getCanonicalName(), Eq);
 
 			/* Tiempo promedio de residencia */
 			double Et = 1 / (μ - λ);
-			getMetrics().gaugeAvgTimeResident(
-					statusPE.getPE().getCanonicalName(), Et);
+			getMetrics().gaugeAvgTimeResident(statusPE.getPE().getCanonicalName(), Et);
 
 			/* Tiempo promedio de espera en la cola */
 			double Ed = ρ / (μ - λ);
-			getMetrics().gaugeAvgTimeQueue(statusPE.getPE().getCanonicalName(),
-					Ed);
+			getMetrics().gaugeAvgTimeQueue(statusPE.getPE().getCanonicalName(), Ed);
 
 			/* Tiempo promedio en el sistema */
 			double Ep = Et + Ed;
-			getMetrics().gaugeAvgTimeProcess(
-					statusPE.getPE().getCanonicalName(), Ep);
+			getMetrics().gaugeAvgTimeProcess(statusPE.getPE().getCanonicalName(), Ep);
 		}
 	}
 
@@ -816,8 +780,7 @@ public class S4Monitor {
 	 */
 	private void clearStatusSystem() {
 		// for (StatusPE statusPE : statusSystem) {
-		for (Class<? extends ProcessingElement> peCurrent : getStatusSystem()
-				.keySet()) {
+		for (Class<? extends ProcessingElement> peCurrent : getStatusSystem().keySet()) {
 			StatusPE statusPE = getStatusSystem().get(peCurrent);
 
 			statusPE.setRecibeEvent(0);
@@ -834,8 +797,7 @@ public class S4Monitor {
 	 */
 	public void replicationPE(Class<? extends ProcessingElement> pe) {
 		// for (StatusPE statusPE : getStatusSystem()) {
-		for (Class<? extends ProcessingElement> peCurrent : getStatusSystem()
-				.keySet()) {
+		for (Class<? extends ProcessingElement> peCurrent : getStatusSystem().keySet()) {
 			StatusPE statusPE = getStatusSystem().get(peCurrent);
 
 			if (pe.equals(statusPE.getPE())) {

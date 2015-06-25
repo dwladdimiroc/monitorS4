@@ -253,7 +253,7 @@ public abstract class AdapterApp extends App {
 					StatusPE statusPE = (StatusPE) inStream.readObject();
 
 					changeReplication(statusPE);
-
+ 
 					connectedSocket.close();
 				}
 
@@ -265,6 +265,7 @@ public abstract class AdapterApp extends App {
 					try {
 						inStream.close();
 					} catch (IOException e) {
+						
 						throw new RuntimeException(e);
 					}
 				}
@@ -287,6 +288,7 @@ public abstract class AdapterApp extends App {
 		if (getRunMonitor()) {
 			/* Thread que estará escuchando los datos que envía el monitor */
 			Thread tListenerMonitor = new Thread(new ListenerMonitor());
+			tListenerMonitor.setName("tListenerMonitor");
 			tListenerMonitor.start();
 		}
 

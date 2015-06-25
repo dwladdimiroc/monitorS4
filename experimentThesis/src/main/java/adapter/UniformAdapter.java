@@ -26,8 +26,7 @@ import utilities.MongoRead;
 
 public class UniformAdapter extends AdapterApp implements Runnable {
 
-	private static Logger logger = LoggerFactory
-			.getLogger(UniformAdapter.class);
+	private static Logger logger = LoggerFactory.getLogger(UniformAdapter.class);
 
 	private Thread thread;
 	private Stack<Tweet> tweets;
@@ -41,10 +40,11 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 	protected void onInit() {
 		/* Este orden es importante */
 		logger.info("Create Uniform Adapter");
-		setRunMonitor(false);
+		tweets = readTweet();
+		
+		setRunMonitor(true);
 		this.registerMonitor(StopwordPE.class);
 		thread = new Thread(this);
-		tweets = readTweet();
 
 		super.onInit();
 	}
@@ -69,17 +69,16 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 
 		while (true) {
 
-			for (int i = 1; i <= 4; i++) {
-				Tweet tweetCurrent = tweets.pop();
-				// logger.info(tweetCurrent.toString());
+			// for (int i = 1; i <= 4; i++) {
+			Tweet tweetCurrent = tweets.pop();
+			// logger.info(tweetCurrent.toString());
 
-				Event event = new Event();
-				event.put("levelStopword", Long.class, getEventCount()
-						% getReplicationPE(StopwordPE.class));
-				event.put("tweet", Tweet.class, tweetCurrent);
+			Event event = new Event();
+			event.put("levelStopword", Long.class, getEventCount() % getReplicationPE(StopwordPE.class));
+			event.put("tweet", Tweet.class, tweetCurrent);
 
-				getRemoteStream().put(event);
-			}
+			getRemoteStream().put(event);
+			// }
 
 			try {
 				Thread.sleep(10);
