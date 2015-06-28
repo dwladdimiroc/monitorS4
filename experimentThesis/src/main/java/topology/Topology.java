@@ -61,7 +61,7 @@ public class Topology extends App {
 			public List<String> get(Event event) {
 				return Arrays.asList(new String[] { event.get("levelStopword") });
 			}
-		}, stopwordPE).setParallelism(1024);
+		}, stopwordPE).setParallelism(64);
 
 		Stream<Event> languageStream = createStream("languageStream",
 				new KeyFinder<Event>() {
@@ -71,7 +71,7 @@ public class Topology extends App {
 						return Arrays.asList(new String[] { event
 								.get("levelLanguage") });
 					}
-				}, languagePE).setParallelism(1024);
+				}, languagePE).setParallelism(64);
 
 		Stream<Event> counterStream = createStream("counterStream",
 				new KeyFinder<Event>() {
@@ -81,7 +81,7 @@ public class Topology extends App {
 						return Arrays.asList(new String[] { event
 								.get("levelCounter") });
 					}
-				}, counterPE).setParallelism(1024);
+				}, counterPE).setParallelism(64);
 
 		Stream<Event> analyzeStream = createStream("analyzeStream",
 				new KeyFinder<Event>() {
@@ -91,7 +91,7 @@ public class Topology extends App {
 						return Arrays.asList(new String[] { event
 								.get("levelAnalyze") });
 					}
-				}, analyzePE).setParallelism(1024);
+				}, analyzePE).setParallelism(64);
 
 		Stream<Event> mongoStream = createStream("mongoStream",
 				new KeyFinder<Event>() {
@@ -101,7 +101,7 @@ public class Topology extends App {
 						return Arrays.asList(new String[] { event
 								.get("levelMongo") });
 					}
-				}, mongoPE).setParallelism(1024);
+				}, mongoPE).setParallelism(64);
 
 		// Register and setDownStream
 		stopwordPE.setDownStream(languageStream);
@@ -109,7 +109,7 @@ public class Topology extends App {
 		counterPE.setDownStream(analyzeStream);
 		analyzePE.setDownStream(mongoStream);
 
-		setRunMonitor(true);
+		setRunMonitor(false);
 	}
 
 	@Override
