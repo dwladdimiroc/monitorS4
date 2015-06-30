@@ -37,8 +37,8 @@ public class LanguagePE extends ProcessingElement {
 
 		Event eventOutput = eventFactory.newEvent(tweet);
 
-		eventOutput.put("levelCounter", Long.class, getEventCount()
-				% getReplicationPE(CounterPE.class));
+		eventOutput.put("levelMongo", Long.class, getEventCount()
+				% getReplicationPE(MongoPE.class));
 
 		downStream.put(eventOutput);
 	}

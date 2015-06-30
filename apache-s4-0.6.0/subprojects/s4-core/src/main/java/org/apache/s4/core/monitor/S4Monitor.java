@@ -280,19 +280,18 @@ public class S4Monitor {
 					 * se cambia el valor de la tasa de procesamiento del
 					 * historial
 					 */
-					if (statusPE.getSendEventUnit() < statusPE
-							.getSendEventPeriod()) {
-						statusPE.setSendEventUnit(statusPE.getSendEventPeriod());
-					}
-					statusPE.setSendEventPeriod(0);				
+					statusPE.setSendEventUnit(statusPE.getSendEventPeriod());
+
+					statusPE.setSendEventPeriod(0);
 				}
 			} else {
 				if ((period % 20) != 0) {
 					statusPE.setSendEventPeriod(μUnit, period);
-					if (statusPE.getSendEventUnit() < statusPE
-							.getSendEventPeriod()) {
-						statusPE.setSendEventUnit(statusPE.getSendEventPeriod());
-					}
+					statusPE.setSendEventUnit(statusPE.getSendEventPeriod());
+					// logger.debug("[PE] "
+					// + statusPE.getPE().getCanonicalName() + "[μ] "
+					// + statusPE.getSendEventUnit());
+
 				} else {
 					statusPE.setSendEventPeriod(μUnit, period);
 					/*
@@ -300,10 +299,8 @@ public class S4Monitor {
 					 * se cambia el valor de la tasa de procesamiento del
 					 * historial
 					 */
-					if (statusPE.getSendEventUnit() < statusPE
-							.getSendEventPeriod()) {
-						statusPE.setSendEventUnit(statusPE.getSendEventPeriod());
-					}
+					statusPE.setSendEventUnit(statusPE.getSendEventPeriod());
+
 					statusPE.setSendEventPeriod(0);
 
 					initStatus = false;
@@ -319,16 +316,17 @@ public class S4Monitor {
 			if (μ != 0) {
 				ρ = (double) λ / (double) μ;
 				logger.debug("[PE] " + statusPE.getPE().getCanonicalName()
-						+ " | [ρ] " + ρ);
-				if ((ρ < 1.5) && (statusPE.getSendEventUnit() != 0)) {
+						+ " | [λ] " + λ + " | [μ] " + μ + " | [ρ] " + ρ);
+				if ((ρ > 1.0) && (ρ < 1.5)
+						&& (statusPE.getSendEventUnit() != 0)) {
 					double μPE = statusPE.getSendEventUnit();
 					long s = statusPE.getReplication();
-					logger.debug("[PE] " + statusPE.getPE().getCanonicalName()
-							+ " | [s] " + s + " | [μPE] " + μPE + " | [s*μPE] "
-							+ ((double) s * μPE));
 					statusPE.setSendEvent(s * (long) Math.floor(μPE));
 					ρ = (double) λ / ((double) s * μPE);
-					// logger.debug("[ρ] " + ρ);
+					logger.debug("[PE] " + statusPE.getPE().getCanonicalName()
+							+ " | [s] " + s + " | [μPE] " + μPE + " | [s*μPE] "
+							+ ((double) s * μPE) + " | [λ] " + λ + " | [ρ] "
+							+ ρ);
 				}
 			} else if ((μ == 0) && (λ == 0)) {
 				ρ = 1;

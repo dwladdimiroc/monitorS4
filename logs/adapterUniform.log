@@ -1,31 +1,36 @@
 [H[2Jcalling referenced s4 script : /home/daniel/Proyectos/monitorS4/apache-s4-0.6.0/s4
-13:34:35.079 [main] INFO  org.apache.s4.tools.DefineCluster - preparing new cluster [cluster2] with [1] node(s)
-13:34:35.287 [main] INFO  org.apache.s4.tools.DefineCluster - New cluster configuration uploaded into zookeeper
+15:26:41.057 [main] INFO  org.apache.s4.tools.DefineCluster - preparing new cluster [cluster2] with [1] node(s)
+15:26:41.322 [main] INFO  org.apache.s4.tools.DefineCluster - New cluster configuration uploaded into zookeeper
 calling referenced s4 script : /home/daniel/Proyectos/monitorS4/apache-s4-0.6.0/s4
-13:34:36.081 [main] INFO  o.a.s.c.u.ParsingUtils$InlineConfigParameterConverter - processing inline configuration parameter s4.adapter.output.stream=textInput
-13:34:36.220 [main] INFO  org.apache.s4.tools.Deploy - No S4R path specified, nor build file specified: this assumes the app is in the classpath
+15:26:42.061 [main] INFO  o.a.s.c.u.ParsingUtils$InlineConfigParameterConverter - processing inline configuration parameter s4.adapter.output.stream=textInput
+15:26:42.183 [main] INFO  org.apache.s4.tools.Deploy - No S4R path specified, nor build file specified: this assumes the app is in the classpath
 :cp
 
 BUILD SUCCESSFUL
 
-Total time: 4.153 secs
-13:34:41.666 [main] INFO  o.a.s.comm.topology.AssignmentFromZK - New session:94077535478611976; state is : SyncConnected
-13:34:41.773 [main] INFO  o.a.s.comm.topology.AssignmentFromZK - Successfully acquired task:Task-0 by daniel-HP-Pavilion-dv7-Notebook-PC
-13:34:41.788 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Initializing S4 app with : []]
-13:34:41.789 [S4 platform loader] DEBUG org.apache.s4.core.S4Bootstrap - Adding named parameters for injection : s4.adapter.output.stream=textInput,
-13:34:41.951 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Starting S4 app with application class [adapter.UniformAdapter]
-13:34:42.003 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster2,mode=unicast,type=,nodes=[{partition=0,port=13000,machineName=daniel-HP-Pavilion-dv7-Notebook-PC,taskId=Task-0}]} from null
-13:34:42.080 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.comm.tcp.TCPEmitter@460a82d9
-13:34:42.161 [S4 platform loader] INFO  o.a.s.c.s.ThrottlingSenderExecutorServiceFactory - Creating a throttling executor with a pool size of 5 and max rate of 200000 events / s
-13:34:42.170 [S4 platform loader] INFO  org.apache.s4.core.util.S4Metrics - Metrics reporting not configured
-13:34:42.171 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.core.SenderImpl@5390bbe3
-13:34:42.200 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - New session:94077535478611976
-13:34:42.203 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - Detected new stream [textInput]
-13:34:42.216 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - New session:94077535478611976
-13:34:42.228 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster1,mode=unicast,type=,nodes=[{partition=0,port=12000,machineName=daniel-HP-Pavilion-dv7-Notebook-PC,taskId=Task-0}]} from null
-13:34:42.233 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster2,mode=unicast,type=,nodes=[{partition=0,port=13000,machineName=daniel-HP-Pavilion-dv7-Notebook-PC,taskId=Task-0}]} from null
-13:34:42.242 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Init Monitor
-13:34:42.242 [S4 platform loader] INFO  adapter.UniformAdapter - Create Uniform Adapter
-13:34:56.780 [S4 platform loader] DEBUG o.a.s4.comm.topology.ClustersFromZK - Adding output stream [textInput] in cluster [cluster2]
-13:34:56.800 [S4 platform loader] INFO  adapter.UniformAdapter - Init ClockTime
-13:34:56.811 [Thread-4] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.comm.tcp.TCPRemoteEmitter@484d90e0
+Total time: 4.834 secs
+15:26:48.287 [main] INFO  o.a.s.comm.topology.AssignmentFromZK - New session:94089301122220040; state is : SyncConnected
+15:26:48.387 [main] INFO  o.a.s.comm.topology.AssignmentFromZK - Successfully acquired task:Task-0 by daniel-HP-Pavilion-dv7-Notebook-PC
+15:26:48.405 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Initializing S4 app with : []]
+15:26:48.406 [S4 platform loader] DEBUG org.apache.s4.core.S4Bootstrap - Adding named parameters for injection : s4.adapter.output.stream=textInput,
+15:26:48.560 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Starting S4 app with application class [adapter.UniformAdapter]
+15:26:48.604 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster2,mode=unicast,type=,nodes=[{partition=0,port=13000,machineName=daniel-HP-Pavilion-dv7-Notebook-PC,taskId=Task-0}]} from null
+15:26:48.687 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.comm.tcp.TCPEmitter@fecfbf7
+15:26:48.756 [S4 platform loader] INFO  o.a.s.c.s.ThrottlingSenderExecutorServiceFactory - Creating a throttling executor with a pool size of 5 and max rate of 200000 events / s
+15:26:48.766 [S4 platform loader] INFO  org.apache.s4.core.util.S4Metrics - Metrics reporting not configured
+15:26:48.768 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.core.SenderImpl@26db408d
+15:26:48.800 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - New session:94089301122220040
+15:26:48.804 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - Detected new stream [textInput]
+15:26:48.814 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - New session:94089301122220040
+15:26:48.830 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster1,mode=unicast,type=,nodes=[{partition=0,port=12000,machineName=daniel-HP-Pavilion-dv7-Notebook-PC,taskId=Task-0}]} from null
+15:26:48.834 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster2,mode=unicast,type=,nodes=[{partition=0,port=13000,machineName=daniel-HP-Pavilion-dv7-Notebook-PC,taskId=Task-0}]} from null
+15:26:48.837 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Init Monitor
+15:26:48.838 [S4 platform loader] INFO  adapter.UniformAdapter - Create Uniform Adapter
+15:27:03.626 [S4 platform loader] INFO  adapter.UniformAdapter - Finish read tweet
+15:27:03.627 [S4 platform loader] DEBUG o.a.s4.comm.topology.ClustersFromZK - Adding output stream [textInput] in cluster [cluster2]
+15:27:03.659 [S4 platform loader] INFO  org.apache.s4.core.App - Create Listener Monitor
+[class processElements.StopwordPE]
+15:27:03.667 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.comm.tcp.TCPRemoteEmitter@15b0b7a2
+15:27:04.170 [S4 platform loader] INFO  adapter.UniformAdapter - Init ClockTime
+15:27:14.800 [tListenerMonitor] DEBUG org.apache.s4.core.App - Increment PE  class processElements.StopwordPE in Adapter org.apache.s4.core.adapter.AdapterApp.ListenerMonitor
+15:27:24.800 [tListenerMonitor] DEBUG org.apache.s4.core.App - Increment PE  class processElements.StopwordPE in Adapter org.apache.s4.core.adapter.AdapterApp.ListenerMonitor

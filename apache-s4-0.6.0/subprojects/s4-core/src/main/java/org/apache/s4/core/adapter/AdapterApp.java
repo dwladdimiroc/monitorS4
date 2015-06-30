@@ -131,6 +131,11 @@ public abstract class AdapterApp extends App {
 
 	@Override
 	protected void onStart() {
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			getLogger().error(e.toString());
+		}
 	}
 
 	/**
@@ -253,7 +258,7 @@ public abstract class AdapterApp extends App {
 					StatusPE statusPE = (StatusPE) inStream.readObject();
 
 					changeReplication(statusPE);
- 
+
 					connectedSocket.close();
 				}
 
@@ -265,7 +270,7 @@ public abstract class AdapterApp extends App {
 					try {
 						inStream.close();
 					} catch (IOException e) {
-						
+
 						throw new RuntimeException(e);
 					}
 				}
