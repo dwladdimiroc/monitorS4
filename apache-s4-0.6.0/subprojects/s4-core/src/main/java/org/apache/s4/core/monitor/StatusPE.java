@@ -23,7 +23,7 @@ public class StatusPE implements Serializable {
 	private long recibeEvent;
 	private long sendEvent;
 	private double sendEventUnit;
-	private double sendEventPeriod;
+	// private long sendEventPeriod;
 	private double processEvent;
 	private long queueEvent;
 	private Queue<Double> history;
@@ -37,7 +37,7 @@ public class StatusPE implements Serializable {
 		recibeEvent = 0;
 		sendEvent = 0;
 		sendEventUnit = 0;
-		sendEventPeriod = 0;
+		// sendEventPeriod = 0;
 		processEvent = 0;
 		queueEvent = 0;
 		history = new CircularFifoQueue<Double>(100);
@@ -79,18 +79,19 @@ public class StatusPE implements Serializable {
 		this.sendEventUnit = sendEventUnit;
 	}
 
-	public double getSendEventPeriod() {
-		return sendEventPeriod;
-	}
+	// public long getSendEventPeriod() {
+	// return sendEventPeriod;
+	// }
+	//
+	// public void setSendEventPeriod(long sendEventPeriod) {
+	// this.sendEventPeriod = sendEventPeriod;
+	// }
 
-	public void setSendEventPeriod(double sendEventPeriod) {
-		this.sendEventPeriod = sendEventPeriod;
-	}
-
-	public void setSendEventPeriod(long sendEventPeriod, int period) {
-		this.sendEventPeriod = (double) (this.sendEventPeriod * (period - 1) + sendEventPeriod)
-				/ (double) period;
-	}
+	// public void setSendEventPeriod(long sendEventPeriod, int period) {
+	// this.sendEventPeriod = (double) (this.sendEventPeriod * (period - 1) +
+	// sendEventPeriod)
+	// / (double) period;
+	// }
 
 	public double getProcessEvent() {
 		return processEvent;

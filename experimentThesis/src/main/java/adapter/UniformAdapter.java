@@ -43,7 +43,7 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 		tweets = readTweet();
 		logger.info("Finish read tweet");
 		
-		setRunMonitor(true);
+		setRunMonitor(false);
 		this.registerMonitor(StopwordPE.class);
 		thread = new Thread(this);
 

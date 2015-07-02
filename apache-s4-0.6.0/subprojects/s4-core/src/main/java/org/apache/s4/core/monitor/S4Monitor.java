@@ -274,41 +274,33 @@ public class S4Monitor {
 			 * hizo dado que la sumatoria de todas las tasas de procesamiento de
 			 * los PEs va a dar un valor igual o menor a la tasa de llegada de
 			 * los PEs, por lo tanto, nunca se analizará si existe un
-			 * comportamiento ocioso. Por lo tanto, al poseer el período
+			 * comportamiento ocioso. Por lo tanto, al poseer el período mayor
+			 * de una instancia, se puede realizar una aproximación de cual
+			 * debería ser su rendimiento real.
 			 */
+
 			if (!initStatus) {
-				if ((period % 20) != 0) {
-					statusPE.setSendEventPeriod(μUnit, period);
-				} else {
-					statusPE.setSendEventPeriod(μUnit, period);
-					/*
-					 * En caso que se encuentre una tasa de procesamiento mayor,
-					 * se cambia el valor de la tasa de procesamiento del
-					 * historial
-					 */
-					statusPE.setSendEventUnit(statusPE.getSendEventPeriod());
+				/*
+				 * En caso que se encuentre una tasa de procesamiento mayor, se
+				 * cambia el valor de la tasa de procesamiento del historial
+				 */
+				if (μUnit > statusPE.getSendEventUnit())
+					statusPE.setSendEventUnit(μUnit);
 
-					statusPE.setSendEventPeriod(0);
-				}
 			} else {
-				if ((period % 20) != 0) {
-					statusPE.setSendEventPeriod(μUnit, period);
-					statusPE.setSendEventUnit(statusPE.getSendEventPeriod());
-					// logger.debug("[PE] "
-					// + statusPE.getPE().getCanonicalName() + "[μ] "
-					// + statusPE.getSendEventUnit());
-
+				if (((period % 20) != 0) && ((period % 20) != 1)) {
+					if (μUnit > statusPE.getSendEventUnit())
+						statusPE.setSendEventUnit(μUnit);
 				} else {
-					statusPE.setSendEventPeriod(μUnit, period);
 					/*
 					 * En caso que se encuentre una tasa de procesamiento mayor,
 					 * se cambia el valor de la tasa de procesamiento del
 					 * historial
 					 */
-					statusPE.setSendEventUnit(statusPE.getSendEventPeriod());
+					if (μUnit > statusPE.getSendEventUnit())
+						statusPE.setSendEventUnit(μUnit);
 
-					statusPE.setSendEventPeriod(0);
-
+					// statusPE.setSendEventPeriod(0);
 					initStatus = false;
 				}
 			}
@@ -319,20 +311,30 @@ public class S4Monitor {
 			 * ρ = λ / (s*μ) ; donde s cantidad de replicas del PE
 			 */
 			double ρ = 0;
+			long s = statusPE.getReplication();
 			if (μ != 0) {
-				ρ = (double) λ / (double) μ;
-				logger.debug("[PE] " + statusPE.getPE().getCanonicalName()
-						+ " | [λ] " + λ + " | [μ] " + μ + " | [ρ] " + ρ);
-				if ((ρ > 1.0) && (ρ < 1.5)
-						&& (statusPE.getSendEventUnit() != 0)) {
-					double μPE = statusPE.getSendEventUnit();
-					long s = statusPE.getReplication();
-					statusPE.setSendEvent(s * (long) Math.floor(μPE));
-					ρ = (double) λ / ((double) s * μPE);
+				if (s == 1) {
+					ρ = (double) λ / (double) (μ + s);
 					logger.debug("[PE] " + statusPE.getPE().getCanonicalName()
-							+ " | [s] " + s + " | [μPE] " + μPE + " | [s*μPE] "
-							+ ((double) s * μPE) + " | [λ] " + λ + " | [ρ] "
-							+ ρ);
+							+ " | [λ] " + λ + " | [μ] " + μ + " | [ρ] " + ρ);
+				} else {
+					if (statusPE.getSendEventUnit() != 0) {
+						double μPE = statusPE.getSendEventUnit();
+						statusPE.setSendEvent(s * (long) Math.floor(μPE));
+						ρ = (double) λ / ((double) s * μPE);
+						logger.debug("[PE] "
+								+ statusPE.getPE().getCanonicalName()
+								+ " | [s] " + s + " | [μPE] " + μPE
+								+ " | [s*μPE] " + ((double) s * μPE)
+								+ " | [λ] " + λ + " | [ρ] " + ρ);
+					} else {
+						ρ = (double) λ / (double) (s * μ);
+						logger.error("[PE2] "
+								+ statusPE.getPE().getCanonicalName()
+								+ " | [s] " + s + " | [μ] " + μ + " | [s*μ] "
+								+ ((double) s * μ) + " | [λ] " + λ + " | [ρ] "
+								+ ρ);
+					}
 				}
 			} else if ((μ == 0) && (λ == 0)) {
 				ρ = 1;
@@ -541,7 +543,8 @@ public class S4Monitor {
 			 * una replicación.
 			 */
 
-			numReplica = predictiveLoad(statusPE);
+			// numReplica = predictiveLoad(statusPE);
+			numReplica = 0;
 			int replicationAvailable = replicationMax - replicationTotal;
 			if (replicationAvailable > 0) {
 				if (numReplica > replicationAvailable) {

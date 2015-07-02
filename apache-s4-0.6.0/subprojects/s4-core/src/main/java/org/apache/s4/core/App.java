@@ -350,6 +350,9 @@ public abstract class App {
 						μ += PE.getEventPeriod();
 						eventCount += PE.getEventCount();
 
+						logger.debug("[PE] " + PE.getClass().getCanonicalName()
+								+ " | [μ] " + PE.getEventPeriod());
+
 						/* Tasa de procesamiento unitaria */
 						if (μUnit < PE.getEventPeriod())
 							μUnit = PE.getEventPeriod();

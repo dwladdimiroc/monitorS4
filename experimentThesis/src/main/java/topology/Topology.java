@@ -110,7 +110,7 @@ public class Topology extends App {
 		// analyzePE.setDownStream(mongoStream);
 		languagePE.setDownStream(mongoStream);
 
-		setRunMonitor(true);
+		setRunMonitor(false);
 	}
 
 	@Override
@@ -126,10 +126,10 @@ public class Topology extends App {
 		Thread clockTime = new Thread(new ClockTime());
 		clockTime.start();
 
-		StatusPE statusPE = new StatusPE();
-		statusPE.setPE(stopwordPE.getClass());
-		statusPE.setReplication(3);
-		this.addReplication(statusPE);
+		// StatusPE statusPE = new StatusPE();
+		// statusPE.setPE(stopwordPE.getClass());
+		// statusPE.setReplication(5);
+		// this.addReplication(statusPE);
 
 	}
 
