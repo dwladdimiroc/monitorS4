@@ -57,44 +57,44 @@ public class MarkovChain {
 			}
 			// Que haya pasado de un estado ocioso a uno estable
 			else if ((rho[i] < 0.5) && (rho[i + 1] >= 0.5)
-					&& (rho[i + 1] <= 1.5)) {
+					&& (rho[i + 1] <= 1)) {
 				transitionMatrix[0][1]++;
 				cont[0]++;
 			}
 			// De un estado ocioso a uno inestable
-			else if ((rho[i] < 0.5) && (rho[i + 1] > 1.5)) {
+			else if ((rho[i] < 0.5) && (rho[i + 1] > 1)) {
 				transitionMatrix[0][2]++;
 				cont[0]++;
 			}
 			// De un estado estable a uno ocioso
-			else if ((rho[i] >= 0.5) && (rho[i] <= 1.5) && (rho[i + 1] < 0.5)) {
+			else if ((rho[i] >= 0.5) && (rho[i] <= 1) && (rho[i + 1] < 0.5)) {
 				transitionMatrix[1][0]++;
 				cont[1]++;
 			}
 			// De que se mantenga en el sistema estable
-			else if ((rho[i] >= 0.5) && (rho[i] <= 1.5) && (rho[i + 1] >= 0.5)
-					&& (rho[i + 1] <= 1.5)) {
+			else if ((rho[i] >= 0.5) && (rho[i] <= 1) && (rho[i + 1] >= 0.5)
+					&& (rho[i + 1] <= 1)) {
 				transitionMatrix[1][1]++;
 				cont[1]++;
 			}
 			// De un estado estable a uno inestable
-			else if ((rho[i] >= 0.5) && (rho[i] <= 1.5) && (rho[i + 1] > 1.5)) {
+			else if ((rho[i] >= 0.5) && (rho[i] <= 1) && (rho[i + 1] > 1)) {
 				transitionMatrix[1][2]++;
 				cont[1]++;
 			}
 			// De un estado inestable a uno ocioso
-			else if ((rho[i] > 1.5) && (rho[i + 1] < 0.5)) {
+			else if ((rho[i] > 1) && (rho[i + 1] < 0.5)) {
 				transitionMatrix[2][0]++;
 				cont[2]++;
 			}
 			// De un estado inestable a uno estable
-			else if ((rho[i] > 1.5) && (rho[i + 1] >= 0.5)
-					&& (rho[i + 1] <= 1.5)) {
+			else if ((rho[i] > 1) && (rho[i + 1] >= 0.5)
+					&& (rho[i + 1] <= 1)) {
 				transitionMatrix[2][1]++;
 				cont[2]++;
 			}
 			// Que se mantenga inestable el sistema
-			else if ((rho[i] > 1.5) && (rho[i + 1] > 1.5)) {
+			else if ((rho[i] > 1) && (rho[i + 1] > 1)) {
 				transitionMatrix[2][2]++;
 				cont[2]++;
 			}
