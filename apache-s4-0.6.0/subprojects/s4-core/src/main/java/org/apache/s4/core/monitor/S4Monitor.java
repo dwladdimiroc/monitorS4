@@ -33,6 +33,9 @@ public class S4Monitor {
 	/* Primeros 20 segundos */
 	private boolean initStatus;
 
+	private int replicationTotal;
+	private int replicationMax;
+
 	/* Variables del adapter */
 	// private final List<Map<Class<? extends AdapterApp>, Queue<Double>>>
 	// listHistoryAdapter = new ArrayList<Map<Class<? extends AdapterApp>,
@@ -47,6 +50,7 @@ public class S4Monitor {
 		period = 1;
 		ready = false;
 		initStatus = true;
+		replicationMax = 30;
 	}
 
 	public void startMetrics() {
@@ -119,6 +123,8 @@ public class S4Monitor {
 			statusPE.setSendEvent(0);
 			statusPE.setReplication(1);
 			getStatusSystem().put(peSend, statusPE);
+
+			replicationTotal++;
 
 			/* Además, se crearán los contadores y estadísticas para el PE */
 			getMetrics().createCounterReplicationPE(peSend.getCanonicalName());
@@ -516,9 +522,13 @@ public class S4Monitor {
 
 			if (containsCondition(statusPE.getMarkMap(), true)) {
 				statusPE.getMarkMap().clear();
-				numReplica++;
+				if (replicationTotal < replicationMax) {
+					replicationTotal++;
+					numReplica++;
+				}
 			} else if (containsCondition(statusPE.getMarkMap(), false)) {
 				statusPE.getMarkMap().clear();
+				replicationTotal--;
 				numReplica--;
 			}
 
@@ -532,6 +542,13 @@ public class S4Monitor {
 			 */
 
 			numReplica = predictiveLoad(statusPE);
+			int replicationAvailable = replicationMax - replicationTotal;
+			if (replicationAvailable > 0) {
+				if (numReplica > replicationAvailable) {
+					numReplica = replicationAvailable;
+				}
+			}
+			replicationTotal += numReplica;
 
 		}
 

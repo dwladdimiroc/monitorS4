@@ -267,6 +267,9 @@ public abstract class App {
 					long μ = 0;
 					for (ProcessingElement PE : PEPrototype.getInstances()) {
 						μ += PE.getEventSeg();
+						if (μ > PEPrototype.getEventUnit()) {
+							PEPrototype.setEventUnit(μ);
+						}
 						// Reinicio del contador de eventos para períodos de un
 						// segundo
 						PE.setEventSeg(0);
@@ -280,6 +283,12 @@ public abstract class App {
 					double ρ = 0;
 					if (μ != 0) {
 						ρ = (double) λ / (double) μ;
+						if ((ρ > 1.0) && (ρ < 1.5)
+								&& (PEPrototype.getEventUnit() != 0)) {
+							double μPE = PEPrototype.getEventUnit();
+							long s = PEPrototype.getInstances().size();
+							ρ = (double) λ / ((double) s * μPE);
+						}
 					} else if ((μ == 0) && (λ == 0)) {
 						ρ = 1;
 					} else {

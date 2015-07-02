@@ -10,8 +10,8 @@ import org.apache.s4.core.ProcessingElement;
  * Clase para analizar el estado de cada uno de los PE, según su tasa de llegada
  * y tasa de servicio, además de su replicación.
  * 
- * Un dato importante es que markMap está inicializado con 3, debido que se
- * consideran los últimos 3 períodos de análisis de los PE.
+ * Un dato importante es que markMap está inicializado con 2, debido que se
+ * consideran los últimos 2 períodos de análisis de los PE.
  *
  */
 

@@ -161,6 +161,7 @@ public abstract class ProcessingElement implements Cloneable {
 
 	transient long eventSeg = 0;
 	transient long eventPeriod = 0;
+	transient long eventUnit = 0;
 	transient long eventCount = 0;
 
 	transient private OverloadDispatcher overloadDispatcher;
@@ -1095,6 +1096,14 @@ public abstract class ProcessingElement implements Cloneable {
 
 	public void setEventPeriod(long eventPeriod) {
 		this.eventPeriod = eventPeriod;
+	}
+
+	public long getEventUnit() {
+		return eventUnit;
+	}
+
+	public void setEventUnit(long eventUnit) {
+		this.eventUnit = eventUnit;
 	}
 
 	public long getEventCount() {
