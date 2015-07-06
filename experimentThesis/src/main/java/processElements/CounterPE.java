@@ -41,8 +41,10 @@ public class CounterPE extends ProcessingElement {
 		newTweet.setCounterNeed(counterNeed);
 		Event eventOutput = eventFactory.newEvent(newTweet);
 
-		eventOutput.put("levelAnalyze", Long.class, getEventCount()
-				% getReplicationPE(AnalyzePE.class));
+		//eventOutput.put("levelAnalyze", Long.class, getEventCount()
+		//		% getReplicationPE(AnalyzePE.class));''
+		eventOutput.put("levelMongo", Long.class, getEventCount()
+				% getReplicationPE(MongoPE.class));
 		downStream.put(eventOutput);
 		
 	}
@@ -57,7 +59,7 @@ public class CounterPE extends ProcessingElement {
 		utilitiesWords = new Words();
 
 		keywords = utilitiesWords
-				.readWords("/home/daniel/Proyectos/monitorS4/experimentThesis/config/bag.txt");
+				.readWords("/alumnos/dwladdimiro/S4/experimentThesis/config/bag.txt");
 	}
 
 	@Override

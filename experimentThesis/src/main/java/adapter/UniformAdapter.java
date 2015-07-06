@@ -41,9 +41,8 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 		/* Este orden es importante */
 		logger.info("Create Uniform Adapter");
 		tweets = readTweet();
-		logger.info("Finish read tweet");
 		
-		setRunMonitor(false);
+		setRunMonitor(true);
 		this.registerMonitor(StopwordPE.class);
 		thread = new Thread(this);
 

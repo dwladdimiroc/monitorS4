@@ -344,11 +344,12 @@ public class S4Monitor {
 			statusPE.setProcessEvent(ρ);
 
 			/* Analizamos la cola del PE */
-			long queuePE = λ - μ;
-			if (queuePE > 0)
-				statusPE.setQueueEvent(queuePE);
-			else
-				statusPE.setQueueEvent(0);
+			long queuePE = statusPE.getRecibeEvent() - statusPE.getSendEvent();
+			if (queuePE > 0) {
+				statusPE.setQueueEvent(statusPE.getQueueEvent() + queuePE);
+			} else {
+				statusPE.setQueueEvent(statusPE.getQueueEvent());
+			}
 
 			/* Get Statistics */
 			getMetrics().gaugeRhoPE(statusPE.getPE().getCanonicalName(),
