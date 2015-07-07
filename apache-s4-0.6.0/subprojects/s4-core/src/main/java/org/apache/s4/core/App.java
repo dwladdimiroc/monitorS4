@@ -398,6 +398,11 @@ public abstract class App {
 				timeAskStatus.start();
 			}
 
+			// /* Finalizing Objects and running the Garbage Collector */
+			// logger.info("Clean GC");
+			// System.gc();
+			// System.runFinalization();
+
 		}
 	}
 

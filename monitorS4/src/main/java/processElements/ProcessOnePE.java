@@ -48,7 +48,7 @@ public class ProcessOnePE extends ProcessingElement {
 		// Processing
 		try {
 			// wait(500);
-			Thread.sleep(10);
+			Thread.sleep(20);
 		} catch (InterruptedException e) {
 			logger.error(e.toString());
 		}

@@ -459,7 +459,8 @@ public class Stream<T extends Event> implements Streamable {
 					if (targetPEs[i].getNumPEInstances() != 0) {
 
 						long minEventQueue = (long) Double.POSITIVE_INFINITY;
-						ProcessingElement peMin = targetPEs[i];
+						ProcessingElement peMin = (ProcessingElement) targetPEs[i]
+								.getInstances().toArray()[0];
 
 						for (ProcessingElement pe : targetPEs[i].getInstances()) {
 
@@ -490,6 +491,13 @@ public class Stream<T extends Event> implements Streamable {
 				}
 			}
 
+			try {
+				super.finalize();
+			} catch (Throwable e) {
+				// TODO Auto-generated catch block
+				logger.error(e.toString());
+			}
+			return;
 		}
 	}
 }

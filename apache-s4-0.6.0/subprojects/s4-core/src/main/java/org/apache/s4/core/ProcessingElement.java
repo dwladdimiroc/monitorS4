@@ -529,7 +529,6 @@ public abstract class ProcessingElement implements Cloneable {
 	}
 
 	protected void handleInputEvent(Event event) {
-		eventQueue++;
 
 		TimerContext timerContext = null;
 		if (processingTimer != null) {
@@ -544,7 +543,10 @@ public abstract class ProcessingElement implements Cloneable {
 			object = this;
 		}
 
+		eventQueue++;
+
 		synchronized (object) {
+
 			if (!recoveryAttempted) {
 				recover();
 				recoveryAttempted = true;
@@ -568,13 +570,13 @@ public abstract class ProcessingElement implements Cloneable {
 				checkpoint();
 			}
 		}
-		
+
+		eventQueue--;
+
 		if (timerContext != null) {
 			// if timing enabled
 			timerContext.stop();
 		}
-
-		eventQueue--;
 
 	}
 

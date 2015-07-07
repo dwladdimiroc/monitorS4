@@ -291,7 +291,7 @@ public class S4Monitor {
 				if (((period % 20) != 0) && ((period % 20) != 1)) {
 					if (μUnit > statusPE.getSendEventUnit())
 						statusPE.setSendEventUnit(μUnit);
-				} else {
+				} else if ((period % 20) == 0) {
 					/*
 					 * En caso que se encuentre una tasa de procesamiento mayor,
 					 * se cambia el valor de la tasa de procesamiento del
@@ -344,11 +344,10 @@ public class S4Monitor {
 			statusPE.setProcessEvent(ρ);
 
 			/* Analizamos la cola del PE */
-			long queuePE = statusPE.getRecibeEvent() - statusPE.getSendEvent();
-			if (queuePE > 0) {
-				statusPE.setQueueEvent(statusPE.getQueueEvent() + queuePE);
-			} else {
-				statusPE.setQueueEvent(statusPE.getQueueEvent());
+			long queuePE = λ - μ;
+			statusPE.setQueueEvent(statusPE.getQueueEvent() + queuePE);
+			if (statusPE.getQueueEvent() < 0) {
+				statusPE.setQueueEvent(0);
 			}
 
 			/* Get Statistics */

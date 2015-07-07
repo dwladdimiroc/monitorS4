@@ -22,7 +22,7 @@ S4_SCRIPT_PATH="$S4_DIR/s4"
 
 # JVM options for starting nodes and for other s4 tools can be configured here
 # export JAVA_OPTS=-Xmx1G
-
+export JAVA_OPTS="-Xmx16G -Xms8G"
 subprojects/s4-tools/build/install/s4-tools/bin/s4-tools -s4ScriptPath=$S4_SCRIPT_PATH $@
 
 

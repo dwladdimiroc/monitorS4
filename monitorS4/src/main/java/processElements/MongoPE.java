@@ -13,17 +13,8 @@ import com.opencsv.CSVWriter;
 public class MongoPE extends ProcessingElement {
 	private static Logger logger = LoggerFactory.getLogger(MongoPE.class);
 	private boolean showEvent = false;
-	
-	long timeFinal, timeInit;
 
 	public void onEvent(Event event) {
-		
-		timeFinal = System.currentTimeMillis();
-		if ((timeFinal - timeInit) >= 900000) {
-			logger.debug("[EventCount] " + getEventCount());
-			app.close();
-			System.exit(0);
-		}
 
 		// Processing
 		try {
@@ -71,9 +62,7 @@ public class MongoPE extends ProcessingElement {
 	}
 
 	@Override
-	protected void onCreate() {
-		timeInit = System.currentTimeMillis();
-		
+	protected void onCreate() {		
 		logger.info("Create Mongo PE");
 
 		// this.replicationPE();

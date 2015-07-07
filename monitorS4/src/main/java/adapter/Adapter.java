@@ -54,20 +54,15 @@ public class Adapter extends AdapterApp implements Runnable {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+
+		Thread clockTime = new Thread(new ClockTime());
+		clockTime.start();
 	}
 
 	@Override
 	public void run() {
-		long timeInit = System.currentTimeMillis();
-		logger.info("Time init (ms): " + timeInit);
 
 		while (true) {
-
-			long timeFinal = System.currentTimeMillis();
-			if ((timeFinal - timeInit) >= 900000) {
-				close();
-				System.exit(0);
-			}
 
 			Event event = new Event();
 
@@ -104,5 +99,36 @@ public class Adapter extends AdapterApp implements Runnable {
 
 		}
 
+	}
+
+	public class ClockTime implements Runnable {
+		long timeInit;
+		long timeFinal;
+
+		public ClockTime() {
+			logger.info("Init ClockTime");
+			timeInit = System.currentTimeMillis();
+			timeFinal = 0;
+		}
+
+		@Override
+		public void run() {
+			try {
+				Thread.sleep(10795000);
+			} catch (InterruptedException e) {
+				logger.error(e.toString());
+			}
+
+			while (true) {
+
+				timeFinal = System.currentTimeMillis();
+				if ((timeFinal - timeInit) >= 10800000) {
+					close();
+					System.exit(0);
+				}
+
+			}
+
+		}
 	}
 }
