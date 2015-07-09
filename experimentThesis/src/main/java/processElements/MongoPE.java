@@ -20,6 +20,14 @@ public class MongoPE extends ProcessingElement {
 	public void onEvent(Event event) {
 
 		Tweet tweet = event.get("tweet", Tweet.class);
+		
+		/* Statistics */
+		logger.info(event.toString());
+		long timeInit = event.get("time", Long.class);
+		long timeFinal = System.currentTimeMillis();
+		long time = timeFinal - timeInit;
+		getApp().getMonitor().getMetrics().setAvgTimeTotal(time);
+
 		mongo.insert(tweet.storeEvent());
 
 	}

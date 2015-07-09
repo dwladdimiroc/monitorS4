@@ -31,6 +31,7 @@ public class CounterPE extends ProcessingElement {
 	public void onEvent(Event event) {
 
 		Tweet tweet = event.get("tweet", Tweet.class);
+		Long time = event.get("time", Long.class);
 
 		int counterNeed = utilitiesWords.counterContains(keywords,
 				tweet.getText());
@@ -45,6 +46,7 @@ public class CounterPE extends ProcessingElement {
 				% getReplicationPE(AnalyzePE.class));
 		// eventOutput.put("levelMongo", Long.class, getEventCount()
 		// % getReplicationPE(MongoPE.class));
+		eventOutput.put("time", Long.class, time);
 		downStream.put(eventOutput);
 
 	}

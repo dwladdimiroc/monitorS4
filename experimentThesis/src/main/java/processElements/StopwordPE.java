@@ -30,6 +30,7 @@ public class StopwordPE extends ProcessingElement {
 	public void onEvent(Event event) {
 		
 		Tweet tweet = event.get("tweet", Tweet.class);
+		Long time = event.get("time", Long.class);
 
 		String tweetClean = utilitiesWords.replace(stopwords, tweet.getText());
 
@@ -39,6 +40,7 @@ public class StopwordPE extends ProcessingElement {
 
 		eventOutput.put("levelLanguage", Long.class, getEventCount()
 				% getReplicationPE(LanguagePE.class));
+		eventOutput.put("time", Long.class, time);
 		downStream.put(eventOutput);
 
 	}

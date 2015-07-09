@@ -32,20 +32,20 @@ public class MonitorMetrics {
 	static final Logger logger = LoggerFactory.getLogger(MonitorMetrics.class);
 
 	private final Map<String, Counter> replicationPE = Maps.newHashMap();
-	
+
 	private final Map<String, Double> rhoPE = Maps.newHashMap();
 	private final Map<String, Long> lambdaPE = Maps.newHashMap();
 	private final Map<String, Long> muPE = Maps.newHashMap();
 	private final Map<String, Long> queuePE = Maps.newHashMap();
-	
+
 	private final Map<String, Long> eventCountPE = Maps.newHashMap();
 
-	 private final Map<String, Double> avgEventSystem = Maps.newHashMap();
-	 private final Map<String, Double> avgEventQueue = Maps.newHashMap();
+	private final Map<String, Double> avgEventSystem = Maps.newHashMap();
+	private final Map<String, Double> avgEventQueue = Maps.newHashMap();
 
-	 private final Map<String, Double> avgTimeResident = Maps.newHashMap();
-	 private final Map<String, Double> avgTimeQueue = Maps.newHashMap();
-	 private final Map<String, Double> avgTimeProcess = Maps.newHashMap();
+	private final Map<String, Double> avgTimeResident = Maps.newHashMap();
+	private final Map<String, Double> avgTimeQueue = Maps.newHashMap();
+	private final Map<String, Double> avgTimeProcess = Maps.newHashMap();
 
 	private long avgTimeTotal;
 	private long nEvent;
@@ -135,7 +135,7 @@ public class MonitorMetrics {
 		else
 			replicationPE.get(name).dec();
 	}
-	
+
 	public void createGaugeRhoPE(final String name) {
 		rhoPE.put(name, Double.valueOf(0));
 
@@ -151,7 +151,7 @@ public class MonitorMetrics {
 	public void gaugeRhoPE(String name, double rho) {
 		rhoPE.put(name, rho);
 	}
-	
+
 	public void createGaugeLambdaPE(final String name) {
 		lambdaPE.put(name, Long.valueOf(0));
 
@@ -167,7 +167,7 @@ public class MonitorMetrics {
 	public void gaugeLambdaPE(String name, long lambda) {
 		lambdaPE.put(name, lambda);
 	}
-	
+
 	public void createGaugeMuPE(final String name) {
 		muPE.put(name, Long.valueOf(0));
 
@@ -183,7 +183,7 @@ public class MonitorMetrics {
 	public void gaugeMuPE(String name, long mu) {
 		muPE.put(name, mu);
 	}
-	
+
 	public void createGaugeQueuePE(final String name) {
 		queuePE.put(name, Long.valueOf(0));
 
@@ -199,7 +199,7 @@ public class MonitorMetrics {
 	public void gaugeQueuePE(String name, long queue) {
 		queuePE.put(name, queue);
 	}
-	
+
 	public void createGaugeEventCountPE(final String name) {
 		eventCountPE.put(name, Long.valueOf(0));
 
@@ -298,7 +298,8 @@ public class MonitorMetrics {
 
 	public void setAvgTimeTotal(long avgTimeTotal) {
 		nEvent++;
-		this.avgTimeTotal = (this.avgTimeTotal + avgTimeTotal) / nEvent;
+		this.avgTimeTotal = ((this.avgTimeTotal * nEvent - 1) + avgTimeTotal)
+				/ nEvent;
 	}
 
 	public void setTimeSendHistoryMonitor(long timeSendHistoryMonitor) {
