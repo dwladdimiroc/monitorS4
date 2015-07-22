@@ -52,9 +52,7 @@ public class Topology extends App {
 		counterPE.setTimerInterval(10000, TimeUnit.MICROSECONDS);
 		
 		mergePE = createPE(MergePE.class);
-		mergePE.setSingleton(true);
-		
-	
+		mergePE.setSingleton(true);	
 
 		// Create a stream that listens to the "textInput" stream and passes
 		// events to the processPE instance.

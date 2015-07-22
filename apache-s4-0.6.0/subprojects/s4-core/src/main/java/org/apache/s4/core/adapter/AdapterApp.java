@@ -132,7 +132,7 @@ public abstract class AdapterApp extends App {
 	@Override
 	protected void onStart() {
 		try {
-			Thread.sleep(500);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			getLogger().error(e.toString());
 		}

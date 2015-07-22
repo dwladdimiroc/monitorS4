@@ -1,6 +1,5 @@
 package processElements;
 
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections15.map.HashedMap;
@@ -12,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import utilities.EventFactory;
 import utilities.Words;
-import eda.Tweet;
 
 public class CounterPE extends ProcessingElement {
 	private static Logger logger = LoggerFactory.getLogger(CounterPE.class);

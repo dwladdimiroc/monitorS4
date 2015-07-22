@@ -29,7 +29,7 @@ import org.apache.s4.core.monitor.StatusPE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import processElements.AnalyzePE;
+//import processElements.AnalyzePE;
 import processElements.CounterPE;
 import processElements.LanguagePE;
 import processElements.MongoPE;
@@ -42,7 +42,7 @@ public class Topology extends App {
 	StopwordPE stopwordPE;
 	LanguagePE languagePE;
 	CounterPE counterPE;
-	AnalyzePE analyzePE;
+	//AnalyzePE analyzePE;
 	MongoPE mongoPE;
 
 	@Override
@@ -51,7 +51,7 @@ public class Topology extends App {
 		stopwordPE = createPE(StopwordPE.class);
 		languagePE = createPE(LanguagePE.class);
 		counterPE = createPE(CounterPE.class);
-		analyzePE = createPE(AnalyzePE.class);
+		//analyzePE = createPE(AnalyzePE.class);
 		mongoPE = createPE(MongoPE.class);
 
 		// Create a stream that listens to the "textInput" stream and passes
@@ -61,7 +61,7 @@ public class Topology extends App {
 			public List<String> get(Event event) {
 				return Arrays.asList(new String[] { event.get("levelStopword") });
 			}
-		}, stopwordPE).setParallelism(4);
+		}, stopwordPE).setParallelism(6);
 
 		Stream<Event> languageStream = createStream("languageStream",
 				new KeyFinder<Event>() {
@@ -81,9 +81,9 @@ public class Topology extends App {
 						return Arrays.asList(new String[] { event
 								.get("levelCounter") });
 					}
-				}, counterPE).setParallelism(6);
+				}, counterPE).setParallelism(10);
 
-		Stream<Event> analyzeStream = createStream("analyzeStream",
+		/*Stream<Event> analyzeStream = createStream("analyzeStream",
 				new KeyFinder<Event>() {
 					@Override
 					public List<String> get(Event event) {
@@ -91,7 +91,7 @@ public class Topology extends App {
 						return Arrays.asList(new String[] { event
 								.get("levelAnalyze") });
 					}
-				}, analyzePE).setParallelism(16);
+				}, analyzePE).setParallelism(16);*/
 
 		Stream<Event> mongoStream = createStream("mongoStream",
 				new KeyFinder<Event>() {
@@ -106,8 +106,8 @@ public class Topology extends App {
 		// Register and setDownStream
 		stopwordPE.setDownStream(languageStream);
 		languagePE.setDownStream(counterStream);
-		counterPE.setDownStream(analyzeStream);
-		analyzePE.setDownStream(mongoStream);
+		counterPE.setDownStream(mongoStream);
+		//analyzePE.setDownStream(mongoStream);
 
 		setRunMonitor(true);
 	}
@@ -118,8 +118,8 @@ public class Topology extends App {
 
 		stopwordPE.registerMonitor(languagePE.getClass());
 		languagePE.registerMonitor(counterPE.getClass());
-		counterPE.registerMonitor(analyzePE.getClass());
-		analyzePE.registerMonitor(mongoPE.getClass());
+		counterPE.registerMonitor(mongoPE.getClass());
+		//analyzePE.registerMonitor(mongoPE.getClass());
 		mongoPE.registerMonitor(null);
 
 		Thread clockTime = new Thread(new ClockTime());
@@ -144,14 +144,14 @@ public class Topology extends App {
 		@Override
 		public void run() {
 			try {
-				Thread.sleep(10795000);
+				Thread.sleep(4195000);
 			} catch (InterruptedException e) {
 				logger.error(e.toString());
 			}
 
 			while (true) {
 				timeFinal = System.currentTimeMillis();
-				if ((timeFinal - timeInit) >= 10800000) {
+				if ((timeFinal - timeInit) >= 4200000) {
 					close();
 					System.exit(0);
 				}

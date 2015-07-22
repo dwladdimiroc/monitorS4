@@ -162,7 +162,7 @@ public class AnalyzePE extends ProcessingElement {
 		logger.info("Create Analyze PE");
 		eventFactory = new EventFactory();
 
-		loadModel("/alumnos/dwladdimiro/S4/experimentThesis/config/analyzeTweet.model");
+		loadModel("/home/daniel/Proyectos/monitorS4/experimentThesis/config/analyzeTweet.model");
 	}
 
 	@Override

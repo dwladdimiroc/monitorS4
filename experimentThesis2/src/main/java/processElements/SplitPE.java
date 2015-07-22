@@ -26,11 +26,11 @@ public class SplitPE extends ProcessingElement {
 
 		Tweet newTweet = tweet.getClone();
 		Event eventOutput = eventFactory.newEvent(newTweet);
-
+		
 		eventOutput.put("levelCounter", Long.class, getEventCount()
 				% getReplicationPE(CounterPE.class));
 		eventOutput.put("words", String[].class, words);
-		
+
 		downStream.put(eventOutput);
 	}
 

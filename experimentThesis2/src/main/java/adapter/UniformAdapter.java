@@ -20,14 +20,13 @@ import org.apache.s4.core.adapter.AdapterApp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eda.Tweet;
 import processElements.SplitPE;
+import eda.Tweet;
 import utilities.MongoRead;
 
 public class UniformAdapter extends AdapterApp implements Runnable {
 
-	private static Logger logger = LoggerFactory
-			.getLogger(UniformAdapter.class);
+	private static Logger logger = LoggerFactory.getLogger(UniformAdapter.class);
 
 	private Thread thread;
 	private Stack<Tweet> tweets;
@@ -42,7 +41,7 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 		/* Este orden es importante */
 		logger.info("Create Uniform Adapter");
 		tweets = readTweet();
-
+		
 		setRunMonitor(true);
 		this.registerMonitor(SplitPE.class);
 		thread = new Thread(this);
@@ -54,6 +53,7 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 	protected void onStart() {
 		/* Este orden es importante */
 		super.onStart();
+		getLogger().info("Wait for register");
 
 		try {
 			thread.start();
@@ -75,8 +75,7 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 			// logger.info(tweetCurrent.toString());
 
 			Event event = new Event();
-			event.put("levelStopword", Long.class, getEventCount()
-					% getReplicationPE(SplitPE.class));
+			event.put("levelSplit", Long.class, getEventCount() % getReplicationPE(SplitPE.class));
 			event.put("tweet", Tweet.class, tweetCurrent);
 			event.put("time", Long.class, System.currentTimeMillis());
 
@@ -106,21 +105,19 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 		@Override
 		public void run() {
 			try {
-				Thread.sleep(8795000);
+				Thread.sleep(4195000);
 			} catch (InterruptedException e) {
 				logger.error(e.toString());
 			}
 
 			while (true) {
-
 				timeFinal = System.currentTimeMillis();
-				if ((timeFinal - timeInit) >= 8800000) {
+				if ((timeFinal - timeInit) >= 4200000) {
 					close();
 					System.exit(0);
 				}
 
 			}
-
 		}
 	}
 

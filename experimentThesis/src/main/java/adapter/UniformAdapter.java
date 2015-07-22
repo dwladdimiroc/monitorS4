@@ -104,21 +104,19 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 		@Override
 		public void run() {
 			try {
-				Thread.sleep(10795000);
+				Thread.sleep(4195000);
 			} catch (InterruptedException e) {
 				logger.error(e.toString());
 			}
 
 			while (true) {
-
 				timeFinal = System.currentTimeMillis();
-				if ((timeFinal - timeInit) >= 10800000) {
+				if ((timeFinal - timeInit) >= 4200000) {
 					close();
 					System.exit(0);
 				}
 
 			}
-
 		}
 	}
 

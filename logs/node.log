@@ -1,64 +1,64 @@
 [H[2Jcalling referenced s4 script : /home/daniel/Proyectos/monitorS4/apache-s4-0.6.0/s4
-20:19:49.700 [main] INFO  o.a.s.comm.topology.AssignmentFromZK - New session:94101777738366978; state is : SyncConnected
-20:19:49.801 [main] INFO  o.a.s.comm.topology.AssignmentFromZK - Successfully acquired task:Task-0 by daniel-HP-Pavilion-dv7-Notebook-PC
-20:19:56.591 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Initializing S4 app with : []]
-20:19:56.774 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Loading application [monitorS4] from file [/tmp/tmp1509434493598605948s4r]
-20:19:56.775 [S4 platform loader] WARN  org.apache.s4.core.DefaultCoreModule - s4.tmp.dir not specified, using temporary directory [/tmp/1435879196775-0] for unpacking S4R. You may want to specify a parent non-temporary directory.
-20:19:56.775 [S4 platform loader] INFO  o.a.s4.base.util.S4RLoaderFactory - Unzipping S4R archive in [/tmp/1435879196775-0/tmp1509434493598605948s4r-1435879196775]
-20:19:57.112 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - App class name is: topology.Topology
-20:19:57.157 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster1,mode=unicast,type=,nodes=[{partition=0,port=12000,machineName=daniel-HP-Pavilion-dv7-Notebook-PC,taskId=Task-0}]} from null
-20:19:57.254 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.comm.tcp.TCPEmitter@25dcc5ea
-20:19:57.324 [S4 platform loader] INFO  o.a.s.c.s.ThrottlingSenderExecutorServiceFactory - Creating a throttling executor with a pool size of 5 and max rate of 200000 events / s
-20:19:57.333 [S4 platform loader] INFO  org.apache.s4.core.util.S4Metrics - Metrics reporting not configured
-20:19:57.335 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.core.SenderImpl@335f9796
-20:19:57.365 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - New session:94101777738366978
-20:19:57.371 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - New session:94101777738366978
-20:19:57.378 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster1,mode=unicast,type=,nodes=[{partition=0,port=12000,machineName=daniel-HP-Pavilion-dv7-Notebook-PC,taskId=Task-0}]} from null
-20:19:57.381 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Init Monitor
-20:19:57.381 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Loaded application from file /tmp/tmp1509434493598605948s4r
-20:19:57.428 [S4 platform loader] DEBUG o.a.s4.comm.topology.ClustersFromZK - Adding input stream [textInput] in cluster [cluster1]
-20:19:57.447 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - Detected new stream [textInput]
-20:19:57.456 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.StopwordPE].
-20:19:57.456 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.LanguagePE].
-20:19:57.457 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.MongoPE].
-20:19:57.457 [S4 platform loader] INFO  org.apache.s4.core.App - Start S4Monitor
-20:19:57.460 [S4 platform loader] INFO  o.a.s4.core.monitor.MonitorMetrics - Init S4Monitor Metrics
-20:19:57.461 [S4 platform loader] INFO  o.a.s4.core.monitor.MonitorMetrics - Reporting metrics of the monitor through csv files in directory [/home/daniel/Proyectos/monitorS4/statistics/] with frequency of [5] [SECONDS]
-20:19:57.463 [S4 platform loader] INFO  topology.Topology - Start Topology
-20:19:57.464 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Register PE
-20:19:57.468 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Register PE
-20:19:57.469 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Register PE
-20:19:57.470 [S4 platform loader] INFO  topology.Topology - Init ClockTime
-20:20:20.957 [textInput] INFO  processElements.StopwordPE - Create Stopword PE
-20:20:21.055 [languageStream] INFO  processElements.LanguagePE - Create Language PE
-20:20:21.244 [mongoStream] INFO  processElements.MongoPE - Create Mongo PE
-20:20:23.464 [pool-6-thread-1] DEBUG org.apache.s4.core.App - [PE] processElements.StopwordPE | [μ] 87
-20:20:23.464 [pool-6-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [λ] 268 | [μ] 87 | [ρ] 3.0804597701149423
-20:20:23.465 [pool-6-thread-1] DEBUG org.apache.s4.core.App - [PE] processElements.LanguagePE | [μ] 87
-20:20:23.465 [pool-6-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 87 | [μ] 87 | [ρ] 1.0
-20:20:23.465 [pool-6-thread-1] DEBUG org.apache.s4.core.App - [PE] processElements.MongoPE | [μ] 87
-20:20:23.465 [pool-6-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 87 | [μ] 87 | [ρ] 1.0
-20:20:28.464 [pool-6-thread-1] DEBUG org.apache.s4.core.App - [PE] processElements.StopwordPE | [μ] 244
-20:20:28.464 [pool-6-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [λ] 493 | [μ] 244 | [ρ] 2.0204918032786887
-20:20:28.465 [pool-6-thread-1] DEBUG org.apache.s4.core.App - [PE] processElements.LanguagePE | [μ] 244
-20:20:28.465 [pool-6-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 244 | [μ] 244 | [ρ] 1.0
-20:20:28.465 [pool-6-thread-1] DEBUG org.apache.s4.core.App - [PE] processElements.MongoPE | [μ] 244
-20:20:28.465 [pool-6-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 244 | [μ] 244 | [ρ] 1.0
-20:20:33.464 [pool-6-thread-1] DEBUG org.apache.s4.core.App - [PE] processElements.StopwordPE | [μ] 229
-20:20:33.464 [pool-6-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [λ] 493 | [μ] 229 | [ρ] 2.1528384279475983
-20:20:33.464 [pool-6-thread-1] DEBUG org.apache.s4.core.App - [PE] processElements.LanguagePE | [μ] 229
-20:20:33.464 [pool-6-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 229 | [μ] 229 | [ρ] 1.0
-20:20:33.464 [pool-6-thread-1] DEBUG org.apache.s4.core.App - [PE] processElements.MongoPE | [μ] 228
-20:20:33.464 [pool-6-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 229 | [μ] 228 | [ρ] 1.0043859649122806
-20:20:38.463 [pool-6-thread-1] DEBUG org.apache.s4.core.App - [PE] processElements.StopwordPE | [μ] 231
-20:20:38.464 [pool-6-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [λ] 494 | [μ] 231 | [ρ] 2.1385281385281387
-20:20:38.464 [pool-6-thread-1] DEBUG org.apache.s4.core.App - [PE] processElements.LanguagePE | [μ] 231
-20:20:38.464 [pool-6-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 231 | [μ] 231 | [ρ] 1.0
-20:20:38.464 [pool-6-thread-1] DEBUG org.apache.s4.core.App - [PE] processElements.MongoPE | [μ] 232
-20:20:38.464 [pool-6-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 231 | [μ] 232 | [ρ] 0.9956896551724138
-20:20:43.464 [pool-6-thread-1] DEBUG org.apache.s4.core.App - [PE] processElements.StopwordPE | [μ] 248
-20:20:43.464 [pool-6-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [λ] 494 | [μ] 248 | [ρ] 1.9919354838709677
-20:20:43.464 [pool-6-thread-1] DEBUG org.apache.s4.core.App - [PE] processElements.LanguagePE | [μ] 248
-20:20:43.464 [pool-6-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 248 | [μ] 248 | [ρ] 1.0
-20:20:43.464 [pool-6-thread-1] DEBUG org.apache.s4.core.App - [PE] processElements.MongoPE | [μ] 248
-20:20:43.465 [pool-6-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 248 | [μ] 248 | [ρ] 1.0
+14:37:44.630 [main] INFO  o.a.s.comm.topology.AssignmentFromZK - New session:94213679559606274; state is : SyncConnected
+14:37:44.723 [main] INFO  o.a.s.comm.topology.AssignmentFromZK - Successfully acquired task:Task-0 by daniel-HP-Pavilion-dv7-Notebook-PC
+14:37:51.634 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Initializing S4 app with : []]
+14:37:51.813 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Loading application [monitorS4] from file [/tmp/tmp955726885809166798s4r]
+14:37:51.814 [S4 platform loader] WARN  org.apache.s4.core.DefaultCoreModule - s4.tmp.dir not specified, using temporary directory [/tmp/1437586671814-0] for unpacking S4R. You may want to specify a parent non-temporary directory.
+14:37:51.814 [S4 platform loader] INFO  o.a.s4.base.util.S4RLoaderFactory - Unzipping S4R archive in [/tmp/1437586671814-0/tmp955726885809166798s4r-1437586671814]
+14:37:52.117 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - App class name is: topology.Topology
+14:37:52.160 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster1,mode=unicast,type=,nodes=[{partition=0,port=12000,machineName=daniel-HP-Pavilion-dv7-Notebook-PC,taskId=Task-0}]} from null
+14:37:52.215 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.comm.tcp.TCPEmitter@25dcc5ea
+14:37:52.266 [S4 platform loader] INFO  o.a.s.c.s.ThrottlingSenderExecutorServiceFactory - Creating a throttling executor with a pool size of 5 and max rate of 10000 events / s
+14:37:52.274 [S4 platform loader] INFO  org.apache.s4.core.util.S4Metrics - Metrics reporting not configured
+14:37:52.275 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.core.SenderImpl@335f9796
+14:37:52.320 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - New session:94213679559606274
+14:37:52.324 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - New session:94213679559606274
+14:37:52.337 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster1,mode=unicast,type=,nodes=[{partition=0,port=12000,machineName=daniel-HP-Pavilion-dv7-Notebook-PC,taskId=Task-0}]} from null
+14:37:52.341 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Init Monitor
+14:37:52.341 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Loaded application from file /tmp/tmp955726885809166798s4r
+14:37:52.375 [S4 platform loader] DEBUG o.a.s4.comm.topology.ClustersFromZK - Adding input stream [textInput] in cluster [cluster1]
+14:37:52.393 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - Detected new stream [textInput]
+14:37:52.411 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.StopwordPE].
+14:37:52.412 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.LanguagePE].
+14:37:52.412 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.CounterPE].
+14:37:52.413 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.MongoPE].
+14:37:52.413 [S4 platform loader] INFO  org.apache.s4.core.App - Start S4Monitor
+14:37:52.417 [S4 platform loader] INFO  o.a.s4.core.monitor.MonitorMetrics - Init S4Monitor Metrics
+14:37:52.417 [S4 platform loader] INFO  o.a.s4.core.monitor.MonitorMetrics - Reporting metrics of the monitor through csv files in directory [/home/daniel/Proyectos/monitorS4/statistics/] with frequency of [5] [SECONDS]
+14:38:10.901 [deserializer-0] INFO  org.apache.s4.core.Stream - Receive Notification
+14:38:10.902 [deserializer-0] INFO  org.apache.s4.core.monitor.S4Monitor - Register Adapter
+14:38:10.902 [deserializer-0] DEBUG org.apache.s4.core.Stream - InitAdapter: true
+14:38:10.904 [S4 platform loader] INFO  topology.Topology - Start Topology
+14:38:10.904 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Register PE
+14:38:10.907 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Register PE
+14:38:10.908 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Register PE
+14:38:10.908 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Register PE
+14:38:10.909 [S4 platform loader] INFO  topology.Topology - Init ClockTime
+14:38:11.297 [textInput] INFO  processElements.StopwordPE - Create Stopword PE
+14:38:11.414 [languageStream] INFO  processElements.LanguagePE - Create Language PE
+14:38:11.549 [counterStream] INFO  processElements.CounterPE - Create Counter PE
+14:38:11.797 [mongoStream] INFO  processElements.MongoPE - Create Mongo PE
+14:38:16.904 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [λ] 556 | [μ] 266 | [ρ] 2.0823970037453186
+14:38:16.904 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 266 | [μ] 266 | [ρ] 0.9962546816479401
+14:38:16.904 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [λ] 266 | [μ] 74 | [ρ] 3.546666666666667
+14:38:16.904 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 74 | [μ] 74 | [ρ] 0.9866666666666667
+14:38:16.905 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 556 | Send: 266 | Replication: 1]
+14:38:16.906 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 1
+14:38:16.906 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 2.0823970037453186
+14:38:16.906 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [1]
+14:38:16.906 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+14:38:16.906 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 266 | Send: 266 | Replication: 1]
+14:38:16.906 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 1
+14:38:16.906 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9962546816479401
+14:38:16.906 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0]
+14:38:16.906 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+14:38:16.907 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 266 | Send: 74 | Replication: 1]
+14:38:16.907 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 1
+14:38:16.907 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 3.546666666666667
+14:38:16.907 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [1]
+14:38:16.907 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+14:38:16.907 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 74 | Send: 74 | Replication: 1]
+14:38:16.907 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 1
+14:38:16.907 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9866666666666667
+14:38:16.907 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0]
+14:38:16.907 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0

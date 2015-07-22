@@ -265,6 +265,7 @@ public class Stream<T extends Event> implements Streamable {
 	 */
 	public void receiveNotification(Notification notification) {
 		// NOTE: ArrayBlockingQueue.size is O(1).
+		logger.info("Receive Notification");
 
 		/* Registro del Adaptar en el Monitor */
 		for (String peRecibe : notification.getListPE()) {
