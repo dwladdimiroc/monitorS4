@@ -1,0 +1,54 @@
+[H[Jcalling referenced s4 script : /alumnos/dwladdimiro/S4/apache-s4-0.6.0/s4
+22:39:41.864 [main] INFO  org.apache.s4.tools.DefineCluster - preparing new cluster [cluster2] with [1] node(s)
+22:39:42.043 [main] INFO  org.apache.s4.tools.DefineCluster - New cluster configuration uploaded into zookeeper
+calling referenced s4 script : /alumnos/dwladdimiro/S4/apache-s4-0.6.0/s4
+22:39:42.766 [main] INFO  o.a.s.c.u.ParsingUtils$InlineConfigParameterConverter - processing inline configuration parameter s4.adapter.output.stream=textInput
+22:39:42.881 [main] INFO  org.apache.s4.tools.Deploy - No S4R path specified, nor build file specified: this assumes the app is in the classpath
+:cp
+
+BUILD SUCCESSFUL
+
+Total time: 3.132 secs
+22:39:47.279 [main] INFO  o.a.s.comm.topology.AssignmentFromZK - New session:94243884960055304; state is : SyncConnected
+22:39:47.375 [main] INFO  o.a.s.comm.topology.AssignmentFromZK - Successfully acquired task:Task-0 by citiaps1.informatica.usach.cl
+22:39:47.390 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Initializing S4 app with : []]
+22:39:47.392 [S4 platform loader] DEBUG org.apache.s4.core.S4Bootstrap - Adding named parameters for injection : s4.adapter.output.stream=textInput,
+22:39:47.520 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Starting S4 app with application class [adapter.NormalAdapter]
+22:39:47.548 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster2,mode=unicast,type=,nodes=[{partition=0,port=13000,machineName=citiaps1.informatica.usach.cl,taskId=Task-0}]} from null
+22:39:47.642 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.comm.tcp.TCPEmitter@3bcc5b05
+22:39:47.697 [S4 platform loader] INFO  o.a.s.c.s.ThrottlingSenderExecutorServiceFactory - Creating a throttling executor with a pool size of 5 and max rate of 10000 events / s
+22:39:47.706 [S4 platform loader] INFO  org.apache.s4.core.util.S4Metrics - Metrics reporting not configured
+22:39:47.707 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.core.SenderImpl@7ca7e306
+22:39:47.751 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - New session:94243884960055304
+22:39:47.753 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - Detected new stream [textInput]
+22:39:47.763 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - New session:94243884960055304
+22:39:47.774 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster1,mode=unicast,type=,nodes=[{partition=0,port=12000,machineName=citiaps1.informatica.usach.cl,taskId=Task-0}]} from null
+22:39:47.777 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster2,mode=unicast,type=,nodes=[{partition=0,port=13000,machineName=citiaps1.informatica.usach.cl,taskId=Task-0}]} from null
+22:39:47.781 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Init Monitor
+22:39:47.781 [S4 platform loader] INFO  adapter.NormalAdapter - Create Normal Adapter
+22:40:00.664 [S4 platform loader] DEBUG o.a.s4.comm.topology.ClustersFromZK - Adding output stream [textInput] in cluster [cluster2]
+22:40:00.681 [S4 platform loader] INFO  org.apache.s4.core.App - Create Listener Monitor
+[class processElements.StopwordPE]
+22:40:00.717 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.comm.tcp.TCPRemoteEmitter@496e8c6
+22:40:01.220 [Thread-4] INFO  adapter.NormalAdapter - Time init (ms): 1438047601220
+22:40:01.220 [S4 platform loader] INFO  adapter.NormalAdapter - Init ClockTime
+22:40:36.256 [tListenerMonitor] DEBUG org.apache.s4.core.App - Increment PE  class processElements.StopwordPE in Adapter org.apache.s4.core.adapter.AdapterApp.ListenerMonitor
+22:40:46.269 [tListenerMonitor] DEBUG org.apache.s4.core.App - Decrement PE  class processElements.StopwordPE in Adapter org.apache.s4.core.adapter.AdapterApp.ListenerMonitor
+22:50:06.716 [tListenerMonitor] DEBUG org.apache.s4.core.App - Increment PE  class processElements.StopwordPE in Adapter org.apache.s4.core.adapter.AdapterApp.ListenerMonitor
+22:50:16.719 [tListenerMonitor] DEBUG org.apache.s4.core.App - Decrement PE  class processElements.StopwordPE in Adapter org.apache.s4.core.adapter.AdapterApp.ListenerMonitor
+22:55:21.888 [tListenerMonitor] DEBUG org.apache.s4.core.App - Increment PE  class processElements.StopwordPE in Adapter org.apache.s4.core.adapter.AdapterApp.ListenerMonitor
+22:55:31.892 [tListenerMonitor] DEBUG org.apache.s4.core.App - Decrement PE  class processElements.StopwordPE in Adapter org.apache.s4.core.adapter.AdapterApp.ListenerMonitor
+23:04:17.219 [tListenerMonitor] DEBUG org.apache.s4.core.App - Increment PE  class processElements.StopwordPE in Adapter org.apache.s4.core.adapter.AdapterApp.ListenerMonitor
+23:04:57.231 [tListenerMonitor] DEBUG org.apache.s4.core.App - Decrement PE  class processElements.StopwordPE in Adapter org.apache.s4.core.adapter.AdapterApp.ListenerMonitor
+23:05:17.249 [tListenerMonitor] DEBUG org.apache.s4.core.App - Increment PE  class processElements.StopwordPE in Adapter org.apache.s4.core.adapter.AdapterApp.ListenerMonitor
+23:05:27.252 [tListenerMonitor] DEBUG org.apache.s4.core.App - Decrement PE  class processElements.StopwordPE in Adapter org.apache.s4.core.adapter.AdapterApp.ListenerMonitor
+23:05:47.258 [tListenerMonitor] DEBUG org.apache.s4.core.App - Increment PE  class processElements.StopwordPE in Adapter org.apache.s4.core.adapter.AdapterApp.ListenerMonitor
+23:05:57.261 [tListenerMonitor] DEBUG org.apache.s4.core.App - Decrement PE  class processElements.StopwordPE in Adapter org.apache.s4.core.adapter.AdapterApp.ListenerMonitor
+23:06:27.270 [tListenerMonitor] DEBUG org.apache.s4.core.App - Increment PE  class processElements.StopwordPE in Adapter org.apache.s4.core.adapter.AdapterApp.ListenerMonitor
+23:33:22.971 [tListenerMonitor] DEBUG org.apache.s4.core.App - Decrement PE  class processElements.StopwordPE in Adapter org.apache.s4.core.adapter.AdapterApp.ListenerMonitor
+23:33:32.974 [tListenerMonitor] DEBUG org.apache.s4.core.App - Increment PE  class processElements.StopwordPE in Adapter org.apache.s4.core.adapter.AdapterApp.ListenerMonitor
+23:33:42.977 [tListenerMonitor] DEBUG org.apache.s4.core.App - Decrement PE  class processElements.StopwordPE in Adapter org.apache.s4.core.adapter.AdapterApp.ListenerMonitor
+23:33:52.980 [tListenerMonitor] DEBUG org.apache.s4.core.App - Increment PE  class processElements.StopwordPE in Adapter org.apache.s4.core.adapter.AdapterApp.ListenerMonitor
+23:34:02.983 [tListenerMonitor] DEBUG org.apache.s4.core.App - Decrement PE  class processElements.StopwordPE in Adapter org.apache.s4.core.adapter.AdapterApp.ListenerMonitor
+23:35:08.014 [tListenerMonitor] DEBUG org.apache.s4.core.App - Increment PE  class processElements.StopwordPE in Adapter org.apache.s4.core.adapter.AdapterApp.ListenerMonitor
+23:35:18.016 [tListenerMonitor] DEBUG org.apache.s4.core.App - Decrement PE  class processElements.StopwordPE in Adapter org.apache.s4.core.adapter.AdapterApp.ListenerMonitor

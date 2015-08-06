@@ -20,14 +20,14 @@ import org.apache.s4.core.adapter.AdapterApp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import processElements.StopwordPE;
 import eda.Tweet;
 import utilities.Distribution;
 import utilities.MongoRead;
 
 public class NormalAdapter extends AdapterApp implements Runnable {
 
-	private static Logger logger = LoggerFactory
-			.getLogger(NormalAdapter.class);
+	private static Logger logger = LoggerFactory.getLogger(NormalAdapter.class);
 
 	private Thread thread;
 	private Stack<Tweet> tweets;
@@ -37,8 +37,8 @@ public class NormalAdapter extends AdapterApp implements Runnable {
 		MongoRead mongoRead = new MongoRead();
 		return mongoRead.getAllTweets();
 	}
-	
-	public Stack<Integer> cantTweets(){
+
+	public Stack<Integer> cantTweets() {
 		Distribution distribution = new Distribution();
 		return distribution.exponentialTweets();
 	}
@@ -47,12 +47,12 @@ public class NormalAdapter extends AdapterApp implements Runnable {
 	protected void onInit() {
 		/* Este orden es importante */
 		logger.info("Create Normal Adapter");
-		setRunMonitor(false);
-		// this.registerMonitor();
-		thread = new Thread(this);
-		
 		tweets = readTweet();
-		
+
+		setRunMonitor(true);
+		this.registerMonitor(StopwordPE.class);
+		thread = new Thread(this);
+
 		Distribution distribution = new Distribution();
 		cantTweets = distribution.parabolaTweets();
 
@@ -69,6 +69,9 @@ public class NormalAdapter extends AdapterApp implements Runnable {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+
+		Thread clockTime = new Thread(new ClockTime());
+		clockTime.start();
 	}
 
 	@Override
@@ -77,32 +80,58 @@ public class NormalAdapter extends AdapterApp implements Runnable {
 		logger.info("Time init (ms): " + timeInit);
 
 		while (true) {
-			long timeFinal = System.currentTimeMillis();
-			if ((timeFinal - timeInit) >= 10800000) {
-				close();
-				System.exit(0);
-			}
 
 			int cantCurrent = cantTweets.pop();
-					
+
 			for (int i = 1; i <= cantCurrent; i++) {
 				Tweet tweetCurrent = tweets.pop();
 
 				Event event = new Event();
-				event.put("idTweet", Integer.class, tweetCurrent.getIdTweet());
-				event.put("text", String.class, tweetCurrent.getText());
+				event.put("levelStopword", Long.class, getEventCount()
+						% getReplicationPE(StopwordPE.class));
+				event.put("tweet", Tweet.class, tweetCurrent);
+				event.put("time", Long.class, System.currentTimeMillis());
 
 				getRemoteStream().put(event);
 			}
 
 			try {
-				Thread.sleep(10);
+				Thread.sleep(40);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 
 		}
 
+	}
+
+	public class ClockTime implements Runnable {
+		long timeInit;
+		long timeFinal;
+
+		public ClockTime() {
+			logger.info("Init ClockTime");
+			timeInit = System.currentTimeMillis();
+			timeFinal = 0;
+		}
+
+		@Override
+		public void run() {
+			try {
+				Thread.sleep(4195000);
+			} catch (InterruptedException e) {
+				logger.error(e.toString());
+			}
+
+			while (true) {
+				timeFinal = System.currentTimeMillis();
+				if ((timeFinal - timeInit) >= 4200000) {
+					close();
+					System.exit(0);
+				}
+
+			}
+		}
 	}
 
 }

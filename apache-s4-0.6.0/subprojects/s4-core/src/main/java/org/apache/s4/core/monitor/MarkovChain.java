@@ -45,8 +45,13 @@ public class MarkovChain {
 		 * entre [0-1], dando así la probabilidad de cambiar de un estado a
 		 * otro.
 		 */
+		if (n > rho.length) {
+			n = rho.length;
+		}
+		
 		int cont[] = new int[3];
 		for (int i = 0; i < n - 1; i++) {
+
 			/*
 			 * En este caso se analizó si en cierto período de tiempo se mantuvo
 			 * el sistema en el estado ocioso.
@@ -56,8 +61,7 @@ public class MarkovChain {
 				cont[0]++;
 			}
 			// Que haya pasado de un estado ocioso a uno estable
-			else if ((rho[i] < 0.5) && (rho[i + 1] >= 0.5)
-					&& (rho[i + 1] <= 1)) {
+			else if ((rho[i] < 0.5) && (rho[i + 1] >= 0.5) && (rho[i + 1] <= 1)) {
 				transitionMatrix[0][1]++;
 				cont[0]++;
 			}
@@ -88,8 +92,7 @@ public class MarkovChain {
 				cont[2]++;
 			}
 			// De un estado inestable a uno estable
-			else if ((rho[i] > 1) && (rho[i + 1] >= 0.5)
-					&& (rho[i + 1] <= 1)) {
+			else if ((rho[i] > 1) && (rho[i + 1] >= 0.5) && (rho[i + 1] <= 1)) {
 				transitionMatrix[2][1]++;
 				cont[2]++;
 			}
@@ -124,23 +127,32 @@ public class MarkovChain {
 		 * ser así, el estado inicial para calcular la distribución estacionaria
 		 * será el estado estable.
 		 */
-		int acum;
-		int i = 0;
-		for (int k = 0; k < 3; k++) {
-
-			acum = 0;
-			for (int j = 0; j < 3; j++) {
-				if (transitionMatrix[k][j] == 0) {
-					acum++;
-				}
-			}
-
-			if (acum != 3) {
-				i = k;
-				break;
-			}
-
+		int i;
+		if (rho[rho.length - 1] < 0.5) {
+			i = 0;
+		} else if ((rho[rho.length - 1] >= 0.5) && (rho[rho.length - 1] <= 1)) {
+			i = 1;
+		} else {
+			i = 2;
 		}
+
+		// int acum;
+		// int i = 0;
+		// for (int k = 0; k < 3; k++) {
+		//
+		// acum = 0;
+		// for (int j = 0; j < 3; j++) {
+		// if (transitionMatrix[k][j] == 0) {
+		// acum++;
+		// }
+		// }
+		//
+		// if (acum != 3) {
+		// i = k;
+		// break;
+		// }
+		//
+		// }
 
 		/*
 		 * Finalmente, se calculará la distribución estacionaria dada la

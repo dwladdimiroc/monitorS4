@@ -264,7 +264,7 @@ public class S4Monitor {
 			 */
 			statusPE.setSendEvent(μ);
 			statusPE.setRecibeEvent(λ);
-			statusPE.setEventCount(eventCount);
+			statusPE.setEventCount(statusPE.getEventCount() + eventCount);
 
 			/* Get Statistics */
 
@@ -288,10 +288,7 @@ public class S4Monitor {
 					statusPE.setSendEventUnit(μUnit);
 
 			} else {
-				if (((period % 20) != 0) && ((period % 20) != 1)) {
-					if (μUnit > statusPE.getSendEventUnit())
-						statusPE.setSendEventUnit(μUnit);
-				} else if ((period % 20) == 0) {
+				if ((period % 20) == 0) {
 					/*
 					 * En caso que se encuentre una tasa de procesamiento mayor,
 					 * se cambia el valor de la tasa de procesamiento del
@@ -302,6 +299,9 @@ public class S4Monitor {
 
 					// statusPE.setSendEventPeriod(0);
 					initStatus = false;
+				} else if (((period % 20) != 0) && ((period % 20) != 1)) {
+					if (μUnit > statusPE.getSendEventUnit())
+						statusPE.setSendEventUnit(μUnit);
 				}
 			}
 
@@ -545,13 +545,20 @@ public class S4Monitor {
 
 			// numReplica = predictiveLoad(statusPE);
 			numReplica = 0;
-			int replicationAvailable = replicationMax - replicationTotal;
-			if (replicationAvailable > 0) {
-				if (numReplica > replicationAvailable) {
-					numReplica = replicationAvailable;
+			if (numReplica < 0) {
+				int numMod = numReplica * -1;
+				if (numMod >= statusPE.getReplication()) {
+					numReplica = (statusPE.getReplication() - 1) * -1;
 				}
 			}
-			replicationTotal += numReplica;
+			// numReplica = 0;
+			// int replicationAvailable = replicationMax - replicationTotal;
+			// if (replicationAvailable > 0) {
+			// if (numReplica > replicationAvailable) {
+			// numReplica = replicationAvailable;
+			// }
+			// }
+			// replicationTotal += numReplica;
 
 		}
 
@@ -762,19 +769,21 @@ public class S4Monitor {
 			 * afectados por la replicación.
 			 */
 			if (status > 0) {
-				logger.debug("Increment PE " + statusPE.getPE());
 
 				for (int i = 1; i <= status; i++) {
 					getMetrics().counterReplicationPE(
 							statusPE.getPE().getCanonicalName(), true);
 				}
 				statusPE.setReplication(statusPE.getReplication() + status);
+
+				logger.debug("Increment PE " + statusPE.getPE()
+						+ " | Current replication ["
+						+ statusPE.getReplication() + "]");
 				// intelligentReplication(statusPE, true);
 
 			} else if (status < 0) {
 
 				if (statusPE.getReplication() > 1) {
-					logger.debug("Decrement PE " + statusPE.getPE());
 
 					for (int i = 1; i <= (-1 * status); i++) {
 						getMetrics().counterReplicationPE(
@@ -784,6 +793,10 @@ public class S4Monitor {
 					if (statusPE.getReplication() < 1) {
 						statusPE.setReplication(1);
 					}
+
+					logger.debug("Decrement PE " + statusPE.getPE()
+							+ " | Current replication ["
+							+ statusPE.getReplication() + "]");
 					// intelligentReplication(statusPE, false);
 				}
 

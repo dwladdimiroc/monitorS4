@@ -154,6 +154,7 @@ public abstract class ProcessingElement implements Cloneable {
 	transient private boolean isThreadSafe = false;
 	transient private String name = null;
 	transient private boolean isSingleton = false;
+	transient private boolean isUnique = false;
 
 	transient long eventSegQueue = 0;
 	transient long eventPeriodQueue = 0;
@@ -459,6 +460,14 @@ public abstract class ProcessingElement implements Cloneable {
 		this.isSingleton = isSingleton;
 
 		return this;
+	}
+
+	public boolean isUnique() {
+		return isUnique;
+	}
+
+	public void setUnique(boolean isUnique) {
+		this.isUnique = isUnique;
 	}
 
 	/**

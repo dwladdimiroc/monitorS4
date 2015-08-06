@@ -298,7 +298,7 @@ public class MonitorMetrics {
 
 	public void setAvgTimeTotal(long avgTimeTotal) {
 		nEvent++;
-		this.avgTimeTotal = ((this.avgTimeTotal * nEvent - 1) + avgTimeTotal)
+		this.avgTimeTotal = ((this.avgTimeTotal * (nEvent - 1)) + avgTimeTotal)
 				/ nEvent;
 	}
 

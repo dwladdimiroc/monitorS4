@@ -222,7 +222,7 @@ public abstract class App {
 				 */
 				ScheduledExecutorService sendStatus = Executors
 						.newSingleThreadScheduledExecutor();
-				sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 6000,
+				sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 5000,
 						5000, TimeUnit.MILLISECONDS);
 
 				// getLogger().info("TimerMonitor send status");
@@ -233,7 +233,7 @@ public abstract class App {
 			/* Solo para obtener estadísticas */
 			ScheduledExecutorService sendStatus = Executors
 					.newSingleThreadScheduledExecutor();
-			sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 6000, 5000,
+			sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 5000, 5000,
 					TimeUnit.MILLISECONDS);
 		}
 
@@ -265,29 +265,64 @@ public abstract class App {
 				for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
 					/* Obtención de la tasa de procesamiento */
 					long μ = 0;
-					for (ProcessingElement PE : PEPrototype.getInstances()) {
-						μ += PE.getEventSeg();
-						if (μ > PEPrototype.getEventUnit()) {
-							PEPrototype.setEventUnit(μ);
+					long μUnit = 0;
+					if (PEPrototype.getEventUnit() == 0) {
+						for (ProcessingElement PE : PEPrototype.getInstances()) {
+							μ += PE.getEventSeg();
+							if (μUnit < PE.getEventSeg()) {
+								μUnit = PE.getEventSeg();
+								// logger.debug("PE "
+								// + PEPrototype.getClass().getCanonicalName()
+								// + " | μ " + μ);
+							}
+							// Reinicio del contador de eventos para períodos de
+							// un segundo
+							PE.setEventSeg(0);
 						}
-						// Reinicio del contador de eventos para períodos de un
-						// segundo
-						PE.setEventSeg(0);
+						PEPrototype.setEventPeriod(μUnit);
+					} else {
+						for (ProcessingElement PE : PEPrototype.getInstances()) {
+							μ += PE.getEventSeg();
+							// Reinicio del contador de eventos para períodos de
+							// un segundo
+							PE.setEventSeg(0);
+						}
 					}
 
 					/* Obtención de la tasa de llegada */
 					long λ = PEPrototype.getEventSegQueue();
+					// logger.debug("PE "
+					// + PEPrototype.getClass().getCanonicalName()
+					// + " | λ " + λ);
 					PEPrototype.setEventSegQueue(0);
+
+					/* Obtención de la cantidad de servicios */
+					long s = PEPrototype.getInstances().size();
 
 					/* Cálculo de la tasa de rendimiento */
 					double ρ = 0;
 					if (μ != 0) {
-						ρ = (double) λ / (double) μ;
-						if ((ρ > 1.0) && (ρ < 1.5)
-								&& (PEPrototype.getEventUnit() != 0)) {
-							double μPE = PEPrototype.getEventUnit();
-							long s = PEPrototype.getInstances().size();
-							ρ = (double) λ / ((double) s * μPE);
+						if (s == 1) {
+							ρ = (double) λ / (double) (μ + s);
+						} else {
+							if (PEPrototype.getEventUnit() != 0) {
+								double μPE = PEPrototype.getEventUnit();
+								ρ = (double) λ / ((double) s * μPE);
+								// logger.info("[PE] "
+								// + PEPrototype.getClass()
+								// .getCanonicalName() + " | [s] "
+								// + s + " | [μ] " + μ + " | [s*μ] "
+								// + ((double) s * μPE) + " | [λ] " + λ
+								// + " | [ρ] " + ρ);
+							} else {
+								ρ = (double) λ / (double) (s * μ);
+								logger.error("[PE2] "
+										+ PEPrototype.getClass()
+												.getCanonicalName() + " | [s] "
+										+ s + " | [μ] " + μ + " | [s*μ] "
+										+ ((double) s * μ) + " | [λ] " + λ
+										+ " | [ρ] " + ρ);
+							}
 						}
 					} else if ((μ == 0) && (λ == 0)) {
 						ρ = 1;
@@ -348,7 +383,7 @@ public abstract class App {
 					long eventCount = 0;
 					for (ProcessingElement PE : PEPrototype.getInstances()) {
 						μ += PE.getEventPeriod();
-						eventCount += PE.getEventCount();
+						eventCount += μ;
 
 						/* Tasa de procesamiento unitaria */
 						if (μUnit < PE.getEventPeriod())
@@ -368,6 +403,10 @@ public abstract class App {
 					if (!getMonitor().sendStatus(PEPrototype.getClass(), λ, μ,
 							μUnit, eventCount))
 						logger.error("Error en el sendStatus");
+
+					PEPrototype.setEventUnit((long) Math.floor(getMonitor()
+							.getStatusSystem().get(PEPrototype.getClass())
+							.getSendEventUnit() / 5));
 				}
 			}
 
@@ -432,7 +471,7 @@ public abstract class App {
 
 				StatusPE statusPE = statusSystem.get(peCurrent);
 
-				if (!isSingleton(statusPE)) {
+				if (!isUnique(statusPE)) {
 
 					/* Lista de los Adapters que proveen eventos al PE analizado */
 					List<Class<? extends AdapterApp>> listAdapter = getAdapter(statusPE
@@ -469,12 +508,12 @@ public abstract class App {
 		 * 
 		 * @param statusPE
 		 *            PE a analizar
-		 * @return si es Singleton o no
+		 * @return si es única o no
 		 */
-		private boolean isSingleton(StatusPE statusPE) {
+		private boolean isUnique(StatusPE statusPE) {
 			for (ProcessingElement peCurrent : pePrototypes) {
 				if (peCurrent.getClass().equals(statusPE.getPE())) {
-					if (peCurrent.isSingleton()) {
+					if (peCurrent.isUnique()) {
 						return true;
 					} else {
 						return false;
@@ -703,7 +742,7 @@ public abstract class App {
 		 * 
 		 * @param statusPE
 		 */
-		private void changeInstances(StatusPE statusPE) {
+		public void changeInstances(StatusPE statusPE) {
 
 			for (ProcessingElement peCurrent : pePrototypes) {
 				if (statusPE.getPE().equals(peCurrent.getClass())) {
@@ -711,14 +750,15 @@ public abstract class App {
 					int replicationAnalyze = statusPE.getReplication();
 					if (replicationCurrent < replicationAnalyze) {
 						addReplication(statusPE);
+						return;
 					} else if (replicationCurrent > replicationAnalyze) {
 						removeReplication(statusPE);
+						return;
 					}
 				}
 			}
 
 		}
-
 	}
 
 	/**
@@ -788,10 +828,13 @@ public abstract class App {
 			for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
 				/* Analizamos si el PE es el que deseamos replicar */
 				if (PEPrototype.getClass().equals(statusPE.getPE())) {
-					for (long i = PEPrototype.getNumPEInstances(); i < statusPE
-							.getReplication(); i++) {
+					long numPE = PEPrototype.getNumPEInstances();
+					for (long i = numPE; i < statusPE.getReplication(); i++) {
+						logger.debug("Create ID [" + i + "] of PE "
+								+ statusPE.getPE().getCanonicalName());
 						PEPrototype.getInstanceForKey(Long.toString(i));
 					}
+					return;
 				}
 
 			}
@@ -818,12 +861,14 @@ public abstract class App {
 				/* Analizamos si el PE es el que deseamos eliminar */
 				if (statusPE.getPE().equals(PEPrototype.getClass())) {
 					// logger.info("[RemovePE] In " + statusPE.getPE());
-					for (int i = statusPE.getReplication(); i < PEPrototype
-							.getInstances().size(); i++) {
+					long numPE = PEPrototype.getNumPEInstances();
+					for (long i = statusPE.getReplication(); i < numPE; i++) {
+						logger.debug("Remove ID [" + i + "] of PE "
+								+ statusPE.getPE().getCanonicalName());
 						// for (ProcessingElement PE :
 						// PEPrototype.getInstances()) {
 						ProcessingElement peCurrent = PEPrototype
-								.getInstanceForKey(Integer.toString(i));
+								.getInstanceForKey(Long.toString(i));
 						// int replicationCurrent =
 						// Integer.parseInt(PE.getId());
 

@@ -82,7 +82,7 @@ public class Topology extends App {
 		processOnePE.setDownStream(processTwoStream);
 		processTwoPE.setDownStream(mongoStream);
 
-		setRunMonitor(false);
+		setRunMonitor(true);
 	}
 
 	@Override
@@ -130,14 +130,14 @@ public class Topology extends App {
 		@Override
 		public void run() {
 			try {
-				Thread.sleep(10795000);
+				Thread.sleep(895000);
 			} catch (InterruptedException e) {
 				logger.error(e.toString());
 			}
 
 			while (true) {
 				timeFinal = System.currentTimeMillis();
-				if ((timeFinal - timeInit) >= 10800000) {
+				if ((timeFinal - timeInit) >= 900000) {
 					close();
 					System.exit(0);
 				}

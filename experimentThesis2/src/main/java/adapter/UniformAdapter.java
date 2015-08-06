@@ -26,7 +26,8 @@ import utilities.MongoRead;
 
 public class UniformAdapter extends AdapterApp implements Runnable {
 
-	private static Logger logger = LoggerFactory.getLogger(UniformAdapter.class);
+	private static Logger logger = LoggerFactory
+			.getLogger(UniformAdapter.class);
 
 	private Thread thread;
 	private Stack<Tweet> tweets;
@@ -41,7 +42,7 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 		/* Este orden es importante */
 		logger.info("Create Uniform Adapter");
 		tweets = readTweet();
-		
+
 		setRunMonitor(true);
 		this.registerMonitor(SplitPE.class);
 		thread = new Thread(this);
@@ -70,12 +71,13 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 
 		while (true) {
 
-			// for (int i = 1; i <= 4; i++) {
+			// for (int i = 1; i <= 100; i++) {
 			Tweet tweetCurrent = tweets.pop();
 			// logger.info(tweetCurrent.toString());
 
 			Event event = new Event();
-			event.put("levelSplit", Long.class, getEventCount() % getReplicationPE(SplitPE.class));
+			event.put("levelSplit", Long.class, getEventCount()
+					% getReplicationPE(SplitPE.class));
 			event.put("tweet", Tweet.class, tweetCurrent);
 			event.put("time", Long.class, System.currentTimeMillis());
 

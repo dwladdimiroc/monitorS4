@@ -27,14 +27,18 @@ public class MergePE extends ProcessingElement {
 		Map<String, Integer> counterWords = event
 				.get("counterWords", Map.class);
 
-		for (String word : counterWords.keySet()) {
-			if (mergeCounter.containsKey(word)) {
-				int counter = mergeCounter.get(word) + counterWords.get(word);
-				mergeCounter.put(word, counter);
-			} else {
-				mergeCounter.put(word, counterWords.get(word));
+		if (!counterWords.isEmpty()) {
+			for (String word : counterWords.keySet()) {
+				if (mergeCounter.containsKey(word)) {
+					int counter = mergeCounter.get(word)
+							+ counterWords.get(word);
+					mergeCounter.put(word, counter);
+				} else {
+					mergeCounter.put(word, counterWords.get(word));
+				}
 			}
 		}
+		// logger.debug(mergeCounter.toString());
 	}
 
 	@Override

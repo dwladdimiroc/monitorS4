@@ -23,7 +23,7 @@ public class MongoPE extends ProcessingElement {
 		
 		/* Statistics */
 		//logger.info(event.toString());
-		long timeInit = event.get("time", Long.class);
+		long timeInit = event.get("timeTweet", Long.class);
 		long timeFinal = System.currentTimeMillis();
 		long time = timeFinal - timeInit;
 		getApp().getMonitor().getMetrics().setAvgTimeTotal(time);

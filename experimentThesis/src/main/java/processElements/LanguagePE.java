@@ -32,7 +32,9 @@ public class LanguagePE extends ProcessingElement {
 	public void onEvent(Event event) {
 
 		Tweet tweet = event.get("tweet", Tweet.class);
-		Long time = event.get("time", Long.class);
+		long time = event.get("timeTweet", Long.class);
+
+		// logger.info("[Event] Time: " + timeDelta + " (ms)");
 
 		tweet.setLanguage(detectorLanguage(tweet.getText()));
 
@@ -40,9 +42,10 @@ public class LanguagePE extends ProcessingElement {
 
 		eventOutput.put("levelCounter", Long.class, getEventCount()
 				% getReplicationPE(CounterPE.class));
-		eventOutput.put("time", Long.class, time);
+		eventOutput.put("timeTweet", Long.class, time);
 
 		downStream.put(eventOutput);
+
 	}
 
 	@Override

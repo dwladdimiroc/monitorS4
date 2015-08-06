@@ -46,13 +46,13 @@ public class Topology extends App {
 		// Create the PE prototype
 
 		splitPE = createPE(SplitPE.class);
-		splitPE.setSingleton(true);
-		
+		splitPE.setUnique(true);
+
 		counterPE = createPE(CounterPE.class);
-		counterPE.setTimerInterval(10000, TimeUnit.MICROSECONDS);
-		
+		counterPE.setTimerInterval(10, TimeUnit.SECONDS);
+
 		mergePE = createPE(MergePE.class);
-		mergePE.setSingleton(true);	
+		splitPE.setUnique(true);
 
 		// Create a stream that listens to the "textInput" stream and passes
 		// events to the processPE instance.
@@ -67,7 +67,6 @@ public class Topology extends App {
 				new KeyFinder<Event>() {
 					@Override
 					public List<String> get(Event event) {
-
 						return Arrays.asList(new String[] { event
 								.get("levelCounter") });
 					}
@@ -79,7 +78,7 @@ public class Topology extends App {
 					public List<String> get(Event event) {
 
 						return Arrays.asList(new String[] { event
-								.get("levelCounter") });
+								.get("levelMerge") });
 					}
 				}, mergePE).setParallelism(1);
 

@@ -1,64 +1,859 @@
-[H[2Jcalling referenced s4 script : /home/daniel/Proyectos/monitorS4/apache-s4-0.6.0/s4
-14:37:44.630 [main] INFO  o.a.s.comm.topology.AssignmentFromZK - New session:94213679559606274; state is : SyncConnected
-14:37:44.723 [main] INFO  o.a.s.comm.topology.AssignmentFromZK - Successfully acquired task:Task-0 by daniel-HP-Pavilion-dv7-Notebook-PC
-14:37:51.634 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Initializing S4 app with : []]
-14:37:51.813 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Loading application [monitorS4] from file [/tmp/tmp955726885809166798s4r]
-14:37:51.814 [S4 platform loader] WARN  org.apache.s4.core.DefaultCoreModule - s4.tmp.dir not specified, using temporary directory [/tmp/1437586671814-0] for unpacking S4R. You may want to specify a parent non-temporary directory.
-14:37:51.814 [S4 platform loader] INFO  o.a.s4.base.util.S4RLoaderFactory - Unzipping S4R archive in [/tmp/1437586671814-0/tmp955726885809166798s4r-1437586671814]
-14:37:52.117 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - App class name is: topology.Topology
-14:37:52.160 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster1,mode=unicast,type=,nodes=[{partition=0,port=12000,machineName=daniel-HP-Pavilion-dv7-Notebook-PC,taskId=Task-0}]} from null
-14:37:52.215 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.comm.tcp.TCPEmitter@25dcc5ea
-14:37:52.266 [S4 platform loader] INFO  o.a.s.c.s.ThrottlingSenderExecutorServiceFactory - Creating a throttling executor with a pool size of 5 and max rate of 10000 events / s
-14:37:52.274 [S4 platform loader] INFO  org.apache.s4.core.util.S4Metrics - Metrics reporting not configured
-14:37:52.275 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.core.SenderImpl@335f9796
-14:37:52.320 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - New session:94213679559606274
-14:37:52.324 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - New session:94213679559606274
-14:37:52.337 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster1,mode=unicast,type=,nodes=[{partition=0,port=12000,machineName=daniel-HP-Pavilion-dv7-Notebook-PC,taskId=Task-0}]} from null
-14:37:52.341 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Init Monitor
-14:37:52.341 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Loaded application from file /tmp/tmp955726885809166798s4r
-14:37:52.375 [S4 platform loader] DEBUG o.a.s4.comm.topology.ClustersFromZK - Adding input stream [textInput] in cluster [cluster1]
-14:37:52.393 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - Detected new stream [textInput]
-14:37:52.411 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.StopwordPE].
-14:37:52.412 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.LanguagePE].
-14:37:52.412 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.CounterPE].
-14:37:52.413 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.MongoPE].
-14:37:52.413 [S4 platform loader] INFO  org.apache.s4.core.App - Start S4Monitor
-14:37:52.417 [S4 platform loader] INFO  o.a.s4.core.monitor.MonitorMetrics - Init S4Monitor Metrics
-14:37:52.417 [S4 platform loader] INFO  o.a.s4.core.monitor.MonitorMetrics - Reporting metrics of the monitor through csv files in directory [/home/daniel/Proyectos/monitorS4/statistics/] with frequency of [5] [SECONDS]
-14:38:10.901 [deserializer-0] INFO  org.apache.s4.core.Stream - Receive Notification
-14:38:10.902 [deserializer-0] INFO  org.apache.s4.core.monitor.S4Monitor - Register Adapter
-14:38:10.902 [deserializer-0] DEBUG org.apache.s4.core.Stream - InitAdapter: true
-14:38:10.904 [S4 platform loader] INFO  topology.Topology - Start Topology
-14:38:10.904 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Register PE
-14:38:10.907 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Register PE
-14:38:10.908 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Register PE
-14:38:10.908 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Register PE
-14:38:10.909 [S4 platform loader] INFO  topology.Topology - Init ClockTime
-14:38:11.297 [textInput] INFO  processElements.StopwordPE - Create Stopword PE
-14:38:11.414 [languageStream] INFO  processElements.LanguagePE - Create Language PE
-14:38:11.549 [counterStream] INFO  processElements.CounterPE - Create Counter PE
-14:38:11.797 [mongoStream] INFO  processElements.MongoPE - Create Mongo PE
-14:38:16.904 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [λ] 556 | [μ] 266 | [ρ] 2.0823970037453186
-14:38:16.904 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 266 | [μ] 266 | [ρ] 0.9962546816479401
-14:38:16.904 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [λ] 266 | [μ] 74 | [ρ] 3.546666666666667
-14:38:16.904 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 74 | [μ] 74 | [ρ] 0.9866666666666667
-14:38:16.905 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 556 | Send: 266 | Replication: 1]
-14:38:16.906 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 1
-14:38:16.906 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 2.0823970037453186
-14:38:16.906 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [1]
-14:38:16.906 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
-14:38:16.906 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 266 | Send: 266 | Replication: 1]
-14:38:16.906 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 1
-14:38:16.906 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9962546816479401
-14:38:16.906 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0]
-14:38:16.906 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
-14:38:16.907 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 266 | Send: 74 | Replication: 1]
-14:38:16.907 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 1
-14:38:16.907 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 3.546666666666667
-14:38:16.907 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [1]
-14:38:16.907 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
-14:38:16.907 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 74 | Send: 74 | Replication: 1]
-14:38:16.907 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 1
-14:38:16.907 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9866666666666667
-14:38:16.907 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0]
-14:38:16.907 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+[H[Jcalling referenced s4 script : /home/daniel/Proyectos/monitorS4/apache-s4-0.6.0/s4
+17:25:53.131 [main] INFO  o.a.s.comm.topology.AssignmentFromZK - New session:94248314609598466; state is : SyncConnected
+17:25:53.237 [main] INFO  o.a.s.comm.topology.AssignmentFromZK - Successfully acquired task:Task-0 by daniel-HP-Pavilion-dv7-Notebook-PC
+17:25:59.233 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Initializing S4 app with : []]
+17:25:59.432 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Loading application [experimentThesis] from file [/tmp/tmp6788108271576689385s4r]
+17:25:59.433 [S4 platform loader] WARN  org.apache.s4.core.DefaultCoreModule - s4.tmp.dir not specified, using temporary directory [/tmp/1438115159432-0] for unpacking S4R. You may want to specify a parent non-temporary directory.
+17:25:59.433 [S4 platform loader] INFO  o.a.s4.base.util.S4RLoaderFactory - Unzipping S4R archive in [/tmp/1438115159432-0/tmp6788108271576689385s4r-1438115159433]
+17:25:59.748 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - App class name is: topology.Topology
+17:25:59.800 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster1,mode=unicast,type=,nodes=[{partition=0,port=12000,machineName=daniel-HP-Pavilion-dv7-Notebook-PC,taskId=Task-0}]} from null
+17:25:59.854 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.comm.tcp.TCPEmitter@62cc8a37
+17:25:59.916 [S4 platform loader] INFO  o.a.s.c.s.ThrottlingSenderExecutorServiceFactory - Creating a throttling executor with a pool size of 5 and max rate of 10000 events / s
+17:25:59.924 [S4 platform loader] INFO  org.apache.s4.core.util.S4Metrics - Metrics reporting not configured
+17:25:59.925 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.core.SenderImpl@71644cda
+17:25:59.961 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - New session:94248314609598466
+17:25:59.965 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - New session:94248314609598466
+17:25:59.978 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster1,mode=unicast,type=,nodes=[{partition=0,port=12000,machineName=daniel-HP-Pavilion-dv7-Notebook-PC,taskId=Task-0}]} from null
+17:25:59.984 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Init Monitor
+17:25:59.984 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Loaded application from file /tmp/tmp6788108271576689385s4r
+17:26:00.025 [S4 platform loader] DEBUG o.a.s4.comm.topology.ClustersFromZK - Adding input stream [textInput] in cluster [cluster1]
+17:26:00.046 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - Detected new stream [textInput]
+17:26:00.068 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.StopwordPE].
+17:26:00.069 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.LanguagePE].
+17:26:00.069 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.CounterPE].
+17:26:00.069 [S4 platform loader] INFO  org.apache.s4.core.App - Init prototype [processElements.MongoPE].
+17:26:00.069 [S4 platform loader] INFO  org.apache.s4.core.App - Start S4Monitor
+17:26:00.075 [S4 platform loader] INFO  o.a.s4.core.monitor.MonitorMetrics - Init S4Monitor Metrics
+17:26:00.075 [S4 platform loader] INFO  o.a.s4.core.monitor.MonitorMetrics - Reporting metrics of the monitor through csv files in directory [/home/daniel/Proyectos/monitorS4/statistics/] with frequency of [5] [SECONDS]
+17:26:23.632 [deserializer-0] INFO  org.apache.s4.core.Stream - Receive Notification
+17:26:23.632 [deserializer-0] INFO  org.apache.s4.core.monitor.S4Monitor - Register Adapter
+17:26:23.634 [deserializer-0] DEBUG org.apache.s4.core.Stream - InitAdapter: true
+17:26:23.637 [S4 platform loader] INFO  topology.Topology - Start Topology
+17:26:23.637 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Register PE
+17:26:23.643 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Register PE
+17:26:23.644 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Register PE
+17:26:23.645 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Register PE
+17:26:23.647 [S4 platform loader] INFO  topology.Topology - Init ClockTime
+17:26:24.034 [textInput] INFO  processElements.StopwordPE - Create Stopword PE
+17:26:24.186 [languageStream] INFO  processElements.LanguagePE - Create Language PE
+17:26:24.313 [counterStream] INFO  processElements.CounterPE - Create Counter PE
+17:26:24.503 [mongoStream] INFO  processElements.MongoPE - Create Mongo PE
+17:26:28.637 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [λ] 457 | [μ] 200 | [ρ] 2.27363184079602
+17:26:28.637 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 200 | [μ] 200 | [ρ] 0.9950248756218906
+17:26:28.637 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [λ] 200 | [μ] 55 | [ρ] 3.5714285714285716
+17:26:28.637 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 55 | [μ] 55 | [ρ] 0.9821428571428571
+17:26:28.638 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 457 | Send: 200 | Replication: 1]
+17:26:28.638 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 1
+17:26:28.638 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 2.27363184079602
+17:26:28.639 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [1]
+17:26:28.639 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:26:28.639 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 200 | Send: 200 | Replication: 1]
+17:26:28.639 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 1
+17:26:28.639 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9950248756218906
+17:26:28.639 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0]
+17:26:28.639 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:26:28.639 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 200 | Send: 55 | Replication: 1]
+17:26:28.639 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 1
+17:26:28.639 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 3.5714285714285716
+17:26:28.640 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [1]
+17:26:28.640 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+17:26:28.640 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 55 | Send: 55 | Replication: 1]
+17:26:28.640 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 1
+17:26:28.640 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9821428571428571
+17:26:28.640 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0]
+17:26:28.640 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:26:33.649 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [λ] 495 | [μ] 254 | [ρ] 1.9411764705882353
+17:26:33.650 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 254 | [μ] 254 | [ρ] 0.996078431372549
+17:26:33.650 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [λ] 254 | [μ] 62 | [ρ] 4.031746031746032
+17:26:33.650 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 62 | [μ] 62 | [ρ] 0.9841269841269841
+17:26:33.650 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 495 | Send: 254 | Replication: 1]
+17:26:33.650 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 2
+17:26:33.650 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 1.9411764705882353
+17:26:33.650 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [1, 1]
+17:26:33.650 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 1
+17:26:33.650 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Increment PE class processElements.StopwordPE | Current replication [2]
+17:26:33.650 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 254 | Send: 254 | Replication: 1]
+17:26:33.650 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 2
+17:26:33.651 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.996078431372549
+17:26:33.651 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:26:33.651 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:26:33.651 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 254 | Send: 62 | Replication: 1]
+17:26:33.651 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 2
+17:26:33.651 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 4.031746031746032
+17:26:33.651 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [1, 1]
+17:26:33.651 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 1
+17:26:33.651 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Increment PE class processElements.CounterPE | Current replication [2]
+17:26:33.651 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 62 | Send: 62 | Replication: 1]
+17:26:33.651 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 2
+17:26:33.651 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9841269841269841
+17:26:33.651 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:26:33.651 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:26:33.652 [pool-7-thread-1] DEBUG org.apache.s4.core.App - Create ID [1] of PE processElements.StopwordPE
+17:26:33.652 [pool-7-thread-1] INFO  processElements.StopwordPE - Create Stopword PE
+17:26:33.656 [pool-7-thread-1] DEBUG org.apache.s4.core.App - Create ID [1] of PE processElements.CounterPE
+17:26:33.656 [pool-7-thread-1] INFO  processElements.CounterPE - Create Counter PE
+17:26:38.662 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 495 | [ρ] 0.9744094488188977
+17:26:38.662 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 368 | [μ] 368 | [ρ] 0.997289972899729
+17:26:38.662 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 2 | [μPE] 62.0 | [s*μPE] 124.0 | [λ] 368 | [ρ] 2.967741935483871
+17:26:38.662 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 100 | [μ] 100 | [ρ] 0.9900990099009901
+17:26:38.662 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 495 | Send: 508 | Replication: 2]
+17:26:38.662 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 3
+17:26:38.663 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9744094488188977
+17:26:38.663 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0]
+17:26:38.663 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:26:38.663 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 368 | Send: 368 | Replication: 1]
+17:26:38.663 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 3
+17:26:38.663 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.997289972899729
+17:26:38.663 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:26:38.663 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:26:38.663 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 368 | Send: 124 | Replication: 2]
+17:26:38.663 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 3
+17:26:38.663 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 2.967741935483871
+17:26:38.663 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [1]
+17:26:38.663 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+17:26:38.663 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 100 | Send: 100 | Replication: 1]
+17:26:38.663 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 3
+17:26:38.663 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9900990099009901
+17:26:38.663 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:26:38.663 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:26:43.665 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 494 | [ρ] 0.9724409448818898
+17:26:43.666 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 394 | [μ] 394 | [ρ] 0.9974683544303797
+17:26:43.666 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 2 | [μPE] 62.0 | [s*μPE] 124.0 | [λ] 394 | [ρ] 3.1774193548387095
+17:26:43.666 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 121 | [μ] 121 | [ρ] 0.9918032786885246
+17:26:43.666 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 494 | Send: 508 | Replication: 2]
+17:26:43.666 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 4
+17:26:43.666 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9724409448818898
+17:26:43.666 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:26:43.666 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:26:43.666 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 394 | Send: 394 | Replication: 1]
+17:26:43.666 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 4
+17:26:43.667 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9974683544303797
+17:26:43.667 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:26:43.667 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:26:43.667 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 394 | Send: 124 | Replication: 2]
+17:26:43.667 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 4
+17:26:43.667 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 3.1774193548387095
+17:26:43.667 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [1, 1]
+17:26:43.667 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 1
+17:26:43.668 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Increment PE class processElements.CounterPE | Current replication [3]
+17:26:43.668 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 121 | Send: 121 | Replication: 1]
+17:26:43.668 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 4
+17:26:43.668 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9918032786885246
+17:26:43.668 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:26:43.668 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:26:43.670 [pool-7-thread-1] DEBUG org.apache.s4.core.App - Create ID [2] of PE processElements.CounterPE
+17:26:43.670 [pool-7-thread-1] INFO  processElements.CounterPE - Create Counter PE
+17:26:48.674 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 494 | [ρ] 0.9724409448818898
+17:26:48.674 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 375 | [μ] 376 | [ρ] 0.9946949602122016
+17:26:48.674 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 3 | [μPE] 62.0 | [s*μPE] 186.0 | [λ] 376 | [ρ] 2.021505376344086
+17:26:48.674 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 144 | [μ] 144 | [ρ] 0.993103448275862
+17:26:48.674 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 494 | Send: 508 | Replication: 2]
+17:26:48.674 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 5
+17:26:48.674 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9724409448818898
+17:26:48.675 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:26:48.675 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:26:48.675 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 375 | Send: 376 | Replication: 1]
+17:26:48.675 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 5
+17:26:48.675 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9946949602122016
+17:26:48.675 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:26:48.675 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:26:48.675 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 376 | Send: 186 | Replication: 3]
+17:26:48.675 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 5
+17:26:48.675 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 2.021505376344086
+17:26:48.675 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [1]
+17:26:48.675 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+17:26:48.675 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 144 | Send: 144 | Replication: 1]
+17:26:48.675 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 5
+17:26:48.675 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.993103448275862
+17:26:48.675 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:26:48.675 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:26:53.686 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 493 | [ρ] 0.9704724409448819
+17:26:53.686 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 360 | [μ] 360 | [ρ] 0.997229916897507
+17:26:53.686 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 3 | [μPE] 62.0 | [s*μPE] 186.0 | [λ] 360 | [ρ] 1.935483870967742
+17:26:53.686 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 151 | [μ] 151 | [ρ] 0.993421052631579
+17:26:53.686 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 493 | Send: 508 | Replication: 2]
+17:26:53.686 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 6
+17:26:53.687 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9704724409448819
+17:26:53.687 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:26:53.687 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:26:53.687 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 360 | Send: 360 | Replication: 1]
+17:26:53.687 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 6
+17:26:53.687 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.997229916897507
+17:26:53.687 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:26:53.687 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:26:53.687 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 360 | Send: 186 | Replication: 3]
+17:26:53.687 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 6
+17:26:53.687 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 1.935483870967742
+17:26:53.687 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [1, 1]
+17:26:53.687 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 1
+17:26:53.687 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Increment PE class processElements.CounterPE | Current replication [4]
+17:26:53.687 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 151 | Send: 151 | Replication: 1]
+17:26:53.687 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 6
+17:26:53.687 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.993421052631579
+17:26:53.687 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:26:53.687 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:26:53.691 [pool-7-thread-1] DEBUG org.apache.s4.core.App - Create ID [3] of PE processElements.CounterPE
+17:26:53.691 [pool-7-thread-1] INFO  processElements.CounterPE - Create Counter PE
+17:26:58.696 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 491 | [ρ] 0.9665354330708661
+17:26:58.696 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 337 | [μ] 336 | [ρ] 1.0
+17:26:58.696 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 4 | [μPE] 62.0 | [s*μPE] 248.0 | [λ] 336 | [ρ] 1.3548387096774193
+17:26:58.696 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 181 | [μ] 181 | [ρ] 0.9945054945054945
+17:26:58.696 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 491 | Send: 508 | Replication: 2]
+17:26:58.697 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 7
+17:26:58.697 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9665354330708661
+17:26:58.697 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:26:58.697 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:26:58.697 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 337 | Send: 336 | Replication: 1]
+17:26:58.697 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 7
+17:26:58.697 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 1.0
+17:26:58.697 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:26:58.697 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:26:58.697 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 336 | Send: 248 | Replication: 4]
+17:26:58.697 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 7
+17:26:58.697 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 1.3548387096774193
+17:26:58.697 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [1]
+17:26:58.697 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+17:26:58.697 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 181 | Send: 181 | Replication: 1]
+17:26:58.697 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 7
+17:26:58.697 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9945054945054945
+17:26:58.697 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:26:58.697 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:27:03.707 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 493 | [ρ] 0.9704724409448819
+17:27:03.707 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 319 | [μ] 320 | [ρ] 0.9937694704049844
+17:27:03.707 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 4 | [μPE] 62.0 | [s*μPE] 248.0 | [λ] 320 | [ρ] 1.2903225806451613
+17:27:03.707 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 178 | [μ] 178 | [ρ] 0.994413407821229
+17:27:03.707 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 493 | Send: 508 | Replication: 2]
+17:27:03.707 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 8
+17:27:03.707 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9704724409448819
+17:27:03.707 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:27:03.707 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:27:03.707 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 319 | Send: 320 | Replication: 1]
+17:27:03.707 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 8
+17:27:03.707 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9937694704049844
+17:27:03.708 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:27:03.708 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:27:03.708 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 320 | Send: 248 | Replication: 4]
+17:27:03.708 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 8
+17:27:03.708 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 1.2903225806451613
+17:27:03.708 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [1, 1]
+17:27:03.708 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 1
+17:27:03.708 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Increment PE class processElements.CounterPE | Current replication [5]
+17:27:03.708 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 178 | Send: 178 | Replication: 1]
+17:27:03.708 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 8
+17:27:03.708 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.994413407821229
+17:27:03.708 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:27:03.710 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:27:03.727 [pool-7-thread-1] DEBUG org.apache.s4.core.App - Create ID [4] of PE processElements.CounterPE
+17:27:03.728 [pool-7-thread-1] INFO  processElements.CounterPE - Create Counter PE
+17:27:08.732 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 496 | [ρ] 0.9763779527559056
+17:27:08.732 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 312 | [μ] 312 | [ρ] 0.9968051118210862
+17:27:08.732 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 5 | [μPE] 62.0 | [s*μPE] 310.0 | [λ] 312 | [ρ] 1.0064516129032257
+17:27:08.732 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 210 | [μ] 210 | [ρ] 0.995260663507109
+17:27:08.732 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 496 | Send: 508 | Replication: 2]
+17:27:08.732 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 9
+17:27:08.732 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9763779527559056
+17:27:08.733 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:27:08.733 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:27:08.733 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 312 | Send: 312 | Replication: 1]
+17:27:08.733 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 9
+17:27:08.733 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9968051118210862
+17:27:08.733 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:27:08.733 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:27:08.733 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 312 | Send: 310 | Replication: 5]
+17:27:08.733 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 9
+17:27:08.733 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 1.0064516129032257
+17:27:08.733 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [1]
+17:27:08.733 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+17:27:08.733 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 210 | Send: 210 | Replication: 1]
+17:27:08.733 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 9
+17:27:08.733 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.995260663507109
+17:27:08.733 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:27:08.733 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:27:13.752 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 491 | [ρ] 0.9665354330708661
+17:27:13.753 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 270 | [μ] 270 | [ρ] 0.996309963099631
+17:27:13.753 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 5 | [μPE] 62.0 | [s*μPE] 310.0 | [λ] 270 | [ρ] 0.8709677419354839
+17:27:13.753 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 187 | [μ] 187 | [ρ] 0.9946808510638298
+17:27:13.753 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 491 | Send: 508 | Replication: 2]
+17:27:13.753 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 10
+17:27:13.753 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9665354330708661
+17:27:13.753 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:27:13.753 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:27:13.753 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 270 | Send: 270 | Replication: 1]
+17:27:13.753 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 10
+17:27:13.753 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.996309963099631
+17:27:13.753 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:27:13.753 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:27:13.753 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 270 | Send: 310 | Replication: 5]
+17:27:13.753 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 10
+17:27:13.753 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 0.8709677419354839
+17:27:13.753 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [1, 0]
+17:27:13.753 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+17:27:13.753 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 187 | Send: 187 | Replication: 1]
+17:27:13.753 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 10
+17:27:13.754 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9946808510638298
+17:27:13.754 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:27:13.754 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:27:18.761 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 491 | [ρ] 0.9665354330708661
+17:27:18.761 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 302 | [μ] 302 | [ρ] 0.9966996699669967
+17:27:18.761 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 5 | [μPE] 62.0 | [s*μPE] 310.0 | [λ] 302 | [ρ] 0.9741935483870968
+17:27:18.761 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 213 | [μ] 213 | [ρ] 0.9953271028037384
+17:27:18.761 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 491 | Send: 508 | Replication: 2]
+17:27:18.761 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 11
+17:27:18.761 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9665354330708661
+17:27:18.761 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:27:18.761 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:27:18.761 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 302 | Send: 302 | Replication: 1]
+17:27:18.761 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 11
+17:27:18.761 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9966996699669967
+17:27:18.761 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:27:18.761 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:27:18.761 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 302 | Send: 310 | Replication: 5]
+17:27:18.762 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 11
+17:27:18.762 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 0.9741935483870968
+17:27:18.762 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [0, 0]
+17:27:18.762 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+17:27:18.762 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 213 | Send: 213 | Replication: 1]
+17:27:18.762 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 11
+17:27:18.762 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9953271028037384
+17:27:18.762 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:27:18.762 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:27:23.764 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 490 | [ρ] 0.9645669291338582
+17:27:23.764 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 272 | [μ] 272 | [ρ] 0.9963369963369964
+17:27:23.764 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 5 | [μPE] 62.0 | [s*μPE] 310.0 | [λ] 272 | [ρ] 0.8774193548387097
+17:27:23.764 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 201 | [μ] 201 | [ρ] 0.995049504950495
+17:27:23.765 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 490 | Send: 508 | Replication: 2]
+17:27:23.765 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 12
+17:27:23.765 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9645669291338582
+17:27:23.765 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:27:23.765 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:27:23.765 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 272 | Send: 272 | Replication: 1]
+17:27:23.765 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 12
+17:27:23.765 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9963369963369964
+17:27:23.765 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:27:23.765 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:27:23.765 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 272 | Send: 310 | Replication: 5]
+17:27:23.765 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 12
+17:27:23.765 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 0.8774193548387097
+17:27:23.765 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [0, 0]
+17:27:23.765 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+17:27:23.765 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 201 | Send: 201 | Replication: 1]
+17:27:23.765 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 12
+17:27:23.765 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.995049504950495
+17:27:23.765 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:27:23.765 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:27:28.780 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 493 | [ρ] 0.9704724409448819
+17:27:28.780 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 274 | [μ] 274 | [ρ] 0.9963636363636363
+17:27:28.780 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 5 | [μPE] 62.0 | [s*μPE] 310.0 | [λ] 274 | [ρ] 0.8838709677419355
+17:27:28.781 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 170 | [μ] 170 | [ρ] 0.9941520467836257
+17:27:28.781 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 493 | Send: 508 | Replication: 2]
+17:27:28.781 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 13
+17:27:28.781 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9704724409448819
+17:27:28.781 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:27:28.781 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:27:28.781 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 274 | Send: 274 | Replication: 1]
+17:27:28.781 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 13
+17:27:28.781 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9963636363636363
+17:27:28.781 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:27:28.781 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:27:28.781 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 274 | Send: 310 | Replication: 5]
+17:27:28.781 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 13
+17:27:28.781 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 0.8838709677419355
+17:27:28.781 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [0, 0]
+17:27:28.781 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+17:27:28.781 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 170 | Send: 170 | Replication: 1]
+17:27:28.781 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 13
+17:27:28.781 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9941520467836257
+17:27:28.781 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:27:28.781 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:27:33.803 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 494 | [ρ] 0.9724409448818898
+17:27:33.803 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 251 | [μ] 251 | [ρ] 0.996031746031746
+17:27:33.803 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 5 | [μPE] 62.0 | [s*μPE] 310.0 | [λ] 251 | [ρ] 0.8096774193548387
+17:27:33.803 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 184 | [μ] 184 | [ρ] 0.9945945945945946
+17:27:33.803 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 494 | Send: 508 | Replication: 2]
+17:27:33.803 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 14
+17:27:33.803 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9724409448818898
+17:27:33.803 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:27:33.803 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:27:33.803 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 251 | Send: 251 | Replication: 1]
+17:27:33.803 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 14
+17:27:33.803 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.996031746031746
+17:27:33.803 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:27:33.803 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:27:33.803 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 251 | Send: 310 | Replication: 5]
+17:27:33.803 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 14
+17:27:33.803 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 0.8096774193548387
+17:27:33.803 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [0, 0]
+17:27:33.804 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+17:27:33.804 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 184 | Send: 184 | Replication: 1]
+17:27:33.804 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 14
+17:27:33.804 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9945945945945946
+17:27:33.804 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:27:33.804 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:27:38.810 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 496 | [ρ] 0.9763779527559056
+17:27:38.810 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 297 | [μ] 297 | [ρ] 0.9966442953020134
+17:27:38.810 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 5 | [μPE] 62.0 | [s*μPE] 310.0 | [λ] 297 | [ρ] 0.9580645161290322
+17:27:38.810 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 191 | [μ] 191 | [ρ] 0.9947916666666666
+17:27:38.810 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 496 | Send: 508 | Replication: 2]
+17:27:38.810 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 15
+17:27:38.810 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9763779527559056
+17:27:38.810 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:27:38.810 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:27:38.810 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 297 | Send: 297 | Replication: 1]
+17:27:38.810 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 15
+17:27:38.810 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9966442953020134
+17:27:38.810 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:27:38.810 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:27:38.810 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 297 | Send: 310 | Replication: 5]
+17:27:38.810 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 15
+17:27:38.811 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 0.9580645161290322
+17:27:38.811 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [0, 0]
+17:27:38.811 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+17:27:38.811 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 191 | Send: 191 | Replication: 1]
+17:27:38.811 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 15
+17:27:38.811 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9947916666666666
+17:27:38.811 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:27:38.811 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:27:43.819 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 495 | [ρ] 0.9744094488188977
+17:27:43.820 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 304 | [μ] 304 | [ρ] 0.9967213114754099
+17:27:43.820 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 5 | [μPE] 62.0 | [s*μPE] 310.0 | [λ] 304 | [ρ] 0.9806451612903225
+17:27:43.820 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 189 | [μ] 189 | [ρ] 0.9947368421052631
+17:27:43.820 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 495 | Send: 508 | Replication: 2]
+17:27:43.820 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 16
+17:27:43.820 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9744094488188977
+17:27:43.820 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:27:43.820 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:27:43.820 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 304 | Send: 304 | Replication: 1]
+17:27:43.820 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 16
+17:27:43.820 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9967213114754099
+17:27:43.820 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:27:43.820 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:27:43.820 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 304 | Send: 310 | Replication: 5]
+17:27:43.820 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 16
+17:27:43.821 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 0.9806451612903225
+17:27:43.821 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [0, 0]
+17:27:43.821 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+17:27:43.821 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 189 | Send: 189 | Replication: 1]
+17:27:43.821 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 16
+17:27:43.821 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9947368421052631
+17:27:43.821 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:27:43.821 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:27:48.838 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 497 | [ρ] 0.9783464566929134
+17:27:48.838 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 278 | [μ] 277 | [ρ] 1.0
+17:27:48.838 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 5 | [μPE] 62.0 | [s*μPE] 310.0 | [λ] 277 | [ρ] 0.8935483870967742
+17:27:48.838 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 191 | [μ] 191 | [ρ] 0.9947916666666666
+17:27:48.838 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 497 | Send: 508 | Replication: 2]
+17:27:48.838 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 17
+17:27:48.838 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9783464566929134
+17:27:48.838 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:27:48.838 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:27:48.838 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 278 | Send: 277 | Replication: 1]
+17:27:48.838 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 17
+17:27:48.839 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 1.0
+17:27:48.839 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:27:48.839 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:27:48.839 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 277 | Send: 310 | Replication: 5]
+17:27:48.839 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 17
+17:27:48.839 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 0.8935483870967742
+17:27:48.839 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [0, 0]
+17:27:48.839 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+17:27:48.839 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 191 | Send: 191 | Replication: 1]
+17:27:48.839 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 17
+17:27:48.839 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9947916666666666
+17:27:48.839 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:27:48.839 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:27:53.847 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 495 | [ρ] 0.9744094488188977
+17:27:53.847 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 265 | [μ] 266 | [ρ] 0.9925093632958801
+17:27:53.847 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 5 | [μPE] 62.0 | [s*μPE] 310.0 | [λ] 266 | [ρ] 0.8580645161290322
+17:27:53.847 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 177 | [μ] 177 | [ρ] 0.9943820224719101
+17:27:53.847 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 495 | Send: 508 | Replication: 2]
+17:27:53.847 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 18
+17:27:53.847 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9744094488188977
+17:27:53.847 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:27:53.847 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:27:53.847 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 265 | Send: 266 | Replication: 1]
+17:27:53.847 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 18
+17:27:53.847 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9925093632958801
+17:27:53.847 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:27:53.847 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:27:53.847 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 266 | Send: 310 | Replication: 5]
+17:27:53.847 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 18
+17:27:53.847 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 0.8580645161290322
+17:27:53.847 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [0, 0]
+17:27:53.847 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+17:27:53.847 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 177 | Send: 177 | Replication: 1]
+17:27:53.847 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 18
+17:27:53.848 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9943820224719101
+17:27:53.848 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:27:53.848 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:27:58.855 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 495 | [ρ] 0.9744094488188977
+17:27:58.855 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 283 | [μ] 283 | [ρ] 0.9964788732394366
+17:27:58.855 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 5 | [μPE] 62.0 | [s*μPE] 310.0 | [λ] 283 | [ρ] 0.9129032258064517
+17:27:58.855 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 172 | [μ] 173 | [ρ] 0.9885057471264368
+17:27:58.856 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 495 | Send: 508 | Replication: 2]
+17:27:58.856 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 19
+17:27:58.856 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9744094488188977
+17:27:58.856 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:27:58.856 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:27:58.856 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 283 | Send: 283 | Replication: 1]
+17:27:58.856 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 19
+17:27:58.856 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9964788732394366
+17:27:58.856 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:27:58.856 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:27:58.856 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 283 | Send: 310 | Replication: 5]
+17:27:58.856 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 19
+17:27:58.856 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 0.9129032258064517
+17:27:58.856 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [0, 0]
+17:27:58.856 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+17:27:58.856 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 172 | Send: 173 | Replication: 1]
+17:27:58.856 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 19
+17:27:58.856 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9885057471264368
+17:27:58.856 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:27:58.856 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:28:03.864 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 493 | [ρ] 0.9704724409448819
+17:28:03.864 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 286 | [μ] 286 | [ρ] 0.9965156794425087
+17:28:03.864 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 5 | [μPE] 62.0 | [s*μPE] 310.0 | [λ] 286 | [ρ] 0.9225806451612903
+17:28:03.864 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 177 | [μ] 177 | [ρ] 0.9943820224719101
+17:28:03.864 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 493 | Send: 508 | Replication: 2]
+17:28:03.864 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 20
+17:28:03.987 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [transitionMatrix] {[0.0, 0.0, 0.0],[0.0, 1.0, 0.0],[0.0, 0.1, 0.9]} | [distEstacionaria] [0.0, 1.0, 0.0] | [Statistics] 0.5773502691896258
+17:28:03.988 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:28:03.988 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 286 | Send: 286 | Replication: 1]
+17:28:03.988 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 20
+17:28:03.993 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [transitionMatrix] {[0.0, 0.0, 0.0],[0.0, 0.9897959183673469, 0.01020408163265306],[0.0, 1.0, 0.0]} | [distEstacionaria] [0.0, 0.98979, 0.01021] | [Statistics] 0.5685310698926958
+17:28:03.993 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:28:03.993 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 286 | Send: 310 | Replication: 5]
+17:28:03.993 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 20
+17:28:04.003 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [transitionMatrix] {[0.0, 0.0, 0.0],[0.0, 0.813953488372093, 0.18604651162790697],[0.0, 0.14285714285714285, 0.8571428571428571]} | [distEstacionaria] [0.0, 0.43304, 0.56696] | [Statistics] 0.29633929022884115
+17:28:04.003 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 5
+17:28:04.003 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Increment PE class processElements.CounterPE | Current replication [10]
+17:28:04.003 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 177 | Send: 177 | Replication: 1]
+17:28:04.003 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 20
+17:28:04.010 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [transitionMatrix] {[0.0, 0.0, 0.0],[0.0, 0.9896907216494846, 0.010309278350515464],[0.0, 1.0, 0.0]} | [distEstacionaria] [0.0, 0.99004, 0.00996] | [Statistics] 0.56874645927103
+17:28:04.010 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:28:04.018 [pool-7-thread-1] DEBUG org.apache.s4.core.App - Create ID [5] of PE processElements.CounterPE
+17:28:04.018 [pool-7-thread-1] INFO  processElements.CounterPE - Create Counter PE
+17:28:04.022 [pool-7-thread-1] DEBUG org.apache.s4.core.App - Create ID [6] of PE processElements.CounterPE
+17:28:04.022 [pool-7-thread-1] INFO  processElements.CounterPE - Create Counter PE
+17:28:04.026 [pool-7-thread-1] DEBUG org.apache.s4.core.App - Create ID [7] of PE processElements.CounterPE
+17:28:04.026 [pool-7-thread-1] INFO  processElements.CounterPE - Create Counter PE
+17:28:04.030 [pool-7-thread-1] DEBUG org.apache.s4.core.App - Create ID [8] of PE processElements.CounterPE
+17:28:04.030 [pool-7-thread-1] INFO  processElements.CounterPE - Create Counter PE
+17:28:04.034 [pool-7-thread-1] DEBUG org.apache.s4.core.App - Create ID [9] of PE processElements.CounterPE
+17:28:04.034 [pool-7-thread-1] INFO  processElements.CounterPE - Create Counter PE
+17:28:09.038 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 510 | [ρ] 1.0039370078740157
+17:28:09.038 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 169 | [μ] 169 | [ρ] 0.9941176470588236
+17:28:09.038 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 10 | [μPE] 62.0 | [s*μPE] 620.0 | [λ] 169 | [ρ] 0.2725806451612903
+17:28:09.038 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 220 | [μ] 220 | [ρ] 0.995475113122172
+17:28:09.039 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 510 | Send: 508 | Replication: 2]
+17:28:09.039 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 1
+17:28:09.039 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 1.0039370078740157
+17:28:09.039 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 1]
+17:28:09.039 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:28:09.039 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 169 | Send: 169 | Replication: 1]
+17:28:09.039 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 1
+17:28:09.039 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9941176470588236
+17:28:09.039 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:28:09.039 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:28:09.039 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 169 | Send: 620 | Replication: 10]
+17:28:09.039 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 1
+17:28:09.039 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 0.2725806451612903
+17:28:09.039 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [0, -1]
+17:28:09.039 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+17:28:09.039 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 220 | Send: 220 | Replication: 1]
+17:28:09.039 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 1
+17:28:09.039 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.995475113122172
+17:28:09.039 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:28:09.039 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:28:14.045 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 496 | [ρ] 0.9763779527559056
+17:28:14.045 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 137 | [μ] 137 | [ρ] 0.9927536231884058
+17:28:14.045 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 10 | [μPE] 62.0 | [s*μPE] 620.0 | [λ] 137 | [ρ] 0.22096774193548388
+17:28:14.045 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 209 | [μ] 209 | [ρ] 0.9952380952380953
+17:28:14.045 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 496 | Send: 508 | Replication: 2]
+17:28:14.045 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 2
+17:28:14.045 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9763779527559056
+17:28:14.045 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [1, 0]
+17:28:14.046 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:28:14.046 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 137 | Send: 137 | Replication: 1]
+17:28:14.046 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 2
+17:28:14.046 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9927536231884058
+17:28:14.046 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:28:14.046 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:28:14.046 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 137 | Send: 620 | Replication: 10]
+17:28:14.046 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 2
+17:28:14.046 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 0.22096774193548388
+17:28:14.046 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [-1, -1]
+17:28:14.046 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: -1
+17:28:14.046 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Decrement PE class processElements.CounterPE | Current replication [9]
+17:28:14.046 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 209 | Send: 209 | Replication: 1]
+17:28:14.046 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 2
+17:28:14.046 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9952380952380953
+17:28:14.046 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:28:14.046 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:28:19.050 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 495 | [ρ] 0.9744094488188977
+17:28:19.051 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 165 | [μ] 165 | [ρ] 0.9939759036144579
+17:28:19.051 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 9 | [μPE] 62.0 | [s*μPE] 558.0 | [λ] 165 | [ρ] 0.2956989247311828
+17:28:19.051 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 225 | [μ] 225 | [ρ] 0.995575221238938
+17:28:19.051 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 495 | Send: 508 | Replication: 2]
+17:28:19.051 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 3
+17:28:19.051 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9744094488188977
+17:28:19.051 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:28:19.051 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:28:19.051 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 165 | Send: 165 | Replication: 1]
+17:28:19.051 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 3
+17:28:19.051 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9939759036144579
+17:28:19.051 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:28:19.051 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:28:19.051 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 165 | Send: 558 | Replication: 9]
+17:28:19.051 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 3
+17:28:19.051 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 0.2956989247311828
+17:28:19.051 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [-1]
+17:28:19.051 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+17:28:19.051 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 225 | Send: 225 | Replication: 1]
+17:28:19.051 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 3
+17:28:19.051 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.995575221238938
+17:28:19.051 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:28:19.051 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 493 | [ρ] 0.9704724409448819
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 186 | [μ] 186 | [ρ] 0.9946524064171123
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 9 | [μPE] 62.0 | [s*μPE] 558.0 | [λ] 186 | [ρ] 0.3333333333333333
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 226 | [μ] 226 | [ρ] 0.9955947136563876
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 493 | Send: 508 | Replication: 2]
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 4
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9704724409448819
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 186 | Send: 186 | Replication: 1]
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 4
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9946524064171123
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 186 | Send: 558 | Replication: 9]
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 4
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 0.3333333333333333
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [-1, -1]
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: -1
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Decrement PE class processElements.CounterPE | Current replication [8]
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 226 | Send: 226 | Replication: 1]
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 4
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9955947136563876
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:28:24.054 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:28:29.056 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 496 | [ρ] 0.9763779527559056
+17:28:29.056 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 162 | [μ] 162 | [ρ] 0.9938650306748467
+17:28:29.057 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 8 | [μPE] 62.0 | [s*μPE] 496.0 | [λ] 162 | [ρ] 0.32661290322580644
+17:28:29.057 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 221 | [μ] 221 | [ρ] 0.9954954954954955
+17:28:29.057 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 496 | Send: 508 | Replication: 2]
+17:28:29.057 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 5
+17:28:29.057 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9763779527559056
+17:28:29.057 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:28:29.057 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:28:29.057 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 162 | Send: 162 | Replication: 1]
+17:28:29.057 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 5
+17:28:29.057 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9938650306748467
+17:28:29.057 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:28:29.057 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:28:29.057 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 162 | Send: 496 | Replication: 8]
+17:28:29.057 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 5
+17:28:29.057 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 0.32661290322580644
+17:28:29.057 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [-1]
+17:28:29.057 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+17:28:29.057 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 221 | Send: 221 | Replication: 1]
+17:28:29.057 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 5
+17:28:29.057 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9954954954954955
+17:28:29.057 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:28:29.057 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:28:34.059 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 496 | [ρ] 0.9763779527559056
+17:28:34.059 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 159 | [μ] 159 | [ρ] 0.99375
+17:28:34.059 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 8 | [μPE] 62.0 | [s*μPE] 496.0 | [λ] 159 | [ρ] 0.32056451612903225
+17:28:34.059 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 237 | [μ] 237 | [ρ] 0.9957983193277311
+17:28:34.059 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 496 | Send: 508 | Replication: 2]
+17:28:34.059 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 6
+17:28:34.059 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9763779527559056
+17:28:34.060 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:28:34.060 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:28:34.060 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 159 | Send: 159 | Replication: 1]
+17:28:34.060 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 6
+17:28:34.060 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.99375
+17:28:34.060 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:28:34.060 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:28:34.060 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 159 | Send: 496 | Replication: 8]
+17:28:34.060 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 6
+17:28:34.060 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 0.32056451612903225
+17:28:34.060 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [-1, -1]
+17:28:34.060 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: -1
+17:28:34.060 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Decrement PE class processElements.CounterPE | Current replication [7]
+17:28:34.060 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 237 | Send: 237 | Replication: 1]
+17:28:34.060 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 6
+17:28:34.060 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9957983193277311
+17:28:34.060 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:28:34.060 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:28:39.062 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 495 | [ρ] 0.9744094488188977
+17:28:39.062 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 163 | [μ] 163 | [ρ] 0.9939024390243902
+17:28:39.062 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 7 | [μPE] 62.0 | [s*μPE] 434.0 | [λ] 163 | [ρ] 0.37557603686635943
+17:28:39.062 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 233 | [μ] 233 | [ρ] 0.9957264957264957
+17:28:39.062 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 495 | Send: 508 | Replication: 2]
+17:28:39.062 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 7
+17:28:39.062 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9744094488188977
+17:28:39.062 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:28:39.062 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:28:39.062 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 163 | Send: 163 | Replication: 1]
+17:28:39.062 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 7
+17:28:39.062 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9939024390243902
+17:28:39.063 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:28:39.063 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:28:39.063 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 163 | Send: 434 | Replication: 7]
+17:28:39.063 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 7
+17:28:39.063 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 0.37557603686635943
+17:28:39.063 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [-1]
+17:28:39.063 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+17:28:39.063 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 233 | Send: 233 | Replication: 1]
+17:28:39.063 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 7
+17:28:39.063 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9957264957264957
+17:28:39.063 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:28:39.063 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 496 | [ρ] 0.9763779527559056
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 152 | [μ] 152 | [ρ] 0.9934640522875817
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 7 | [μPE] 62.0 | [s*μPE] 434.0 | [λ] 152 | [ρ] 0.35023041474654376
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 198 | [μ] 198 | [ρ] 0.9949748743718593
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 496 | Send: 508 | Replication: 2]
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 8
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9763779527559056
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 152 | Send: 152 | Replication: 1]
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 8
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9934640522875817
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 152 | Send: 434 | Replication: 7]
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 8
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 0.35023041474654376
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [-1, -1]
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: -1
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Decrement PE class processElements.CounterPE | Current replication [6]
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 198 | Send: 198 | Replication: 1]
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 8
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9949748743718593
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:28:44.065 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 495 | [ρ] 0.9744094488188977
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 137 | [μ] 137 | [ρ] 0.9927536231884058
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 6 | [μPE] 62.0 | [s*μPE] 372.0 | [λ] 137 | [ρ] 0.3682795698924731
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 217 | [μ] 217 | [ρ] 0.9954128440366973
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 495 | Send: 508 | Replication: 2]
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 9
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9744094488188977
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 137 | Send: 137 | Replication: 1]
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 9
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9927536231884058
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 137 | Send: 372 | Replication: 6]
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 9
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 0.3682795698924731
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [-1]
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 217 | Send: 217 | Replication: 1]
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 9
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9954128440366973
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:28:49.069 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:28:54.076 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 495 | [ρ] 0.9744094488188977
+17:28:54.076 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 130 | [μ] 130 | [ρ] 0.9923664122137404
+17:28:54.076 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 6 | [μPE] 62.0 | [s*μPE] 372.0 | [λ] 130 | [ρ] 0.34946236559139787
+17:28:54.076 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 214 | [μ] 214 | [ρ] 0.9953488372093023
+17:28:54.076 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 495 | Send: 508 | Replication: 2]
+17:28:54.076 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 10
+17:28:54.076 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9744094488188977
+17:28:54.077 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:28:54.077 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:28:54.077 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 130 | Send: 130 | Replication: 1]
+17:28:54.077 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 10
+17:28:54.077 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9923664122137404
+17:28:54.077 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:28:54.077 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:28:54.077 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 130 | Send: 372 | Replication: 6]
+17:28:54.077 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 10
+17:28:54.077 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 0.34946236559139787
+17:28:54.077 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [-1, -1]
+17:28:54.077 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: -1
+17:28:54.077 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - Decrement PE class processElements.CounterPE | Current replication [5]
+17:28:54.077 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 214 | Send: 214 | Replication: 1]
+17:28:54.077 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 10
+17:28:54.077 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9953488372093023
+17:28:54.077 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:28:54.077 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:28:59.080 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 494 | [ρ] 0.9724409448818898
+17:28:59.080 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 160 | [μ] 160 | [ρ] 0.9937888198757764
+17:28:59.080 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 5 | [μPE] 62.0 | [s*μPE] 310.0 | [λ] 160 | [ρ] 0.5161290322580645
+17:28:59.080 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 239 | [μ] 239 | [ρ] 0.9958333333333333
+17:28:59.080 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 494 | Send: 508 | Replication: 2]
+17:28:59.080 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 11
+17:28:59.080 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9724409448818898
+17:28:59.080 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:28:59.080 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:28:59.080 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 160 | Send: 160 | Replication: 1]
+17:28:59.080 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 11
+17:28:59.080 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9937888198757764
+17:28:59.080 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:28:59.080 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:28:59.080 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 160 | Send: 310 | Replication: 5]
+17:28:59.080 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 11
+17:28:59.080 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 0.5161290322580645
+17:28:59.080 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [0]
+17:28:59.080 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+17:28:59.080 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 239 | Send: 239 | Replication: 1]
+17:28:59.080 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 11
+17:28:59.080 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9958333333333333
+17:28:59.081 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:28:59.081 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:29:04.082 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 495 | [ρ] 0.9744094488188977
+17:29:04.083 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 162 | [μ] 162 | [ρ] 0.9938650306748467
+17:29:04.083 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 5 | [μPE] 62.0 | [s*μPE] 310.0 | [λ] 162 | [ρ] 0.5225806451612903
+17:29:04.083 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 223 | [μ] 223 | [ρ] 0.9955357142857143
+17:29:04.083 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 495 | Send: 508 | Replication: 2]
+17:29:04.083 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 12
+17:29:04.083 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9744094488188977
+17:29:04.083 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:29:04.083 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:29:04.083 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 162 | Send: 162 | Replication: 1]
+17:29:04.083 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 12
+17:29:04.083 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9938650306748467
+17:29:04.083 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:29:04.083 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:29:04.083 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 162 | Send: 310 | Replication: 5]
+17:29:04.083 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 12
+17:29:04.083 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 0.5225806451612903
+17:29:04.083 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [0, 0]
+17:29:04.083 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+17:29:04.083 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 223 | Send: 223 | Replication: 1]
+17:29:04.083 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 12
+17:29:04.083 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9955357142857143
+17:29:04.083 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:29:04.083 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0
+17:29:09.085 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.StopwordPE | [s] 2 | [μPE] 254.0 | [s*μPE] 508.0 | [λ] 496 | [ρ] 0.9763779527559056
+17:29:09.085 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.LanguagePE | [λ] 158 | [μ] 158 | [ρ] 0.9937106918238994
+17:29:09.085 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.CounterPE | [s] 5 | [μPE] 62.0 | [s*μPE] 310.0 | [λ] 158 | [ρ] 0.5096774193548387
+17:29:09.085 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] processElements.MongoPE | [λ] 230 | [μ] 230 | [ρ] 0.9956709956709957
+17:29:09.085 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.StopwordPE | Recibe: 496 | Send: 508 | Replication: 2]
+17:29:09.085 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 13
+17:29:09.085 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.StopwordPE | [ρ] 0.9763779527559056
+17:29:09.085 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.StopwordPE] MarkMap: [0, 0]
+17:29:09.086 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.StopwordPE | status: 0
+17:29:09.086 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.LanguagePE | Recibe: 158 | Send: 158 | Replication: 1]
+17:29:09.086 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 13
+17:29:09.086 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.LanguagePE | [ρ] 0.9937106918238994
+17:29:09.086 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.LanguagePE] MarkMap: [0, 0]
+17:29:09.086 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.LanguagePE | status: 0
+17:29:09.086 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.CounterPE | Recibe: 158 | Send: 310 | Replication: 5]
+17:29:09.086 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 13
+17:29:09.086 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.CounterPE | [ρ] 0.5096774193548387
+17:29:09.086 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.CounterPE] MarkMap: [0, 0]
+17:29:09.086 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.CounterPE | status: 0
+17:29:09.086 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE : class processElements.MongoPE | Recibe: 230 | Send: 230 | Replication: 1]
+17:29:09.086 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Period] 13
+17:29:09.086 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [PE] class processElements.MongoPE | [ρ] 0.9956709956709957
+17:29:09.086 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [processElements.MongoPE] MarkMap: [0, 0]
+17:29:09.086 [pool-7-thread-1] DEBUG org.apache.s4.core.monitor.S4Monitor - [Finish administrationLoad] PE: class processElements.MongoPE | status: 0

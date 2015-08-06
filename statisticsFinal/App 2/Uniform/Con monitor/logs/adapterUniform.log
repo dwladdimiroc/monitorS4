@@ -1,0 +1,34 @@
+[H[Jcalling referenced s4 script : /alumnos/dwladdimiro/S4/apache-s4-0.6.0/s4
+00:25:10.638 [main] INFO  org.apache.s4.tools.DefineCluster - preparing new cluster [cluster2] with [1] node(s)
+00:25:10.814 [main] INFO  org.apache.s4.tools.DefineCluster - New cluster configuration uploaded into zookeeper
+calling referenced s4 script : /alumnos/dwladdimiro/S4/apache-s4-0.6.0/s4
+00:25:11.529 [main] INFO  o.a.s.c.u.ParsingUtils$InlineConfigParameterConverter - processing inline configuration parameter s4.adapter.output.stream=textInput
+00:25:11.642 [main] INFO  org.apache.s4.tools.Deploy - No S4R path specified, nor build file specified: this assumes the app is in the classpath
+:cp
+
+BUILD SUCCESSFUL
+
+Total time: 3.148 secs
+00:25:16.053 [main] INFO  o.a.s.comm.topology.AssignmentFromZK - New session:94244300908068872; state is : SyncConnected
+00:25:16.148 [main] INFO  o.a.s.comm.topology.AssignmentFromZK - Successfully acquired task:Task-0 by citiaps1.informatica.usach.cl
+00:25:16.164 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Initializing S4 app with : []]
+00:25:16.166 [S4 platform loader] DEBUG org.apache.s4.core.S4Bootstrap - Adding named parameters for injection : s4.adapter.output.stream=textInput,
+00:25:16.291 [S4 platform loader] INFO  org.apache.s4.core.S4Bootstrap - Starting S4 app with application class [adapter.UniformAdapter]
+00:25:16.320 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster2,mode=unicast,type=,nodes=[{partition=0,port=13000,machineName=citiaps1.informatica.usach.cl,taskId=Task-0}]} from null
+00:25:16.406 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.comm.tcp.TCPEmitter@54277c98
+00:25:16.461 [S4 platform loader] INFO  o.a.s.c.s.ThrottlingSenderExecutorServiceFactory - Creating a throttling executor with a pool size of 5 and max rate of 10000 events / s
+00:25:16.471 [S4 platform loader] INFO  org.apache.s4.core.util.S4Metrics - Metrics reporting not configured
+00:25:16.472 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.core.SenderImpl@70c943e2
+00:25:16.512 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - New session:94244300908068872
+00:25:16.515 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - Detected new stream [textInput]
+00:25:16.524 [S4 platform loader] INFO  o.a.s4.comm.topology.ClustersFromZK - New session:94244300908068872
+00:25:16.535 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster1,mode=unicast,type=,nodes=[{partition=0,port=12000,machineName=citiaps1.informatica.usach.cl,taskId=Task-0}]} from null
+00:25:16.538 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Changing cluster topology to { nbNodes=1,name=cluster2,mode=unicast,type=,nodes=[{partition=0,port=13000,machineName=citiaps1.informatica.usach.cl,taskId=Task-0}]} from null
+00:25:16.540 [S4 platform loader] INFO  org.apache.s4.core.monitor.S4Monitor - Init Monitor
+00:25:16.540 [S4 platform loader] INFO  adapter.UniformAdapter - Create Uniform Adapter
+00:25:30.074 [S4 platform loader] DEBUG o.a.s4.comm.topology.ClustersFromZK - Adding output stream [textInput] in cluster [cluster2]
+00:25:30.091 [S4 platform loader] INFO  org.apache.s4.core.App - Create Listener Monitor
+[class processElements.SplitPE]
+00:25:30.142 [S4 platform loader] INFO  o.a.s4.comm.topology.ClusterFromZK - Adding topology change listener:org.apache.s4.comm.tcp.TCPRemoteEmitter@a3bb63
+00:25:30.645 [S4 platform loader] INFO  org.apache.s4.core.App - Wait for register
+00:25:30.647 [S4 platform loader] INFO  adapter.UniformAdapter - Init ClockTime

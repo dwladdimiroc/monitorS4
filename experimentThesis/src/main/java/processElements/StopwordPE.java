@@ -1,6 +1,5 @@
 package processElements;
 
-
 import java.util.List;
 
 import org.apache.s4.base.Event;
@@ -28,9 +27,10 @@ public class StopwordPE extends ProcessingElement {
 	}
 
 	public void onEvent(Event event) {
-		
+
 		Tweet tweet = event.get("tweet", Tweet.class);
-		Long time = event.get("time", Long.class);
+		long time = event.get("timeTweet", Long.class);
+		// logger.info("[Event] Time: " + timeDelta + " (ms)");
 
 		String tweetClean = utilitiesWords.replace(stopwords, tweet.getText());
 
@@ -40,7 +40,7 @@ public class StopwordPE extends ProcessingElement {
 
 		eventOutput.put("levelLanguage", Long.class, getEventCount()
 				% getReplicationPE(LanguagePE.class));
-		eventOutput.put("time", Long.class, time);
+		eventOutput.put("timeTweet", Long.class, time);
 		downStream.put(eventOutput);
 
 	}
@@ -52,7 +52,8 @@ public class StopwordPE extends ProcessingElement {
 		eventFactory = new EventFactory();
 		utilitiesWords = new Words();
 
-		stopwords = utilitiesWords.readWords("/home/daniel/Proyectos/monitorS4/experimentThesis/config/stopwords.txt");
+		stopwords = utilitiesWords
+				.readWords("/home/daniel/Proyectos/monitorS4/experimentThesis/config/stopwords.txt");
 	}
 
 	@Override

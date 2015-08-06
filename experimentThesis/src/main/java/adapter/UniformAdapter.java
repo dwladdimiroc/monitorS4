@@ -76,7 +76,7 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 			Event event = new Event();
 			event.put("levelStopword", Long.class, getEventCount() % getReplicationPE(StopwordPE.class));
 			event.put("tweet", Tweet.class, tweetCurrent);
-			event.put("time", Long.class, System.currentTimeMillis());
+			event.put("timeTweet", Long.class, System.currentTimeMillis());
 
 			getRemoteStream().put(event);
 			// }
