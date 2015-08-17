@@ -1,9 +1,9 @@
 # time,value
 5,NaN
-10,NaN
-15,NaN
-20,NaN
-25,NaN
+10,Infinity
+15,Infinity
+20,Infinity
+25,Infinity
 30,Infinity
 35,Infinity
 40,Infinity
@@ -622,9 +622,9 @@
 3105,Infinity
 3110,Infinity
 3115,Infinity
-3121,Infinity
-3126,Infinity
-3131,Infinity
+3120,Infinity
+3125,Infinity
+3130,Infinity
 3136,Infinity
 3141,Infinity
 3146,Infinity
@@ -840,7 +840,3 @@
 4196,Infinity
 4201,Infinity
 4206,Infinity
-4211,Infinity
-4216,Infinity
-4221,Infinity
-4226,Infinity

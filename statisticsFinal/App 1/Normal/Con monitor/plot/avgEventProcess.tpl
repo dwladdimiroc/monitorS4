@@ -3,7 +3,7 @@ set output "../graphics/avgEventProcess.eps"
 set title "Cantidad promedio de eventos procesados"
 set key right top
 set grid y
-set yrange[0:600]
+#set yrange[0:120]
 set xlabel 'Tiempo (s)'
 set ylabel "# Eventos"
 set datafile separator ","

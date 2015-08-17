@@ -3,7 +3,7 @@ set output "../graphics/replication.eps"
 set title "Cantidad de replicas en los PEs"
 set key right top
 set grid y
-set yrange[0:6]
+set yrange[0:7]
 set xlabel 'Tiempo (s)'
 set ylabel "# Replicas"
 set datafile separator ","

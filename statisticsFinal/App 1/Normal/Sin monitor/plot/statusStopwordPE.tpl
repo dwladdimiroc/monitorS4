@@ -7,8 +7,9 @@ set title "Tasa de llegada"
 set key right top
 set grid y
 set xlabel 'Tiempo (s)'
-set ylabel "lambda"
-set ytics 1000
+set ylabel "# Eventos"
+set ytics 500
+set yrange [0:1000]
 set datafile separator ","
 plot "../statistics/lambda@processElements.StopwordPE.csv" using 1:2 title 'lambda' with lines
 
@@ -16,8 +17,9 @@ set title "Tasa de procesamiento"
 set key right top
 set grid y
 set xlabel 'Tiempo (s)'
-set ylabel "mu"
-set ytics 1000
+set ylabel "# Eventos"
+set ytics 500
+set yrange [0:1000]
 set datafile separator ","
 plot "../statistics/mu@processElements.StopwordPE.csv" using 1:2 title 'mu' with lines
 
@@ -26,6 +28,7 @@ set key right top
 set grid y
 set xlabel 'Tiempo (s)'
 set ylabel "rho"
+set yrange [0:2]
 set ytics 1
 set datafile separator ","
 plot "../statistics/rho@processElements.StopwordPE.csv" using 1:2 title 'rho' with lines
@@ -36,14 +39,15 @@ set grid y
 set xlabel 'Tiempo (s)'
 set ylabel "# Eventos"
 set ytics 50000
+set yrange [0:100000]
 set datafile separator ","
 plot "../statistics/queue@processElements.StopwordPE.csv" using 1:2 title 'queue' with lines
 
 set title "Cantidad de replicas"
 set key right top
 set grid y
-set yrange [0:2]
 set ytics 1
+set yrange[0:3]
 set xlabel 'Tiempo (s)'
 set ylabel "# Replicas"
 set datafile separator ","
