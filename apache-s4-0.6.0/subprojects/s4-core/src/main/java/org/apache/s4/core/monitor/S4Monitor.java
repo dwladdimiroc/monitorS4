@@ -382,6 +382,7 @@ public class S4Monitor {
 	 *         -1 se disminuye.
 	 */
 	private int reactiveLoad(StatusPE statusPE) {
+		long timeInit = System.currentTimeMillis();
 
 		/* Análisis de la tasa de rendimiento */
 		double ρ = statusPE.getProcessEvent();
@@ -394,11 +395,17 @@ public class S4Monitor {
 		 */
 		if (ρ > 1) {
 			// logger.debug("Increment");
+			long timeReactive = (System.currentTimeMillis() - timeInit);
+			getMetrics().setTimeReactive(timeReactive);
 			return 1;
 		} else if (ρ < 0.5) {
 			// logger.debug("Decrement");
+			long timeReactive = (System.currentTimeMillis() - timeInit);
+			getMetrics().setTimeReactive(timeReactive);
 			return -1;
 		} else {
+			long timeReactive = (System.currentTimeMillis() - timeInit);
+			getMetrics().setTimeReactive(timeReactive);
 			return 0;
 		}
 
@@ -417,6 +424,8 @@ public class S4Monitor {
 	 *         -1 se aumenta.
 	 */
 	private int predictiveLoad(StatusPE statusPE) {
+		long timeInit = System.currentTimeMillis();
+		
 		MarkovChain markovChain = new MarkovChain();
 		/* Parseo del List a Array */
 		Double rho[] = new Double[statusPE.getHistory().size() - 1];
@@ -450,10 +459,16 @@ public class S4Monitor {
 				if (distEstacionaria[i] == descriptiveStatistics.getMax()) {
 
 					if (i == 0) {
+						long timePredictive = System.currentTimeMillis() - timeInit;
+						getMetrics().setTimePredictive(timePredictive);
 						return -5;
 					} else if (i == 2) {
+						long timePredictive = System.currentTimeMillis() - timeInit;
+						getMetrics().setTimePredictive(timePredictive);
 						return 5;
 					} else {
+						long timePredictive = System.currentTimeMillis() - timeInit;
+						getMetrics().setTimePredictive(timePredictive);
 						return 0;
 					}
 
@@ -461,6 +476,8 @@ public class S4Monitor {
 			}
 		}
 
+		long timePredictive = System.currentTimeMillis() - timeInit;
+		getMetrics().setTimePredictive(timePredictive);
 		return 0;
 	}
 
@@ -543,7 +560,7 @@ public class S4Monitor {
 			 * una replicación.
 			 */
 
-			// numReplica = predictiveLoad(statusPE);
+			numReplica = predictiveLoad(statusPE);
 			numReplica = 0;
 			if (numReplica < 0) {
 				int numMod = numReplica * -1;
