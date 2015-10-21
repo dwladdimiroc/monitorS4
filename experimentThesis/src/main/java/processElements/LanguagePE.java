@@ -34,8 +34,6 @@ public class LanguagePE extends ProcessingElement {
 		Tweet tweet = event.get("tweet", Tweet.class);
 		long time = event.get("timeTweet", Long.class);
 
-		// logger.info("[Event] Time: " + timeDelta + " (ms)");
-
 		tweet.setLanguage(detectorLanguage(tweet.getText()));
 
 		Event eventOutput = eventFactory.newEvent(tweet);

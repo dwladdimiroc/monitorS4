@@ -96,8 +96,6 @@ dependencies {
    compile (libraries.math)
 
    compile files('./lib/SentiStrength.jar')
-   compile files('./lib/opencsv-2.3.jar') 
-
 }
 
 // Set the manifest attributes for the S4 archive here. ('S4-App-Class':  gets set by the s4r task)

@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eda.Tweet;
-import processElements.CounterPE;
+import processElements.StopwordPE;
 import utilities.Distribution;
 import utilities.MongoRead;
 
@@ -48,7 +48,7 @@ public class DynamicAdapter extends AdapterApp implements Runnable {
 		/* Este orden es importante */
 		logger.info("Create Dynamic Adapter");
 		setRunMonitor(false);
-		 this.registerMonitor(CounterPE.class);
+		 this.registerMonitor(StopwordPE.class);
 		thread = new Thread(this);
 
 		tweets = readTweet();
@@ -89,9 +89,10 @@ public class DynamicAdapter extends AdapterApp implements Runnable {
 				Tweet tweetCurrent = tweets.pop();
 
 				Event event = new Event();
-				event.put("idTweet", Integer.class, tweetCurrent.getIdTweet());
-				event.put("text", String.class, tweetCurrent.getText());
-
+				event.put("levelStopword", Long.class, getEventCount() % getReplicationPE(StopwordPE.class));
+				event.put("tweet", Tweet.class, tweetCurrent);
+				event.put("timeTweet", Long.class, System.currentTimeMillis());
+				
 				getRemoteStream().put(event);
 			}
 

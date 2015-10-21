@@ -32,9 +32,6 @@ public class CounterPE extends ProcessingElement {
 
 		Tweet tweet = event.get("tweet", Tweet.class);
 		long time = event.get("timeTweet", Long.class);
-		long timeFinal = System.currentTimeMillis();
-		long timeDelta = timeFinal - time;
-		// logger.info("[Event] Time: " + timeDelta + " (ms)");
 
 		int counterNeed = utilitiesWords.counterContains(keywords,
 				tweet.getText());
@@ -47,8 +44,6 @@ public class CounterPE extends ProcessingElement {
 
 		eventOutput.put("levelMongo", Long.class, getEventCount()
 				% getReplicationPE(MongoPE.class));
-		// eventOutput.put("levelMongo", Long.class, getEventCount()
-		// % getReplicationPE(MongoPE.class));
 		eventOutput.put("timeTweet", Long.class, time);
 		downStream.put(eventOutput);
 

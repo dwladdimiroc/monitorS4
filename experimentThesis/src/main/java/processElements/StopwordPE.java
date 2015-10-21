@@ -30,7 +30,6 @@ public class StopwordPE extends ProcessingElement {
 
 		Tweet tweet = event.get("tweet", Tweet.class);
 		long time = event.get("timeTweet", Long.class);
-		// logger.info("[Event] Time: " + timeDelta + " (ms)");
 
 		String tweetClean = utilitiesWords.replace(stopwords, tweet.getText());
 

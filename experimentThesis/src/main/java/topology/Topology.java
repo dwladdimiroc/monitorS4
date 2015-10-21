@@ -109,7 +109,7 @@ public class Topology extends App {
 		counterPE.setDownStream(mongoStream);
 		//analyzePE.setDownStream(mongoStream);
 
-		setRunMonitor(true);
+		setRunMonitor(false);
 	}
 
 	@Override

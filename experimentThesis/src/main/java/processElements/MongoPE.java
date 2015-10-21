@@ -22,7 +22,6 @@ public class MongoPE extends ProcessingElement {
 		Tweet tweet = event.get("tweet", Tweet.class);
 		
 		/* Statistics */
-		//logger.info(event.toString());
 		long timeInit = event.get("timeTweet", Long.class);
 		long timeFinal = System.currentTimeMillis();
 		long time = timeFinal - timeInit;
