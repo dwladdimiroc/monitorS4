@@ -5,7 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
+
+import au.com.bytecode.opencsv.CSVReader;
 
 public class Words {
 	public boolean contains(List<String> keywords, String text) {
@@ -26,7 +30,7 @@ public class Words {
 		}
 		return words;
 	}
-	
+
 	public int counterContains(List<String> keywords, String text) {
 		int counter = 0;
 		for (String word : keywords) {
@@ -90,5 +94,30 @@ public class Words {
 		}
 
 		return stopwords;
+	}
+
+	public Stack<Integer> readCantTweets(String path) {
+		Stack<Integer> cantTweets = new Stack<Integer>();
+		String fileName = path;
+		String line = null;
+
+		try {
+			FileReader fileReader = new FileReader(fileName);
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+			while ((line = bufferedReader.readLine()) != null) {
+				String[] nextLine = line.split("\t");
+				cantTweets.add(Integer.parseInt(nextLine[nextLine.length - 1]));
+			}
+
+			bufferedReader.close();
+			fileReader.close();
+		} catch (FileNotFoundException ex) {
+			System.out.println("Unable to open file '" + fileName + "'");
+		} catch (IOException ex) {
+			System.out.println("Error reading file '" + fileName + "'");
+		}
+
+		return cantTweets;
 	}
 }

@@ -58,6 +58,13 @@ public class Distribution {
 
 		return cantTweets;
 	}
+	
+	public Stack<Integer> dynamicTweets() {
+		Words read = new Words();
+		
+		// Cambiar Path
+		return read.readCantTweets("/home/daniel/Proyectos/monitorS4/experimentThesis/config/streamTwitter.csv");
+	}
 
 	public int totalTweet() {
 		int total = 0;

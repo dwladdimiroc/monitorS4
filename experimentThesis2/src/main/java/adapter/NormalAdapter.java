@@ -21,40 +21,32 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eda.Tweet;
-import utilities.Distribution;
+import processElements.SplitPE;
 import utilities.MongoRead;
 
 public class NormalAdapter extends AdapterApp implements Runnable {
 
-	private static Logger logger = LoggerFactory
-			.getLogger(NormalAdapter.class);
+	private static Logger logger = LoggerFactory.getLogger(NormalAdapter.class);
 
 	private Thread thread;
 	private Stack<Tweet> tweets;
-	private Stack<Integer> cantTweets;
+
+	private boolean up = false;
 
 	public Stack<Tweet> readTweet() {
 		MongoRead mongoRead = new MongoRead();
 		return mongoRead.getAllTweets();
-	}
-	
-	public Stack<Integer> cantTweets(){
-		Distribution distribution = new Distribution();
-		return distribution.exponentialTweets();
 	}
 
 	@Override
 	protected void onInit() {
 		/* Este orden es importante */
 		logger.info("Create Normal Adapter");
-		setRunMonitor(false);
-		// this.registerMonitor();
-		thread = new Thread(this);
-		
 		tweets = readTweet();
-		
-		Distribution distribution = new Distribution();
-		cantTweets = distribution.parabolaTweets();
+
+		setRunMonitor(true);
+		this.registerMonitor(SplitPE.class);
+		thread = new Thread(this);
 
 		super.onInit();
 	}
@@ -69,40 +61,109 @@ public class NormalAdapter extends AdapterApp implements Runnable {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+
+		Thread clockTime = new Thread(new ClockTime());
+		clockTime.start();
+		
+		Thread upTime = new Thread(new UpTime());
+		upTime.start();
 	}
 
 	@Override
 	public void run() {
-		long timeInit = System.currentTimeMillis();
-		logger.info("Time init (ms): " + timeInit);
 
 		while (true) {
-			long timeFinal = System.currentTimeMillis();
-			if ((timeFinal - timeInit) >= 10800000) {
-				close();
-				System.exit(0);
-			}
 
-			int cantCurrent = cantTweets.pop();
-					
-			for (int i = 1; i <= cantCurrent; i++) {
-				Tweet tweetCurrent = tweets.pop();
+			// for (int i = 1; i <= 4; i++) {
+			Tweet tweetCurrent = tweets.pop();
+			// logger.info(tweetCurrent.toString());
 
-				Event event = new Event();
-				event.put("idTweet", Integer.class, tweetCurrent.getIdTweet());
-				event.put("text", String.class, tweetCurrent.getText());
+			Event event = new Event();
+			event.put("levelStopword", Long.class, getEventCount() % getReplicationPE(SplitPE.class));
+			event.put("tweet", Tweet.class, tweetCurrent);
+			event.put("timeTweet", Long.class, System.currentTimeMillis());
 
-				getRemoteStream().put(event);
-			}
+			getRemoteStream().put(event);
+			// }
 
 			try {
-				Thread.sleep(10);
+				if (up)
+					Thread.sleep(10);
+				else
+					Thread.sleep(20);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 
 		}
+	}
 
+	public class ClockTime implements Runnable {
+		long timeInit;
+		long timeFinal;
+
+		public ClockTime() {
+			logger.info("Init ClockTime");
+			timeInit = System.currentTimeMillis();
+			timeFinal = 0;
+		}
+
+		@Override
+		public void run() {
+			try {
+				Thread.sleep(4195000);
+			} catch (InterruptedException e) {
+				logger.error(e.toString());
+			}
+
+			while (true) {
+				timeFinal = System.currentTimeMillis();
+				if ((timeFinal - timeInit) >= 4200000) {
+					close();
+					System.exit(0);
+				}
+
+			}
+		}
+	}
+
+	public class UpTime implements Runnable {
+		long timeInit;
+		long timeFinal;
+
+		public UpTime() {
+			logger.info("Init UpTime");
+			timeInit = System.currentTimeMillis();
+			timeFinal = 0;
+		}
+
+		@Override
+		public void run() {
+			try {
+				Thread.sleep(1100000);
+			} catch (InterruptedException e) {
+				logger.error(e.toString());
+			}
+
+			up = true;
+
+			try {
+				Thread.sleep(2200000);
+			} catch (InterruptedException e) {
+				logger.error(e.toString());
+			}
+
+			up = false;
+
+			while (true) {
+				timeFinal = System.currentTimeMillis();
+				if ((timeFinal - timeInit) >= 4200000) {
+					close();
+					System.exit(0);
+				}
+
+			}
+		}
 	}
 
 }

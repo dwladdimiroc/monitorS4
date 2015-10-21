@@ -68,7 +68,7 @@ project.ext["libraries"] = [
            ark: 'edu.cmu.cs:ark-tweet-nlp:0.3.2',
            jsonsimple: 'com.googlecode.json-simple:json-simple:1.1.1',
            weka: 'nz.ac.waikato.cms.weka:weka-stable:3.6.12',
-           math: 'org.apache.commons:commons-math3:3.4'           
+           math: 'org.apache.commons:commons-math3:3.4'
        ]
 
 
@@ -96,7 +96,7 @@ dependencies {
    compile (libraries.math)
 
    compile files('./lib/SentiStrength.jar')
-
+   compile files('./lib/opencsv-2.3.jar') 
 
 }
 

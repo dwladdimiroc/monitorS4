@@ -55,8 +55,8 @@ public class MonitorMetrics {
 	private long timeSendMonitor;
 	private long timeAskMonitor;
 	
-	private long timeReactive;
-	private long timePredictive;
+	// private long timeReactive;
+	// private long timePredictive;
 
 	public MonitorMetrics() {
 		logger.info("Init S4Monitor Metrics");
@@ -70,8 +70,8 @@ public class MonitorMetrics {
 		timeSendMonitor = 0;
 		timeAskMonitor = 0;
 		
-		timeReactive = 0;
-		timePredictive = 0;
+//		timeReactive = 0;
+//		timePredictive = 0;
 
 		/* Init registry */
 		String outputDir = "/home/daniel/Proyectos/monitorS4/statistics/";
@@ -127,21 +127,21 @@ public class MonitorMetrics {
 					}
 				});
 		
-		Metrics.newGauge(S4Monitor.class, "timeReactive", "ms",
-				new Gauge<Long>() {
-					@Override
-					public Long value() {
-						return timeReactive;
-					}
-				});
-		
-		Metrics.newGauge(S4Monitor.class, "timePredictive", "ms",
-				new Gauge<Long>() {
-					@Override
-					public Long value() {
-						return timePredictive;
-					}
-				});
+		// Metrics.newGauge(S4Monitor.class, "timeReactive", "ms",
+		// new Gauge<Long>() {
+		// @Override
+		// public Long value() {
+		// return timeReactive;
+		// }
+		// });
+		//
+		// Metrics.newGauge(S4Monitor.class, "timePredictive", "ms",
+		// new Gauge<Long>() {
+		// @Override
+		// public Long value() {
+		// return timePredictive;
+		// }
+		// });
 
 	}
 
@@ -336,12 +336,12 @@ public class MonitorMetrics {
 		this.timeAskMonitor = timeAskMonitor;
 	}
 	
-	public void setTimeReactive(long timeReactive) {
-		this.timeReactive = timeReactive;
-	}
-	
-	public void setTimePredictive(long timePredictive) {
-		this.timePredictive = timePredictive;
-	}
+//	public void setTimeReactive(long timeReactive) {
+//		this.timeReactive = timeReactive;
+//	}
+//	
+//	public void setTimePredictive(long timePredictive) {
+//		this.timePredictive = timePredictive;
+//	}
 
 }

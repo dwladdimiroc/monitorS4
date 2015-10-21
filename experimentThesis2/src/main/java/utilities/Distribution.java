@@ -30,19 +30,40 @@ public class Distribution {
 	}
 
 	public Stack<Integer> parabolaTweets() {
-		for (int i = 1; i <= 5400; i++) {
-			int cantTweetPeriod = functionExponential(i)
-					- functionExponential(i - 1);
+		//Num: 105000
+		for (int i = 1; i <= 26250; i++) {
+			int cantTweetPeriod = 2;
+			this.cantTweets.push(cantTweetPeriod);
+		}
+
+		for (int i = 1; i <= 3000; i++) {
+			int cantTweetPeriod = 3;
 			this.cantTweets.push(cantTweetPeriod);
 		}
 		
-		for (int i = 5400; i >= 1; i--) {
-			int cantTweetPeriod = functionExponential(i)
-					- functionExponential(i - 1);
+		for (int i = 1; i <= 20250; i++) {
+			int cantTweetPeriod = 4;
+			this.cantTweets.push(cantTweetPeriod);
+		}
+
+		for (int i = 1; i <= 3000; i++) {
+			int cantTweetPeriod = 3;
+			this.cantTweets.push(cantTweetPeriod);
+		}
+
+		for (int i = 1; i <= 26250; i++) {
+			int cantTweetPeriod = 2;
 			this.cantTweets.push(cantTweetPeriod);
 		}
 
 		return cantTweets;
+	}
+	
+	public Stack<Integer> dynamicTweets() {
+		Words read = new Words();
+		
+		// Cambiar Path
+		return read.readCantTweets("/home/daniel/Proyectos/monitorS4/experimentThesis/config/streamTwitter.csv");
 	}
 
 	public int totalTweet() {
