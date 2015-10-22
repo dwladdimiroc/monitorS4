@@ -9,8 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
-import au.com.bytecode.opencsv.CSVReader;
-
 public class Words {
 	public boolean contains(List<String> keywords, String text) {
 		for (String word : keywords) {

@@ -59,7 +59,7 @@ public class CounterPE extends ProcessingElement {
 		utilitiesWords = new Words();
 
 		keywords = utilitiesWords
-				.readWords("/home/daniel/Proyectos/monitorS4/experimentThesis/config/bag.txt");
+				.readWords("/alumnos/dwladdimiro/S4/experimentThesis/config/bag.txt");
 	}
 
 	@Override

@@ -52,7 +52,7 @@ public class StopwordPE extends ProcessingElement {
 		utilitiesWords = new Words();
 
 		stopwords = utilitiesWords
-				.readWords("/home/daniel/Proyectos/monitorS4/experimentThesis/config/stopwords.txt");
+				.readWords("/alumnos/dwladdimiro/S4/experimentThesis/config/stopwords.txt");
 	}
 
 	@Override
