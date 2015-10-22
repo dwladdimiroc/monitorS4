@@ -25,9 +25,9 @@ import processElements.StopwordPE;
 import utilities.Distribution;
 import utilities.MongoRead;
 
-public class DynamicAdapter extends AdapterApp implements Runnable {
+public class ParabolaAdapter extends AdapterApp implements Runnable {
 
-	private static Logger logger = LoggerFactory.getLogger(DynamicAdapter.class);
+	private static Logger logger = LoggerFactory.getLogger(ParabolaAdapter.class);
 
 	private Thread thread;
 	private Stack<Tweet> tweets;
@@ -40,13 +40,13 @@ public class DynamicAdapter extends AdapterApp implements Runnable {
 
 	public Stack<Integer> cantTweets() {
 		Distribution distribution = new Distribution();
-		return distribution.dynamicTweets();
+		return distribution.parabolaTweets();
 	}
 
 	@Override
 	protected void onInit() {
 		/* Este orden es importante */
-		logger.info("Create Dynamic Adapter");
+		logger.info("Create Parabola Adapter");
 		setRunMonitor(false);
 		this.registerMonitor(StopwordPE.class);
 		thread = new Thread(this);
@@ -76,7 +76,6 @@ public class DynamicAdapter extends AdapterApp implements Runnable {
 
 	@Override
 	public void run() {
-
 		while (true) {
 
 			int cantCurrent = cantTweets.pop();
