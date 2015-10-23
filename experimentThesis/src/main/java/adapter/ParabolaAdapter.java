@@ -13,6 +13,7 @@
  */
 package adapter;
 
+import java.util.List;
 import java.util.Stack;
 
 import org.apache.s4.base.Event;
@@ -31,14 +32,14 @@ public class ParabolaAdapter extends AdapterApp implements Runnable {
 
 	private Thread thread;
 	private Stack<Tweet> tweets;
-	private Stack<Integer> cantTweets;
+	private List<Integer> cantTweets;
 
 	public Stack<Tweet> readTweet() {
 		MongoRead mongoRead = new MongoRead();
 		return mongoRead.getAllTweets();
 	}
 
-	public Stack<Integer> cantTweets() {
+	public List<Integer> cantTweets() {
 		Distribution distribution = new Distribution();
 		return distribution.parabolaTweets();
 	}
@@ -47,7 +48,7 @@ public class ParabolaAdapter extends AdapterApp implements Runnable {
 	protected void onInit() {
 		/* Este orden es importante */
 		logger.info("Create Parabola Adapter");
-		setRunMonitor(false);
+		setRunMonitor(true);
 		this.registerMonitor(StopwordPE.class);
 		thread = new Thread(this);
 
@@ -78,23 +79,24 @@ public class ParabolaAdapter extends AdapterApp implements Runnable {
 	public void run() {
 		while (true) {
 
-			int cantCurrent = cantTweets.pop();
+			for (int cant : cantTweets) {
 
-			for (int i = 1; i <= cantCurrent; i++) {
-				Tweet tweetCurrent = tweets.pop();
+				for (int i = 1; i <= cant; i++) {
+					Tweet tweetCurrent = tweets.pop();
 
-				Event event = new Event();
-				event.put("levelStopword", Long.class, getEventCount() % getReplicationPE(StopwordPE.class));
-				event.put("tweet", Tweet.class, tweetCurrent);
-				event.put("timeTweet", Long.class, System.currentTimeMillis());
+					Event event = new Event();
+					event.put("levelStopword", Long.class, getEventCount() % getReplicationPE(StopwordPE.class));
+					event.put("tweet", Tweet.class, tweetCurrent);
+					event.put("timeTweet", Long.class, System.currentTimeMillis());
 
-				getRemoteStream().put(event);
-			}
+					getRemoteStream().put(event);
+				}
 
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 
 		}

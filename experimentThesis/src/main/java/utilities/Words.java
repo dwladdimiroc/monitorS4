@@ -5,9 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Stack;
 
 public class Words {
 	public boolean contains(List<String> keywords, String text) {
@@ -94,8 +92,8 @@ public class Words {
 		return stopwords;
 	}
 
-	public Stack<Integer> readCantTweets(String path) {
-		Stack<Integer> cantTweets = new Stack<Integer>();
+	public List<Integer> readCantTweets(String path) {
+		List<Integer> cantTweets = new ArrayList<Integer>();
 		String fileName = path;
 		String line = null;
 

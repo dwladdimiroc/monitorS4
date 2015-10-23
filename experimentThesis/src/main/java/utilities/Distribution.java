@@ -1,21 +1,42 @@
 package utilities;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Stack;
+import java.util.List;
 
 public class Distribution {
-	Stack<Integer> cantTweets;
+	List<Integer> cantTweets;
 
 	public Distribution() {
-		this.cantTweets = new Stack<Integer>();
+		this.cantTweets = new ArrayList<Integer>();
 	}
 
-	public Stack<Integer> parabolaTweets() {
-		Parabola parabola = new Parabola();
+	public List<Integer> parabolaTweets() {
+		Parabola parabolaA = new Parabola();
+		parabolaA.calcularParabola(0, 100, 600, 200, 1200, 100);
+		Parabola parabolaB = new Parabola();
+		parabolaB.calcularParabola(0, 100, 600, 400, 1200, 100);
+		Parabola parabolaC = new Parabola();
+		parabolaC.calcularParabola(0, 100, 600, 800, 1200, 100);
+		Parabola parabolaAux = new Parabola();
 
-		parabola.calcularParabola(0, 100, 600, 200, 1200, 500);
-		for (int i = 1; i <= 1200; i++) {
-			int auxCont = (int) Math.ceil(parabola.valor(i));
+		for (int i = 0; i < 900; i++) {
+			int auxCont = (int) Math.ceil(parabolaA.valor(i));
+
+			Integer[] arrayNumber = new Integer[100];
+			for (int j = 0; j < arrayNumber.length; j++)
+				arrayNumber[j] = 0;
+
+			for (int cont = 0; cont < auxCont; cont++)
+				arrayNumber[cont % 100] += 1;
+
+			cantTweets.addAll(Arrays.asList(arrayNumber));
+		}
+		
+		parabolaAux.calcularParabola(0, (int) Math.ceil(parabolaA.valor(300)), 300, 100, 600,
+				(int) Math.ceil(parabolaB.valor(300)));
+		for (int i = 0; i < 600; i++) {
+			int auxCont = (int) Math.ceil(parabolaAux.valor(i));
 
 			Integer[] arrayNumber = new Integer[100];
 			for (int j = 0; j < arrayNumber.length; j++)
@@ -27,9 +48,23 @@ public class Distribution {
 			cantTweets.addAll(Arrays.asList(arrayNumber));
 		}
 
-		parabola.calcularParabola(0, 100, 600, 400, 1200, 500);
-		for (int i = 1; i <= 1200; i++) {
-			int auxCont = (int) Math.ceil(parabola.valor(i));
+		for (int i = 300; i < 900; i++) {
+			int auxCont = (int) Math.ceil(parabolaB.valor(i));
+
+			Integer[] arrayNumber = new Integer[100];
+			for (int j = 0; j < arrayNumber.length; j++)
+				arrayNumber[j] = 0;
+
+			for (int cont = 0; cont < auxCont; cont++)
+				arrayNumber[cont % 100] += 1;
+
+			cantTweets.addAll(Arrays.asList(arrayNumber));
+		}
+		
+		parabolaAux.calcularParabola(0, (int) Math.ceil(parabolaB.valor(300)), 300, 100, 600,
+				(int) Math.ceil(parabolaC.valor(300)));
+		for (int i = 0; i < 600; i++) {
+			int auxCont = (int) Math.ceil(parabolaAux.valor(i));
 
 			Integer[] arrayNumber = new Integer[100];
 			for (int j = 0; j < arrayNumber.length; j++)
@@ -41,9 +76,8 @@ public class Distribution {
 			cantTweets.addAll(Arrays.asList(arrayNumber));
 		}
 
-		parabola.calcularParabola(0, 100, 600, 800, 1200, 500);
-		for (int i = 1; i <= 1200; i++) {
-			int auxCont = (int) Math.ceil(parabola.valor(i));
+		for (int i = 300; i < 1200; i++) {
+			int auxCont = (int) Math.ceil(parabolaC.valor(i));
 
 			Integer[] arrayNumber = new Integer[100];
 			for (int j = 0; j < arrayNumber.length; j++)
@@ -54,10 +88,9 @@ public class Distribution {
 
 			cantTweets.addAll(Arrays.asList(arrayNumber));
 		}
-
-		parabola.calcularParabola(0, 100, 600, 200, 1200, 500);
-		for (int i = 1; i <= 1200; i++) {
-			int auxCont = (int) Math.ceil(parabola.valor(i));
+		
+		for (int i = 0; i < 1200; i++) {
+			int auxCont = (int) Math.ceil(parabolaA.valor(i));
 
 			Integer[] arrayNumber = new Integer[100];
 			for (int j = 0; j < arrayNumber.length; j++)
@@ -72,7 +105,7 @@ public class Distribution {
 		return cantTweets;
 	}
 
-	public Stack<Integer> dynamicTweets() {
+	public List<Integer> dynamicTweets() {
 		Words read = new Words();
 
 		// Cambiar Path

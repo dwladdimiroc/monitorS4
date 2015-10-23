@@ -8,7 +8,7 @@ set key right top
 set grid y
 set xlabel 'Tiempo (s)'
 set ylabel "# Eventos"
-set ytics 500
+set ytics 2000
 set datafile separator ","
 plot "../statistics/lambda@processElements.StopwordPE.csv" using 1:2 title 'lambda' with lines
 
@@ -17,7 +17,7 @@ set key right top
 set grid y
 set xlabel 'Tiempo (s)'
 set ylabel "# Eventos"
-set ytics 500
+set ytics 1000
 set datafile separator ","
 plot "../statistics/mu@processElements.StopwordPE.csv" using 1:2 title 'mu' with lines
 
