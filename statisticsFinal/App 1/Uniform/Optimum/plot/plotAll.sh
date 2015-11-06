@@ -1,3 +1,5 @@
+#java -jar ReadFile.jar
+
 for file in ./*
 do
 	if [ ${file: -4} == ".tpl" ]

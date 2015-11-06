@@ -9,5 +9,5 @@ set xlabel 'Time (s)'
 set ylabel "% CPU"
 set xtics 200
 set datafile separator ","
-plot "../statistics/consumeCPU.csv" using 9 notitle with lines lw 2
+plot "../statistics/consumeCPU.csv" using 9 notitle with lines lw 6
 exit

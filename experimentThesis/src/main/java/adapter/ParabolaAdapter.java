@@ -41,7 +41,7 @@ public class ParabolaAdapter extends AdapterApp implements Runnable {
 
 	public List<Integer> cantTweets() {
 		Distribution distribution = new Distribution();
-		return distribution.parabolaTweets();
+		return distribution.parabolaTweets(new int[]{0, 100, 100, 200, 200, 100}, new int[]{0, 100, 100, 400, 200, 100}, new int[]{0, 100, 100, 800, 200, 100});
 	}
 
 	@Override

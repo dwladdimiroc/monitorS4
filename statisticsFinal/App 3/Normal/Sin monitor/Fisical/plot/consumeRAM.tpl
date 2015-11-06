@@ -9,5 +9,5 @@ set xlabel 'Time (s)'
 set ylabel "Memory (MB)"
 set xtics 200
 set datafile separator "\t"
-plot "../statistics/consumeRAM.csv" using 5:3 notitle with lines lw 2
+plot "../statistics/consumeRAM.csv" using 5:3 notitle with lines lw 6
 exit

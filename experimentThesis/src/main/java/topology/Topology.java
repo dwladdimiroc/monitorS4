@@ -42,7 +42,7 @@ public class Topology extends App {
 	StopwordPE stopwordPE;
 	LanguagePE languagePE;
 	CounterPE counterPE;
-	//AnalyzePE analyzePE;
+	// AnalyzePE analyzePE;
 	MongoPE mongoPE;
 
 	@Override
@@ -51,7 +51,7 @@ public class Topology extends App {
 		stopwordPE = createPE(StopwordPE.class);
 		languagePE = createPE(LanguagePE.class);
 		counterPE = createPE(CounterPE.class);
-		//analyzePE = createPE(AnalyzePE.class);
+		// analyzePE = createPE(AnalyzePE.class);
 		mongoPE = createPE(MongoPE.class);
 
 		// Create a stream that listens to the "textInput" stream and passes
@@ -63,51 +63,45 @@ public class Topology extends App {
 			}
 		}, stopwordPE).setParallelism(6);
 
-		Stream<Event> languageStream = createStream("languageStream",
-				new KeyFinder<Event>() {
-					@Override
-					public List<String> get(Event event) {
+		Stream<Event> languageStream = createStream("languageStream", new KeyFinder<Event>() {
+			@Override
+			public List<String> get(Event event) {
 
-						return Arrays.asList(new String[] { event
-								.get("levelLanguage") });
-					}
-				}, languagePE).setParallelism(1);
+				return Arrays.asList(new String[] { event.get("levelLanguage") });
+			}
+		}, languagePE).setParallelism(1);
 
-		Stream<Event> counterStream = createStream("counterStream",
-				new KeyFinder<Event>() {
-					@Override
-					public List<String> get(Event event) {
+		Stream<Event> counterStream = createStream("counterStream", new KeyFinder<Event>() {
+			@Override
+			public List<String> get(Event event) {
 
-						return Arrays.asList(new String[] { event
-								.get("levelCounter") });
-					}
-				}, counterPE).setParallelism(10);
+				return Arrays.asList(new String[] { event.get("levelCounter") });
+			}
+		}, counterPE).setParallelism(10);
 
-		/*Stream<Event> analyzeStream = createStream("analyzeStream",
-				new KeyFinder<Event>() {
-					@Override
-					public List<String> get(Event event) {
+		/*
+		 * Stream<Event> analyzeStream = createStream("analyzeStream", new
+		 * KeyFinder<Event>() {
+		 * 
+		 * @Override public List<String> get(Event event) {
+		 * 
+		 * return Arrays.asList(new String[] { event .get("levelAnalyze") }); }
+		 * }, analyzePE).setParallelism(16);
+		 */
 
-						return Arrays.asList(new String[] { event
-								.get("levelAnalyze") });
-					}
-				}, analyzePE).setParallelism(16);*/
+		Stream<Event> mongoStream = createStream("mongoStream", new KeyFinder<Event>() {
+			@Override
+			public List<String> get(Event event) {
 
-		Stream<Event> mongoStream = createStream("mongoStream",
-				new KeyFinder<Event>() {
-					@Override
-					public List<String> get(Event event) {
-
-						return Arrays.asList(new String[] { event
-								.get("levelMongo") });
-					}
-				}, mongoPE).setParallelism(1);
+				return Arrays.asList(new String[] { event.get("levelMongo") });
+			}
+		}, mongoPE).setParallelism(1);
 
 		// Register and setDownStream
 		stopwordPE.setDownStream(languageStream);
 		languagePE.setDownStream(counterStream);
 		counterPE.setDownStream(mongoStream);
-		//analyzePE.setDownStream(mongoStream);
+		// analyzePE.setDownStream(mongoStream);
 
 		setRunMonitor(true);
 	}
@@ -119,8 +113,18 @@ public class Topology extends App {
 		stopwordPE.registerMonitor(languagePE.getClass());
 		languagePE.registerMonitor(counterPE.getClass());
 		counterPE.registerMonitor(mongoPE.getClass());
-		//analyzePE.registerMonitor(mongoPE.getClass());
+		// analyzePE.registerMonitor(mongoPE.getClass());
 		mongoPE.registerMonitor(null);
+		
+		StatusPE statusStopwordPE = new StatusPE();
+		statusStopwordPE.setPE(stopwordPE.getClass());
+		statusStopwordPE.setReplication(4);
+		this.addReplication(statusStopwordPE);
+
+		StatusPE statusCounterPE = new StatusPE();
+		statusCounterPE.setPE(counterPE.getClass());
+		statusCounterPE.setReplication(8);
+		this.addReplication(statusCounterPE);
 
 		Thread clockTime = new Thread(new ClockTime());
 		clockTime.start();
