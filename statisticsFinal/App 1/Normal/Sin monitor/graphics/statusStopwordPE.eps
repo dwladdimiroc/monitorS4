@@ -1,7 +1,7 @@
 %!PS-Adobe-2.0 EPSF-2.0
 %%Title: ../graphics/statusStopwordPE.eps
 %%Creator: gnuplot 4.6 patchlevel 4
-%%CreationDate: Tue Aug 11 21:36:53 2015
+%%CreationDate: Thu Nov 12 16:00:06 2015
 %%DocumentFonts: (atend)
 %%BoundingBox: 50 50 410 302
 %%EndComments
@@ -27,7 +27,7 @@ gnudict begin
 /Gamma 1.0 def
 /BackgroundColor {-1.000 -1.000 -1.000} def
 %
-/vshift -36 def
+/vshift -60 def
 /dl1 {
   10.0 Dashlength mul mul
   Rounded { currentlinewidth 0.75 mul sub dup 0 le { pop 0.01 } if } if
@@ -420,6 +420,34 @@ Level1 {Level1PatternFill} {Level2PatternFill} ifelse
 /Symbol-Oblique /Symbol findfont [1 0 .167 1 0 0] makefont
 dup length dict begin {1 index /FID eq {pop pop} {def} ifelse} forall
 currentdict end definefont pop
+/MFshow {
+   { dup 5 get 3 ge
+     { 5 get 3 eq {gsave} {grestore} ifelse }
+     {dup dup 0 get findfont exch 1 get scalefont setfont
+     [ currentpoint ] exch dup 2 get 0 exch R dup 5 get 2 ne {dup dup 6
+     get exch 4 get {Gshow} {stringwidth pop 0 R} ifelse }if dup 5 get 0 eq
+     {dup 3 get {2 get neg 0 exch R pop} {pop aload pop M} ifelse} {dup 5
+     get 1 eq {dup 2 get exch dup 3 get exch 6 get stringwidth pop -2 div
+     dup 0 R} {dup 6 get stringwidth pop -2 div 0 R 6 get
+     show 2 index {aload pop M neg 3 -1 roll neg R pop pop} {pop pop pop
+     pop aload pop M} ifelse }ifelse }ifelse }
+     ifelse }
+   forall} def
+/Gswidth {dup type /stringtype eq {stringwidth} {pop (n) stringwidth} ifelse} def
+/MFwidth {0 exch { dup 5 get 3 ge { 5 get 3 eq { 0 } { pop } ifelse }
+ {dup 3 get{dup dup 0 get findfont exch 1 get scalefont setfont
+     6 get Gswidth pop add} {pop} ifelse} ifelse} forall} def
+/MLshow { currentpoint stroke M
+  0 exch R
+  Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
+/MRshow { currentpoint stroke M
+  exch dup MFwidth neg 3 -1 roll R
+  Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
+/MCshow { currentpoint stroke M
+  exch dup MFwidth -2 div 3 -1 roll R
+  Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
+/XYsave    { [( ) 1 2 true false 3 ()] } bind def
+/XYrestore { [( ) 1 2 true false 4 ()] } bind def
 Level1 SuppressPDFMark or 
 {} {
 /SDict 10 dict def
@@ -433,7 +461,7 @@ SDict begin [
   /Author (daniel)
 %  /Producer (gnuplot)
 %  /Keywords ()
-  /CreationDate (Tue Aug 11 21:36:53 2015)
+  /CreationDate (Thu Nov 12 16:00:06 2015)
   /DOCINFO pdfmark
 end
 } ifelse
@@ -447,5235 +475,4260 @@ doclip
 0.050 0.050 scale
 0 setgray
 newpath
-(Helvetica) findfont 110 scalefont setfont
+(Helvetica) findfont 180 scalefont setfont
 BackgroundColor 0 lt 3 1 roll 0 lt exch 0 lt or or not {BackgroundColor C 1.000 0 0 7200.00 5040.00 BoxColFill} if
-LCb setrgbcolor
-3600 4930 M
-(Estado del PE Stopword) Cshow
-LTb
 1.000 UL
 LTb
 LCb setrgbcolor
 1.000 UL
 LTa
 LCa setrgbcolor
-605 4296 M
-6396 0 V
+864 4356 M
+6011 0 V
 stroke
 LTb
 LCb setrgbcolor
-605 4296 M
+864 4356 M
 63 0 V
-6333 0 R
+5948 0 R
 -63 0 V
--6399 0 R
-( 0) Rshow
+stroke
+756 4356 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 0)]
+] -60.0 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
 1.000 UL
 LTa
 LCa setrgbcolor
-605 4448 M
-5475 0 V
-855 0 R
-66 0 V
+864 4590 M
+3572 0 V
+2331 0 R
+108 0 V
 stroke
 LTb
 LCb setrgbcolor
-605 4448 M
+864 4590 M
 63 0 V
-6333 0 R
+5948 0 R
 -63 0 V
--6399 0 R
-( 500) Rshow
+stroke
+756 4590 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 100)]
+] -60.0 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
 1.000 UL
 LTa
 LCa setrgbcolor
-605 4599 M
-6396 0 V
+864 4823 M
+6011 0 V
 stroke
 LTb
 LCb setrgbcolor
-605 4599 M
+864 4823 M
 63 0 V
-6333 0 R
+5948 0 R
 -63 0 V
--6399 0 R
-( 1000) Rshow
+stroke
+756 4823 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 200)]
+] -60.0 MRshow
 1.000 UL
 LTb
 LCb setrgbcolor
-605 4296 M
+864 4356 M
 0 63 V
-0 240 R
+0 404 R
 0 -63 V
-0 -350 R
-( 0) Cshow
+stroke
+864 4176 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 0)]
+] -60.0 MCshow
 1.000 UL
 LTb
 LCb setrgbcolor
-1316 4296 M
+1580 4356 M
 0 63 V
-0 240 R
+0 404 R
 0 -63 V
-0 -350 R
-( 500) Cshow
+stroke
+1580 4176 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 500)]
+] -60.0 MCshow
 1.000 UL
 LTb
 LCb setrgbcolor
-2026 4296 M
+2295 4356 M
 0 63 V
-0 240 R
+0 404 R
 0 -63 V
-0 -350 R
-( 1000) Cshow
+stroke
+2295 4176 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 1000)]
+] -60.0 MCshow
 1.000 UL
 LTb
 LCb setrgbcolor
-2737 4296 M
+3011 4356 M
 0 63 V
-0 240 R
+0 404 R
 0 -63 V
-0 -350 R
-( 1500) Cshow
+stroke
+3011 4176 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 1500)]
+] -60.0 MCshow
 1.000 UL
 LTb
 LCb setrgbcolor
-3448 4296 M
+3726 4356 M
 0 63 V
-0 240 R
+0 404 R
 0 -63 V
-0 -350 R
-( 2000) Cshow
+stroke
+3726 4176 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 2000)]
+] -60.0 MCshow
 1.000 UL
 LTb
 LCb setrgbcolor
-4158 4296 M
+4442 4356 M
 0 63 V
-0 240 R
+0 404 R
 0 -63 V
-0 -350 R
-( 2500) Cshow
+stroke
+4442 4176 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 2500)]
+] -60.0 MCshow
 1.000 UL
 LTb
 LCb setrgbcolor
-4869 4296 M
+5158 4356 M
 0 63 V
-0 240 R
+0 404 R
 0 -63 V
-0 -350 R
-( 3000) Cshow
+stroke
+5158 4176 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 3000)]
+] -60.0 MCshow
 1.000 UL
 LTb
 LCb setrgbcolor
-5580 4296 M
+5873 4356 M
 0 63 V
-0 240 R
+0 404 R
 0 -63 V
-0 -350 R
-( 3500) Cshow
+stroke
+5873 4176 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 3500)]
+] -60.0 MCshow
 1.000 UL
 LTb
 LCb setrgbcolor
-6290 4296 M
+6589 4356 M
 0 63 V
-0 240 R
+0 404 R
 0 -63 V
-0 -350 R
-( 4000) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-7001 4296 M
-0 63 V
-0 240 R
-0 -63 V
-0 -350 R
-( 4500) Cshow
+stroke
+6589 4176 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 4000)]
+] -60.0 MCshow
 1.000 UL
 LTb
 LCb setrgbcolor
 1.000 UL
 LTb
 LCb setrgbcolor
-605 4599 N
-0 -303 V
-6396 0 V
-0 303 V
--6396 0 V
+864 4823 N
+0 -467 V
+6011 0 V
+0 467 V
+-6011 0 V
 Z stroke
 LCb setrgbcolor
-88 4447 M
-currentpoint gsave translate -270 rotate 0 0 M
-(# Eventos) Cshow
-grestore
+126 4589 M
+[ [(Symbol) 180.0 0.0 true true 0 (l)]
+] -60.0 MCshow
 LTb
 LCb setrgbcolor
-3803 4021 M
-(Tiempo \(s\)) Cshow
+3869 3906 M
+[ [(Helvetica) 180.0 0.0 true true 0 (Tiempo \(s\))]
+] -60.0 MCshow
 LTb
-3803 4764 M
-(Tasa de llegada) Cshow
 1.000 UP
 1.000 UL
 LTb
 LCb setrgbcolor
 % Begin plot #1
-1.000 UL
+5.000 UL
 LT0
 LC0 setrgbcolor
 LCb setrgbcolor
-6476 4481 M
-(lambda) Rshow
+6056 4670 M
+[ [(Symbol) 180.0 0.0 true true 0 (l)]
+[(Helvetica) 180.0 0.0 true true 0 ( \(eventos/seg\))]
+] -60.0 MRshow
 LT0
-6542 4481 M
-327 0 V
-612 4296 M
+6164 4670 M
+495 0 V
+871 4356 M
 7 0 V
 7 0 V
-7 5 V
-8 70 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-stroke 1337 4371 M
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 1 V
-8 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-stroke 2076 4371 M
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 6 V
-7 69 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-8 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-8 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-8 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-stroke 2815 4446 M
-7 0 V
-7 0 V
-7 1 V
-8 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-8 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 1 V
-8 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-8 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 1 V
-7 0 V
-stroke 3554 4447 M
-7 -1 V
-7 0 V
-8 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-8 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-8 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 1 V
-8 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-8 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-8 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-8 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-stroke 4293 4446 M
-7 0 V
-8 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 1 V
-8 -1 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 1 V
-7 -1 V
-8 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-8 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-8 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-8 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 1 V
-7 -1 V
-8 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 1 V
-8 -1 V
-7 0 V
-7 0 V
-7 1 V
-stroke 5034 4447 M
-7 -1 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-8 0 V
-7 0 V
-7 -8 V
-7 16 V
-7 -7 V
-7 -6 V
-7 -70 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-stroke 5773 4371 M
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 1 V
-8 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-stroke 6512 4371 M
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-% End plot #1
-stroke
-LTb
-LCb setrgbcolor
-605 4599 N
-0 -303 V
-6396 0 V
-0 303 V
--6396 0 V
-Z stroke
-1.000 UP
-1.000 UL
-LTb
-LCb setrgbcolor
-1.000 UL
-LTb
-LCb setrgbcolor
-1.000 UL
-LTa
-LCa setrgbcolor
-605 3310 M
-6396 0 V
-stroke
-LTb
-LCb setrgbcolor
-605 3310 M
-63 0 V
-6333 0 R
--63 0 V
--6399 0 R
-( 0) Rshow
-1.000 UL
-LTb
-LCb setrgbcolor
-1.000 UL
-LTa
-LCa setrgbcolor
-605 3462 M
-5739 0 V
-591 0 R
-66 0 V
-stroke
-LTb
-LCb setrgbcolor
-605 3462 M
-63 0 V
-6333 0 R
--63 0 V
--6399 0 R
-( 500) Rshow
-1.000 UL
-LTb
-LCb setrgbcolor
-1.000 UL
-LTa
-LCa setrgbcolor
-605 3613 M
-6396 0 V
-stroke
-LTb
-LCb setrgbcolor
-605 3613 M
-63 0 V
-6333 0 R
--63 0 V
--6399 0 R
-( 1000) Rshow
-1.000 UL
-LTb
-LCb setrgbcolor
-605 3310 M
-0 63 V
-0 240 R
-0 -63 V
-0 -350 R
-( 0) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-1316 3310 M
-0 63 V
-0 240 R
-0 -63 V
-0 -350 R
-( 500) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-2026 3310 M
-0 63 V
-0 240 R
-0 -63 V
-0 -350 R
-( 1000) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-2737 3310 M
-0 63 V
-0 240 R
-0 -63 V
-0 -350 R
-( 1500) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-3448 3310 M
-0 63 V
-0 240 R
-0 -63 V
-0 -350 R
-( 2000) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-4158 3310 M
-0 63 V
-0 240 R
-0 -63 V
-0 -350 R
-( 2500) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-4869 3310 M
-0 63 V
-0 240 R
-0 -63 V
-0 -350 R
-( 3000) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-5580 3310 M
-0 63 V
-0 240 R
-0 -63 V
-0 -350 R
-( 3500) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-6290 3310 M
-0 63 V
-0 240 R
-0 -63 V
-0 -350 R
-( 4000) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-7001 3310 M
-0 63 V
-0 240 R
-0 -63 V
-0 -350 R
-( 4500) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-1.000 UL
-LTb
-LCb setrgbcolor
-605 3613 N
-0 -303 V
-6396 0 V
-0 303 V
--6396 0 V
-Z stroke
-LCb setrgbcolor
-88 3461 M
-currentpoint gsave translate -270 rotate 0 0 M
-(# Eventos) Cshow
-grestore
-LTb
-LCb setrgbcolor
-3803 3035 M
-(Tiempo \(s\)) Cshow
-LTb
-3803 3778 M
-(Tasa de procesamiento) Cshow
-1.000 UP
-1.000 UL
-LTb
-LCb setrgbcolor
-% Begin plot #1
-1.000 UL
-LT0
-LC0 setrgbcolor
-LCb setrgbcolor
-6476 3495 M
-(mu) Rshow
-LT0
-6542 3495 M
-327 0 V
-612 3310 M
-7 0 V
-7 0 V
-7 0 V
-8 71 V
-7 11 V
-7 -4 V
-7 -10 V
-7 14 V
-7 -6 V
-7 -2 V
-7 2 V
-7 -2 V
-7 3 V
-8 -3 V
-7 1 V
-7 -1 V
-7 3 V
-7 -4 V
-7 6 V
-7 -4 V
-7 1 V
-7 -1 V
-8 0 V
-7 1 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 2 V
-7 -2 V
-8 -1 V
-7 3 V
-7 -2 V
-7 0 V
-7 0 V
-7 2 V
-7 -2 V
-7 0 V
-7 0 V
-7 0 V
-8 1 V
-7 -1 V
-7 2 V
-7 -2 V
-7 -1 V
-7 3 V
-7 -3 V
-7 2 V
-7 0 V
-8 0 V
-7 -7 V
-7 12 V
-7 -4 V
-7 -2 V
-7 0 V
-7 0 V
-7 -1 V
-7 3 V
-8 -2 V
-7 0 V
-7 2 V
-7 -4 V
-7 4 V
-7 -2 V
-7 1 V
-7 0 V
-7 -4 V
-7 6 V
-8 -2 V
-7 -1 V
-7 1 V
-7 0 V
-7 -1 V
-7 -1 V
-7 -1 V
-7 0 V
-7 2 V
-8 7 V
-7 -9 V
-7 2 V
-7 2 V
-7 -2 V
-7 1 V
-7 0 V
-7 0 V
-7 -1 V
-7 0 V
-8 -1 V
-7 3 V
-7 -2 V
-7 2 V
-7 -2 V
-7 0 V
-7 1 V
-7 -1 V
-7 -1 V
-8 2 V
-7 -3 V
-7 5 V
-7 -3 V
-7 1 V
-stroke 1337 3386 M
-7 -1 V
-7 -3 V
-7 7 V
-7 -5 V
-8 2 V
-7 -1 V
-7 -3 V
-7 2 V
-7 5 V
-7 -5 V
-7 3 V
-7 1 V
-7 -3 V
-7 0 V
-8 -1 V
-7 2 V
-7 -2 V
-7 4 V
-7 -2 V
-7 -1 V
-7 1 V
-7 -2 V
-7 -4 V
-8 11 V
-7 -4 V
-7 -4 V
-7 5 V
-7 -3 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-8 2 V
-7 -2 V
-7 -1 V
-7 4 V
-7 -3 V
-7 -1 V
-7 2 V
-7 -2 V
-7 0 V
-7 -1 V
-8 6 V
-7 -4 V
-7 -2 V
-7 7 V
-7 -5 V
-7 2 V
-7 -3 V
-7 2 V
-7 0 V
-8 -1 V
-7 0 V
-7 0 V
-7 -1 V
-7 1 V
-7 3 V
-7 -3 V
-7 -1 V
-7 2 V
-7 -1 V
-8 1 V
-7 -1 V
-7 -1 V
-7 3 V
-7 -2 V
-7 1 V
-7 -1 V
-7 1 V
-7 -2 V
-8 3 V
-7 -2 V
-7 -1 V
-7 3 V
-7 -2 V
-7 0 V
-7 2 V
-7 -3 V
-7 3 V
-8 -1 V
-7 -1 V
-7 1 V
-7 -1 V
-7 0 V
-7 1 V
-7 -1 V
-7 1 V
-7 -2 V
-7 2 V
-8 -1 V
-7 0 V
-7 0 V
-7 1 V
-7 1 V
-7 -2 V
-7 1 V
-7 -1 V
-7 1 V
-8 -8 V
-7 10 V
-7 2 V
-7 -8 V
-7 7 V
-7 -5 V
-stroke 2076 3384 M
-7 3 V
-7 -2 V
-7 -1 V
-8 2 V
-7 -3 V
-7 5 V
-7 -1 V
-7 12 V
-7 9 V
-7 -8 V
-7 15 V
-7 -13 V
-7 -4 V
-8 3 V
-7 1 V
-7 1 V
-7 11 V
-7 -8 V
-7 19 V
-7 -17 V
-7 -4 V
-7 -5 V
-8 23 V
-7 -22 V
-7 -1 V
-7 -1 V
-7 -1 V
-7 -8 V
-7 4 V
-7 2 V
-7 14 V
-7 -1 V
-8 -14 V
-7 13 V
-7 7 V
-7 1 V
-7 1 V
-7 0 V
-7 -5 V
-7 -5 V
-7 -9 V
-8 -2 V
-7 26 V
-7 -13 V
-7 -21 V
-7 18 V
-7 1 V
-7 -2 V
-7 10 V
-7 -11 V
-8 17 V
-7 -14 V
-7 -2 V
-7 -5 V
-7 1 V
-7 -7 V
-7 15 V
-7 -15 V
-7 6 V
-7 0 V
-8 7 V
-7 -16 V
-7 3 V
-7 1 V
-7 23 V
-7 -19 V
-7 18 V
-7 -6 V
-7 -3 V
-8 0 V
-7 9 V
-7 -19 V
-7 13 V
-7 5 V
-7 -4 V
-7 -6 V
-7 -7 V
-7 3 V
-8 10 V
-7 -2 V
-7 1 V
-7 6 V
-7 5 V
-7 -9 V
-7 15 V
-7 -18 V
-7 -4 V
-7 -4 V
-8 3 V
-7 4 V
-7 -16 V
-7 13 V
-7 4 V
-7 -4 V
-7 -1 V
-7 1 V
-7 10 V
-8 0 V
-7 -10 V
-7 -8 V
-7 32 V
-7 -5 V
-7 2 V
-7 -20 V
-stroke 2815 3406 M
-7 -1 V
-7 3 V
-7 -12 V
-8 5 V
-7 14 V
-7 10 V
-7 -12 V
-7 0 V
-7 -7 V
-7 6 V
-7 13 V
-7 -29 V
-8 4 V
-7 4 V
-7 6 V
-7 -9 V
-7 7 V
-7 -4 V
-7 7 V
-7 3 V
-7 -11 V
-8 2 V
-7 4 V
-7 -7 V
-7 7 V
-7 1 V
-7 14 V
-7 -10 V
-7 5 V
-7 1 V
-7 -8 V
-8 -3 V
-7 13 V
-7 -5 V
-7 3 V
-7 -5 V
-7 0 V
-7 -5 V
-7 3 V
-7 -4 V
-8 6 V
-7 -10 V
-7 -4 V
-7 12 V
-7 12 V
-7 7 V
-7 -4 V
-7 2 V
-7 -16 V
 8 8 V
-7 -1 V
-7 4 V
+7 107 V
 7 1 V
-7 -24 V
-7 -6 V
-7 12 V
-7 15 V
-7 2 V
-7 -40 V
-8 29 V
-7 14 V
-7 -8 V
-7 -2 V
-7 -2 V
-7 -8 V
-7 2 V
-7 -1 V
-7 -11 V
-8 4 V
-7 5 V
-7 -12 V
-7 -5 V
-7 9 V
-7 -6 V
-7 9 V
-7 -4 V
-7 1 V
-7 3 V
-8 -7 V
-7 5 V
-7 1 V
-7 12 V
-7 -15 V
-7 -6 V
-7 -2 V
-7 7 V
-7 5 V
-8 -16 V
-7 29 V
-7 -13 V
-7 -7 V
-7 13 V
-7 9 V
-7 -5 V
-7 9 V
-7 -7 V
-8 -10 V
-7 8 V
-7 -7 V
-7 9 V
-7 -11 V
-7 14 V
-7 -11 V
-7 -5 V
-stroke 3554 3401 M
-7 1 V
-7 16 V
-8 -15 V
-7 -2 V
-7 7 V
-7 -13 V
-7 5 V
-7 -2 V
-7 2 V
-7 -1 V
-7 10 V
-8 -5 V
-7 -7 V
-7 2 V
-7 -4 V
-7 7 V
-7 1 V
-7 2 V
-7 -9 V
-7 5 V
-8 3 V
 7 0 V
-7 -5 V
-7 6 V
-7 -6 V
-7 5 V
-7 -7 V
-7 6 V
-7 6 V
-7 -6 V
-8 -6 V
-7 8 V
-7 -1 V
-7 -4 V
-7 -2 V
-7 -6 V
-7 6 V
-7 -2 V
-7 6 V
-8 -3 V
-7 -2 V
-7 -2 V
-7 10 V
-7 -8 V
-7 2 V
-7 -3 V
 7 0 V
-7 1 V
-7 -4 V
-8 9 V
-7 7 V
-7 -15 V
-7 -4 V
-7 20 V
 7 0 V
-7 5 V
-7 3 V
-7 -7 V
-8 1 V
-7 4 V
-7 -1 V
-7 -10 V
-7 -4 V
-7 -4 V
-7 6 V
-7 -10 V
-7 6 V
-8 -11 V
-7 19 V
-7 -12 V
-7 -6 V
-7 -16 V
-7 53 V
-7 4 V
-7 -26 V
-7 0 V
-7 1 V
-8 25 V
-7 -21 V
-7 10 V
-7 -24 V
-7 13 V
-7 -16 V
-7 23 V
-7 -21 V
-7 29 V
-8 -14 V
-7 5 V
-7 -7 V
-7 -3 V
-7 3 V
-7 -9 V
-7 20 V
-7 -1 V
-7 -19 V
-8 -2 V
-7 19 V
-7 -2 V
-7 -6 V
-7 -7 V
-7 6 V
-7 -4 V
-7 10 V
-7 2 V
-stroke 4293 3414 M
-7 -16 V
-8 10 V
-7 10 V
-7 0 V
-7 8 V
-7 2 V
-7 2 V
-7 -14 V
-7 11 V
-7 -2 V
-8 -16 V
-7 10 V
-7 -1 V
-8 -18 V
-7 3 V
-7 0 V
-8 -2 V
-7 5 V
-7 24 V
-7 -25 V
-7 -10 V
-7 8 V
-7 5 V
-7 1 V
-7 5 V
-8 6 V
-7 -8 V
-7 -10 V
-7 0 V
-7 2 V
-7 -5 V
-7 17 V
-7 -11 V
-7 -1 V
-8 -4 V
-7 1 V
-7 1 V
-7 11 V
-7 -11 V
-7 7 V
-7 -7 V
-7 1 V
-7 -10 V
-7 28 V
-8 -11 V
-7 -7 V
-7 2 V
-7 7 V
-7 3 V
-7 -1 V
-7 -7 V
-7 -4 V
-7 -2 V
-8 14 V
-7 0 V
-7 9 V
-7 -12 V
-7 -4 V
-7 -12 V
-7 4 V
-7 2 V
-7 6 V
-8 16 V
-7 -3 V
-7 -1 V
-7 -16 V
-7 -12 V
-7 6 V
-7 2 V
-7 16 V
-7 -14 V
-7 0 V
-8 3 V
-7 -5 V
-7 1 V
-7 26 V
-7 -14 V
-7 -15 V
-7 21 V
-7 0 V
-7 -8 V
-8 13 V
-7 -9 V
-7 -15 V
-7 28 V
-7 -9 V
-7 -22 V
-7 3 V
-7 27 V
-7 -26 V
-7 9 V
-8 5 V
-7 -10 V
-7 25 V
-7 -8 V
-7 -10 V
-7 -1 V
-7 -1 V
-7 -1 V
-7 -8 V
-8 21 V
-7 -15 V
-7 5 V
-7 -7 V
-stroke 5034 3405 M
-7 5 V
-7 4 V
-7 -10 V
-7 14 V
-7 -11 V
-8 4 V
-7 -4 V
-7 9 V
-7 -1 V
-7 -1 V
-7 -5 V
-7 11 V
-7 -7 V
-7 1 V
-7 1 V
-8 -19 V
-7 0 V
-7 2 V
-7 6 V
-7 3 V
-7 4 V
-7 7 V
-7 -24 V
-7 3 V
-8 -3 V
-7 12 V
-7 -8 V
-7 14 V
-7 11 V
-7 -13 V
-7 16 V
-7 -14 V
-7 -5 V
-8 -6 V
-7 3 V
-7 -11 V
-7 8 V
-7 12 V
-7 -4 V
-7 -7 V
-7 8 V
-7 -5 V
-7 2 V
-8 -9 V
-7 0 V
-7 3 V
-7 11 V
-7 1 V
-7 -9 V
-7 24 V
-7 -4 V
-7 -2 V
-8 -6 V
-7 13 V
-7 -8 V
-7 -21 V
-7 -4 V
-7 11 V
-7 11 V
-7 -10 V
-7 -15 V
-7 3 V
-8 -2 V
-7 0 V
-7 17 V
-7 -4 V
-7 2 V
-7 -11 V
-7 -2 V
-7 1 V
-7 4 V
-8 16 V
-7 -3 V
-7 12 V
-7 2 V
-7 -16 V
-7 15 V
-7 -5 V
-7 -15 V
-7 -5 V
-8 1 V
-7 17 V
-7 -3 V
-7 5 V
-7 -10 V
-7 -7 V
-7 -10 V
-7 2 V
-7 -1 V
-7 -15 V
-8 37 V
-7 -4 V
-7 -18 V
-7 6 V
-7 16 V
-7 -5 V
-7 -6 V
-7 5 V
-7 -10 V
-8 6 V
-7 12 V
-7 -8 V
-7 -10 V
-7 -5 V
-stroke 5773 3397 M
-7 -2 V
-7 10 V
-7 2 V
-7 -13 V
-8 5 V
-7 -11 V
-7 28 V
-7 8 V
-7 -12 V
-7 -17 V
-7 22 V
-7 -8 V
-7 3 V
-7 3 V
-8 -10 V
-7 -6 V
-7 6 V
-7 -3 V
-7 -6 V
-7 1 V
-7 3 V
-7 -3 V
-7 4 V
-8 5 V
-7 -10 V
-7 6 V
-7 -1 V
-7 -10 V
-7 2 V
-7 15 V
-7 10 V
-7 -11 V
-7 -1 V
-8 10 V
-7 -9 V
-7 -13 V
-7 14 V
-7 12 V
-7 -14 V
-7 -9 V
-7 12 V
-7 -6 V
-8 -6 V
-7 11 V
-7 -5 V
-7 -2 V
-7 6 V
-7 -3 V
-7 -2 V
-7 -1 V
-7 -9 V
-8 14 V
-7 8 V
-7 4 V
-7 4 V
-7 -3 V
-7 4 V
-7 -5 V
-7 -7 V
-7 5 V
-7 -7 V
-8 -11 V
-7 13 V
-7 1 V
-7 -4 V
-7 4 V
-7 0 V
-7 5 V
-7 2 V
-7 -11 V
-8 -15 V
-7 8 V
-7 15 V
-7 -2 V
-7 -6 V
-7 4 V
-7 -10 V
-7 -1 V
-7 5 V
-8 2 V
-7 4 V
-7 -9 V
-7 8 V
-7 -4 V
-7 -8 V
-7 4 V
-7 5 V
-7 4 V
-7 -13 V
-8 11 V
-7 8 V
-7 12 V
-7 0 V
-7 -27 V
-7 4 V
-7 -6 V
-7 2 V
-7 15 V
-8 2 V
-7 10 V
-7 -12 V
-7 -19 V
-7 8 V
-7 -6 V
-stroke 6512 3401 M
-7 15 V
-7 -2 V
-7 -10 V
-7 -9 V
-8 1 V
-7 -8 V
-7 12 V
-7 -15 V
-% End plot #1
-stroke
-LTb
-LCb setrgbcolor
-605 3613 N
-0 -303 V
-6396 0 V
-0 303 V
--6396 0 V
-Z stroke
-1.000 UP
-1.000 UL
-LTb
-LCb setrgbcolor
-1.000 UL
-LTb
-LCb setrgbcolor
-1.000 UL
-LTa
-LCa setrgbcolor
-407 2324 M
-6594 0 V
-stroke
-LTb
-LCb setrgbcolor
-407 2324 M
-63 0 V
-6531 0 R
--63 0 V
--6597 0 R
-( 0) Rshow
-1.000 UL
-LTb
-LCb setrgbcolor
-1.000 UL
-LTa
-LCa setrgbcolor
-407 2476 M
-5871 0 V
-657 0 R
-66 0 V
-stroke
-LTb
-LCb setrgbcolor
-407 2476 M
-63 0 V
-6531 0 R
--63 0 V
--6597 0 R
-( 1) Rshow
-1.000 UL
-LTb
-LCb setrgbcolor
-1.000 UL
-LTa
-LCa setrgbcolor
-407 2627 M
-6594 0 V
-stroke
-LTb
-LCb setrgbcolor
-407 2627 M
-63 0 V
-6531 0 R
--63 0 V
--6597 0 R
-( 2) Rshow
-1.000 UL
-LTb
-LCb setrgbcolor
-407 2324 M
-0 63 V
-0 240 R
-0 -63 V
-0 -350 R
-( 0) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-1140 2324 M
-0 63 V
-0 240 R
-0 -63 V
-0 -350 R
-( 500) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-1872 2324 M
-0 63 V
-0 240 R
-0 -63 V
-0 -350 R
-( 1000) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-2605 2324 M
-0 63 V
-0 240 R
-0 -63 V
-0 -350 R
-( 1500) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-3338 2324 M
-0 63 V
-0 240 R
-0 -63 V
-0 -350 R
-( 2000) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-4070 2324 M
-0 63 V
-0 240 R
-0 -63 V
-0 -350 R
-( 2500) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-4803 2324 M
-0 63 V
-0 240 R
-0 -63 V
-0 -350 R
-( 3000) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-5536 2324 M
-0 63 V
-0 240 R
-0 -63 V
-0 -350 R
-( 3500) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-6268 2324 M
-0 63 V
-0 240 R
-0 -63 V
-0 -350 R
-( 4000) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-7001 2324 M
-0 63 V
-0 240 R
-0 -63 V
-0 -350 R
-( 4500) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-1.000 UL
-LTb
-LCb setrgbcolor
-407 2627 N
-0 -303 V
-6594 0 V
-0 303 V
--6594 0 V
-Z stroke
-LCb setrgbcolor
-88 2475 M
-currentpoint gsave translate -270 rotate 0 0 M
-(rho) Cshow
-grestore
-LTb
-LCb setrgbcolor
-3704 2049 M
-(Tiempo \(s\)) Cshow
-LTb
-3704 2792 M
-(Tasa de rendimiento) Cshow
-1.000 UP
-1.000 UL
-LTb
-LCb setrgbcolor
-% Begin plot #1
-1.000 UL
-LT0
-LC0 setrgbcolor
-LCb setrgbcolor
-6476 2509 M
-(rho) Rshow
-LT0
-6542 2509 M
-327 0 V
-414 2476 M
-8 0 V
-7 0 V
-7 96 V
-8 -95 V
-7 -19 V
-7 7 V
-8 21 V
-7 -29 V
-7 12 V
-8 2 V
-7 -2 V
-7 4 V
-8 -7 V
-7 7 V
-7 -3 V
-8 2 V
-7 -5 V
-7 7 V
-8 -10 V
-7 6 V
-7 -1 V
-8 1 V
-7 1 V
-7 -2 V
-7 1 V
 8 0 V
 7 0 V
 7 0 V
-8 1 V
-7 -4 V
-7 3 V
-8 3 V
-7 -7 V
-7 4 V
-8 1 V
 7 0 V
-7 -5 V
-8 5 V
 7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 1 V
 7 -1 V
-8 -1 V
-7 0 V
-7 2 V
-8 -4 V
-7 3 V
-7 2 V
-8 -5 V
-7 5 V
-7 -3 V
 8 0 V
 7 0 V
-7 13 V
-8 -21 V
-7 6 V
-7 3 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
 8 0 V
 7 0 V
-7 3 V
-8 -7 V
-7 4 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+stroke 1601 4472 M
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
 7 1 V
-8 -4 V
-7 8 V
-7 -9 V
-8 4 V
-7 -2 V
-7 1 V
-8 7 V
-7 -11 V
-7 4 V
-8 2 V
-7 -2 V
-7 0 V
-8 0 V
-7 3 V
-7 2 V
-7 0 V
-8 -3 V
-7 -12 V
-7 15 V
-8 -4 V
-7 -3 V
-7 3 V
 8 -1 V
 7 0 V
 7 0 V
-8 2 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+stroke 2345 4472 M
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 8 V
+8 108 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
 7 -1 V
-7 2 V
-8 -5 V
-7 4 V
-7 -4 V
-8 3 V
-7 1 V
-7 -3 V
-8 3 V
-7 1 V
-7 -4 V
-8 7 V
-7 -11 V
-7 7 V
-8 -2 V
-stroke 1162 2469 M
-7 1 V
-7 7 V
-8 -14 V
-7 8 V
-7 -2 V
-8 0 V
-7 7 V
-7 -3 V
-8 -9 V
-7 9 V
-7 -7 V
-8 -1 V
-7 5 V
 7 1 V
 8 0 V
-7 -2 V
-7 4 V
-8 -7 V
-7 3 V
-7 2 V
-8 -2 V
-7 3 V
-7 7 V
-7 -19 V
-8 7 V
-7 8 V
-7 -10 V
-8 5 V
-7 1 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
 7 0 V
 8 -1 V
 7 1 V
-7 -5 V
-8 5 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 -1 V
 7 1 V
-7 -7 V
-8 5 V
-7 2 V
-7 -3 V
-8 3 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 -1 V
 7 1 V
-7 2 V
-8 -12 V
-7 8 V
-7 4 V
-8 -14 V
-7 10 V
-7 -4 V
-8 5 V
-7 -4 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 -1 V
 7 1 V
+7 0 V
+7 0 V
+7 0 V
+7 -1 V
 8 1 V
 7 0 V
 7 0 V
-8 3 V
-7 -2 V
-7 -6 V
-8 4 V
-7 3 V
-7 -4 V
-8 2 V
 7 -1 V
-7 1 V
-8 3 V
-7 -7 V
-7 4 V
-8 -1 V
-7 2 V
-7 -3 V
-8 5 V
-7 -7 V
-7 4 V
-7 3 V
-8 -7 V
-7 5 V
-7 -1 V
-8 -3 V
-7 6 V
-7 -5 V
-8 1 V
-7 2 V
-7 -2 V
-8 1 V
-7 1 V
-7 -3 V
-8 3 V
-7 -2 V
-7 3 V
-8 -3 V
 7 1 V
 7 0 V
 8 0 V
+7 0 V
+7 0 V
 7 -1 V
-7 -2 V
-8 3 V
-7 -2 V
-7 3 V
-8 -2 V
-7 15 V
-7 -19 V
-8 -3 V
-7 15 V
-7 -14 V
-8 10 V
-stroke 1924 2473 M
-7 -6 V
-7 3 V
-8 1 V
-7 -2 V
-7 5 V
-8 -9 V
-7 12 V
-7 95 V
-8 -22 V
-7 20 V
-7 -34 V
-8 29 V
-7 7 V
-7 -6 V
-8 -2 V
-7 -2 V
-7 -25 V
-8 18 V
-7 -38 V
-7 31 V
-7 11 V
-8 12 V
-7 -50 V
-7 47 V
-8 3 V
-7 4 V
 7 1 V
-8 24 V
-7 -12 V
-7 -4 V
-8 -36 V
-7 1 V
-7 36 V
-8 -33 V
-7 -16 V
-7 -2 V
-8 -2 V
-7 1 V
-7 9 V
-8 12 V
-7 23 V
-7 6 V
-8 -59 V
-7 26 V
-7 58 V
-8 -51 V
-7 -4 V
-7 6 V
-8 -23 V
-7 24 V
-7 -34 V
-8 28 V
-7 5 V
-7 11 V
-8 -2 V
-7 22 V
-7 -42 V
-8 42 V
-7 -20 V
-7 1 V
-8 -17 V
-7 44 V
-7 -9 V
-8 -4 V
-7 -54 V
-7 43 V
-8 -42 V
-7 12 V
-7 7 V
-7 1 V
-8 -19 V
-7 45 V
-7 -33 V
-8 -9 V
-7 7 V
-7 13 V
-8 18 V
-7 -8 V
-7 -22 V
-8 4 V
-7 -4 V
-7 -11 V
-8 -9 V
-7 17 V
-7 -27 V
-8 34 V
-7 9 V
-7 9 V
-8 -7 V
-7 -10 V
-7 43 V
-8 -38 V
-7 -5 V
-7 8 V
-8 3 V
-7 -4 V
-7 -22 V
-8 0 V
-7 22 V
-7 22 V
-8 -67 V
-7 8 V
-7 -4 V
-8 38 V
-stroke 2686 2553 M
-7 3 V
-7 -6 V
-8 31 V
-7 -15 V
-7 -32 V
-8 -17 V
-7 22 V
 7 0 V
-8 14 V
-7 -11 V
-7 -24 V
-8 62 V
-7 -10 V
-7 -12 V
-7 -12 V
-8 20 V
-7 -16 V
-7 9 V
-8 -16 V
-7 -7 V
-7 24 V
-8 -3 V
-7 -9 V
-7 16 V
-8 -17 V
 7 -1 V
-7 -27 V
-8 18 V
-7 -10 V
-7 -2 V
-8 16 V
-7 7 V
-7 -26 V
-8 10 V
-7 -7 V
-7 10 V
-8 -1 V
-7 11 V
-7 -6 V
-8 9 V
-7 -13 V
-7 20 V
-8 13 V
-7 -29 V
-7 -23 V
-8 -10 V
-7 7 V
-7 -3 V
-8 26 V
-7 -14 V
-7 2 V
-8 -6 V
-7 -2 V
-7 49 V
-8 15 V
-7 -30 V
-7 -30 V
-8 -3 V
-7 98 V
-7 -79 V
-8 -23 V
-7 12 V
-7 5 V
-8 3 V
-7 17 V
-7 -5 V
-7 1 V
-8 28 V
-7 -11 V
-7 -12 V
-8 31 V
-7 15 V
-7 -26 V
-8 18 V
-7 -26 V
-7 10 V
-8 -3 V
-7 -5 V
-7 18 V
-8 -13 V
-7 -5 V
-7 -27 V
-8 35 V
-7 19 V
-7 5 V
-8 -19 V
-7 -15 V
-7 48 V
-8 -75 V
-7 29 V
-7 18 V
-8 -35 V
-7 -16 V
-7 8 V
-8 -16 V
-7 12 V
-7 24 V
-8 -19 V
-7 14 V
-7 -18 V
-8 24 V
-7 -31 V
-7 25 V
-8 13 V
-stroke 3448 2568 M
-7 -5 V
-7 -34 V
-8 31 V
-7 8 V
-7 -19 V
-8 34 V
-7 -14 V
-7 4 V
-8 -5 V
-7 2 V
-7 -24 V
-7 14 V
-8 17 V
-7 -7 V
-7 14 V
-8 -20 V
-7 -2 V
-7 -5 V
-8 22 V
-7 -12 V
-7 -7 V
-8 -1 V
-7 13 V
-7 -15 V
-8 13 V
-7 -12 V
-7 20 V
-8 -16 V
-7 -15 V
-7 13 V
-8 17 V
-7 -20 V
-7 2 V
-8 9 V
-7 5 V
-7 19 V
-8 -17 V
-7 4 V
-7 -15 V
-8 6 V
-7 8 V
-7 6 V
-8 -27 V
-7 20 V
-7 -5 V
-8 8 V
-7 0 V
-7 -2 V
-8 12 V
-7 -26 V
-7 -16 V
-8 38 V
-7 11 V
-7 -52 V
-8 0 V
-7 -11 V
-7 -4 V
-8 13 V
-7 -1 V
-7 -9 V
-7 1 V
-8 21 V
-7 11 V
-7 10 V
-8 -16 V
-7 30 V
-7 -20 V
-8 37 V
-7 -55 V
-7 32 V
-8 17 V
-3 26 V
-6 0 R
-5 -111 V
-8 -6 V
-7 50 V
-7 -1 V
-8 -2 V
-7 -48 V
-7 38 V
-8 -20 V
-7 56 V
-7 -35 V
-8 43 V
-7 -56 V
-7 51 V
-8 -66 V
-7 27 V
-7 -10 V
-8 15 V
-7 6 V
-7 -6 V
-8 22 V
-7 -46 V
-7 3 V
-8 42 V
-7 7 V
-7 -44 V
-8 2 V
-7 14 V
-7 16 V
-8 -14 V
-7 11 V
-7 -25 V
-stroke 4202 2540 M
-8 -3 V
-7 37 V
-7 -25 V
-8 -19 V
-7 0 V
-7 -15 V
-8 -2 V
-7 -4 V
-7 24 V
-7 -20 V
-8 3 V
-7 31 V
-7 -20 V
-8 2 V
-9 40 V
-7 -8 V
-7 -1 V
-8 6 V
-7 -13 V
-7 -44 V
-8 47 V
-7 27 V
-7 -23 V
-8 -12 V
-7 -2 V
-7 -9 V
-7 -11 V
-8 14 V
-7 23 V
-7 0 V
-8 -4 V
-7 11 V
-7 -38 V
-8 24 V
-7 2 V
-7 10 V
-8 -2 V
-7 -2 V
-7 -26 V
-8 27 V
-7 -18 V
-7 16 V
-8 -1 V
-7 26 V
-7 -65 V
-8 22 V
-7 17 V
-7 -5 V
-8 -17 V
-7 -6 V
-7 3 V
-8 15 V
-7 8 V
-7 7 V
-8 -32 V
-7 -1 V
-7 -15 V
-8 23 V
-7 8 V
-7 29 V
-8 -11 V
-7 -5 V
-7 -13 V
-8 -31 V
-7 5 V
-7 1 V
-8 33 V
-7 34 V
-7 -18 V
-8 -4 V
-7 -37 V
-7 30 V
-8 0 V
-7 -5 V
-7 12 V
-8 -4 V
-7 -52 V
-7 25 V
-7 34 V
-8 -46 V
-7 0 V
-7 16 V
-8 -24 V
-7 15 V
-7 36 V
-8 -59 V
-7 16 V
-7 51 V
-8 -8 V
-7 -56 V
-7 52 V
-8 -22 V
-7 -10 V
-7 22 V
-8 -46 V
-7 13 V
-7 17 V
-8 3 V
-7 2 V
-7 3 V
-8 18 V
-7 -44 V
-7 30 V
-8 -11 V
-stroke 4966 2541 M
-7 16 V
-7 -11 V
-8 -9 V
-7 23 V
-7 -31 V
-8 23 V
-7 -8 V
-7 8 V
-8 -30 V
-7 25 V
-7 -10 V
-8 2 V
-7 -114 V
-7 7 V
-8 -1 V
-7 -2 V
-7 23 V
-8 0 V
-7 -2 V
-7 -8 V
-8 -4 V
-7 -4 V
-7 -7 V
-7 29 V
-8 -5 V
-7 4 V
-7 -16 V
-8 11 V
-7 -17 V
-7 -11 V
-8 13 V
-7 -15 V
-7 13 V
-8 5 V
-7 7 V
-7 -3 V
-8 14 V
-7 -10 V
-7 -15 V
-8 5 V
-7 8 V
-7 -9 V
-8 5 V
-7 -1 V
-7 11 V
-8 -1 V
-7 -4 V
-7 -12 V
-8 -1 V
-7 10 V
-7 -23 V
-8 3 V
-7 1 V
-7 6 V
-8 -11 V
-7 6 V
-7 23 V
-8 5 V
-7 -14 V
-7 -11 V
-8 10 V
-7 19 V
-7 -4 V
-8 4 V
-7 -1 V
-7 -21 V
-8 4 V
-7 -2 V
-7 14 V
-8 3 V
-7 -2 V
-7 -6 V
-7 -17 V
-8 3 V
-7 -11 V
-7 -2 V
-8 15 V
-7 -14 V
-7 5 V
-8 14 V
-7 6 V
-7 -1 V
-8 -18 V
-7 3 V
-7 -4 V
-8 9 V
-7 8 V
-7 12 V
-8 -2 V
-7 1 V
-7 26 V
-8 -51 V
-7 4 V
-7 21 V
-8 -7 V
-7 -18 V
-7 4 V
-8 7 V
-7 -5 V
-7 11 V
-8 -7 V
-7 -12 V
-7 8 V
-8 12 V
-stroke 5728 2445 M
-7 6 V
-7 3 V
-8 -13 V
-7 -2 V
-7 17 V
-8 -7 V
-7 16 V
-7 -36 V
-8 -8 V
-7 12 V
-7 21 V
-8 -26 V
-7 8 V
-7 -3 V
-8 -3 V
-7 10 V
-7 8 V
-8 -7 V
-7 4 V
-7 7 V
-7 -1 V
-8 -4 V
-7 4 V
-7 -6 V
-8 -6 V
-7 14 V
-7 -9 V
-8 2 V
-7 14 V
-7 -3 V
-8 -20 V
-7 -10 V
-7 11 V
-8 1 V
-7 -10 V
-7 9 V
-8 17 V
-7 -17 V
-7 -13 V
-8 14 V
-7 12 V
-7 -15 V
-8 7 V
-7 8 V
-7 -13 V
-8 5 V
-7 3 V
-7 -7 V
-8 3 V
-7 2 V
-7 2 V
-8 12 V
-7 -19 V
-7 -8 V
-8 -4 V
-7 -4 V
-7 3 V
-8 -4 V
-7 5 V
-7 7 V
-8 -5 V
-7 6 V
-7 14 V
-8 -15 V
-7 -2 V
-7 5 V
-8 -4 V
-7 0 V
-7 -5 V
-7 -2 V
-8 12 V
-7 19 V
-7 -11 V
-8 -18 V
-7 3 V
-7 6 V
-8 -5 V
-7 13 V
-7 1 V
-8 -7 V
-7 -2 V
-7 -5 V
-8 11 V
-7 -9 V
-7 4 V
-8 10 V
-7 -5 V
-7 -6 V
-8 -5 V
-7 17 V
-7 -14 V
-8 -8 V
-7 -9 V
-7 -1 V
-8 25 V
-7 -4 V
-7 8 V
-8 -3 V
-7 -16 V
-7 -2 V
-8 -8 V
-7 10 V
-7 21 V
-8 -10 V
-stroke 6490 2438 M
-7 8 V
-7 -17 V
-8 2 V
-7 11 V
-7 12 V
-8 -1 V
-7 12 V
-7 -18 V
-8 23 V
-% End plot #1
-stroke
-LTb
-LCb setrgbcolor
-407 2627 N
-0 -303 V
-6594 0 V
-0 303 V
--6594 0 V
-Z stroke
-1.000 UP
-1.000 UL
-LTb
-LCb setrgbcolor
-1.000 UL
-LTb
-LCb setrgbcolor
-1.000 UL
-LTa
-LCa setrgbcolor
-737 1338 M
-6264 0 V
-stroke
-LTb
-LCb setrgbcolor
-737 1338 M
-63 0 V
-6201 0 R
--63 0 V
--6267 0 R
-( 0) Rshow
-1.000 UL
-LTb
-LCb setrgbcolor
-1.000 UL
-LTa
-LCa setrgbcolor
-737 1490 M
-5409 0 V
-789 0 R
-66 0 V
-stroke
-LTb
-LCb setrgbcolor
-737 1490 M
-63 0 V
-6201 0 R
--63 0 V
--6267 0 R
-( 50000) Rshow
-1.000 UL
-LTb
-LCb setrgbcolor
-1.000 UL
-LTa
-LCa setrgbcolor
-737 1642 M
-6264 0 V
-stroke
-LTb
-LCb setrgbcolor
-737 1642 M
-63 0 V
-6201 0 R
--63 0 V
--6267 0 R
-( 100000) Rshow
-1.000 UL
-LTb
-LCb setrgbcolor
-737 1338 M
-0 63 V
-0 241 R
-0 -63 V
-0 -351 R
-( 0) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-1433 1338 M
-0 63 V
-0 241 R
-0 -63 V
-0 -351 R
-( 500) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-2129 1338 M
-0 63 V
-0 241 R
-0 -63 V
-0 -351 R
-( 1000) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-2825 1338 M
-0 63 V
-0 241 R
-0 -63 V
-0 -351 R
-( 1500) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-3521 1338 M
-0 63 V
-0 241 R
-0 -63 V
-0 -351 R
-( 2000) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-4217 1338 M
-0 63 V
-0 241 R
-0 -63 V
-0 -351 R
-( 2500) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-4913 1338 M
-0 63 V
-0 241 R
-0 -63 V
-0 -351 R
-( 3000) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-5609 1338 M
-0 63 V
-0 241 R
-0 -63 V
-0 -351 R
-( 3500) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-6305 1338 M
-0 63 V
-0 241 R
-0 -63 V
-0 -351 R
-( 4000) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-7001 1338 M
-0 63 V
-0 241 R
-0 -63 V
-0 -351 R
-( 4500) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-1.000 UL
-LTb
-LCb setrgbcolor
-737 1642 N
-0 -304 V
-6264 0 V
-0 304 V
--6264 0 V
-Z stroke
-LCb setrgbcolor
-88 1490 M
-currentpoint gsave translate -270 rotate 0 0 M
-(# Eventos) Cshow
-grestore
-LTb
-LCb setrgbcolor
-3869 1063 M
-(Tiempo \(s\)) Cshow
-LTb
-3869 1807 M
-(Cola) Cshow
-1.000 UP
-1.000 UL
-LTb
-LCb setrgbcolor
-% Begin plot #1
-1.000 UL
-LT0
-LC0 setrgbcolor
-LCb setrgbcolor
-6476 1524 M
-(queue) Rshow
-LT0
-6542 1524 M
-327 0 V
-744 1338 M
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-6 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-6 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-6 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-6 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-stroke 1454 1338 M
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-6 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-6 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-6 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-6 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-stroke 2178 1338 M
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-6 0 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-6 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-6 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-6 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 0 V
-7 1 V
-stroke 2902 1391 M
-7 0 V
-6 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-6 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 0 V
-6 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-6 1 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-6 0 V
-7 1 V
-7 0 V
-stroke 3625 1444 M
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-6 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-6 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-6 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-6 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 0 V
-stroke 4349 1503 M
-7 1 V
-7 1 V
-7 0 V
-7 0 V
-7 1 V
-7 0 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
 8 1 V
 7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-6 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-6 0 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-6 0 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-6 1 V
-stroke 5074 1556 M
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 1 V
-7 0 V
-7 0 V
-7 1 V
 7 0 V
 7 0 V
 7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 -1 V
+7 2 V
 7 -1 V
 7 0 V
 7 0 V
 7 0 V
-7 0 V
-7 0 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-6 0 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 -1 V
-7 0 V
-7 0 V
-7 -1 V
+8 0 V
 7 0 V
 7 0 V
 7 0 V
 7 0 V
 7 0 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 -1 V
-6 0 V
-7 0 V
-7 -1 V
-7 0 V
-7 0 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 -1 V
+8 0 V
+stroke 3090 4588 M
 7 0 V
 7 0 V
 7 0 V
 7 0 V
 7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
 7 0 V
 7 -1 V
+7 1 V
+7 0 V
+7 0 V
+8 -1 V
+7 1 V
 7 0 V
 7 0 V
 7 0 V
 7 0 V
+8 0 V
+7 -1 V
+7 1 V
 7 0 V
 7 -1 V
-7 0 V
-7 0 V
-6 -1 V
-7 0 V
+7 1 V
 7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 -1 V
-7 0 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
+8 1 V
 7 0 V
 7 0 V
 7 0 V
 7 -1 V
+7 1 V
+8 0 V
 7 0 V
+7 -1 V
+7 1 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
 7 0 V
 7 0 V
 7 0 V
 7 -1 V
-7 0 V
-7 0 V
-7 0 V
-6 -1 V
-7 0 V
-7 0 V
+7 1 V
+8 0 V
 7 0 V
 7 -1 V
-stroke 5798 1540 M
+7 1 V
 7 0 V
 7 0 V
-7 0 V
-7 0 V
+8 -1 V
+7 1 V
 7 0 V
 7 0 V
 7 -1 V
 7 0 V
+7 1 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 -1 V
+7 1 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+stroke 3834 4588 M
 7 0 V
 7 0 V
 7 -1 V
-7 0 V
-7 0 V
-7 0 V
+7 1 V
+8 0 V
 7 -1 V
+7 1 V
 7 0 V
 7 0 V
 7 0 V
 7 0 V
-7 0 V
-6 0 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 -1 V
-7 0 V
-7 0 V
-6 0 V
-7 0 V
-7 0 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 -1 V
-7 0 V
-7 0 V
-7 -1 V
-7 0 V
-7 0 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 -1 V
-7 0 V
-7 0 V
-6 0 V
-7 0 V
-7 -1 V
-7 0 V
-7 0 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 -1 V
-7 0 V
-7 -1 V
-7 0 V
-7 0 V
-6 0 V
-7 0 V
-7 -1 V
-7 0 V
-7 0 V
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-stroke 6522 1518 M
-7 -1 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-7 0 V
-% End plot #1
-stroke
-LTb
-LCb setrgbcolor
-737 1642 N
-0 -304 V
-6264 0 V
-0 304 V
--6264 0 V
-Z stroke
-1.000 UP
-1.000 UL
-LTb
-LCb setrgbcolor
-1.000 UL
-LTb
-LCb setrgbcolor
-1.000 UL
-LTa
-LCa setrgbcolor
-407 352 M
-6594 0 V
-stroke
-LTb
-LCb setrgbcolor
-407 352 M
-63 0 V
-6531 0 R
--63 0 V
-341 352 M
-( 0) Rshow
-1.000 UL
-LTb
-LCb setrgbcolor
-1.000 UL
-LTa
-LCa setrgbcolor
-407 453 M
-6594 0 V
-stroke
-LTb
-LCb setrgbcolor
-407 453 M
-63 0 V
-6531 0 R
--63 0 V
-341 453 M
-( 1) Rshow
-1.000 UL
-LTb
-LCb setrgbcolor
-1.000 UL
-LTa
-LCa setrgbcolor
-407 555 M
-5541 0 V
-987 0 R
-66 0 V
-stroke
-LTb
-LCb setrgbcolor
-407 555 M
-63 0 V
-6531 0 R
--63 0 V
-341 555 M
-( 2) Rshow
-1.000 UL
-LTb
-LCb setrgbcolor
-1.000 UL
-LTa
-LCa setrgbcolor
-407 656 M
-6594 0 V
-stroke
-LTb
-LCb setrgbcolor
-407 656 M
-63 0 V
-6531 0 R
--63 0 V
-341 656 M
-( 3) Rshow
-1.000 UL
-LTb
-LCb setrgbcolor
-407 352 M
-0 63 V
-0 241 R
-0 -63 V
-0 -351 R
-( 0) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-1140 352 M
-0 63 V
-0 241 R
-0 -63 V
-0 -351 R
-( 500) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-1872 352 M
-0 63 V
-0 241 R
-0 -63 V
-0 -351 R
-( 1000) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-2605 352 M
-0 63 V
-0 241 R
-0 -63 V
-0 -351 R
-( 1500) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-3338 352 M
-0 63 V
-0 241 R
-0 -63 V
-0 -351 R
-( 2000) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-4070 352 M
-0 63 V
-0 241 R
-0 -63 V
-0 -351 R
-( 2500) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-4803 352 M
-0 63 V
-0 241 R
-0 -63 V
-0 -351 R
-( 3000) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-5536 352 M
-0 63 V
-0 241 R
-0 -63 V
-0 -351 R
-( 3500) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-6268 352 M
-0 63 V
-0 241 R
-0 -63 V
-0 -351 R
-( 4000) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-7001 352 M
-0 63 V
-0 241 R
-0 -63 V
-0 -351 R
-( 4500) Cshow
-1.000 UL
-LTb
-LCb setrgbcolor
-1.000 UL
-LTb
-LCb setrgbcolor
-407 656 N
-0 -304 V
-6594 0 V
-0 304 V
-407 656 L
-Z stroke
-LCb setrgbcolor
-88 504 M
-currentpoint gsave translate -270 rotate 0 0 M
-(# Replicas) Cshow
-grestore
-LTb
-LCb setrgbcolor
-3704 77 M
-(Tiempo \(s\)) Cshow
-LTb
-3704 821 M
-(Cantidad de replicas) Cshow
-1.000 UP
-1.000 UL
-LTb
-LCb setrgbcolor
-% Begin plot #1
-1.000 UL
-LT0
-LC0 setrgbcolor
-LCb setrgbcolor
-6476 538 M
-(replicas) Rshow
-LT0
-6542 538 M
-327 0 V
-414 453 M
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-stroke 1162 453 M
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-stroke 1924 453 M
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-stroke 2686 453 M
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
 7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
-8 0 V
-7 0 V
-7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
-7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
-stroke 3448 453 M
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
-7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
-7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
-7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
-7 0 V
-7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
-7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
-7 0 V
 7 0 V
-8 0 V
 7 0 V
+stroke 4578 4588 M
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
-stroke 4210 453 M
 7 0 V
 7 0 V
-8 0 V
-7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 9 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
+7 0 V
 8 0 V
+7 -1 V
+7 1 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
+7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
+7 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
+7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
+7 0 V
+7 0 V
 8 0 V
 7 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
+8 -1 V
+7 1 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
-stroke 4973 453 M
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
+7 0 V
 8 0 V
+stroke 5324 4588 M
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
+8 0 V
 7 0 V
+7 -13 V
+7 25 V
+7 -12 V
+7 -9 V
+7 -107 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
+7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
+7 1 V
+8 -1 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
+7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
+7 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
+7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
-stroke 5735 453 M
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
+7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
+stroke 6068 4472 M
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
+7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
+7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
+7 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
+7 0 V
 8 0 V
 7 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
+7 0 V
 8 0 V
+7 1 V
+7 -1 V
 7 0 V
 7 0 V
+7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
+7 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
 7 0 V
-8 0 V
 7 0 V
 7 0 V
+7 0 V
 8 0 V
+7 0 V
 7 0 V
 7 0 V
+7 0 V
+7 0 V
+7 0 V
 8 0 V
+7 0 V
+7 0 V
+7 0 V
 7 0 V
 7 0 V
 8 0 V
 7 0 V
-stroke 6497 453 M
 7 0 V
+7 0 V
+7 1 V
+7 -1 V
+7 0 V
 8 0 V
+7 0 V
 7 0 V
 7 0 V
+7 0 V
+7 0 V
 8 0 V
+7 0 V
 7 0 V
 7 0 V
+stroke 6812 4472 M
+7 0 V
+7 0 V
+7 0 V
 8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
 % End plot #1
+stroke
+1.000 UL
+LTb
+LCb setrgbcolor
+864 4823 N
+0 -467 V
+6011 0 V
+0 467 V
+-6011 0 V
+Z stroke
+1.000 UP
+1.000 UL
+LTb
+LCb setrgbcolor
+1.000 UL
+LTb
+LCb setrgbcolor
+1.000 UL
+LTa
+LCa setrgbcolor
+864 3096 M
+6011 0 V
 stroke
 LTb
 LCb setrgbcolor
-407 656 N
-0 -304 V
-6594 0 V
-0 304 V
-407 656 L
+864 3096 M
+63 0 V
+5948 0 R
+-63 0 V
+stroke
+756 3096 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 0)]
+] -60.0 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1.000 UL
+LTa
+LCa setrgbcolor
+864 3330 M
+3572 0 V
+2331 0 R
+108 0 V
+stroke
+LTb
+LCb setrgbcolor
+864 3330 M
+63 0 V
+5948 0 R
+-63 0 V
+stroke
+756 3330 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 100)]
+] -60.0 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1.000 UL
+LTa
+LCa setrgbcolor
+864 3563 M
+6011 0 V
+stroke
+LTb
+LCb setrgbcolor
+864 3563 M
+63 0 V
+5948 0 R
+-63 0 V
+stroke
+756 3563 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 200)]
+] -60.0 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+864 3096 M
+0 63 V
+0 404 R
+0 -63 V
+stroke
+864 2916 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 0)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1580 3096 M
+0 63 V
+0 404 R
+0 -63 V
+stroke
+1580 2916 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 500)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+2295 3096 M
+0 63 V
+0 404 R
+0 -63 V
+stroke
+2295 2916 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 1000)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+3011 3096 M
+0 63 V
+0 404 R
+0 -63 V
+stroke
+3011 2916 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 1500)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+3726 3096 M
+0 63 V
+0 404 R
+0 -63 V
+stroke
+3726 2916 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 2000)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+4442 3096 M
+0 63 V
+0 404 R
+0 -63 V
+stroke
+4442 2916 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 2500)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+5158 3096 M
+0 63 V
+0 404 R
+0 -63 V
+stroke
+5158 2916 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 3000)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+5873 3096 M
+0 63 V
+0 404 R
+0 -63 V
+stroke
+5873 2916 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 3500)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+6589 3096 M
+0 63 V
+0 404 R
+0 -63 V
+stroke
+6589 2916 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 4000)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1.000 UL
+LTb
+LCb setrgbcolor
+864 3563 N
+0 -467 V
+6011 0 V
+0 467 V
+-6011 0 V
+Z stroke
+LCb setrgbcolor
+126 3329 M
+[ [(Symbol) 180.0 0.0 true true 0 (m)]
+] -60.0 MCshow
+LTb
+LCb setrgbcolor
+3869 2646 M
+[ [(Helvetica) 180.0 0.0 true true 0 (Tiempo \(s\))]
+] -60.0 MCshow
+LTb
+1.000 UP
+1.000 UL
+LTb
+LCb setrgbcolor
+% Begin plot #1
+5.000 UL
+LT0
+LC0 setrgbcolor
+LCb setrgbcolor
+6056 3410 M
+[ [(Symbol) 180.0 0.0 true true 0 (m)]
+[(Helvetica) 180.0 0.0 true true 0 ( \(eventos/seg\))]
+] -60.0 MRshow
+LT0
+6164 3410 M
+495 0 V
+871 3096 M
+7 0 V
+7 0 V
+8 0 V
+7 109 V
+7 18 V
+7 -7 V
+7 -16 V
+7 23 V
+8 -10 V
+7 -3 V
+7 3 V
+7 -3 V
+7 5 V
+7 -5 V
+7 2 V
+8 -2 V
+7 5 V
+7 -6 V
+7 8 V
+7 -6 V
+7 2 V
+8 -1 V
+7 -1 V
+7 2 V
+7 -1 V
+7 0 V
+7 0 V
+8 0 V
+7 -1 V
+7 3 V
+7 -2 V
+7 -2 V
+7 5 V
+7 -3 V
+8 -1 V
+7 0 V
+7 4 V
+7 -4 V
+7 0 V
+7 1 V
+8 0 V
+7 1 V
+7 -2 V
+7 4 V
+7 -3 V
+7 -2 V
+7 4 V
+8 -4 V
+7 3 V
+7 0 V
+7 0 V
+7 -11 V
+7 18 V
+8 -6 V
+7 -2 V
+7 0 V
+7 0 V
+7 -3 V
+7 6 V
+8 -3 V
+7 -1 V
+7 3 V
+7 -6 V
+7 7 V
+7 -4 V
+7 3 V
+8 -1 V
+7 -6 V
+7 9 V
+7 -3 V
+7 -2 V
+7 2 V
+8 0 V
+7 -1 V
+7 -2 V
+7 -1 V
+7 0 V
+7 2 V
+7 11 V
+8 -13 V
+7 3 V
+7 3 V
+7 -3 V
+7 1 V
+7 0 V
+8 0 V
+7 -2 V
+7 1 V
+7 -2 V
+7 4 V
+7 -3 V
+8 4 V
+7 -3 V
+7 -1 V
+7 2 V
+7 -2 V
+7 -1 V
+7 4 V
+8 -6 V
+7 9 V
+7 -6 V
+7 2 V
+stroke 1601 3213 M
+7 -1 V
+7 -5 V
+8 11 V
+7 -8 V
+7 3 V
+7 -1 V
+7 -5 V
+7 2 V
+7 8 V
+8 -7 V
+7 5 V
+7 1 V
+7 -4 V
+7 -1 V
+7 -1 V
+8 3 V
+7 -3 V
+7 6 V
+7 -3 V
+7 -2 V
+7 2 V
+7 -3 V
+8 -6 V
+7 17 V
+7 -7 V
+7 -6 V
+7 8 V
+7 -4 V
+8 -1 V
+7 0 V
+7 1 V
+7 -1 V
+7 4 V
+7 -4 V
+8 -1 V
+7 6 V
+7 -4 V
+7 -2 V
+7 3 V
+7 -3 V
+7 0 V
+8 -2 V
+7 10 V
+7 -7 V
+7 -3 V
+7 11 V
+7 -8 V
+8 4 V
+7 -5 V
+7 4 V
+7 -1 V
+7 -1 V
+7 0 V
+7 0 V
+8 -2 V
+7 1 V
+7 5 V
+7 -4 V
+7 -2 V
+7 4 V
+8 -2 V
+7 1 V
+7 -1 V
+7 -3 V
+7 6 V
+7 -3 V
+8 1 V
+7 -2 V
+7 3 V
+7 -5 V
+7 6 V
+7 -3 V
+7 -3 V
+8 6 V
+7 -4 V
+7 0 V
+7 3 V
+7 -5 V
+7 5 V
+8 -1 V
+7 -2 V
+7 2 V
+7 -1 V
+7 -1 V
+7 3 V
+7 -3 V
+8 2 V
+7 -3 V
+7 3 V
+7 -1 V
+7 0 V
+7 0 V
+8 1 V
+7 1 V
+7 -3 V
+7 3 V
+7 -3 V
+7 2 V
+8 -11 V
+7 14 V
+7 3 V
+7 -12 V
+7 11 V
+7 -8 V
+stroke 2345 3210 M
+7 5 V
+8 -3 V
+7 -2 V
+7 3 V
+7 -4 V
+7 7 V
+7 -2 V
+8 19 V
+7 14 V
+7 -13 V
+7 23 V
+7 -20 V
+7 -5 V
+7 5 V
+8 1 V
+7 1 V
+7 17 V
+7 -12 V
+7 29 V
+7 -25 V
+8 -7 V
+7 -8 V
+7 36 V
+7 -34 V
+7 -2 V
+7 -2 V
+7 -1 V
+8 -12 V
+7 6 V
+7 2 V
+7 22 V
+7 -1 V
+7 -21 V
+8 19 V
+7 12 V
+7 2 V
+7 1 V
+7 0 V
+7 -8 V
+8 -8 V
+7 -14 V
+7 -3 V
+7 39 V
+7 -19 V
+7 -32 V
+7 27 V
+8 2 V
+7 -3 V
+7 16 V
+7 -17 V
+7 25 V
+7 -21 V
+8 -4 V
+7 -6 V
+7 1 V
+7 -12 V
+7 25 V
+7 -25 V
+7 11 V
+8 -1 V
+7 11 V
+7 -25 V
+7 5 V
+7 2 V
+7 35 V
+8 -29 V
+7 28 V
+7 -9 V
+7 -6 V
+7 0 V
+7 14 V
+8 -29 V
+7 20 V
+7 7 V
+7 -6 V
+7 -8 V
+7 -11 V
+7 4 V
+8 15 V
+7 -3 V
+7 3 V
+7 8 V
+7 8 V
+7 -14 V
+8 23 V
+7 -28 V
+7 -6 V
+7 -6 V
+7 5 V
+7 6 V
+7 -25 V
+8 21 V
+7 5 V
+7 -6 V
+7 -2 V
+7 3 V
+7 15 V
+8 0 V
+7 -15 V
+7 -13 V
+7 49 V
+7 -8 V
+7 4 V
+8 -30 V
+stroke 3090 3245 M
+7 -2 V
+7 3 V
+7 -18 V
+7 9 V
+7 22 V
+7 14 V
+8 -18 V
+7 -1 V
+7 -9 V
+7 7 V
+7 21 V
+7 -45 V
+8 6 V
+7 7 V
+7 9 V
+7 -14 V
+7 11 V
+7 -6 V
+7 11 V
+8 5 V
+7 -17 V
+7 2 V
+7 6 V
+7 -10 V
+7 11 V
+8 1 V
+7 21 V
+7 -15 V
+7 9 V
+7 1 V
+7 -13 V
+7 -5 V
+8 20 V
+7 -8 V
+7 6 V
+7 -8 V
+7 0 V
+7 -8 V
+8 4 V
+7 -6 V
+7 10 V
+7 -15 V
+7 -7 V
+7 18 V
+8 20 V
+7 10 V
+7 -7 V
+7 3 V
+7 -24 V
+7 12 V
+7 -2 V
+8 7 V
+7 1 V
+7 -37 V
+7 -9 V
+7 18 V
+7 24 V
+8 3 V
+7 -61 V
+7 44 V
+7 22 V
+7 -12 V
+7 -4 V
+7 -3 V
+8 -13 V
+7 4 V
+7 -1 V
+7 -18 V
+7 7 V
+7 8 V
+8 -19 V
+7 -7 V
+7 13 V
+7 -9 V
+7 14 V
+7 -6 V
+8 2 V
+7 3 V
+7 -10 V
+7 7 V
+7 3 V
+7 18 V
+7 -23 V
+8 -10 V
+7 -2 V
+7 10 V
+7 8 V
+7 -24 V
+7 43 V
+8 -20 V
+7 -10 V
+7 21 V
+7 12 V
+7 -6 V
+7 13 V
+7 -10 V
+8 -17 V
+7 13 V
+7 -10 V
+7 13 V
+7 -17 V
+7 22 V
+8 -17 V
+7 -8 V
+stroke 3834 3236 M
+7 2 V
+7 24 V
+7 -22 V
+7 -4 V
+8 11 V
+7 -21 V
+7 9 V
+7 -3 V
+7 3 V
+7 -1 V
+7 15 V
+8 -9 V
+7 -10 V
+7 4 V
+7 -8 V
+7 12 V
+7 1 V
+8 3 V
+7 -13 V
+7 7 V
+7 4 V
+7 1 V
+7 -8 V
+7 9 V
+8 -8 V
+7 7 V
+7 -11 V
+7 9 V
+7 10 V
+7 -9 V
+8 -10 V
+7 12 V
+7 -1 V
+7 -6 V
+7 -3 V
+7 -10 V
+7 9 V
+8 -2 V
+7 9 V
+7 -4 V
+7 -4 V
+7 -4 V
+7 16 V
+8 -12 V
+7 3 V
+7 -4 V
+7 0 V
+7 1 V
+7 -7 V
+8 15 V
+7 10 V
+7 -23 V
+7 -5 V
+7 30 V
+7 1 V
+7 7 V
+8 4 V
+7 -10 V
+7 0 V
+7 7 V
+7 -1 V
+7 -15 V
+8 -6 V
+7 -7 V
+7 10 V
+7 -17 V
+7 11 V
+7 -18 V
+7 29 V
+8 -19 V
+7 -8 V
+7 -25 V
+7 81 V
+7 6 V
+7 -40 V
+8 1 V
+7 1 V
+7 39 V
+7 -32 V
+7 15 V
+7 -37 V
+8 21 V
+7 -25 V
+7 35 V
+7 -33 V
+7 45 V
+7 -21 V
+7 7 V
+8 -11 V
+7 -4 V
+7 4 V
+7 -14 V
+7 32 V
+7 -2 V
+8 -29 V
+7 -4 V
+7 29 V
+7 -2 V
+7 -10 V
+7 -10 V
+7 9 V
+8 -7 V
+7 17 V
+7 2 V
+stroke 4578 3256 M
+7 -24 V
+7 15 V
+7 15 V
+8 0 V
+7 13 V
+7 3 V
+7 3 V
+7 -22 V
+7 18 V
+7 -3 V
+8 -25 V
+7 15 V
+7 -1 V
+9 -28 V
+7 4 V
+7 1 V
+7 -4 V
+7 9 V
+7 36 V
+7 -38 V
+8 -16 V
+7 13 V
+7 8 V
+7 1 V
+7 7 V
+7 9 V
+8 -11 V
+7 -16 V
+7 0 V
+7 3 V
+7 -7 V
+7 26 V
+8 -17 V
+7 -2 V
+7 -6 V
+7 1 V
+7 2 V
+7 17 V
+7 -18 V
+8 12 V
+7 -11 V
+7 1 V
+7 -15 V
+7 43 V
+7 -16 V
+8 -12 V
+7 3 V
+7 12 V
+7 4 V
+7 -2 V
+7 -11 V
+7 -5 V
+8 -4 V
+7 22 V
+7 1 V
+7 13 V
+7 -20 V
+7 -5 V
+8 -18 V
+7 6 V
+7 3 V
+7 8 V
+7 26 V
+7 -6 V
+8 0 V
+7 -25 V
+7 -18 V
+7 8 V
+7 3 V
+7 26 V
+7 -22 V
+8 0 V
+7 4 V
+7 -8 V
+7 2 V
+7 40 V
+7 -21 V
+8 -23 V
+7 32 V
+7 1 V
+7 -13 V
+7 20 V
+7 -13 V
+7 -25 V
+8 45 V
+7 -14 V
+7 -35 V
+7 4 V
+7 42 V
+7 -40 V
+8 15 V
+7 7 V
+7 -15 V
+7 37 V
+7 -12 V
+7 -14 V
+7 -2 V
+8 -2 V
+7 -2 V
+7 -11 V
+7 31 V
+7 -23 V
+7 8 V
+8 -11 V
+stroke 5324 3242 M
+7 8 V
+7 6 V
+7 -16 V
+7 23 V
+7 -18 V
+8 6 V
+7 -6 V
+7 14 V
+7 -2 V
+7 0 V
+7 -8 V
+7 17 V
+8 -11 V
+7 2 V
+7 2 V
+7 -31 V
+7 1 V
+7 2 V
+8 9 V
+7 6 V
+7 6 V
+7 10 V
+7 -37 V
+7 5 V
+7 -5 V
+8 20 V
+7 -14 V
+7 22 V
+7 17 V
+7 -20 V
+7 24 V
+8 -21 V
+7 -8 V
+7 -8 V
+7 4 V
+7 -17 V
+7 12 V
+8 19 V
+7 -6 V
+7 -11 V
+7 12 V
+7 -7 V
+7 2 V
+7 -14 V
+8 1 V
+7 5 V
+7 15 V
+7 2 V
+7 -14 V
+7 38 V
+8 -6 V
+7 -3 V
+7 -10 V
+7 20 V
+7 -12 V
+7 -32 V
+7 -6 V
+8 17 V
+7 17 V
+7 -15 V
+7 -24 V
+7 5 V
+7 -4 V
+8 0 V
+7 26 V
+7 -5 V
+7 2 V
+7 -17 V
+7 -3 V
+8 2 V
+7 7 V
+7 23 V
+7 -4 V
+7 18 V
+7 5 V
+7 -27 V
+8 24 V
+7 -8 V
+7 -22 V
+7 -8 V
+7 1 V
+7 26 V
+8 -4 V
+7 7 V
+7 -15 V
+7 -11 V
+7 -14 V
+7 2 V
+7 -1 V
+8 -23 V
+7 57 V
+7 -7 V
+7 -27 V
+7 9 V
+7 24 V
+8 -7 V
+7 -9 V
+7 7 V
+7 -15 V
+7 9 V
+7 19 V
+7 -14 V
+8 -14 V
+7 -8 V
+stroke 6068 3230 M
+7 -3 V
+7 15 V
+7 3 V
+7 -20 V
+8 8 V
+7 -17 V
+7 43 V
+7 13 V
+7 -19 V
+7 -26 V
+8 33 V
+7 -12 V
+7 5 V
+7 5 V
+7 -15 V
+7 -9 V
+7 8 V
+8 -5 V
+7 -8 V
+7 1 V
+7 5 V
+7 -5 V
+7 7 V
+8 7 V
+7 -16 V
+7 10 V
+7 -2 V
+7 -15 V
+7 3 V
+7 23 V
+8 16 V
+7 -18 V
+7 0 V
+7 14 V
+7 -14 V
+7 -19 V
+8 20 V
+7 20 V
+7 -21 V
+7 -15 V
+7 18 V
+7 -9 V
+8 -9 V
+7 16 V
+7 -6 V
+7 -4 V
+7 9 V
+7 -4 V
+7 -3 V
+8 -2 V
+7 -13 V
+7 21 V
+7 13 V
+7 6 V
+7 6 V
+8 -5 V
+7 6 V
+7 -7 V
+7 -11 V
+7 7 V
+7 -10 V
+7 -17 V
+8 20 V
+7 2 V
+7 -7 V
+7 5 V
+7 1 V
+7 8 V
+8 4 V
+7 -19 V
+7 -22 V
+7 12 V
+7 24 V
+7 -4 V
+8 -9 V
+7 6 V
+7 -15 V
+7 -2 V
+7 9 V
+7 2 V
+7 7 V
+8 -14 V
+7 12 V
+7 -6 V
+7 -13 V
+7 6 V
+7 8 V
+8 7 V
+7 -21 V
+7 17 V
+7 12 V
+7 18 V
+7 1 V
+7 -41 V
+8 6 V
+7 -10 V
+7 3 V
+7 24 V
+7 3 V
+7 14 V
+8 -17 V
+7 -30 V
+7 12 V
+7 -9 V
+stroke 6812 3236 M
+7 23 V
+7 -2 V
+7 -16 V
+8 -14 V
+7 1 V
+7 -12 V
+7 18 V
+7 -22 V
+% End plot #1
+stroke
+1.000 UL
+LTb
+LCb setrgbcolor
+864 3563 N
+0 -467 V
+6011 0 V
+0 467 V
+-6011 0 V
+Z stroke
+1.000 UP
+1.000 UL
+LTb
+LCb setrgbcolor
+1.000 UL
+LTb
+LCb setrgbcolor
+1.000 UL
+LTa
+LCa setrgbcolor
+864 1836 M
+6011 0 V
+stroke
+LTb
+LCb setrgbcolor
+864 1836 M
+63 0 V
+5948 0 R
+-63 0 V
+stroke
+756 1836 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 0)]
+] -60.0 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1.000 UL
+LTa
+LCa setrgbcolor
+864 1992 M
+6011 0 V
+stroke
+LTb
+LCb setrgbcolor
+864 1992 M
+63 0 V
+5948 0 R
+-63 0 V
+stroke
+756 1992 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 2)]
+] -60.0 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1.000 UL
+LTa
+LCa setrgbcolor
+864 2148 M
+4004 0 V
+1899 0 R
+108 0 V
+stroke
+LTb
+LCb setrgbcolor
+864 2148 M
+63 0 V
+5948 0 R
+-63 0 V
+stroke
+756 2148 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 4)]
+] -60.0 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1.000 UL
+LTa
+LCa setrgbcolor
+864 2304 M
+6011 0 V
+stroke
+LTb
+LCb setrgbcolor
+864 2304 M
+63 0 V
+5948 0 R
+-63 0 V
+stroke
+756 2304 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 6)]
+] -60.0 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+864 1836 M
+0 63 V
+0 405 R
+0 -63 V
+stroke
+864 1656 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 0)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1580 1836 M
+0 63 V
+0 405 R
+0 -63 V
+stroke
+1580 1656 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 500)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+2295 1836 M
+0 63 V
+0 405 R
+0 -63 V
+stroke
+2295 1656 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 1000)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+3011 1836 M
+0 63 V
+0 405 R
+0 -63 V
+stroke
+3011 1656 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 1500)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+3726 1836 M
+0 63 V
+0 405 R
+0 -63 V
+stroke
+3726 1656 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 2000)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+4442 1836 M
+0 63 V
+0 405 R
+0 -63 V
+stroke
+4442 1656 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 2500)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+5158 1836 M
+0 63 V
+0 405 R
+0 -63 V
+stroke
+5158 1656 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 3000)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+5873 1836 M
+0 63 V
+0 405 R
+0 -63 V
+stroke
+5873 1656 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 3500)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+6589 1836 M
+0 63 V
+0 405 R
+0 -63 V
+stroke
+6589 1656 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 4000)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1.000 UL
+LTb
+LCb setrgbcolor
+864 2304 N
+0 -468 V
+6011 0 V
+0 468 V
+-6011 0 V
+Z stroke
+LCb setrgbcolor
+342 2070 M
+[ [(Symbol) 180.0 0.0 true true 0 (r)]
+] -60.0 MCshow
+LTb
+LCb setrgbcolor
+3869 1386 M
+[ [(Helvetica) 180.0 0.0 true true 0 (Tiempo \(s\))]
+] -60.0 MCshow
+LTb
+1.000 UP
+1.000 UL
+LTb
+LCb setrgbcolor
+% Begin plot #1
+5.000 UL
+LT0
+LC0 setrgbcolor
+LCb setrgbcolor
+6056 2151 M
+[ [(Symbol) 180.0 0.0 true true 0 (r)]
+[(Helvetica) 180.0 0.0 true true 0 ( = )]
+[(Symbol) 180.0 0.0 true true 0 (l)]
+[(Helvetica) 180.0 0.0 true true 0 (/\(s)]
+[(Helvetica) 180.0 0.0 true true 0 (\267)]
+[(Symbol) 180.0 0.0 true true 0 (m)]
+[(Helvetica) 180.0 0.0 true true 0 (\))]
+] -60.0 MRshow
+LT0
+6164 2151 M
+495 0 V
+871 1914 M
+7 0 V
+7 0 V
+8 50 V
+7 -49 V
+7 -10 V
+7 4 V
+7 10 V
+7 -14 V
+8 6 V
+7 1 V
+7 -1 V
+7 1 V
+7 -3 V
+7 3 V
+7 -1 V
+8 1 V
+7 -2 V
+7 3 V
+7 -5 V
+7 3 V
+7 -1 V
+8 1 V
+7 1 V
+7 -2 V
+7 1 V
+7 0 V
+7 0 V
+8 0 V
+7 1 V
+7 -2 V
+7 1 V
+7 1 V
+7 -3 V
+7 2 V
+8 1 V
+7 0 V
+7 -3 V
+7 3 V
+7 0 V
+7 -1 V
+8 0 V
+7 -1 V
+7 2 V
+7 -2 V
+7 1 V
+7 1 V
+7 -2 V
+8 2 V
+7 -1 V
+7 -1 V
+7 1 V
+7 6 V
+7 -11 V
+8 4 V
+7 1 V
+7 0 V
+7 0 V
+7 2 V
+7 -4 V
+8 2 V
+7 1 V
+7 -2 V
+7 4 V
+7 -5 V
+7 2 V
+7 -1 V
+8 1 V
+7 3 V
+7 -5 V
+7 1 V
+7 2 V
+7 -1 V
+8 0 V
+7 0 V
+7 1 V
+7 1 V
+7 0 V
+7 -1 V
+7 -7 V
+8 8 V
+7 -2 V
+7 -1 V
+7 1 V
+7 -1 V
+7 1 V
+8 0 V
+7 1 V
+7 -1 V
+7 1 V
+7 -2 V
+7 2 V
+8 -2 V
+7 1 V
+7 1 V
+7 -2 V
+7 2 V
+7 0 V
+7 -2 V
+8 4 V
+7 -6 V
+7 4 V
+7 -1 V
+stroke 1601 1911 M
+7 0 V
+7 4 V
+8 -7 V
+7 4 V
+7 -2 V
+7 1 V
+7 3 V
+7 -1 V
+7 -5 V
+8 4 V
+7 -3 V
+7 0 V
+7 2 V
+7 1 V
+7 0 V
+8 -2 V
+7 2 V
+7 -3 V
+7 2 V
+7 1 V
+7 -1 V
+7 1 V
+8 4 V
+7 -10 V
+7 4 V
+7 4 V
+7 -5 V
+7 2 V
+8 1 V
+7 0 V
+7 -1 V
+7 1 V
+7 -3 V
+7 3 V
+8 0 V
+7 -3 V
+7 2 V
+7 1 V
+7 -2 V
+7 2 V
+7 0 V
+8 2 V
+7 -6 V
+7 4 V
+7 2 V
+7 -7 V
+7 5 V
+8 -2 V
+7 2 V
+7 -2 V
+7 1 V
+7 0 V
+7 0 V
+7 0 V
+8 1 V
+7 0 V
+7 -3 V
+7 2 V
+7 1 V
+7 -2 V
+8 1 V
+7 0 V
+7 0 V
+7 1 V
+7 -3 V
+7 2 V
+8 0 V
+7 1 V
+7 -2 V
+7 3 V
+7 -4 V
+7 2 V
+7 2 V
+8 -4 V
+7 3 V
+7 -1 V
+7 -1 V
+7 2 V
+7 -2 V
+8 1 V
+7 1 V
+7 -2 V
+7 1 V
+7 1 V
+7 -2 V
+7 2 V
+8 -1 V
+7 1 V
+7 -1 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 -1 V
+7 1 V
+7 -1 V
+7 2 V
+7 -1 V
+8 7 V
+7 -9 V
+7 -2 V
+7 8 V
+7 -7 V
+7 4 V
+stroke 2345 1912 M
+7 -2 V
+8 1 V
+7 1 V
+7 -2 V
+7 3 V
+7 -4 V
+7 6 V
+8 49 V
+7 -12 V
+7 10 V
+7 -17 V
+7 15 V
+7 4 V
+7 -4 V
+8 0 V
+7 -2 V
+7 -12 V
+7 9 V
+7 -20 V
+7 16 V
+8 6 V
+7 6 V
+7 -25 V
+7 24 V
+7 1 V
+7 2 V
+7 1 V
+8 12 V
+7 -6 V
+7 -2 V
+7 -19 V
+7 1 V
+7 18 V
+8 -17 V
+7 -8 V
+7 -1 V
+7 -1 V
+7 0 V
+7 5 V
+8 6 V
+7 12 V
+7 3 V
+7 -30 V
+7 13 V
+7 30 V
+7 -26 V
+8 -2 V
+7 3 V
+7 -12 V
+7 13 V
+7 -18 V
+7 15 V
+8 2 V
+7 6 V
+7 -1 V
+7 11 V
+7 -22 V
+7 22 V
+7 -10 V
+8 0 V
+7 -9 V
+7 23 V
+7 -5 V
+7 -2 V
+7 -28 V
+8 23 V
+7 -22 V
+7 6 V
+7 4 V
+7 1 V
+7 -10 V
+8 23 V
+7 -17 V
+7 -5 V
+7 4 V
+7 6 V
+7 10 V
+7 -4 V
+8 -12 V
+7 2 V
+7 -2 V
+7 -5 V
+7 -5 V
+7 9 V
+8 -14 V
+7 17 V
+7 5 V
+7 5 V
+7 -4 V
+7 -5 V
+7 22 V
+8 -19 V
+7 -3 V
+7 4 V
+7 1 V
+7 -2 V
+7 -11 V
+8 0 V
+7 11 V
+7 12 V
+7 -35 V
+7 4 V
+7 -2 V
+8 20 V
+stroke 3090 1954 M
+7 1 V
+7 -2 V
+7 15 V
+7 -8 V
+7 -16 V
+7 -9 V
+8 12 V
+7 0 V
+7 7 V
+7 -6 V
+7 -12 V
+7 32 V
+8 -6 V
+7 -5 V
+7 -7 V
+7 11 V
+7 -9 V
+7 5 V
+7 -8 V
+8 -4 V
+7 13 V
+7 -2 V
+7 -5 V
+7 9 V
+7 -9 V
+8 -1 V
+7 -14 V
+7 10 V
+7 -6 V
+7 0 V
+7 7 V
+7 4 V
+8 -13 V
+7 5 V
+7 -3 V
+7 5 V
+7 -1 V
+7 6 V
+8 -3 V
+7 4 V
+7 -6 V
+7 10 V
+7 6 V
+7 -14 V
+8 -12 V
+7 -5 V
+7 3 V
+7 -1 V
+7 13 V
+7 -7 V
+7 1 V
+8 -3 V
+7 -1 V
+7 25 V
+7 8 V
+7 -16 V
+7 -15 V
+8 -2 V
+7 51 V
+7 -41 V
+7 -12 V
+7 7 V
+7 2 V
+7 2 V
+8 9 V
+7 -3 V
+7 0 V
+7 15 V
+7 -6 V
+7 -6 V
+8 16 V
+7 8 V
+7 -14 V
+7 9 V
+7 -13 V
+7 5 V
+8 -1 V
+7 -3 V
+7 9 V
+7 -7 V
+7 -2 V
+7 -14 V
+7 18 V
+8 10 V
+7 3 V
+7 -10 V
+7 -8 V
+7 25 V
+7 -39 V
+8 15 V
+7 9 V
+7 -18 V
+7 -8 V
+7 4 V
+7 -8 V
+7 6 V
+8 12 V
+7 -9 V
+7 7 V
+7 -9 V
+7 12 V
+7 -16 V
+8 13 V
+7 6 V
+stroke 3834 1961 M
+7 -2 V
+7 -17 V
+7 15 V
+7 4 V
+8 -9 V
+7 18 V
+7 -8 V
+7 2 V
+7 -2 V
+7 1 V
+7 -13 V
+8 8 V
+7 8 V
+7 -3 V
+7 7 V
+7 -10 V
+7 -1 V
+8 -3 V
+7 11 V
+7 -6 V
+7 -4 V
+7 0 V
+7 7 V
+7 -8 V
+8 7 V
+7 -6 V
+7 10 V
+7 -9 V
+7 -7 V
+7 7 V
+8 8 V
+7 -10 V
+7 1 V
+7 5 V
+7 2 V
+7 10 V
+7 -9 V
+8 2 V
+7 -7 V
+7 3 V
+7 4 V
+7 3 V
+7 -14 V
+8 10 V
+7 -2 V
+7 4 V
+7 0 V
+7 -1 V
+7 6 V
+8 -13 V
+7 -9 V
+7 20 V
+7 6 V
+7 -27 V
+7 0 V
+7 -6 V
+8 -2 V
+7 7 V
+7 -1 V
+7 -5 V
+7 1 V
+7 11 V
+8 6 V
+7 5 V
+7 -8 V
+7 15 V
+7 -10 V
+7 19 V
+7 -28 V
+8 16 V
+7 9 V
+7 34 V
+7 -78 V
+7 -3 V
+7 26 V
+8 -1 V
+7 -1 V
+7 -25 V
+7 20 V
+7 -10 V
+7 28 V
+8 -18 V
+7 23 V
+7 -29 V
+7 26 V
+7 -34 V
+7 14 V
+7 -5 V
+8 7 V
+7 4 V
+7 -4 V
+7 12 V
+7 -24 V
+7 2 V
+8 21 V
+7 4 V
+7 -23 V
+7 1 V
+7 7 V
+7 9 V
+7 -7 V
+8 5 V
+7 -13 V
+7 -1 V
+stroke 4578 1946 M
+7 19 V
+7 -13 V
+7 -10 V
+8 0 V
+7 -8 V
+7 -1 V
+7 -2 V
+7 13 V
+7 -11 V
+7 2 V
+8 16 V
+7 -10 V
+7 0 V
+9 21 V
+7 -4 V
+7 0 V
+7 3 V
+7 -7 V
+7 -23 V
+7 24 V
+8 14 V
+7 -11 V
+7 -7 V
+7 -1 V
+7 -4 V
+7 -6 V
+8 7 V
+7 12 V
+7 0 V
+7 -2 V
+7 6 V
+7 -20 V
+8 13 V
+7 1 V
+7 5 V
+7 -1 V
+7 -1 V
+7 -14 V
+7 14 V
+8 -9 V
+7 8 V
+7 -1 V
+7 14 V
+7 -33 V
+7 11 V
+8 8 V
+7 -2 V
+7 -9 V
+7 -3 V
+7 2 V
+7 8 V
+7 4 V
+8 3 V
+7 -16 V
+7 -1 V
+7 -8 V
+7 12 V
+7 4 V
+8 15 V
+7 -5 V
+7 -3 V
+7 -6 V
+7 -17 V
+7 3 V
+8 0 V
+7 18 V
+7 17 V
+7 -9 V
+7 -3 V
+7 -19 V
+7 16 V
+8 0 V
+7 -3 V
+7 6 V
+7 -1 V
+7 -27 V
+7 12 V
+8 18 V
+7 -23 V
+7 -1 V
+7 9 V
+7 -13 V
+7 8 V
+7 18 V
+8 -30 V
+7 8 V
+7 27 V
+7 -5 V
+7 -28 V
+7 27 V
+8 -12 V
+7 -5 V
+7 11 V
+7 -23 V
+7 6 V
+7 9 V
+7 2 V
+8 1 V
+7 1 V
+7 10 V
+7 -23 V
+7 15 V
+7 -5 V
+8 8 V
+stroke 5324 1956 M
+7 -6 V
+7 -4 V
+7 11 V
+7 -15 V
+7 12 V
+8 -5 V
+7 5 V
+7 -16 V
+7 13 V
+7 -5 V
+7 1 V
+7 -59 V
+8 3 V
+7 0 V
+7 -1 V
+7 12 V
+7 0 V
+7 -1 V
+8 -4 V
+7 -2 V
+7 -3 V
+7 -3 V
+7 15 V
+7 -3 V
+7 3 V
+8 -9 V
+7 6 V
+7 -9 V
+7 -5 V
+7 6 V
+7 -7 V
+8 6 V
+7 3 V
+7 3 V
+7 -1 V
+7 7 V
+7 -5 V
+8 -8 V
+7 3 V
+7 4 V
+7 -5 V
+7 3 V
+7 -1 V
+7 6 V
+8 0 V
+7 -3 V
+7 -6 V
+7 -1 V
+7 6 V
+7 -12 V
+8 1 V
+7 1 V
+7 3 V
+7 -6 V
+7 4 V
+7 11 V
+7 3 V
+8 -7 V
+7 -6 V
+7 5 V
+7 10 V
+7 -2 V
+7 2 V
+8 0 V
+7 -11 V
+7 2 V
+7 -1 V
+7 7 V
+7 1 V
+8 -1 V
+7 -3 V
+7 -8 V
+7 1 V
+7 -5 V
+7 -2 V
+7 8 V
+8 -7 V
+7 2 V
+7 8 V
+7 3 V
+7 -1 V
+7 -9 V
+8 1 V
+7 -2 V
+7 5 V
+7 4 V
+7 7 V
+7 -2 V
+7 1 V
+8 13 V
+7 -26 V
+7 2 V
+7 11 V
+7 -4 V
+7 -9 V
+8 2 V
+7 4 V
+7 -3 V
+7 6 V
+7 -4 V
+7 -6 V
+7 4 V
+8 6 V
+7 3 V
+stroke 6068 1901 M
+7 2 V
+7 -7 V
+7 -1 V
+7 9 V
+8 -4 V
+7 9 V
+7 -19 V
+7 -4 V
+7 6 V
+7 11 V
+8 -13 V
+7 4 V
+7 -2 V
+7 -1 V
+7 5 V
+7 4 V
+7 -4 V
+8 2 V
+7 4 V
+7 -1 V
+7 -2 V
+7 3 V
+7 -4 V
+8 -3 V
+7 7 V
+7 -4 V
+7 1 V
+7 7 V
+7 -2 V
+7 -10 V
+8 -5 V
+7 6 V
+7 0 V
+7 -5 V
+7 5 V
+7 8 V
+8 -8 V
+7 -7 V
+7 7 V
+7 7 V
+7 -8 V
+7 3 V
+8 4 V
+7 -6 V
+7 2 V
+7 2 V
+7 -4 V
+7 2 V
+7 1 V
+8 1 V
+7 6 V
+7 -10 V
+7 -4 V
+7 -2 V
+7 -2 V
+8 1 V
+7 -1 V
+7 2 V
+7 4 V
+7 -3 V
+7 3 V
+7 7 V
+8 -7 V
+7 -1 V
+7 2 V
+7 -2 V
+7 0 V
+7 -3 V
+8 -1 V
+7 7 V
+7 9 V
+7 -5 V
+7 -9 V
+7 1 V
+8 3 V
+7 -2 V
+7 6 V
+7 1 V
+7 -4 V
+7 -1 V
+7 -2 V
+8 5 V
+7 -5 V
+7 3 V
+7 5 V
+7 -3 V
+7 -3 V
+8 -2 V
+7 8 V
+7 -7 V
+7 -4 V
+7 -5 V
+7 0 V
+7 13 V
+8 -2 V
+7 4 V
+7 -2 V
+7 -8 V
+7 -1 V
+7 -4 V
+8 5 V
+7 11 V
+7 -5 V
+7 4 V
+stroke 6812 1899 M
+7 -9 V
+7 1 V
+7 6 V
+8 6 V
+7 -1 V
+7 6 V
+7 -9 V
+7 12 V
+% End plot #1
+stroke
+1.000 UL
+LTb
+LCb setrgbcolor
+864 2304 N
+0 -468 V
+6011 0 V
+0 468 V
+-6011 0 V
+Z stroke
+1.000 UP
+1.000 UL
+LTb
+LCb setrgbcolor
+1.000 UL
+LTb
+LCb setrgbcolor
+1.000 UL
+LTa
+LCa setrgbcolor
+864 576 M
+6011 0 V
+stroke
+LTb
+LCb setrgbcolor
+864 576 M
+63 0 V
+5948 0 R
+-63 0 V
+stroke
+756 576 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 0)]
+] -60.0 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1.000 UL
+LTa
+LCa setrgbcolor
+864 810 M
+3572 0 V
+2331 0 R
+108 0 V
+stroke
+LTb
+LCb setrgbcolor
+864 810 M
+63 0 V
+5948 0 R
+-63 0 V
+stroke
+756 810 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 50000)]
+] -60.0 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1.000 UL
+LTa
+LCa setrgbcolor
+864 1044 M
+6011 0 V
+stroke
+LTb
+LCb setrgbcolor
+864 1044 M
+63 0 V
+5948 0 R
+-63 0 V
+stroke
+756 1044 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 100000)]
+] -60.0 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+864 576 M
+0 63 V
+0 405 R
+0 -63 V
+stroke
+864 396 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 0)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1580 576 M
+0 63 V
+0 405 R
+0 -63 V
+stroke
+1580 396 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 500)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+2295 576 M
+0 63 V
+0 405 R
+0 -63 V
+stroke
+2295 396 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 1000)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+3011 576 M
+0 63 V
+0 405 R
+0 -63 V
+stroke
+3011 396 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 1500)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+3726 576 M
+0 63 V
+0 405 R
+0 -63 V
+stroke
+3726 396 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 2000)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+4442 576 M
+0 63 V
+0 405 R
+0 -63 V
+stroke
+4442 396 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 2500)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+5158 576 M
+0 63 V
+0 405 R
+0 -63 V
+stroke
+5158 396 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 3000)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+5873 576 M
+0 63 V
+0 405 R
+0 -63 V
+stroke
+5873 396 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 3500)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+6589 576 M
+0 63 V
+0 405 R
+0 -63 V
+stroke
+6589 396 M
+[ [(Helvetica) 180.0 0.0 true true 0 ( 4000)]
+] -60.0 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1.000 UL
+LTb
+LCb setrgbcolor
+864 1044 N
+0 -468 V
+6011 0 V
+0 468 V
+-6011 0 V
+Z stroke
+LCb setrgbcolor
+-198 810 M
+currentpoint gsave translate 90 rotate 0 0 moveto
+[ [(Helvetica) 180.0 0.0 true true 0 (# Eventos)]
+] -60.0 MCshow
+grestore
+LTb
+LCb setrgbcolor
+3869 126 M
+[ [(Helvetica) 180.0 0.0 true true 0 (Tiempo \(s\))]
+] -60.0 MCshow
+LTb
+1.000 UP
+1.000 UL
+LTb
+LCb setrgbcolor
+% Begin plot #1
+5.000 UL
+LT0
+LC0 setrgbcolor
+LCb setrgbcolor
+6056 729 M
+[ [(Helvetica) 180.0 0.0 true true 0 (Tam. de la cola)]
+] -60.0 MRshow
+LT0
+6164 729 M
+495 0 V
+871 576 M
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+stroke 1601 576 M
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+stroke 2345 576 M
+7 0 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 1 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+7 1 V
+7 1 V
+8 1 V
+7 1 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+8 1 V
+7 1 V
+7 0 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+8 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+8 1 V
+7 0 V
+7 1 V
+7 1 V
+7 1 V
+7 0 V
+8 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+8 0 V
+7 1 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+8 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+8 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 0 V
+8 1 V
+7 1 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+8 1 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+7 1 V
+7 1 V
+8 1 V
+7 1 V
+7 0 V
+7 1 V
+7 1 V
+7 1 V
+8 0 V
+7 1 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+7 1 V
+8 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 0 V
+8 1 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+7 0 V
+8 1 V
+stroke 3090 657 M
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+8 1 V
+7 0 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+8 1 V
+7 0 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+8 0 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+8 0 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+7 1 V
+7 0 V
+8 1 V
+7 1 V
+7 0 V
+7 1 V
+7 1 V
+7 0 V
+8 1 V
+7 1 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+8 1 V
+7 0 V
+7 1 V
+7 0 V
+7 1 V
+7 0 V
+7 1 V
+8 1 V
+7 0 V
+7 1 V
+7 1 V
+7 1 V
+7 0 V
+8 1 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+7 1 V
+7 0 V
+8 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 0 V
+8 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+8 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+8 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+8 0 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+8 1 V
+7 1 V
+7 0 V
+7 1 V
+7 1 V
+7 1 V
+8 1 V
+7 1 V
+stroke 3834 740 M
+7 0 V
+7 1 V
+7 1 V
+7 1 V
+8 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+8 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+8 1 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+7 1 V
+7 1 V
+8 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+8 1 V
+7 0 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+8 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+8 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+8 1 V
+7 0 V
+7 1 V
+7 2 V
+7 0 V
+7 1 V
+7 1 V
+8 0 V
+7 1 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+8 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+8 1 V
+7 1 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+8 1 V
+7 1 V
+7 0 V
+7 1 V
+7 1 V
+7 1 V
+8 1 V
+7 1 V
+7 0 V
+7 2 V
+7 0 V
+7 1 V
+7 1 V
+8 0 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 0 V
+8 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 0 V
+8 1 V
+7 1 V
+7 1 V
+stroke 4578 831 M
+7 1 V
+7 1 V
+7 0 V
+8 1 V
+7 0 V
+7 1 V
+7 0 V
+7 1 V
+7 1 V
+7 0 V
+8 1 V
+7 0 V
+7 1 V
+9 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+8 1 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+7 1 V
+8 0 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+8 1 V
+7 0 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+8 1 V
+7 1 V
+7 0 V
+7 1 V
+7 1 V
+7 1 V
+8 1 V
+7 1 V
+7 0 V
+7 1 V
+7 1 V
+7 1 V
+7 0 V
+8 1 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+7 1 V
+8 1 V
+7 1 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+8 0 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+8 1 V
+7 0 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+8 1 V
+7 0 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+7 1 V
+8 0 V
+7 1 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+8 1 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+7 0 V
+7 1 V
+8 1 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+7 1 V
+8 1 V
+stroke 5324 912 M
+7 0 V
+7 1 V
+7 1 V
+7 1 V
+7 1 V
+8 0 V
+7 1 V
+7 1 V
+7 0 V
+7 1 V
+7 1 V
+7 -1 V
+8 0 V
+7 0 V
+7 -1 V
+7 0 V
+7 0 V
+7 0 V
+8 -1 V
+7 0 V
+7 0 V
+7 -1 V
+7 0 V
+7 0 V
+7 0 V
+8 -1 V
+7 0 V
+7 0 V
+7 -1 V
+7 0 V
+7 -1 V
+8 0 V
+7 -1 V
+7 0 V
+7 0 V
+7 0 V
+7 -1 V
+8 0 V
+7 0 V
+7 -1 V
+7 0 V
+7 0 V
+7 -1 V
+7 0 V
+8 0 V
+7 0 V
+7 -1 V
+7 0 V
+7 0 V
+7 -1 V
+8 -1 V
+7 0 V
+7 -1 V
+7 0 V
+7 -1 V
+7 0 V
+7 0 V
+8 -1 V
+7 0 V
+7 0 V
+7 -1 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 -1 V
+7 0 V
+7 0 V
+7 0 V
+8 -1 V
+7 0 V
+7 0 V
+7 -1 V
+7 0 V
+7 -1 V
+7 0 V
+8 -1 V
+7 -1 V
+7 0 V
+7 0 V
+7 -1 V
+7 0 V
+8 -1 V
+7 0 V
+7 -1 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 0 V
+7 -1 V
+7 0 V
+7 0 V
+7 -1 V
+7 0 V
+8 -1 V
+7 0 V
+7 0 V
+7 -1 V
+7 0 V
+7 0 V
+7 -1 V
+8 0 V
+7 0 V
+stroke 6068 888 M
+7 0 V
+7 -1 V
+7 0 V
+7 0 V
+8 0 V
+7 0 V
+7 -1 V
+7 0 V
+7 -1 V
+7 0 V
+8 -1 V
+7 0 V
+7 0 V
+7 -1 V
+7 0 V
+7 0 V
+7 -1 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 -1 V
+7 0 V
+8 0 V
+7 0 V
+7 -1 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+8 -1 V
+7 0 V
+7 -1 V
+7 0 V
+7 0 V
+7 0 V
+8 -1 V
+7 0 V
+7 -1 V
+7 0 V
+7 0 V
+7 0 V
+8 -1 V
+7 0 V
+7 0 V
+7 0 V
+7 -1 V
+7 0 V
+7 0 V
+8 -1 V
+7 0 V
+7 0 V
+7 0 V
+7 -1 V
+7 -1 V
+8 0 V
+7 -1 V
+7 0 V
+7 -1 V
+7 0 V
+7 0 V
+7 -1 V
+8 0 V
+7 0 V
+7 -1 V
+7 0 V
+7 -1 V
+7 0 V
+8 -1 V
+7 0 V
+7 0 V
+7 0 V
+7 -1 V
+7 0 V
+8 -1 V
+7 0 V
+7 0 V
+7 0 V
+7 -1 V
+7 0 V
+7 -1 V
+8 0 V
+7 0 V
+7 -1 V
+7 0 V
+7 0 V
+7 0 V
+8 -1 V
+7 0 V
+7 0 V
+7 -1 V
+7 -1 V
+7 0 V
+7 -1 V
+8 0 V
+7 0 V
+7 0 V
+7 -1 V
+7 0 V
+7 -1 V
+8 -1 V
+7 0 V
+7 0 V
+7 0 V
+stroke 6812 853 M
+7 -1 V
+7 0 V
+7 -1 V
+8 0 V
+7 0 V
+7 0 V
+7 0 V
+7 0 V
+% End plot #1
+stroke
+1.000 UL
+LTb
+LCb setrgbcolor
+864 1044 N
+0 -468 V
+6011 0 V
+0 468 V
+-6011 0 V
 Z stroke
 1.000 UP
 1.000 UL
@@ -5686,4 +4739,4 @@ grestore
 end
 showpage
 %%Trailer
-%%DocumentFonts: Helvetica
+%%DocumentFonts: Symbol Helvetica

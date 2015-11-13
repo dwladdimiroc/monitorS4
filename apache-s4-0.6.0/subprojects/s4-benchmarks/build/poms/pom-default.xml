@@ -104,30 +104,6 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.apache.s4</groupId>
-      <artifactId>s4-comm</artifactId>
-      <version>0.6.0-incubating</version>
-      <scope>compile</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>jmxri</artifactId>
-          <groupId>com.sun.jmx</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>jms</artifactId>
-          <groupId>javax.jms</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>jmxtools</artifactId>
-          <groupId>com.sun.jdmk</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>mail</artifactId>
-          <groupId>javax.mail</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
       <groupId>com.beust</groupId>
       <artifactId>jcommander</artifactId>
       <version>1.25</version>
@@ -176,10 +152,58 @@
       </exclusions>
     </dependency>
     <dependency>
+      <groupId>org.apache.s4</groupId>
+      <artifactId>s4-core</artifactId>
+      <version>0.6.0-incubating</version>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>jmxri</artifactId>
+          <groupId>com.sun.jmx</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jms</artifactId>
+          <groupId>javax.jms</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jmxtools</artifactId>
+          <groupId>com.sun.jdmk</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>mail</artifactId>
+          <groupId>javax.mail</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
       <groupId>com.googlecode</groupId>
       <artifactId>minlog</artifactId>
       <version>1.2</version>
       <scope>runtime</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>jmxri</artifactId>
+          <groupId>com.sun.jmx</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jms</artifactId>
+          <groupId>javax.jms</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jmxtools</artifactId>
+          <groupId>com.sun.jdmk</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>mail</artifactId>
+          <groupId>javax.mail</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.s4</groupId>
+      <artifactId>s4-base</artifactId>
+      <version>0.6.0-incubating</version>
+      <scope>compile</scope>
       <exclusions>
         <exclusion>
           <artifactId>jmxri</artifactId>
@@ -276,30 +300,6 @@
       <artifactId>junit</artifactId>
       <version>4.10</version>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>jmxri</artifactId>
-          <groupId>com.sun.jmx</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>jms</artifactId>
-          <groupId>javax.jms</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>jmxtools</artifactId>
-          <groupId>com.sun.jdmk</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>mail</artifactId>
-          <groupId>javax.mail</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.s4</groupId>
-      <artifactId>s4-base</artifactId>
-      <version>0.6.0-incubating</version>
-      <scope>compile</scope>
       <exclusions>
         <exclusion>
           <artifactId>jmxri</artifactId>
@@ -608,30 +608,6 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.apache.s4</groupId>
-      <artifactId>s4-core</artifactId>
-      <version>0.6.0-incubating</version>
-      <scope>compile</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>jmxri</artifactId>
-          <groupId>com.sun.jmx</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>jms</artifactId>
-          <groupId>javax.jms</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>jmxtools</artifactId>
-          <groupId>com.sun.jdmk</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>mail</artifactId>
-          <groupId>javax.mail</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>
       <version>0.9.29</version>
@@ -803,6 +779,30 @@
       <groupId>com.github.sgroschupf</groupId>
       <artifactId>zkclient</artifactId>
       <version>0.1</version>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>jmxri</artifactId>
+          <groupId>com.sun.jmx</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jms</artifactId>
+          <groupId>javax.jms</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jmxtools</artifactId>
+          <groupId>com.sun.jdmk</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>mail</artifactId>
+          <groupId>javax.mail</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.s4</groupId>
+      <artifactId>s4-comm</artifactId>
+      <version>0.6.0-incubating</version>
       <scope>compile</scope>
       <exclusions>
         <exclusion>
