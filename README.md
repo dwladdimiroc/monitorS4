@@ -17,7 +17,7 @@ Configuración de OpenJDK
 
 Apache S4
 
-	Download: http://www.apache.org/dist/incubator/s4/s4-0.6.0-incubating/apache-s4-0.6.0-incubating-src.zip
+	Download: http://archive.apache.org/dist/incubator/s4/s4-0.6.0-incubating/apache-s4-0.6.0-incubating-src.zip
 
 Gradle
 
