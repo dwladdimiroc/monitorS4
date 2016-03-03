@@ -14,7 +14,7 @@ set lmargin 8
 set datafile separator ","
 plot "../statistics/lambda@processElements.StopwordPE.csv" using 1:2 title '{/Symbol l} (eventos/seg)' with lines lw 5
 
-set key right bottom
+set key right top
 set grid y
 set ylabel "{/Symbol m}"
 set ytics 100

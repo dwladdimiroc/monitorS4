@@ -1,4 +1,4 @@
-# monitorS4
+# S4 Self-Adaptive
 Sistema de distribución de carga para Apache S4, utilizando un algoritmo reactivo y predictivo, además de un algoritmo de administración de réplicas según los recursos disponibles en la máquina que aloja el sistema.
 
 Instalación

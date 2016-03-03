@@ -1,7 +1,6 @@
-App,without,with,optimal
+App,Base,Elastico,Alto
 App1 - Constant,67148,415189,418289
 App1 - Variable,82770,303156,310613
 App2 - Constant,28152,275290,284817
 App2 - Variable,27751,228942,238341
 App3 - Constant,29714,88169,90000
-App3 - Variable,29465,59317,65000
