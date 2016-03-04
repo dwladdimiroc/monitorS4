@@ -42,8 +42,7 @@ public class CounterPE extends ProcessingElement {
 		newTweet.setCounterNeed(counterNeed);
 		Event eventOutput = eventFactory.newEvent(newTweet);
 
-		eventOutput.put("levelMongo", Long.class, getEventCount()
-				% getReplicationPE(MongoPE.class));
+		eventOutput.put("levelMongo", Integer.class, 0);
 		eventOutput.put("timeTweet", Long.class, time);
 		downStream.put(eventOutput);
 

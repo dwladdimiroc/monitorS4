@@ -80,8 +80,7 @@ import com.yammer.metrics.core.TimerContext;
  * type {@code AnotherEvent} will be dispatched to this method when certain
  * conditions are met. See {@link #setTrigger(Class, int, long, TimeUnit)}.
  * </ul>
- * <li>
- * A PE implementation must not create threads. A periodic task can be
+ * <li>A PE implementation must not create threads. A periodic task can be
  * implemented by overloading the {@link #onTime()} method. See
  * {@link #setTimerInterval(long, TimeUnit)}
  * <li>If a reference in the PE prototype shared by the PE instances, the object
@@ -99,9 +98,10 @@ import com.yammer.metrics.core.TimerContext;
  * will be sharing the same collection object which is usually <em>NOT</em> what
  * the programmer intended . The application developer is responsible for
  * initializing objects in the {@link #onCreate()} method. For example, if each
- * instance requires a
- * <tt>List<tt/> object the PE should implement the following:
- *         <pre>
+ * instance requires a <tt>List<tt/> object the PE should implement the
+ * following:
+ * 
+ * <pre>
  *         public class MyPE extends ProcessingElement {
  * 
  *           private Map<String, Integer> wordCount;
@@ -113,7 +113,7 @@ import com.yammer.metrics.core.TimerContext;
  *               logger.trace("Created a map for instance PE with id {}, getId());
  *           }
  *         }
- *         </pre>
+ * </pre>
  * 
  * 
  * </ul>
@@ -124,8 +124,7 @@ import com.yammer.metrics.core.TimerContext;
  */
 public abstract class ProcessingElement implements Cloneable {
 
-	transient private static final Logger logger = LoggerFactory
-			.getLogger(ProcessingElement.class);
+	transient private static final Logger logger = LoggerFactory.getLogger(ProcessingElement.class);
 	transient private static final String SINGLETON = "singleton";
 
 	transient protected App app;
@@ -139,7 +138,7 @@ public abstract class ProcessingElement implements Cloneable {
 
 	/* This map is initialized in the prototype and cloned to instances. */
 	transient Map<Class<? extends Event>, Trigger> triggers;
-	transient Map<Class<? extends ProcessingElement>, Integer> replications;
+	// transient Map<Class<? extends ProcessingElement>, Integer> replications;
 
 	/* PE instance id. */
 	protected String id = "";
@@ -171,29 +170,27 @@ public abstract class ProcessingElement implements Cloneable {
 
 	transient private Timer processingTimer;
 
-	transient private CheckpointingConfig checkpointingConfig = new CheckpointingConfig.Builder(
-			CheckpointingMode.NONE).build();
+	transient private CheckpointingConfig checkpointingConfig = new CheckpointingConfig.Builder(CheckpointingMode.NONE)
+			.build();
 
 	protected ProcessingElement() {
-		OverloadDispatcherGenerator oldg = new OverloadDispatcherGenerator(
-				this.getClass());
+		OverloadDispatcherGenerator oldg = new OverloadDispatcherGenerator(this.getClass());
 		Class<?> overloadDispatcherClass = oldg.generate();
 		try {
-			overloadDispatcher = (OverloadDispatcher) overloadDispatcherClass
-					.newInstance();
+			overloadDispatcher = (OverloadDispatcher) overloadDispatcherClass.newInstance();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		peInstances = CacheBuilder.newBuilder().build(
-				new CacheLoader<String, ProcessingElement>() {
-					@Override
-					public ProcessingElement load(String key) throws Exception {
-						return createPE(key);
-					}
-				});
+		peInstances = CacheBuilder.newBuilder().build(new CacheLoader<String, ProcessingElement>() {
+			@Override
+			public ProcessingElement load(String key) throws Exception {
+				return createPE(key);
+			}
+		});
 		turnPE = 0;
 		triggers = new MapMaker().makeMap();
-		replications = new HashMap<Class<? extends ProcessingElement>, Integer>();
+		// replications = new HashMap<Class<? extends ProcessingElement>,
+		// Integer>();
 
 		/*
 		 * Only the PE Prototype uses the constructor. The PEPrototype field
@@ -214,8 +211,7 @@ public abstract class ProcessingElement implements Cloneable {
 		this();
 		setApp(app);
 		if (app.measurePEProcessingTime) {
-			processingTimer = Metrics.newTimer(getClass(), getClass().getName()
-					+ "-pe-processing-time");
+			processingTimer = Metrics.newTimer(getClass(), getClass().getName() + "-pe-processing-time");
 		}
 
 	}
@@ -260,43 +256,44 @@ public abstract class ProcessingElement implements Cloneable {
 
 	public void setApp(App app) {
 		if (this.app != null) {
-			throw new RuntimeException(
-					"Application was already assigne to this processing element");
+			throw new RuntimeException("Application was already assigne to this processing element");
 		}
 		this.app = app;
 		app.addPEPrototype(this, null);
 
 	}
 
-	/**
-	 * Devolverá el módulo el cual se aplicará para replicar al siguiente PE
-	 * 
-	 * @param PE
-	 *            PE al que se debe replicar
-	 * @return Módulo aplicado a la llave, que será la cantidad de réplicas que
-	 *         se desea de ese PE
-	 */
+	// /**
+	// * Devolverá el módulo el cual se aplicará para replicar al siguiente PE
+	// *
+	// * @param PE
+	// * PE al que se debe replicar
+	// * @return Módulo aplicado a la llave, que será la cantidad de réplicas
+	// que
+	// * se desea de ese PE
+	// */
+	//
+	// public int getReplicationPE(Class<? extends ProcessingElement> PE) {
+	// if (!replications.containsKey(PE))
+	// return 0;
+	//
+	// return replications.get(PE);
+	// }
 
-	public int getReplicationPE(Class<? extends ProcessingElement> PE) {
-		if (!replications.containsKey(PE))
-			return 0;
-
-		return replications.get(PE);
-	}
-
-	/**
-	 * Devolverá el módulo el cual se aplicará para replicar al siguiente PE
-	 * 
-	 * @param PE
-	 *            PE al que se debe replicar
-	 * @return Módulo aplicado a la llave, que será la cantidad de réplicas que
-	 *         se desea de ese PE
-	 */
-
-	public void setReplicationPE(Class<? extends ProcessingElement> PE,
-			int replication) {
-		replications.put(PE, replication);
-	}
+	// /**
+	// * Devolverá el módulo el cual se aplicará para replicar al siguiente PE
+	// *
+	// * @param PE
+	// * PE al que se debe replicar
+	// * @return Módulo aplicado a la llave, que será la cantidad de réplicas
+	// que
+	// * se desea de ese PE
+	// */
+	//
+	// public void setReplicationPE(Class<? extends ProcessingElement> PE, int
+	// replication) {
+	// replications.put(PE, replication);
+	// }
 
 	/**
 	 * Returns the approximate number of PE instances from the cache.
@@ -332,15 +329,11 @@ public abstract class ProcessingElement implements Cloneable {
 	 *            the time unit
 	 * @return the PE prototype
 	 */
-	public ProcessingElement setPECache(int maximumSize, long duration,
-			TimeUnit timeUnit) {
+	public ProcessingElement setPECache(int maximumSize, long duration, TimeUnit timeUnit) {
 
-		Preconditions
-				.checkArgument(isPrototype,
-						"This method can only be used on the PE prototype. Trigger not set.");
+		Preconditions.checkArgument(isPrototype, "This method can only be used on the PE prototype. Trigger not set.");
 
-		peInstances = CacheBuilder.newBuilder()
-				.expireAfterAccess(duration, timeUnit).maximumSize(maximumSize)
+		peInstances = CacheBuilder.newBuilder().expireAfterAccess(duration, timeUnit).maximumSize(maximumSize)
 				.build(new CacheLoader<String, ProcessingElement>() {
 					@Override
 					public ProcessingElement load(String key) throws Exception {
@@ -367,9 +360,7 @@ public abstract class ProcessingElement implements Cloneable {
 	 */
 	public ProcessingElement setPECache(int maximumSize) {
 
-		Preconditions
-				.checkArgument(isPrototype,
-						"This method can only be used on the PE prototype. Trigger not set.");
+		Preconditions.checkArgument(isPrototype, "This method can only be used on the PE prototype. Trigger not set.");
 
 		peInstances = CacheBuilder.newBuilder().maximumSize(maximumSize)
 				.build(new CacheLoader<String, ProcessingElement>() {
@@ -409,19 +400,15 @@ public abstract class ProcessingElement implements Cloneable {
 	 *            time interval needed.
 	 * @return the PE prototype
 	 */
-	public ProcessingElement setTrigger(Class<? extends Event> eventType,
-			int numEvents, long interval, TimeUnit timeUnit) {
+	public ProcessingElement setTrigger(Class<? extends Event> eventType, int numEvents, long interval,
+			TimeUnit timeUnit) {
 
-		Preconditions
-				.checkArgument(isPrototype,
-						"This method can only be used on the PE prototype. Trigger not set.");
+		Preconditions.checkArgument(isPrototype, "This method can only be used on the PE prototype. Trigger not set.");
 		Preconditions.checkNotNull(eventType, "Need eventType to set trigger.");
-		Preconditions
-				.checkArgument(numEvents > 0 || interval > 0,
-						"To set trigger numEvent OR interval must be greater than zero.");
-		Preconditions
-				.checkArgument(timeUnit != null || interval < 1,
-						"To set trigger timeUnit is needed when interval is greater than zero.");
+		Preconditions.checkArgument(numEvents > 0 || interval > 0,
+				"To set trigger numEvent OR interval must be greater than zero.");
+		Preconditions.checkArgument(timeUnit != null || interval < 1,
+				"To set trigger timeUnit is needed when interval is greater than zero.");
 
 		/* Skip trigger checking overhead if there are no triggers. */
 		haveTriggers = true;
@@ -478,8 +465,7 @@ public abstract class ProcessingElement implements Cloneable {
 	 * @return the timer interval.
 	 */
 	public long getTimerInterval(TimeUnit timeUnit) {
-		return timeUnit.convert(timerIntervalInMilliseconds,
-				TimeUnit.MILLISECONDS);
+		return timeUnit.convert(timerIntervalInMilliseconds, TimeUnit.MILLISECONDS);
 	}
 
 	/**
@@ -493,12 +479,9 @@ public abstract class ProcessingElement implements Cloneable {
 	 *            the timeUnit of interval
 	 */
 	public ProcessingElement setTimerInterval(long interval, TimeUnit timeUnit) {
-		timerIntervalInMilliseconds = TimeUnit.MILLISECONDS.convert(interval,
-				timeUnit);
+		timerIntervalInMilliseconds = TimeUnit.MILLISECONDS.convert(interval, timeUnit);
 
-		Preconditions
-				.checkArgument(isPrototype,
-						"This method can only be used on the PE prototype. Trigger not set.");
+		Preconditions.checkArgument(isPrototype, "This method can only be used on the PE prototype. Trigger not set.");
 
 		if (triggerTimer != null) {
 			triggerTimer.shutdownNow();
@@ -508,8 +491,7 @@ public abstract class ProcessingElement implements Cloneable {
 			return this;
 		}
 
-		ThreadFactory threadFactory = new ThreadFactoryBuilder()
-				.setDaemon(true)
+		ThreadFactory threadFactory = new ThreadFactoryBuilder().setDaemon(true)
 				.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 
 					@Override
@@ -517,8 +499,7 @@ public abstract class ProcessingElement implements Cloneable {
 						logger.error("Expection from timer thread", e);
 					}
 				}).setNameFormat("Timer-" + getClass().getSimpleName()).build();
-		triggerTimer = Executors
-				.newSingleThreadScheduledExecutor(threadFactory);
+		triggerTimer = Executors.newSingleThreadScheduledExecutor(threadFactory);
 		return this;
 	}
 
@@ -645,12 +626,12 @@ public abstract class ProcessingElement implements Cloneable {
 	 *            emisor.
 	 */
 
-	public void registerMonitor(Class<? extends ProcessingElement> peRecibe) {
+	public void registerMonitor() {
 		// Register PE in the monitor
-		this.app.getMonitor().registerPE(this.getClass(), peRecibe);
+		this.app.getMonitor().registerPE(this.getClass());
 
 		// Put replication with your class in the map of replications
-		this.replications.put(peRecibe, 1);
+		// this.replications.put(peRecibe, 1);
 	}
 
 	private void removeInstanceForKeyInternal(String id) {
@@ -685,7 +666,7 @@ public abstract class ProcessingElement implements Cloneable {
 		ProcessingElement pe = (ProcessingElement) this.clone();
 		pe.isPrototype = false;
 		pe.id = id;
-		pe.replications = Maps.newHashMap(replications);
+		// pe.replications = Maps.newHashMap(replications);
 		pe.triggers = Maps.newHashMap(triggers);
 		pe.onCreate();
 		logger.trace("Num PE instances: {}.", getNumPEInstances());
@@ -699,8 +680,7 @@ public abstract class ProcessingElement implements Cloneable {
 		if (isSingleton) {
 			try {
 				peInstances.get(SINGLETON);
-				logger.trace("Created singleton [{}].",
-						getInstanceForKey(SINGLETON));
+				logger.trace("Created singleton [{}].", getInstanceForKey(SINGLETON));
 			} catch (ExecutionException e) {
 				logger.error("Problem when trying to create a PE instance.", e);
 			}
@@ -708,46 +688,26 @@ public abstract class ProcessingElement implements Cloneable {
 
 		/* Start timer. */
 		if (triggerTimer != null) {
-			triggerTimer.scheduleAtFixedRate(new OnTimeTask(), 0,
-					timerIntervalInMilliseconds, TimeUnit.MILLISECONDS);
-			logger.debug(
-					"Started timer for PE prototype [{}], ID [{}] with interval [{}].",
-					new String[] { this.getClass().getName(), id,
-							String.valueOf(timerIntervalInMilliseconds) });
+			triggerTimer.scheduleAtFixedRate(new OnTimeTask(), 0, timerIntervalInMilliseconds, TimeUnit.MILLISECONDS);
+			logger.debug("Started timer for PE prototype [{}], ID [{}] with interval [{}].",
+					new String[] { this.getClass().getName(), id, String.valueOf(timerIntervalInMilliseconds) });
 		}
 
 		if (checkpointingConfig.mode == CheckpointingMode.TIME) {
-			ThreadFactory threadFactory = new ThreadFactoryBuilder()
-					.setDaemon(true)
-					.setUncaughtExceptionHandler(
-							new UncaughtExceptionHandler() {
+			ThreadFactory threadFactory = new ThreadFactoryBuilder().setDaemon(true)
+					.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 
-								@Override
-								public void uncaughtException(Thread t,
-										Throwable e) {
-									logger.error(
-											"Expection from checkpointing thread",
-											e);
-								}
-							})
-					.setNameFormat(
-							"Checkpointing-trigger-"
-									+ getClass().getSimpleName()).build();
-			checkpointingTimer = Executors
-					.newSingleThreadScheduledExecutor(threadFactory);
-			checkpointingTimer
-					.scheduleAtFixedRate(new CheckpointingTask(this),
-							checkpointingConfig.frequency,
-							checkpointingConfig.frequency,
-							checkpointingConfig.timeUnit);
-			logger.debug(
-					"Started checkpointing timer for PE prototype [{}], ID [{}] with interval [{}] [{}].",
-					new String[] {
-							this.getClass().getName(),
-							id,
-							String.valueOf(checkpointingConfig.frequency),
-							String.valueOf(checkpointingConfig.timeUnit
-									.toString()) });
+						@Override
+						public void uncaughtException(Thread t, Throwable e) {
+							logger.error("Expection from checkpointing thread", e);
+						}
+					}).setNameFormat("Checkpointing-trigger-" + getClass().getSimpleName()).build();
+			checkpointingTimer = Executors.newSingleThreadScheduledExecutor(threadFactory);
+			checkpointingTimer.scheduleAtFixedRate(new CheckpointingTask(this), checkpointingConfig.frequency,
+					checkpointingConfig.frequency, checkpointingConfig.timeUnit);
+			logger.debug("Started checkpointing timer for PE prototype [{}], ID [{}] with interval [{}] [{}].",
+					new String[] { this.getClass().getName(), id, String.valueOf(checkpointingConfig.frequency),
+							String.valueOf(checkpointingConfig.timeUnit.toString()) });
 		}
 
 		/* Check if this PE is annotated as thread safe. */
@@ -778,9 +738,7 @@ public abstract class ProcessingElement implements Cloneable {
 			}
 			return peInstances.get(id);
 		} catch (ExecutionException e) {
-			logger.error(
-					"Problem when trying to create a PE instance for id {}",
-					id, e);
+			logger.error("Problem when trying to create a PE instance for id {}", id, e);
 		}
 		return null;
 	}
@@ -797,9 +755,7 @@ public abstract class ProcessingElement implements Cloneable {
 				return peInstances.asMap().values();
 			}
 		} catch (ExecutionException e) {
-			logger.error(
-					"Problem when trying to create a PE instance for id {}",
-					id, e);
+			logger.error("Problem when trying to create a PE instance for id {}", id, e);
 			return null;
 		}
 	}
@@ -889,8 +845,7 @@ public abstract class ProcessingElement implements Cloneable {
 		@Override
 		public void run() {
 
-			for (Map.Entry<String, ProcessingElement> entry : getPEInstances()
-					.entrySet()) {
+			for (Map.Entry<String, ProcessingElement> entry : getPEInstances().entrySet()) {
 
 				ProcessingElement peInstance = entry.getValue();
 
@@ -903,9 +858,8 @@ public abstract class ProcessingElement implements Cloneable {
 						}
 					}
 				} catch (Exception e) {
-					logger.error(
-							"Caught exception in timer when calling PE instance [{}] with id [{}].",
-							peInstance, peInstance.id);
+					logger.error("Caught exception in timer when calling PE instance [{}] with id [{}].", peInstance,
+							peInstance.id);
 					logger.error("Timer error.", e);
 				}
 			}
@@ -930,9 +884,7 @@ public abstract class ProcessingElement implements Cloneable {
 
 		this.name = name;
 		if (app.peByName.containsKey(name)) {
-			logger.warn(
-					"Using a duplicate PE name: [{}]. This is probbaly not what you wanted.",
-					name);
+			logger.warn("Using a duplicate PE name: [{}]. This is probbaly not what you wanted.", name);
 		}
 		app.peByName.put(name, this);
 	}
@@ -975,8 +927,7 @@ public abstract class ProcessingElement implements Cloneable {
 	}
 
 	public ProcessingElement deserializeState(byte[] loadedState) {
-		return (ProcessingElement) getApp().getSerDeser().deserialize(
-				ByteBuffer.wrap(loadedState));
+		return (ProcessingElement) getApp().getSerDeser().deserialize(ByteBuffer.wrap(loadedState));
 	}
 
 	public void restoreState(ProcessingElement oldState) {
@@ -986,12 +937,10 @@ public abstract class ProcessingElement implements Cloneable {
 	protected void recover() {
 		byte[] serializedState = null;
 		try {
-			serializedState = getApp().getCheckpointingFramework()
-					.fetchSerializedState(new CheckpointId(this));
+			serializedState = getApp().getCheckpointingFramework().fetchSerializedState(new CheckpointId(this));
 		} catch (RuntimeException e) {
 			logger.error("Cannot fetch serialized stated for [{}/{}]: {}",
-					new String[] { getPrototype().getClass().getName(),
-							getId(), e.getMessage() });
+					new String[] { getPrototype().getClass().getName(), getId(), e.getMessage() });
 		}
 		if (serializedState == null) {
 			return;
@@ -1000,21 +949,17 @@ public abstract class ProcessingElement implements Cloneable {
 			ProcessingElement peInOldState = deserializeState(serializedState);
 			restoreState(peInOldState);
 		} catch (RuntimeException e) {
-			logger.error("Cannot restore state for key ["
-					+ new CheckpointId(this) + "]: " + e.getMessage(), e);
+			logger.error("Cannot restore state for key [" + new CheckpointId(this) + "]: " + e.getMessage(), e);
 		}
 	}
 
-	private void restoreFieldsForClass(
-			Class<?> currentInOldStateClassHierarchy, ProcessingElement oldState) {
-		if (!ProcessingElement.class
-				.isAssignableFrom(currentInOldStateClassHierarchy)) {
+	private void restoreFieldsForClass(Class<?> currentInOldStateClassHierarchy, ProcessingElement oldState) {
+		if (!ProcessingElement.class.isAssignableFrom(currentInOldStateClassHierarchy)) {
 			return;
 		} else {
 			Field[] fields = oldState.getClass().getDeclaredFields();
 			for (Field field : fields) {
-				if (!Modifier.isTransient(field.getModifiers())
-						&& !Modifier.isStatic(field.getModifiers())) {
+				if (!Modifier.isTransient(field.getModifiers()) && !Modifier.isStatic(field.getModifiers())) {
 					if (!Modifier.isPublic(field.getModifiers())) {
 						field.setAccessible(true);
 					}
@@ -1022,19 +967,16 @@ public abstract class ProcessingElement implements Cloneable {
 						// TODO use reflectasm
 						field.set(this, field.get(oldState));
 					} catch (IllegalArgumentException e) {
-						logger.error(
-								"Cannot recover old state for this PE [{}]", e);
+						logger.error("Cannot recover old state for this PE [{}]", e);
 						return;
 					} catch (IllegalAccessException e) {
-						logger.error(
-								"Cannot recover old state for this PE [{}]", e);
+						logger.error("Cannot recover old state for this PE [{}]", e);
 						return;
 					}
 
 				}
 			}
-			restoreFieldsForClass(
-					currentInOldStateClassHierarchy.getSuperclass(), oldState);
+			restoreFieldsForClass(currentInOldStateClassHierarchy.getSuperclass(), oldState);
 		}
 	}
 
@@ -1063,8 +1005,7 @@ public abstract class ProcessingElement implements Cloneable {
 				eventCount++;
 				lastTime = System.currentTimeMillis();
 
-				if (timeLapse > intervalInMilliseconds
-						|| eventCount >= intervalInEvents) {
+				if (timeLapse > intervalInMilliseconds || eventCount >= intervalInEvents) {
 					eventCount = 0;
 					return true;
 				}
@@ -1123,8 +1064,7 @@ public abstract class ProcessingElement implements Cloneable {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(getClass().getName() + "/"
-				+ getId() + " ;");
+		StringBuilder sb = new StringBuilder(getClass().getName() + "/" + getId() + " ;");
 		if (isSingleton) {
 			sb.append("singleton ;");
 		}

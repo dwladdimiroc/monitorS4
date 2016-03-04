@@ -38,8 +38,7 @@ public class LanguagePE extends ProcessingElement {
 
 		Event eventOutput = eventFactory.newEvent(tweet);
 
-		eventOutput.put("levelCounter", Long.class, getEventCount()
-				% getReplicationPE(CounterPE.class));
+		eventOutput.put("levelCounter", Integer.class, 0);
 		eventOutput.put("timeTweet", Long.class, time);
 
 		downStream.put(eventOutput);

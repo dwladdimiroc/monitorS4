@@ -267,19 +267,19 @@ public class Stream<T extends Event> implements Streamable {
 		// NOTE: ArrayBlockingQueue.size is O(1).
 		logger.info("Receive Notification");
 
-		/* Registro del Adaptar en el Monitor */
-		for (String peRecibe : notification.getListPE()) {
-			for (ProcessingElement peCurrent : getTargetPEs()) {
-				if (peRecibe.equals(peCurrent.getClass().getCanonicalName())) {
-					this.app.getMonitor().registerAdapter(
-							notification.getAdapter(), peCurrent.getClass());
-				}
-			}
-		}
-
-		/* Registro del puerto en la App */
-		this.app.adapterbyPort.put(notification.getAdapter(),
-				notification.getPort());
+		// /* Registro del Adaptar en el Monitor */
+		// for (String peRecibe : notification.getListPE()) {
+		// for (ProcessingElement peCurrent : getTargetPEs()) {
+		// if (peRecibe.equals(peCurrent.getClass().getCanonicalName())) {
+		// this.app.getMonitor().registerAdapter(
+		// notification.getAdapter(), peCurrent.getClass());
+		// }
+		// }
+		// }
+		//
+		// /* Registro del puerto en la App */
+		// this.app.adapterbyPort.put(notification.getAdapter(),
+		// notification.getPort());
 
 		/*
 		 * En caso que llegue un mensaje que sea exclusivo de notificación,

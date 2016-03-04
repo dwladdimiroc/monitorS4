@@ -34,17 +34,10 @@ public class MongoConnection
 	// Setup the Connection with the Database
 	public void setupMongo()
 	{
-		try
-		{
-			this.mongo = new MongoClient(HOST, PORT);
-			this.db = this.mongo.getDB(DB_NAME);
-			this.table = db.getCollection(COLLECTION_NAME);
-			this.status = 1;
-		}
-		catch (UnknownHostException e)
-		{
-			this.status = -1;
-		}
+		this.mongo = new MongoClient(HOST, PORT);
+		this.db = this.mongo.getDB(DB_NAME);
+		this.table = db.getCollection(COLLECTION_NAME);
+		this.status = 1;
 	}
 
 	public void insert(DBObject object)

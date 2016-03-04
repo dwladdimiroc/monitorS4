@@ -42,7 +42,7 @@ import org.apache.s4.core.adapter.AdapterApp;
 import org.apache.s4.core.ft.CheckpointingFramework;
 import org.apache.s4.core.monitor.S4Monitor;
 import org.apache.s4.core.monitor.StatusPE;
-import org.apache.s4.core.monitor.TopologyApp;
+//import org.apache.s4.core.monitor.TopologyApp;
 import org.apache.s4.core.staging.StreamExecutorServiceFactory;
 import org.apache.s4.core.util.S4Metrics;
 import org.apache.s4.core.window.AbstractSlidingWindowPE;
@@ -77,8 +77,8 @@ public abstract class App {
 	final Map<String, ProcessingElement> peByName = Maps.newHashMap();
 
 	/* Adapter indexed by port */
-	final Map<Class<? extends AdapterApp>, Integer> adapterbyPort = Maps
-			.newHashMap();
+	// final Map<Class<? extends AdapterApp>, Integer> adapterbyPort =
+	// Maps.newHashMap();
 
 	private ClockType clockType = ClockType.WALL_CLOCK;
 
@@ -137,8 +137,7 @@ public abstract class App {
 
 	@Inject
 	private void initSerDeser() {
-		this.serDeser = serDeserFactory.createSerializerDeserializer(getClass()
-				.getClassLoader());
+		this.serDeser = serDeserFactory.createSerializerDeserializer(getClass().getClassLoader());
 	}
 
 	/**
@@ -208,10 +207,8 @@ public abstract class App {
 				 * distintos PEs cada un segundo, para poseer el historial de
 				 * cada PE
 				 */
-				ScheduledExecutorService getEventCount = Executors
-						.newSingleThreadScheduledExecutor();
-				getEventCount.scheduleAtFixedRate(new OnTimeGetEventCount(),
-						1000, 1000, TimeUnit.MILLISECONDS);
+				ScheduledExecutorService getEventCount = Executors.newSingleThreadScheduledExecutor();
+				getEventCount.scheduleAtFixedRate(new OnTimeGetEventCount(), 1000, 1000, TimeUnit.MILLISECONDS);
 
 				// getLogger().info("TimerMonitor get eventCount");
 
@@ -220,10 +217,8 @@ public abstract class App {
 				 * distintos PEs, es decir, los eventos que ha procesado y ha
 				 * enviado.
 				 */
-				ScheduledExecutorService sendStatus = Executors
-						.newSingleThreadScheduledExecutor();
-				sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 5000,
-						5000, TimeUnit.MILLISECONDS);
+				ScheduledExecutorService sendStatus = Executors.newSingleThreadScheduledExecutor();
+				sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 5000, 5000, TimeUnit.MILLISECONDS);
 
 				// getLogger().info("TimerMonitor send status");
 
@@ -231,10 +226,8 @@ public abstract class App {
 
 		} else {
 			/* Solo para obtener estadísticas */
-			ScheduledExecutorService sendStatus = Executors
-					.newSingleThreadScheduledExecutor();
-			sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 5000, 5000,
-					TimeUnit.MILLISECONDS);
+			ScheduledExecutorService sendStatus = Executors.newSingleThreadScheduledExecutor();
+			sendStatus.scheduleAtFixedRate(new OnTimeSendStatus(), 5000, 5000, TimeUnit.MILLISECONDS);
 		}
 
 	}
@@ -316,12 +309,9 @@ public abstract class App {
 								// + " | [ρ] " + ρ);
 							} else {
 								ρ = (double) λ / (double) (s * μ);
-								logger.error("[PE2] "
-										+ PEPrototype.getClass()
-												.getCanonicalName() + " | [s] "
-										+ s + " | [μ] " + μ + " | [s*μ] "
-										+ ((double) s * μ) + " | [λ] " + λ
-										+ " | [ρ] " + ρ);
+								logger.error(
+										"[PE2] " + PEPrototype.getClass().getCanonicalName() + " | [s] " + s + " | [μ] "
+												+ μ + " | [s*μ] " + ((double) s * μ) + " | [λ] " + λ + " | [ρ] " + ρ);
 							}
 						}
 					} else if ((μ == 0) && (λ == 0)) {
@@ -339,8 +329,7 @@ public abstract class App {
 			monitor.sendHistory(mapEventSeg);
 
 			timeFinal = System.currentTimeMillis();
-			monitor.getMetrics()
-					.setTimeSendHistoryMonitor(timeFinal - timeInit);
+			monitor.getMetrics().setTimeSendHistoryMonitor(timeFinal - timeInit);
 		}
 	}
 
@@ -400,13 +389,11 @@ public abstract class App {
 					PEPrototype.setEventPeriodQueue(0);
 
 					/* Envío de los datos al monitor */
-					if (!getMonitor().sendStatus(PEPrototype.getClass(), λ, μ,
-							μUnit, eventCount))
+					if (!getMonitor().sendStatus(PEPrototype.getClass(), λ, μ, μUnit, eventCount))
 						logger.error("Error en el sendStatus");
 
-					PEPrototype.setEventUnit((long) Math.floor(getMonitor()
-							.getStatusSystem().get(PEPrototype.getClass())
-							.getSendEventUnit() / 5));
+					PEPrototype.setEventUnit((long) Math
+							.floor(getMonitor().getStatusSystem().get(PEPrototype.getClass()).getSendEventUnit() / 5));
 				}
 			}
 
@@ -466,29 +453,39 @@ public abstract class App {
 
 			/* Análisis de cada PE según lo entregado por el monitor */
 			// for (StatusPE statusPE : statusSystem) {
-			for (Class<? extends ProcessingElement> peCurrent : statusSystem
-					.keySet()) {
+			for (Class<? extends ProcessingElement> peCurrent : statusSystem.keySet()) {
 
 				StatusPE statusPE = statusSystem.get(peCurrent);
 
 				if (!isUnique(statusPE)) {
 
-					/* Lista de los Adapters que proveen eventos al PE analizado */
-					List<Class<? extends AdapterApp>> listAdapter = getAdapter(statusPE
-							.getPE());
+					// Nota: No es necesario, debido que sólo nos interesa la
+					// /*
+					// * Lista de los Adapters que proveen eventos al PE
+					// analizado
+					// */
+					// List<Class<? extends AdapterApp>> listAdapter =
+					// getAdapter(statusPE.getPE());
+					//
+					// /* Lista de PEs que proveen eventos al PE analizado */
+					// List<Class<? extends ProcessingElement>> listPE =
+					// getPESend(statusPE.getPE());
 
-					/* Lista de PEs que proveen eventos al PE analizado */
-					List<Class<? extends ProcessingElement>> listPE = getPESend(statusPE
-							.getPE());
+					// Nota: No es necesario, debido que sólo nos interesa la
+					// cantidad de réplicas
+					// /* Cambio del sistema en el adapter */
+					// if (!listAdapter.isEmpty())
+					// changeReplicationAdapter(listAdapter, statusPE);
+					//
+					// /* Cambio del sistema en los PEs */
+					// if (!listPE.isEmpty())
+					// changeReplication(listPE, statusPE);
 
-					/* Cambio del sistema en el adapter */
-					if (!listAdapter.isEmpty())
-						changeReplicationAdapter(listAdapter, statusPE);
-
-					/* Cambio del sistema en los PEs */
-					if (!listPE.isEmpty())
-						changeReplication(listPE, statusPE);
-
+					/*
+					 * Se va a realizar un cambio en la cantidad de instancias
+					 * del PE, de tal manera de sólo cambiar la cantidad de
+					 * réplicas de él
+					 */
 					changeInstances(statusPE);
 
 					// logger.debug("[statusPE] Finish ChangeReplication"
@@ -524,216 +521,216 @@ public abstract class App {
 			return false;
 		}
 
-		/**
-		 * Este método obtendrá todos los PEs que proveen de eventos al PE
-		 * analizado. De tal manera que se pueda cambiar su llave de
-		 * replicación, en caso que el PE analizado haya cambiado su estado.
-		 * 
-		 * @param peReplication
-		 *            PE analizado que se utilizar para buscar todos los PEs que
-		 *            le proveen eventos.
-		 * @return Todos los PEs que provee eventos al PE que se utilizó como
-		 *         parámetro de la función.
-		 */
-		private List<Class<? extends ProcessingElement>> getPESend(
-				Class<? extends ProcessingElement> peReplication) {
+		// /**
+		// * Este método obtendrá todos los PEs que proveen de eventos al PE
+		// * analizado. De tal manera que se pueda cambiar su llave de
+		// * replicación, en caso que el PE analizado haya cambiado su estado.
+		// *
+		// * @param peReplication
+		// * PE analizado que se utilizar para buscar todos los PEs que
+		// * le proveen eventos.
+		// * @return Todos los PEs que provee eventos al PE que se utilizó como
+		// * parámetro de la función.
+		// */
+		// private List<Class<? extends ProcessingElement>> getPESend(Class<?
+		// extends ProcessingElement> peReplication) {
+		//
+		// List<Class<? extends ProcessingElement>> listPE = new
+		// ArrayList<Class<? extends ProcessingElement>>();
+		//
+		// for (TopologyApp topology : getMonitor().getTopologySystem()) {
+		// if (peReplication.equals(topology.getPeRecibe())) {
+		// if (topology.getAdapter() == null)
+		// listPE.add(topology.getPeSend());
+		// }
+		// }
+		//
+		// return listPE;
+		// }
+		//
+		// /**
+		// * Este método obtendrá todos los Adapters que proveen de eventos al
+		// PE
+		// * analizado. De tal manera que se pueda cambiar su llave de
+		// * replicación, en caso que el PE analizado haya cambiado su estado.
+		// *
+		// * @param peReplication
+		// * PE analizado que se utilizar para buscar todos los PEs que
+		// * le proveen eventos.
+		// * @return Todos los Adapters que provee eventos al PE que se utilizó
+		// * como parámetro de la función.
+		// */
+		// private List<Class<? extends AdapterApp>> getAdapter(Class<? extends
+		// ProcessingElement> peReplication) {
+		//
+		// List<Class<? extends AdapterApp>> listAdapter = new ArrayList<Class<?
+		// extends AdapterApp>>();
+		//
+		// for (TopologyApp topology : getMonitor().getTopologySystem()) {
+		// if (peReplication.equals(topology.getPeRecibe())) {
+		// if (topology.getAdapter() != null)
+		// listAdapter.add(topology.getAdapter());
+		// }
+		// }
+		//
+		// return listAdapter;
+		// }
 
-			List<Class<? extends ProcessingElement>> listPE = new ArrayList<Class<? extends ProcessingElement>>();
-
-			for (TopologyApp topology : getMonitor().getTopologySystem()) {
-				if (peReplication.equals(topology.getPeRecibe())) {
-					if (topology.getAdapter() == null)
-						listPE.add(topology.getPeSend());
-				}
-			}
-
-			return listPE;
-		}
-
-		/**
-		 * Este método obtendrá todos los Adapters que proveen de eventos al PE
-		 * analizado. De tal manera que se pueda cambiar su llave de
-		 * replicación, en caso que el PE analizado haya cambiado su estado.
-		 * 
-		 * @param peReplication
-		 *            PE analizado que se utilizar para buscar todos los PEs que
-		 *            le proveen eventos.
-		 * @return Todos los Adapters que provee eventos al PE que se utilizó
-		 *         como parámetro de la función.
-		 */
-		private List<Class<? extends AdapterApp>> getAdapter(
-				Class<? extends ProcessingElement> peReplication) {
-
-			List<Class<? extends AdapterApp>> listAdapter = new ArrayList<Class<? extends AdapterApp>>();
-
-			for (TopologyApp topology : getMonitor().getTopologySystem()) {
-				if (peReplication.equals(topology.getPeRecibe())) {
-					if (topology.getAdapter() != null)
-						listAdapter.add(topology.getAdapter());
-				}
-			}
-
-			return listAdapter;
-		}
-
-		/**
-		 * Este método analizará si el estado del PE debe aumentar o disminuir
-		 * de tal manera que si aumenta o disminuye, todos los Adapters emisores
-		 * a ese PE deberán aumentar o disminuir su llave de replicación. Por
-		 * otra parte, en caso que disminuya, se deberá eliminar el PE con la
-		 * llave eliminada (es decir, el número mayor de los PEs instanciados).
-		 * 
-		 * @param listAdapter
-		 * 
-		 * @param listPESend
-		 * @param statusPE
-		 */
-		private void changeReplicationAdapter(
-				List<Class<? extends AdapterApp>> listAdapter, StatusPE statusPE) {
-
-			/* Se analiza cada uno de los distintos Adapter que envían datos */
-			for (Class<? extends AdapterApp> adapter : listAdapter) {
-
-				Socket clientSocket = null;
-				ObjectOutputStream outputStream;
-				try {
-					clientSocket = new Socket("localhost",
-							adapterbyPort.get(adapter));
-
-					outputStream = new ObjectOutputStream(
-							clientSocket.getOutputStream());
-					outputStream.writeObject(statusPE);
-
-					clientSocket.close();
-				} catch (IOException eClientSocket) {
-					logger.error(eClientSocket.toString());
-				}
-
-			}
-
-		}
-
-		/**
-		 * Este método analizará si el estado del PE debe aumentar o disminuir
-		 * de tal manera que si aumenta o disminuye, todos los PEs emisores a
-		 * ese PE deberán aumentar o disminuir su llave de replicación. Por otra
-		 * parte, en caso que disminuya, se deberá eliminar el PE con la llave
-		 * eliminada (es decir, el número mayor de los PEs instanciados).
-		 * 
-		 * @param listPESend
-		 * @param statusPE
-		 *            estado del PE analizado
-		 */
-		private void changeReplication(
-				List<Class<? extends ProcessingElement>> listPESend,
-				StatusPE statusPE) {
-
-			/* Se analiza cada uno de los distintos PE que envían datos */
-			for (Class<? extends ProcessingElement> peSend : listPESend) {
-
-				// nextPESend:
-				/* Obtención de cada 'Stream' */
-				for (Streamable<Event> stream : getStreams()) {
-					/* Obtención de cada 'PE Prototype' */
-					for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
-
-						/*
-						 * En caso que el PE Prototipo sea igual al PE que
-						 * estamos analizado de los emisores del PE, se deberá
-						 * realizar la comparación para ver si se cambia la
-						 * llave de replicación
-						 */
-						if (peSend.equals(PEPrototype.getClass())) {
-
-							/*
-							 * De ser mayor la cantidad de replicas del estado
-							 * del monitor, se deberá aumentar la cantidad de
-							 * réplicas
-							 */
-
-							int replicationAnalyzed = statusPE.getReplication();
-							int replicationCurrent = PEPrototype
-									.getReplicationPE(statusPE.getPE());
-
-							// logger.debug("[replicationAnalyzed] "
-							// + replicationAnalyzed
-							// + " | [replicationCurrent] "
-							// + replicationCurrent);
-
-							if (replicationAnalyzed > replicationCurrent) {
-
-								// getLogger().debug(
-								// "Increment PE  " + statusPE.getPE()
-								// + " in PE "
-								// + PEPrototype.getClass());
-
-								PEPrototype.setReplicationPE(statusPE.getPE(),
-										statusPE.getReplication());
-
-								/*
-								 * Realizando esa modificación en cada instancia
-								 * del PE
-								 */
-								for (ProcessingElement PE : PEPrototype
-										.getInstances()) {
-
-									// getLogger()
-									// .debug("["
-									// + PE.getClass()
-									// .getCanonicalName()
-									// + "] Replication: "
-									// + PEPrototype
-									// .getReplicationPE(statusPE
-									// .getPE()));
-
-									PE.setReplicationPE(statusPE.getPE(),
-											statusPE.getReplication());
-
-								}
-
-							}
-							/* De ser menor, se deberá disminuir */
-							else if (replicationAnalyzed < replicationCurrent) {
-
-								// getLogger().debug(
-								// "Decrement PE  " + statusPE.getPE()
-								// + " in PE "
-								// + PEPrototype.getClass());
-
-								PEPrototype.setReplicationPE(statusPE.getPE(),
-										statusPE.getReplication());
-
-								/*
-								 * Para luego disminuir sus llaves de
-								 * replicación
-								 */
-
-								for (ProcessingElement PE : PEPrototype
-										.getInstances()) {
-
-									PE.setReplicationPE(statusPE.getPE(),
-											statusPE.getReplication());
-								}
-
-							}
-
-							/*
-							 * Dejará de analizar, debido que ya encontró el PE
-							 * solicitado.
-							 * 
-							 * Obs: Sólo esto sucede cuando un PE está en un
-							 * sólo Stream, pero puede darse el caso que esté en
-							 * más de un Stream.
-							 */
-							// break nextPESend;
-
-						}
-
-					}
-				}
-			}
-
-		}
+		// /**
+		// * Este método analizará si el estado del PE debe aumentar o disminuir
+		// * de tal manera que si aumenta o disminuye, todos los Adapters
+		// emisores
+		// * a ese PE deberán aumentar o disminuir su llave de replicación. Por
+		// * otra parte, en caso que disminuya, se deberá eliminar el PE con la
+		// * llave eliminada (es decir, el número mayor de los PEs
+		// instanciados).
+		// *
+		// * @param listAdapter
+		// *
+		// * @param listPESend
+		// * @param statusPE
+		// */
+		// private void changeReplicationAdapter(List<Class<? extends
+		// AdapterApp>> listAdapter, StatusPE statusPE) {
+		//
+		// /* Se analiza cada uno de los distintos Adapter que envían datos */
+		// for (Class<? extends AdapterApp> adapter : listAdapter) {
+		//
+		// Socket clientSocket = null;
+		// ObjectOutputStream outputStream;
+		// try {
+		// clientSocket = new Socket("localhost", adapterbyPort.get(adapter));
+		//
+		// outputStream = new
+		// ObjectOutputStream(clientSocket.getOutputStream());
+		// outputStream.writeObject(statusPE);
+		//
+		// clientSocket.close();
+		// } catch (IOException eClientSocket) {
+		// logger.error(eClientSocket.toString());
+		// }
+		//
+		// }
+		//
+		// }
+		//
+		// /**
+		// * Este método analizará si el estado del PE debe aumentar o disminuir
+		// * de tal manera que si aumenta o disminuye, todos los PEs emisores a
+		// * ese PE deberán aumentar o disminuir su llave de replicación. Por
+		// otra
+		// * parte, en caso que disminuya, se deberá eliminar el PE con la llave
+		// * eliminada (es decir, el número mayor de los PEs instanciados).
+		// *
+		// * @param listPESend
+		// * @param statusPE
+		// * estado del PE analizado
+		// */
+		// private void changeReplication(List<Class<? extends
+		// ProcessingElement>> listPESend, StatusPE statusPE) {
+		//
+		// /* Se analiza cada uno de los distintos PE que envían datos */
+		// for (Class<? extends ProcessingElement> peSend : listPESend) {
+		//
+		// // nextPESend:
+		// /* Obtención de cada 'Stream' */
+		// for (Streamable<Event> stream : getStreams()) {
+		// /* Obtención de cada 'PE Prototype' */
+		// for (ProcessingElement PEPrototype : stream.getTargetPEs()) {
+		//
+		// /*
+		// * En caso que el PE Prototipo sea igual al PE que
+		// * estamos analizado de los emisores del PE, se deberá
+		// * realizar la comparación para ver si se cambia la
+		// * llave de replicación
+		// */
+		// if (peSend.equals(PEPrototype.getClass())) {
+		//
+		// /*
+		// * De ser mayor la cantidad de replicas del estado
+		// * del monitor, se deberá aumentar la cantidad de
+		// * réplicas
+		// */
+		//
+		// int replicationAnalyzed = statusPE.getReplication();
+		// int replicationCurrent =
+		// PEPrototype.getReplicationPE(statusPE.getPE());
+		//
+		// // logger.debug("[replicationAnalyzed] "
+		// // + replicationAnalyzed
+		// // + " | [replicationCurrent] "
+		// // + replicationCurrent);
+		//
+		// if (replicationAnalyzed > replicationCurrent) {
+		//
+		// // getLogger().debug(
+		// // "Increment PE " + statusPE.getPE()
+		// // + " in PE "
+		// // + PEPrototype.getClass());
+		//
+		// PEPrototype.setReplicationPE(statusPE.getPE(),
+		// statusPE.getReplication());
+		//
+		// /*
+		// * Realizando esa modificación en cada instancia
+		// * del PE
+		// */
+		// for (ProcessingElement PE : PEPrototype.getInstances()) {
+		//
+		// // getLogger()
+		// // .debug("["
+		// // + PE.getClass()
+		// // .getCanonicalName()
+		// // + "] Replication: "
+		// // + PEPrototype
+		// // .getReplicationPE(statusPE
+		// // .getPE()));
+		//
+		// PE.setReplicationPE(statusPE.getPE(), statusPE.getReplication());
+		//
+		// }
+		//
+		// }
+		// /* De ser menor, se deberá disminuir */
+		// else if (replicationAnalyzed < replicationCurrent) {
+		//
+		// // getLogger().debug(
+		// // "Decrement PE " + statusPE.getPE()
+		// // + " in PE "
+		// // + PEPrototype.getClass());
+		//
+		// PEPrototype.setReplicationPE(statusPE.getPE(),
+		// statusPE.getReplication());
+		//
+		// /*
+		// * Para luego disminuir sus llaves de
+		// * replicación
+		// */
+		//
+		// for (ProcessingElement PE : PEPrototype.getInstances()) {
+		//
+		// PE.setReplicationPE(statusPE.getPE(), statusPE.getReplication());
+		// }
+		//
+		// }
+		//
+		// /*
+		// * Dejará de analizar, debido que ya encontró el PE
+		// * solicitado.
+		// *
+		// * Obs: Sólo esto sucede cuando un PE está en un
+		// * sólo Stream, pero puede darse el caso que esté en
+		// * más de un Stream.
+		// */
+		// // break nextPESend;
+		//
+		// }
+		//
+		// }
+		// }
+		// }
+		//
+		// }
 
 		/**
 		 * Este método analizará si el estado del PE debe aumentar o disminuir
@@ -830,8 +827,7 @@ public abstract class App {
 				if (PEPrototype.getClass().equals(statusPE.getPE())) {
 					long numPE = PEPrototype.getNumPEInstances();
 					for (long i = numPE; i < statusPE.getReplication(); i++) {
-						logger.debug("Create ID [" + i + "] of PE "
-								+ statusPE.getPE().getCanonicalName());
+						logger.debug("Create ID [" + i + "] of PE " + statusPE.getPE().getCanonicalName());
 						PEPrototype.getInstanceForKey(Long.toString(i));
 					}
 					return;
@@ -863,12 +859,10 @@ public abstract class App {
 					// logger.info("[RemovePE] In " + statusPE.getPE());
 					long numPE = PEPrototype.getNumPEInstances();
 					for (long i = statusPE.getReplication(); i < numPE; i++) {
-						logger.debug("Remove ID [" + i + "] of PE "
-								+ statusPE.getPE().getCanonicalName());
+						logger.debug("Remove ID [" + i + "] of PE " + statusPE.getPE().getCanonicalName());
 						// for (ProcessingElement PE :
 						// PEPrototype.getInstances()) {
-						ProcessingElement peCurrent = PEPrototype
-								.getInstanceForKey(Long.toString(i));
+						ProcessingElement peCurrent = PEPrototype.getInstanceForKey(Long.toString(i));
 						// int replicationCurrent =
 						// Integer.parseInt(PE.getId());
 
@@ -902,8 +896,7 @@ public abstract class App {
 
 		for (ProcessingElement pe : getPePrototypes()) {
 
-			getLogger().trace("Removing PE proto [{}].",
-					pe.getClass().getName());
+			getLogger().trace("Removing PE proto [{}].", pe.getClass().getName());
 
 			for (ProcessingElement peCurrent : pe.getInstances()) {
 				peCurrent.onRemove();
@@ -921,8 +914,7 @@ public abstract class App {
 		streams.clear();
 	}
 
-	void addPEPrototype(ProcessingElement pePrototype,
-			Stream<? extends Event> stream) {
+	void addPEPrototype(ProcessingElement pePrototype, Stream<? extends Event> stream) {
 
 		// logger.info("Add PE prototype [{}] with stream [{}].",
 		// toString(pePrototype), toString(stream));
@@ -1078,28 +1070,25 @@ public abstract class App {
 	 *            the target processing elements
 	 * @return the stream
 	 */
-	protected <T extends Event> Stream<T> createStream(String name,
-			KeyFinder<T> finder, Class<T> eventType,
+	protected <T extends Event> Stream<T> createStream(String name, KeyFinder<T> finder, Class<T> eventType,
 			ProcessingElement... processingElements) {
 
-		return new Stream<T>(this).setName(name).setKey(finder)
-				.setPEs(processingElements).setEventType(eventType)
+		return new Stream<T>(this).setName(name).setKey(finder).setPEs(processingElements).setEventType(eventType)
 				.setSerializerDeserializerFactory(serDeserFactory).register();
 	}
 
 	/**
 	 * @see App#createStream(String, KeyFinder, Class, ProcessingElement...)
 	 */
-	protected <T extends Event> Stream<T> createStream(String name,
-			KeyFinder<T> finder, ProcessingElement... processingElements) {
+	protected <T extends Event> Stream<T> createStream(String name, KeyFinder<T> finder,
+			ProcessingElement... processingElements) {
 		return createStream(name, finder, null, processingElements);
 	}
 
 	/**
 	 * @see App#createStream(String, KeyFinder, Class, ProcessingElement...)
 	 */
-	protected <T extends Event> Stream<T> createStream(String name,
-			ProcessingElement... processingElements) {
+	protected <T extends Event> Stream<T> createStream(String name, ProcessingElement... processingElements) {
 		return createStream(name, null, processingElements);
 	}
 
@@ -1120,10 +1109,8 @@ public abstract class App {
 	 *            key finder
 	 * @return a reference to the created remote stream
 	 */
-	protected <T extends Event> RemoteStream createOutputStream(String name,
-			KeyFinder<Event> finder) {
-		return new RemoteStream(this, name, 0, finder, remoteSenders, hasher,
-				remoteStreams, clusterName);
+	protected <T extends Event> RemoteStream createOutputStream(String name, KeyFinder<Event> finder) {
+		return new RemoteStream(this, name, 0, finder, remoteSenders, hasher, remoteStreams, clusterName);
 	}
 
 	/**
@@ -1146,8 +1133,8 @@ public abstract class App {
 	 *            target processing elements
 	 * @return a reference to the created input stream
 	 */
-	protected <T extends Event> Stream<T> createInputStream(String streamName,
-			KeyFinder<T> finder, ProcessingElement... processingElements) {
+	protected <T extends Event> Stream<T> createInputStream(String streamName, KeyFinder<T> finder,
+			ProcessingElement... processingElements) {
 		remoteStreams.addInputStream(clusterName, streamName);
 		return createStream(streamName, finder, processingElements);
 
@@ -1183,8 +1170,7 @@ public abstract class App {
 				return pe;
 			} catch (NoSuchMethodException e) {
 				// no such constructor. Use the setter
-				T pe = type.getDeclaredConstructor(new Class[] {})
-						.newInstance();
+				T pe = type.getDeclaredConstructor(new Class[] {}).newInstance();
 				pe.setApp(this);
 				pe.setName(name);
 				return pe;
@@ -1208,19 +1194,15 @@ public abstract class App {
 
 	}
 
-	public <T extends AbstractSlidingWindowPE> T createSlidingWindowPE(
-			Class<T> type, long slotDuration, TimeUnit timeUnit, int numSlots,
-			SlotFactory slotFactory) {
+	public <T extends AbstractSlidingWindowPE> T createSlidingWindowPE(Class<T> type, long slotDuration,
+			TimeUnit timeUnit, int numSlots, SlotFactory slotFactory) {
 		try {
-			Class<?>[] types = new Class<?>[] { App.class, long.class,
-					TimeUnit.class, int.class, SlotFactory.class };
-			T pe = type.getDeclaredConstructor(types).newInstance(
-					new Object[] { this, slotDuration, timeUnit, numSlots,
-							slotFactory });
+			Class<?>[] types = new Class<?>[] { App.class, long.class, TimeUnit.class, int.class, SlotFactory.class };
+			T pe = type.getDeclaredConstructor(types)
+					.newInstance(new Object[] { this, slotDuration, timeUnit, numSlots, slotFactory });
 			return pe;
 		} catch (Exception e) {
-			getLogger().error("Cannot instantiate pe for class [{}]",
-					type.getName(), e);
+			getLogger().error("Cannot instantiate pe for class [{}]", type.getName(), e);
 			return null;
 		}
 	}

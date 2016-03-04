@@ -53,12 +53,15 @@ public abstract class AdapterApp extends App {
 
 	private RemoteStream remoteStream;
 
-	int portSocket;
+	// int portSocket;
 
-	final private Map<Class<? extends ProcessingElement>, Integer> replications = new HashMap<Class<? extends ProcessingElement>, Integer>();
+	// final private Map<Class<? extends ProcessingElement>, Integer>
+	// replications = new HashMap<Class<? extends ProcessingElement>,
+	// Integer>();
 	// final private Queue<Long> historyAdapter = new
 	// CircularFifoQueue<Long>(5);
-	final private List<Class<? extends ProcessingElement>> listPE = new ArrayList<Class<? extends ProcessingElement>>();
+	// final private List<Class<? extends ProcessingElement>> listPE = new
+	// ArrayList<Class<? extends ProcessingElement>>();
 
 	protected KeyFinder<Event> remoteStreamKeyFinder;
 
@@ -90,44 +93,49 @@ public abstract class AdapterApp extends App {
 		return this.getClass();
 	}
 
-	/**
-	 * Se encargará de inicializar la llave para el PE que debe dirigirse, de
-	 * tal manera de replicar sólo a ese PE en caso de aumentar su llave. Además
-	 * de esto, se encargará de inicializar la llave para el PE que debe
-	 * dirigirse, de tal manera de replicar sólo a ese PE en caso de aumentar su
-	 * llave.
-	 * 
-	 * @param PE
-	 *            receptor, donde estará siendo llamada la función por el PE
-	 *            emisor.
-	 */
+	// /**
+	// * Se encargará de inicializar la llave para el PE que debe dirigirse, de
+	// * tal manera de replicar sólo a ese PE en caso de aumentar su llave.
+	// Además
+	// * de esto, se encargará de inicializar la llave para el PE que debe
+	// * dirigirse, de tal manera de replicar sólo a ese PE en caso de aumentar
+	// su
+	// * llave.
+	// *
+	// * @param PE
+	// * receptor, donde estará siendo llamada la función por el PE
+	// * emisor.
+	// */
+	//
+	// public void registerMonitor(Class<? extends ProcessingElement> peRecibe)
+	// {
+	// // Register adapter in the monitor
+	// this.listPE.add(peRecibe);
+	//
+	// // Put replication with your class in the map of replications
+	// this.replications.put(peRecibe, 1);
+	// }
 
-	public void registerMonitor(Class<? extends ProcessingElement> peRecibe) {
-		// Register adapter in the monitor
-		this.listPE.add(peRecibe);
-
-		// Put replication with your class in the map of replications
-		this.replications.put(peRecibe, 1);
-	}
-
-	/**
-	 * Devolverá el módulo el cual se aplicará para replicar al siguiente PE
-	 * 
-	 * @param PE
-	 *            PE al que se debe replicar
-	 * @return Módulo aplicado a la llave, que será la cantidad de réplicas que
-	 *         se desea de ese PE
-	 */
-	public int getReplicationPE(Class<? extends ProcessingElement> PE) {
-		if (!replications.containsKey(PE))
-			return 0;
-
-		return replications.get(PE);
-	}
-
-	public Map<Class<? extends ProcessingElement>, Integer> getReplications() {
-		return replications;
-	}
+	// /**
+	// * Devolverá el módulo el cual se aplicará para replicar al siguiente PE
+	// *
+	// * @param PE
+	// * PE al que se debe replicar
+	// * @return Módulo aplicado a la llave, que será la cantidad de réplicas
+	// que
+	// * se desea de ese PE
+	// */
+	// public int getReplicationPE(Class<? extends ProcessingElement> PE) {
+	// if (!replications.containsKey(PE))
+	// return 0;
+	//
+	// return replications.get(PE);
+	// }
+	//
+	// public Map<Class<? extends ProcessingElement>, Integer> getReplications()
+	// {
+	// return replications;
+	// }
 
 	@Override
 	protected void onStart() {
@@ -138,164 +146,158 @@ public abstract class AdapterApp extends App {
 		}
 	}
 
-	/**
-	 * En este thread se desea poseer un puerto que escuche los datos que estén
-	 * siendo enviados por el monitor. De esta manera, de haber una variación en
-	 * el sistema, que el adapter también los realice.
-	 */
-	private class ListenerMonitor implements Runnable {
-
-		ServerSocket serverSocket;
-		Socket connectedSocket;
-		ObjectInputStream inStream;
-
-		public ListenerMonitor() {
-			getLogger().info("Create Listener Monitor");
-			/*
-			 * Se considerará el siguiente puerto, tomando como referencia el
-			 * puerto del puerto que utilizá al nodo único del adapter
-			 */
-			// portSocket = getCluster().getPhysicalCluster().getNodes().get(0)
-			// .getPort() + 1;
-			portSocket = 15000;
-
-			serverSocket = null;
-			connectedSocket = null;
-			inStream = null;
-		}
-
-		/**
-		 * Este método analizará si el estado del PE debe aumentar o disminuir
-		 * de tal manera que si aumenta o disminuye, todos los PEs emisores a
-		 * ese PE deberán aumentar o disminuir su llave de replicación. Por otra
-		 * parte, en caso que disminuya, se deberá eliminar el PE con la llave
-		 * eliminada (es decir, el número mayor de los PEs instanciados).
-		 * 
-		 * @param statusPE
-		 *            estado del PE analizado
-		 */
-		private void changeReplication(StatusPE statusPE) {
-
-			for (Class<? extends ProcessingElement> peCurrent : replications
-					.keySet()) {
-
-				if (statusPE.getPE().equals(peCurrent)) {
-
-					/*
-					 * De ser mayor la cantidad de replicas del estado del
-					 * monitor, se deberá aumentar la cantidad de réplicas
-					 */
-
-					int replicationAnalyzed = statusPE.getReplication();
-					int replicationCurrent = replications.get(peCurrent);
-
-					// getLogger().debug(
-					// "[replicationAnalyzed] " + replicationAnalyzed
-					// + " | [replicationCurrent] "
-					// + replicationCurrent);
-
-					if (replicationAnalyzed > replicationCurrent) {
-
-						getLogger().debug(
-								"Increment PE  " + statusPE.getPE()
-										+ " in Adapter "
-										+ this.getClass().getCanonicalName());
-
-						replications.put(statusPE.getPE(),
-								statusPE.getReplication());
-
-					}
-					/* De ser menor, se deberá disminuir */
-					else if (replicationAnalyzed < replicationCurrent) {
-
-						getLogger().debug(
-								"Decrement PE  " + statusPE.getPE()
-										+ " in Adapter "
-										+ this.getClass().getCanonicalName());
-
-						replications.put(statusPE.getPE(),
-								statusPE.getReplication());
-
-					}
-				}
-			}
-		}
-
-		// /**
-		// * Función que estará encargada de eliminar la réplica con el valor de
-		// * la llave más alto. Es decir, en caso que el PE posee número de
-		// * réplica n, significa que habrá 0 a n-1 llaves, de esta manera, se
-		// * eliminarán m réplicas, como n-m réplicas diga que existen ahora en
-		// el
-		// * sistema.
-		// *
-		// * @param statusPE
-		// * Estado del PE analizado
-		// */
-		// private void removeReplication(StatusPE statusPE) {
-		//
-		// int replication = replications.get(statusPE.getPE());
-		//
-		// /*
-		// * Enviará un mensaje
-		// */
-		// if (replication > 1) {
-		// getRemoteStream().sendRemovePE(statusPE);
-		// }
-		//
-		// }
-
-		@Override
-		public void run() {
-
-			try {
-				serverSocket = new ServerSocket(portSocket);
-				while (true) {
-					connectedSocket = serverSocket.accept();
-					inStream = new ObjectInputStream(
-							connectedSocket.getInputStream());
-
-					StatusPE statusPE = (StatusPE) inStream.readObject();
-
-					changeReplication(statusPE);
-
-					connectedSocket.close();
-				}
-
-			} catch (IOException | ClassNotFoundException e) {
-				getLogger().error(e.toString());
-				close();
-			} finally {
-				if (inStream != null) {
-					try {
-						inStream.close();
-					} catch (IOException e) {
-
-						throw new RuntimeException(e);
-					}
-				}
-				if (serverSocket != null) {
-					try {
-						serverSocket.close();
-					} catch (IOException e) {
-						throw new RuntimeException(e);
-					}
-				}
-			}
-		}
-	}
+	// /**
+	// * En este thread se desea poseer un puerto que escuche los datos que
+	// estén
+	// * siendo enviados por el monitor. De esta manera, de haber una variación
+	// en
+	// * el sistema, que el adapter también los realice.
+	// */
+	// private class ListenerMonitor implements Runnable {
+	//
+	// ServerSocket serverSocket;
+	// Socket connectedSocket;
+	// ObjectInputStream inStream;
+	//
+	// public ListenerMonitor() {
+	// getLogger().info("Create Listener Monitor");
+	// /*
+	// * Se considerará el siguiente puerto, tomando como referencia el
+	// * puerto del puerto que utilizá al nodo único del adapter
+	// */
+	// // portSocket = getCluster().getPhysicalCluster().getNodes().get(0)
+	// // .getPort() + 1;
+	// // portSocket = 15000;
+	//
+	// serverSocket = null;
+	// connectedSocket = null;
+	// inStream = null;
+	// }
+	//
+	// /**
+	// * Este método analizará si el estado del PE debe aumentar o disminuir
+	// * de tal manera que si aumenta o disminuye, todos los PEs emisores a
+	// * ese PE deberán aumentar o disminuir su llave de replicación. Por otra
+	// * parte, en caso que disminuya, se deberá eliminar el PE con la llave
+	// * eliminada (es decir, el número mayor de los PEs instanciados).
+	// *
+	// * @param statusPE
+	// * estado del PE analizado
+	// */
+	// private void changeReplication(StatusPE statusPE) {
+	//
+	// for (Class<? extends ProcessingElement> peCurrent :
+	// replications.keySet()) {
+	//
+	// if (statusPE.getPE().equals(peCurrent)) {
+	//
+	// /*
+	// * De ser mayor la cantidad de replicas del estado del
+	// * monitor, se deberá aumentar la cantidad de réplicas
+	// */
+	//
+	// int replicationAnalyzed = statusPE.getReplication();
+	// int replicationCurrent = replications.get(peCurrent);
+	//
+	// // getLogger().debug(
+	// // "[replicationAnalyzed] " + replicationAnalyzed
+	// // + " | [replicationCurrent] "
+	// // + replicationCurrent);
+	//
+	// if (replicationAnalyzed > replicationCurrent) {
+	//
+	// getLogger().debug("Increment PE " + statusPE.getPE() + " in Adapter "
+	// + this.getClass().getCanonicalName());
+	//
+	// replications.put(statusPE.getPE(), statusPE.getReplication());
+	//
+	// }
+	// /* De ser menor, se deberá disminuir */
+	// else if (replicationAnalyzed < replicationCurrent) {
+	//
+	// getLogger().debug("Decrement PE " + statusPE.getPE() + " in Adapter "
+	// + this.getClass().getCanonicalName());
+	//
+	// replications.put(statusPE.getPE(), statusPE.getReplication());
+	//
+	// }
+	// }
+	// }
+	// }
+	//
+	// // /**
+	// // * Función que estará encargada de eliminar la réplica con el valor de
+	// // * la llave más alto. Es decir, en caso que el PE posee número de
+	// // * réplica n, significa que habrá 0 a n-1 llaves, de esta manera, se
+	// // * eliminarán m réplicas, como n-m réplicas diga que existen ahora en
+	// // el
+	// // * sistema.
+	// // *
+	// // * @param statusPE
+	// // * Estado del PE analizado
+	// // */
+	// // private void removeReplication(StatusPE statusPE) {
+	// //
+	// // int replication = replications.get(statusPE.getPE());
+	// //
+	// // /*
+	// // * Enviará un mensaje
+	// // */
+	// // if (replication > 1) {
+	// // getRemoteStream().sendRemovePE(statusPE);
+	// // }
+	// //
+	// // }
+	//
+	// @Override
+	// public void run() {
+	//
+	// try {
+	// serverSocket = new ServerSocket(portSocket);
+	// while (true) {
+	// connectedSocket = serverSocket.accept();
+	// inStream = new ObjectInputStream(connectedSocket.getInputStream());
+	//
+	// StatusPE statusPE = (StatusPE) inStream.readObject();
+	//
+	// changeReplication(statusPE);
+	//
+	// connectedSocket.close();
+	// }
+	//
+	// } catch (IOException | ClassNotFoundException e) {
+	// getLogger().error(e.toString());
+	// close();
+	// } finally {
+	// if (inStream != null) {
+	// try {
+	// inStream.close();
+	// } catch (IOException e) {
+	//
+	// throw new RuntimeException(e);
+	// }
+	// }
+	// if (serverSocket != null) {
+	// try {
+	// serverSocket.close();
+	// } catch (IOException e) {
+	// throw new RuntimeException(e);
+	// }
+	// }
+	// }
+	// }
+	// }
 
 	@Override
 	protected void onInit() {
-		remoteStream = createOutputStream(outputStreamName,
-				remoteStreamKeyFinder);
+		remoteStream = createOutputStream(outputStreamName, remoteStreamKeyFinder);
 
-		if (getRunMonitor()) {
-			/* Thread que estará escuchando los datos que envía el monitor */
-			Thread tListenerMonitor = new Thread(new ListenerMonitor());
-			tListenerMonitor.setName("tListenerMonitor");
-			tListenerMonitor.start();
-		}
+		// if (getRunMonitor()) {
+		// /* Thread que estará escuchando los datos que envía el monitor */
+		// Thread tListenerMonitor = new Thread(new ListenerMonitor());
+		// tListenerMonitor.setName("tListenerMonitor");
+		// tListenerMonitor.start();
+		// }
 
 		setConditionAdapter(true);
 
@@ -304,8 +306,8 @@ public abstract class AdapterApp extends App {
 			Notification notification = new Notification();
 			notification.setStatus(true);
 			notification.setAdapter(getClassAdapter());
-			notification.setListPE(listPE);
-			notification.setPort(portSocket);
+			// notification.setListPE(listPE);
+			// notification.setPort(portSocket);
 			remoteStream.notification(notification);
 		}
 	}

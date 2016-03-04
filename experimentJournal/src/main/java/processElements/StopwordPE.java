@@ -37,8 +37,7 @@ public class StopwordPE extends ProcessingElement {
 		newTweet.setTweetClean(tweetClean);
 		Event eventOutput = eventFactory.newEvent(newTweet);
 
-		eventOutput.put("levelLanguage", Long.class, getEventCount()
-				% getReplicationPE(LanguagePE.class));
+		eventOutput.put("levelLanguage", Integer.class, 0);
 		eventOutput.put("timeTweet", Long.class, time);
 		downStream.put(eventOutput);
 
@@ -51,8 +50,7 @@ public class StopwordPE extends ProcessingElement {
 		eventFactory = new EventFactory();
 		utilitiesWords = new Words();
 
-		stopwords = utilitiesWords
-				.readWords("/alumnos/dwladdimiro/S4/experimentThesis/config/stopwords.txt");
+		stopwords = utilitiesWords.readWords("/alumnos/dwladdimiro/S4/experimentThesis/config/stopwords.txt");
 	}
 
 	@Override

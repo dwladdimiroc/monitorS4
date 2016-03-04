@@ -151,8 +151,7 @@ public class AnalyzePE extends ProcessingElement {
 		newTweet.setType(type);
 
 		Event eventOutput = eventFactory.newEvent(newTweet);
-		eventOutput.put("levelMongo", Long.class, getEventCount()
-				% getReplicationPE(MongoPE.class));
+		eventOutput.put("levelMongo", Integer.class, 0);
 		downStream.put(eventOutput);
 
 	}

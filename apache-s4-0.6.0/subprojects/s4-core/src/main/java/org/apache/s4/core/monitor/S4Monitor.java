@@ -24,7 +24,8 @@ public class S4Monitor {
 
 	private int period;
 
-	private final List<TopologyApp> topologySystem = new ArrayList<TopologyApp>();
+	// private final List<TopologyApp> topologySystem = new
+	// ArrayList<TopologyApp>();
 	private final Map<Class<? extends ProcessingElement>, StatusPE> statusSystem = new LinkedHashMap<Class<? extends ProcessingElement>, StatusPE>();
 
 	/* Clase que se hara cargo de almacenar las estadísticas de S4Monitor */
@@ -57,27 +58,28 @@ public class S4Monitor {
 		setMetrics(new MonitorMetrics());
 	}
 
-	/**
-	 * registerAdapter hace referencia al registro del grafo dirigido dado el
-	 * adapter de la aplicación.
-	 * 
-	 * @param adapter
-	 *            Adapter de la App
-	 * @param peRecibe
-	 *            PE receptor
-	 */
-	public void registerAdapter(Class<? extends AdapterApp> adapter, Class<? extends ProcessingElement> peRecibe) {
-		logger.info("Register Adapter");
-
-		/*
-		 * Registro del adapter con su respectivo flujo al PE correspondiente
-		 */
-		TopologyApp topology = new TopologyApp();
-		topology.setAdapter(adapter);
-		topology.setPeRecibe(peRecibe);
-		getTopologySystem().add(topology);
-
-	}
+	// /**
+	// * registerAdapter hace referencia al registro del grafo dirigido dado el
+	// * adapter de la aplicación.
+	// *
+	// * @param adapter
+	// * Adapter de la App
+	// * @param peRecibe
+	// * PE receptor
+	// */
+	// public void registerAdapter(Class<? extends AdapterApp> adapter, Class<?
+	// extends ProcessingElement> peRecibe) {
+	// logger.info("Register Adapter");
+	//
+	// /*
+	// * Registro del adapter con su respectivo flujo al PE correspondiente
+	// */
+	// TopologyApp topology = new TopologyApp();
+	// topology.setAdapter(adapter);
+	// topology.setPeRecibe(peRecibe);
+	// getTopologySystem().add(topology);
+	//
+	// }
 
 	/**
 	 * registerPE hace referencia al registro del grafo dirigido, de esta manera
@@ -88,21 +90,22 @@ public class S4Monitor {
 	 * @param peRecibe
 	 *            PE receptor
 	 */
-	public void registerPE(Class<? extends ProcessingElement> peSend, Class<? extends ProcessingElement> peRecibe) {
+	public void registerPE(Class<? extends ProcessingElement> pe) {
 
-		logger.info("Register PE");
+		logger.info("Register PE " + pe.getCanonicalName());
 
-		/*
-		 * En caso que no sea un nodo terminal, se deberá generar un conexión
-		 * entre el PE emisor y receptor. Por lo que la topología deberá agregar
-		 * una arista con sus respectivos vértices.
-		 */
-		if (peRecibe != null) {
-			TopologyApp topology = new TopologyApp();
-			topology.setPeSend(peSend);
-			topology.setPeRecibe(peRecibe);
-			getTopologySystem().add(topology);
-		}
+		// /*
+		// * En caso que no sea un nodo terminal, se deberá generar un conexión
+		// * entre el PE emisor y receptor. Por lo que la topología deberá
+		// agregar
+		// * una arista con sus respectivos vértices.
+		// */
+		// if (peRecibe != null) {
+		// TopologyApp topology = new TopologyApp();
+		// topology.setPeSend(peSend);
+		// topology.setPeRecibe(peRecibe);
+		// getTopologySystem().add(topology);
+		// }
 
 		/*
 		 * En caso de no existir, se deberá crear un nuevo análisis del estado
@@ -110,32 +113,32 @@ public class S4Monitor {
 		 */
 		boolean exist = false;
 
-		if (getStatusSystem().containsKey(peSend)) {
+		if (getStatusSystem().containsKey(pe)) {
 			exist = true;
 		}
 
 		if (!exist) {
 			StatusPE statusPE = new StatusPE();
-			statusPE.setPE(peSend);
+			statusPE.setPE(pe);
 			statusPE.setRecibeEvent(0);
 			statusPE.setSendEvent(0);
 			statusPE.setReplication(1);
-			getStatusSystem().put(peSend, statusPE);
+			getStatusSystem().put(pe, statusPE);
 
 			replicationTotal++;
 
 			/* Además, se crearán los contadores y estadísticas para el PE */
-			getMetrics().createCounterReplicationPE(peSend.getCanonicalName());
-			getMetrics().createGaugeRhoPE(peSend.getCanonicalName());
-			getMetrics().createGaugeLambdaPE(peSend.getCanonicalName());
-			getMetrics().createGaugeMuPE(peSend.getCanonicalName());
-			getMetrics().createGaugeQueuePE(peSend.getCanonicalName());
-			getMetrics().createGaugeEventCountPE(peSend.getCanonicalName());
-			// getMetrics().createGaugeAvgEventSystem(peSend.getCanonicalName());
-			// getMetrics().createGaugeAvgEventQueue(peSend.getCanonicalName());
-			// getMetrics().createGaugeAvgTimeResident(peSend.getCanonicalName());
-			// getMetrics().createGaugeAvgTimeQueue(peSend.getCanonicalName());
-			// getMetrics().createGaugeAvgTimeProcess(peSend.getCanonicalName());
+			getMetrics().createCounterReplicationPE(pe.getCanonicalName());
+			getMetrics().createGaugeRhoPE(pe.getCanonicalName());
+			getMetrics().createGaugeLambdaPE(pe.getCanonicalName());
+			getMetrics().createGaugeMuPE(pe.getCanonicalName());
+			getMetrics().createGaugeQueuePE(pe.getCanonicalName());
+			getMetrics().createGaugeEventCountPE(pe.getCanonicalName());
+			// getMetrics().createGaugeAvgEventSystem(pe.getCanonicalName());
+			// getMetrics().createGaugeAvgEventQueue(pe.getCanonicalName());
+			// getMetrics().createGaugeAvgTimeResident(pe.getCanonicalName());
+			// getMetrics().createGaugeAvgTimeQueue(pe.getCanonicalName());
+			// getMetrics().createGaugeAvgTimeProcess(pe.getCanonicalName());
 		}
 	}
 
@@ -686,51 +689,54 @@ public class S4Monitor {
 
 	}
 
-	/**
-	 * intelligentReplication es una función recursiva que analizará si es que
-	 * debe aumentar o disminuir un PE receptor si es que el PE emisor ha sido
-	 * modificado.
-	 * 
-	 * @param peEmitter
-	 *            PE emisor, el cual será considerado para ver los nuevos flujos
-	 *            de sus PE receptores
-	 * @param replication
-	 *            condición de si aumento o disminuyo el PE emisor. true es que
-	 *            aumento, false es que disminuyó
-	 */
-
-	private void intelligentReplication(StatusPE peEmitter, boolean replication) {
-
-		for (TopologyApp topology : getTopologySystem()) {
-			if (peEmitter.getPE().equals(topology.getPeSend())) {
-
-				/*
-				 * Análisis de la tasa de procesamiento futuro, dado la tasa de
-				 * llegada que posee el PE emisor. En caso la réplica y su
-				 * intancia original posea una tasa de procesamiento mayor que
-				 * la tasa de llegada, deberá considerar que no procesarán más
-				 * de lo que ya poseen.
-				 */
-				long μ = peEmitter.getSendEvent();
-				long λ = peEmitter.getRecibeEvent();
-
-				long μFuture = μ;
-				if ((2 * μ) > λ) {
-					μFuture = λ;
-				}
-
-				/*
-				 * En caso que el análisis del nuevo flujo haya modificado el PE
-				 * receptor, se deberá realizar el mismo procedimiento con los
-				 * PE receptores de PE receptor analizado.
-				 */
-				if (analyzeStatus(topology.getPeRecibe(), μFuture, replication)) {
-					intelligentReplication(statusSystem.get(topology.getPeRecibe()), replication);
-				}
-			}
-		}
-
-	}
+	// [Trabajo futuro]
+	// /**
+	// * intelligentReplication es una función recursiva que analizará si es que
+	// * debe aumentar o disminuir un PE receptor si es que el PE emisor ha sido
+	// * modificado.
+	// *
+	// * @param peEmitter
+	// * PE emisor, el cual será considerado para ver los nuevos flujos
+	// * de sus PE receptores
+	// * @param replication
+	// * condición de si aumento o disminuyo el PE emisor. true es que
+	// * aumento, false es que disminuyó
+	// */
+	//
+	// private void intelligentReplication(StatusPE peEmitter, boolean
+	// replication) {
+	//
+	// for (TopologyApp topology : getTopologySystem()) {
+	// if (peEmitter.getPE().equals(topology.getPeSend())) {
+	//
+	// /*
+	// * Análisis de la tasa de procesamiento futuro, dado la tasa de
+	// * llegada que posee el PE emisor. En caso la réplica y su
+	// * intancia original posea una tasa de procesamiento mayor que
+	// * la tasa de llegada, deberá considerar que no procesarán más
+	// * de lo que ya poseen.
+	// */
+	// long μ = peEmitter.getSendEvent();
+	// long λ = peEmitter.getRecibeEvent();
+	//
+	// long μFuture = μ;
+	// if ((2 * μ) > λ) {
+	// μFuture = λ;
+	// }
+	//
+	// /*
+	// * En caso que el análisis del nuevo flujo haya modificado el PE
+	// * receptor, se deberá realizar el mismo procedimiento con los
+	// * PE receptores de PE receptor analizado.
+	// */
+	// if (analyzeStatus(topology.getPeRecibe(), μFuture, replication)) {
+	// intelligentReplication(statusSystem.get(topology.getPeRecibe()),
+	// replication);
+	// }
+	// }
+	// }
+	//
+	// }
 
 	/**
 	 * En este método se analizará cada uno de los distintos PE del sistema,
@@ -890,14 +896,14 @@ public class S4Monitor {
 		}
 	}
 
-	/**
-	 * getTopologySystem se obtiene la topología del sistema
-	 * 
-	 * @return Topología del sistema
-	 */
-	public List<TopologyApp> getTopologySystem() {
-		return topologySystem;
-	}
+	// /**
+	// * getTopologySystem se obtiene la topología del sistema
+	// *
+	// * @return Topología del sistema
+	// */
+	// public List<TopologyApp> getTopologySystem() {
+	// return topologySystem;
+	// }
 
 	/**
 	 * getStatusSystem se obtiene el estado del sistema
@@ -908,14 +914,14 @@ public class S4Monitor {
 		return statusSystem;
 	}
 
-	/**
-	 * Muestra la topología del sistema
-	 * 
-	 * @return un string con la topología del sistema
-	 */
-	public String mapTopology() {
-		return getTopologySystem().toString();
-	}
+	// /**
+	// * Muestra la topología del sistema
+	// *
+	// * @return un string con la topología del sistema
+	// */
+	// public String mapTopology() {
+	// return getTopologySystem().toString();
+	// }
 
 	/**
 	 * Muestra el estado del sistema

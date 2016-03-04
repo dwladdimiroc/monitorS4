@@ -35,17 +35,10 @@ public class MongoRead {
 
 	public long tweetRawCount() {
 
-		try {
-			this.mongo = new MongoClient(HOST, PORT);
-			this.db = this.mongo.getDB(DB_NAME);
-			this.table = db.getCollection(COLLECTION_NAME);
-			return this.table.count();
-
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			logger.error("Error");
-			return 0;
-		}
+		this.mongo = new MongoClient(HOST, PORT);
+		this.db = this.mongo.getDB(DB_NAME);
+		this.table = db.getCollection(COLLECTION_NAME);
+		return this.table.count();
 
 	}
 
@@ -53,28 +46,22 @@ public class MongoRead {
 
 		Stack<Tweet> tweets = new Stack<Tweet>();
 
-		try {
+		this.mongo = new MongoClient(HOST, PORT);
+		this.db = this.mongo.getDB(DB_NAME);
+		this.table = db.getCollection(COLLECTION_NAME);
 
-			this.mongo = new MongoClient(HOST, PORT);
-			this.db = this.mongo.getDB(DB_NAME);
-			this.table = db.getCollection(COLLECTION_NAME);
+		for (DBObject var : this.table.find()) {
+			Tweet auxTweet = new Tweet();
 
-			for (DBObject var : this.table.find()) {
-				Tweet auxTweet = new Tweet();
+			id++;
+			auxTweet.setIdTweet(id);
+			if(var.get("text").getClass().equals(String.class))
+				auxTweet.setText((String) var.get("text"));
 
-				id++;
-				auxTweet.setIdTweet(id);
-				if(var.get("text").getClass().equals(String.class))
-					auxTweet.setText((String) var.get("text"));
-
-				tweets.push(auxTweet);
-			}
-
-			this.setStatus(1);
-
-		} catch (UnknownHostException e) {
-			this.setStatus(-1);
+			tweets.push(auxTweet);
 		}
+
+		this.setStatus(1);
 
 		return tweets;
 	}
