@@ -36,12 +36,22 @@ public class ParabolaAdapter extends AdapterApp implements Runnable {
 
 	public Stack<Tweet> readTweet() {
 		MongoRead mongoRead = new MongoRead();
-		return mongoRead.getAllTweets();
+		Stack<Tweet> tweets = mongoRead.getAllTweets();
+		mongoRead.mongoDisconnect();
+		return tweets;
 	}
 
 	public List<Integer> cantTweets() {
 		Distribution distribution = new Distribution();
-		return distribution.parabolaTweets(new int[]{0, 100, 100, 200, 200, 100}, new int[]{0, 100, 100, 400, 200, 100}, new int[]{0, 100, 100, 800, 200, 100});
+
+		// 15 minutes
+		return distribution.parabolaTweets(new int[] { 0, 100, 100, 200, 200, 100 },
+				new int[] { 0, 100, 100, 400, 200, 100 }, new int[] { 0, 100, 100, 800, 200, 100 });
+
+		// 1 hour
+		// return distribution.parabolaTweets(new int[]{0, 100, 100, 200, 200,
+		// 100}, new int[]{0, 100, 100, 400, 200, 100}, new int[]{0, 100, 100,
+		// 800, 200, 100});
 	}
 
 	@Override
@@ -49,7 +59,6 @@ public class ParabolaAdapter extends AdapterApp implements Runnable {
 		/* Este orden es importante */
 		logger.info("Create Parabola Adapter");
 		setRunMonitor(true);
-		this.registerMonitor(StopwordPE.class);
 		thread = new Thread(this);
 
 		tweets = readTweet();
@@ -85,7 +94,7 @@ public class ParabolaAdapter extends AdapterApp implements Runnable {
 					Tweet tweetCurrent = tweets.pop();
 
 					Event event = new Event();
-					event.put("levelStopword", Long.class, getEventCount() % getReplicationPE(StopwordPE.class));
+					event.put("levelStopword", Integer.class, 0);
 					event.put("tweet", Tweet.class, tweetCurrent);
 					event.put("timeTweet", Long.class, System.currentTimeMillis());
 
@@ -116,14 +125,15 @@ public class ParabolaAdapter extends AdapterApp implements Runnable {
 		@Override
 		public void run() {
 			try {
-				Thread.sleep(4195000);
+				Thread.sleep(895000); // 15 minutes
+				// Thread.sleep(4195000) // 1 hour
 			} catch (InterruptedException e) {
 				logger.error(e.toString());
 			}
 
 			while (true) {
 				timeFinal = System.currentTimeMillis();
-				if ((timeFinal - timeInit) >= 4200000) {
+				if ((timeFinal - timeInit) >= 900000) {
 					close();
 					System.exit(0);
 				}

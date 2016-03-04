@@ -260,7 +260,7 @@ public class Stream<T extends Event> implements Streamable {
 	}
 
 	/**
-	 * The low level {@link ReceiverImpl} object call this method when a new
+	 * The low level {@link ReqceiverImpl} object call this method when a new
 	 * {@link Notification} is available.
 	 */
 	public void receiveNotification(Notification notification) {

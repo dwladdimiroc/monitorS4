@@ -43,7 +43,6 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 		tweets = readTweet();
 		
 		setRunMonitor(true);
-		this.registerMonitor(StopwordPE.class);
 		thread = new Thread(this);
 
 		super.onInit();
@@ -74,7 +73,7 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 			// logger.info(tweetCurrent.toString());
 
 			Event event = new Event();
-			event.put("levelStopword", Long.class, getEventCount() % getReplicationPE(StopwordPE.class));
+			event.put("levelStopword", Integer.class, 0);
 			event.put("tweet", Tweet.class, tweetCurrent);
 			event.put("timeTweet", Long.class, System.currentTimeMillis());
 
