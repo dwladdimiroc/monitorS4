@@ -20,7 +20,7 @@ import org.apache.s4.core.adapter.AdapterApp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import processElements.StopwordPE;
+//import processElements.StopwordPE;
 import eda.Tweet;
 import utilities.MongoRead;
 
@@ -63,7 +63,7 @@ public class NormalAdapter extends AdapterApp implements Runnable {
 
 		Thread clockTime = new Thread(new ClockTime());
 		clockTime.start();
-		
+
 		Thread upTime = new Thread(new UpTime());
 		upTime.start();
 	}

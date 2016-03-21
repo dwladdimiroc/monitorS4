@@ -50,7 +50,7 @@ public class StopwordPE extends ProcessingElement {
 		eventFactory = new EventFactory();
 		utilitiesWords = new Words();
 
-		stopwords = utilitiesWords.readWords("/alumnos/dwladdimiro/S4/experimentThesis/config/stopwords.txt");
+		stopwords = utilitiesWords.readWords("/home/dwladdimiro/S4/experimentJournal/config/stopwords.txt");
 	}
 
 	@Override

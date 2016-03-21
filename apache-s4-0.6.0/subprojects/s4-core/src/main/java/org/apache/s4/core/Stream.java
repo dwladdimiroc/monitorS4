@@ -260,7 +260,7 @@ public class Stream<T extends Event> implements Streamable {
 	}
 
 	/**
-	 * The low level {@link ReqceiverImpl} object call this method when a new
+	 * The low level {@link ReceiverImpl} object call this method when a new
 	 * {@link Notification} is available.
 	 */
 	public void receiveNotification(Notification notification) {
@@ -271,8 +271,8 @@ public class Stream<T extends Event> implements Streamable {
 		// for (String peRecibe : notification.getListPE()) {
 		// for (ProcessingElement peCurrent : getTargetPEs()) {
 		// if (peRecibe.equals(peCurrent.getClass().getCanonicalName())) {
-		// this.app.getMonitor().registerAdapter(
-		// notification.getAdapter(), peCurrent.getClass());
+		// this.app.getMonitor().registerAdapter(notification.getAdapter(),
+		// peCurrent.getClass());
 		// }
 		// }
 		// }

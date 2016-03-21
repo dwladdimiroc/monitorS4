@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eda.Tweet;
-import processElements.StopwordPE;
+//import processElements.StopwordPE;
 import utilities.MongoRead;
 
 public class UniformAdapter extends AdapterApp implements Runnable {
@@ -41,7 +41,7 @@ public class UniformAdapter extends AdapterApp implements Runnable {
 		/* Este orden es importante */
 		logger.info("Create Uniform Adapter");
 		tweets = readTweet();
-		
+
 		setRunMonitor(true);
 		thread = new Thread(this);
 

@@ -74,7 +74,7 @@ public class MonitorMetrics {
 //		timePredictive = 0;
 
 		/* Init registry */
-		String outputDir = "/home/daniel/Proyectos/monitorS4/statistics/";
+		String outputDir = "/home/dwladdimiro/S4/statistics/";
 		long period = 5;
 		TimeUnit timeUnit = TimeUnit.SECONDS;
 		logger.info(

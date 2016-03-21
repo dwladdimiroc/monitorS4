@@ -279,7 +279,7 @@ public abstract class ProcessingElement implements Cloneable {
 	//
 	// return replications.get(PE);
 	// }
-
+	//
 	// /**
 	// * Devolverá el módulo el cual se aplicará para replicar al siguiente PE
 	// *
@@ -621,9 +621,6 @@ public abstract class ProcessingElement implements Cloneable {
 	 * debe dirigirse, de tal manera de replicar sólo a ese PE en caso de
 	 * aumentar su llave
 	 * 
-	 * @param PE
-	 *            receptor, donde estará siendo llamada la función por el PE
-	 *            emisor.
 	 */
 
 	public void registerMonitor() {

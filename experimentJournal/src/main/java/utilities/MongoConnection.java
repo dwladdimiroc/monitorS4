@@ -9,7 +9,7 @@ import com.mongodb.MongoClient;
 
 public class MongoConnection
 {
-	public static final String HOST = "localhost"; // database host
+	public static final String HOST = "127.0.0.1"; // database host
 	public static final int PORT = 27017; // database port
 	public static final String DB_NAME = "Thesis"; // database name
 	private String COLLECTION_NAME = "CollectionDefault";
@@ -34,10 +34,17 @@ public class MongoConnection
 	// Setup the Connection with the Database
 	public void setupMongo()
 	{
-		this.mongo = new MongoClient(HOST, PORT);
-		this.db = this.mongo.getDB(DB_NAME);
-		this.table = db.getCollection(COLLECTION_NAME);
-		this.status = 1;
+		try
+		{
+			this.mongo = new MongoClient(HOST, PORT);
+			this.db = this.mongo.getDB(DB_NAME);
+			this.table = db.getCollection(COLLECTION_NAME);
+			this.status = 1;
+		}
+		catch (UnknownHostException e)
+		{
+			this.status = -1;
+		}
 	}
 
 	public void insert(DBObject object)

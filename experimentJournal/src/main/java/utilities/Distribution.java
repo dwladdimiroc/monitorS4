@@ -109,7 +109,7 @@ public class Distribution {
 		Words read = new Words();
 
 		// Cambiar Path
-		return read.readCantTweets("/alumnos/dwladdimiro/S4/experimentThesis/config/streamTwitter.csv");
+		return read.readCantTweets("/home/daniel/S4/experimentJournal/config/streamTwitter.csv");
 	}
 
 	public int totalTweet() {

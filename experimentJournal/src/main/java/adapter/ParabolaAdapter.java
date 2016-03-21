@@ -22,7 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eda.Tweet;
-import processElements.StopwordPE;
+//import processElements.StopwordPE;
 import utilities.Distribution;
 import utilities.MongoRead;
 
@@ -36,22 +36,13 @@ public class ParabolaAdapter extends AdapterApp implements Runnable {
 
 	public Stack<Tweet> readTweet() {
 		MongoRead mongoRead = new MongoRead();
-		Stack<Tweet> tweets = mongoRead.getAllTweets();
-		mongoRead.mongoDisconnect();
-		return tweets;
+		return mongoRead.getAllTweets();
 	}
 
 	public List<Integer> cantTweets() {
 		Distribution distribution = new Distribution();
-
-		// 15 minutes
 		return distribution.parabolaTweets(new int[] { 0, 100, 100, 200, 200, 100 },
 				new int[] { 0, 100, 100, 400, 200, 100 }, new int[] { 0, 100, 100, 800, 200, 100 });
-
-		// 1 hour
-		// return distribution.parabolaTweets(new int[]{0, 100, 100, 200, 200,
-		// 100}, new int[]{0, 100, 100, 400, 200, 100}, new int[]{0, 100, 100,
-		// 800, 200, 100});
 	}
 
 	@Override
@@ -125,8 +116,7 @@ public class ParabolaAdapter extends AdapterApp implements Runnable {
 		@Override
 		public void run() {
 			try {
-				Thread.sleep(895000); // 15 minutes
-				// Thread.sleep(4195000) // 1 hour
+				Thread.sleep(895000);
 			} catch (InterruptedException e) {
 				logger.error(e.toString());
 			}

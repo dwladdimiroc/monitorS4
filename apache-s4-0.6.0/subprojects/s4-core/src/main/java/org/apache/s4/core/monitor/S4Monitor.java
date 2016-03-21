@@ -1,15 +1,15 @@
 package org.apache.s4.core.monitor;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.List;
+//import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.s4.core.ProcessingElement;
-import org.apache.s4.core.adapter.AdapterApp;
+//import org.apache.s4.core.adapter.AdapterApp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -82,24 +82,20 @@ public class S4Monitor {
 	// }
 
 	/**
-	 * registerPE hace referencia al registro del grafo dirigido, de esta manera
-	 * podremos saber quienes son los PE emisores y receptores.
+	 * registerPE hace referencia al registro del grafo dirigido
 	 * 
-	 * @param peSend
-	 *            PE emisor
-	 * @param peRecibe
-	 *            PE receptor
+	 * @param pe
+	 *            PE Current
 	 */
 	public void registerPE(Class<? extends ProcessingElement> pe) {
 
-		logger.info("Register PE " + pe.getCanonicalName());
+		logger.info("Register PE");
 
-		// /*
-		// * En caso que no sea un nodo terminal, se deberá generar un conexión
-		// * entre el PE emisor y receptor. Por lo que la topología deberá
-		// agregar
-		// * una arista con sus respectivos vértices.
-		// */
+		/*
+		 * En caso que no sea un nodo terminal, se deberá generar un conexión
+		 * entre el PE emisor y receptor. Por lo que la topología deberá agregar
+		 * una arista con sus respectivos vértices.
+		 */
 		// if (peRecibe != null) {
 		// TopologyApp topology = new TopologyApp();
 		// topology.setPeSend(peSend);
@@ -134,11 +130,11 @@ public class S4Monitor {
 			getMetrics().createGaugeMuPE(pe.getCanonicalName());
 			getMetrics().createGaugeQueuePE(pe.getCanonicalName());
 			getMetrics().createGaugeEventCountPE(pe.getCanonicalName());
-			// getMetrics().createGaugeAvgEventSystem(pe.getCanonicalName());
-			// getMetrics().createGaugeAvgEventQueue(pe.getCanonicalName());
-			// getMetrics().createGaugeAvgTimeResident(pe.getCanonicalName());
-			// getMetrics().createGaugeAvgTimeQueue(pe.getCanonicalName());
-			// getMetrics().createGaugeAvgTimeProcess(pe.getCanonicalName());
+			// getMetrics().createGaugeAvgEventSystem(peSend.getCanonicalName());
+			// getMetrics().createGaugeAvgEventQueue(peSend.getCanonicalName());
+			// getMetrics().createGaugeAvgTimeResident(peSend.getCanonicalName());
+			// getMetrics().createGaugeAvgTimeQueue(peSend.getCanonicalName());
+			// getMetrics().createGaugeAvgTimeProcess(peSend.getCanonicalName());
 		}
 	}
 
@@ -555,7 +551,6 @@ public class S4Monitor {
 			 */
 
 			numReplica = predictiveLoad(statusPE);
-			numReplica = 0;
 			if (numReplica < 0) {
 				int numMod = numReplica * -1;
 				if (numMod >= statusPE.getReplication()) {
@@ -610,86 +605,95 @@ public class S4Monitor {
 		return false;
 	}
 
-	/**
-	 * analyzeStatus analizará el nuevo flujo de datos, según la disminución o
-	 * aumento de uno de los PE emisores del PE analizado.
-	 * 
-	 * @param data
-	 *            PE analizado
-	 * @param recibeEvent
-	 *            Nueva cantidad de flujo del PE emisor
-	 * @param replication
-	 *            Booleano para ver si disminuye o aumenta el flujo
-	 * @return true Si es que surgió un cambio en el sistema, false si no cambió
-	 *         nada
-	 */
+	// /**
+	// * analyzeStatus analizará el nuevo flujo de datos, según la disminución o
+	// * aumento de uno de los PE emisores del PE analizado.
+	// *
+	// * @param data
+	// * PE analizado
+	// * @param recibeEvent
+	// * Nueva cantidad de flujo del PE emisor
+	// * @param replication
+	// * Booleano para ver si disminuye o aumenta el flujo
+	// * @return true Si es que surgió un cambio en el sistema, false si no
+	// cambió
+	// * nada
+	// */
+	//
+	// private boolean analyzeStatus(Class<? extends ProcessingElement>
+	// peAnalyze, long recibeEvent, boolean replication) {
+	//
+	// for (Class<? extends ProcessingElement> peCurrent :
+	// getStatusSystem().keySet()) {
+	//
+	// StatusPE statusPE = getStatusSystem().get(peCurrent);
+	//
+	// if (statusPE.getPE().equals(peAnalyze)) {
+	//
+	// /*
+	// * Análisis de ρ para ver si debe aumentar, mantener o disminuir
+	// * la cantidad de réplicas de cierto PE dada la replicación del
+	// * PE que le provee eventos.
+	// */
+	//
+	// double ρ = 0;
+	//
+	// /*
+	// * En caso que aumente el fluyo, será porque se agrega una
+	// * réplica. De no ser así, será porque disminuye el flujo,
+	// * debido a la remoción de una réplica.
+	// */
+	// if (replication) {
+	// if (statusPE.getSendEvent() != 0) {
+	// ρ = (double) (statusPE.getRecibeEvent() + recibeEvent) / (double)
+	// statusPE.getSendEvent();
+	// } else if ((statusPE.getRecibeEvent() == 0) && (statusPE.getSendEvent()
+	// == 0)) {
+	// ρ = 1;
+	// } else {
+	// ρ = Double.POSITIVE_INFINITY;
+	// }
+	//
+	// logger.debug(
+	// "[intelligentReplication] | [PE Analyze] " + peAnalyze.getCanonicalName()
+	// + " | [ρ] " + ρ);
+	//
+	// if (ρ > 1) {
+	// getMetrics().counterReplicationPE(statusPE.getPE().getCanonicalName(),
+	// true);
+	// statusPE.setReplication(statusPE.getReplication() + 1);
+	// return true;
+	// }
+	//
+	// } else {
+	// if (statusPE.getSendEvent() != 0) {
+	// ρ = (double) (statusPE.getRecibeEvent() - recibeEvent) / (double)
+	// statusPE.getSendEvent();
+	// } else if ((statusPE.getRecibeEvent() == 0) &&
+	// ((statusPE.getRecibeEvent() - recibeEvent) == 0)) {
+	// ρ = 1;
+	// } else {
+	// ρ = Double.POSITIVE_INFINITY;
+	// }
+	//
+	// if (ρ < 0.5) {
+	// getMetrics().counterReplicationPE(statusPE.getPE().getCanonicalName(),
+	// false);
+	// statusPE.setReplication(statusPE.getReplication() - 1);
+	// return true;
+	// }
+	// }
+	//
+	// return false;
+	//
+	// }
+	//
+	// }
+	//
+	// return false;
+	//
+	// }
 
-	private boolean analyzeStatus(Class<? extends ProcessingElement> peAnalyze, long recibeEvent, boolean replication) {
-
-		for (Class<? extends ProcessingElement> peCurrent : getStatusSystem().keySet()) {
-
-			StatusPE statusPE = getStatusSystem().get(peCurrent);
-
-			if (statusPE.getPE().equals(peAnalyze)) {
-
-				/*
-				 * Análisis de ρ para ver si debe aumentar, mantener o disminuir
-				 * la cantidad de réplicas de cierto PE dada la replicación del
-				 * PE que le provee eventos.
-				 */
-
-				double ρ = 0;
-
-				/*
-				 * En caso que aumente el fluyo, será porque se agrega una
-				 * réplica. De no ser así, será porque disminuye el flujo,
-				 * debido a la remoción de una réplica.
-				 */
-				if (replication) {
-					if (statusPE.getSendEvent() != 0) {
-						ρ = (double) (statusPE.getRecibeEvent() + recibeEvent) / (double) statusPE.getSendEvent();
-					} else if ((statusPE.getRecibeEvent() == 0) && (statusPE.getSendEvent() == 0)) {
-						ρ = 1;
-					} else {
-						ρ = Double.POSITIVE_INFINITY;
-					}
-
-					logger.debug(
-							"[intelligentReplication] | [PE Analyze] " + peAnalyze.getCanonicalName() + " | [ρ] " + ρ);
-
-					if (ρ > 1) {
-						getMetrics().counterReplicationPE(statusPE.getPE().getCanonicalName(), true);
-						statusPE.setReplication(statusPE.getReplication() + 1);
-						return true;
-					}
-
-				} else {
-					if (statusPE.getSendEvent() != 0) {
-						ρ = (double) (statusPE.getRecibeEvent() - recibeEvent) / (double) statusPE.getSendEvent();
-					} else if ((statusPE.getRecibeEvent() == 0) && ((statusPE.getRecibeEvent() - recibeEvent) == 0)) {
-						ρ = 1;
-					} else {
-						ρ = Double.POSITIVE_INFINITY;
-					}
-
-					if (ρ < 0.5) {
-						getMetrics().counterReplicationPE(statusPE.getPE().getCanonicalName(), false);
-						statusPE.setReplication(statusPE.getReplication() - 1);
-						return true;
-					}
-				}
-
-				return false;
-
-			}
-
-		}
-
-		return false;
-
-	}
-
-	// [Trabajo futuro]
 	// /**
 	// * intelligentReplication es una función recursiva que analizará si es que
 	// * debe aumentar o disminuir un PE receptor si es que el PE emisor ha sido

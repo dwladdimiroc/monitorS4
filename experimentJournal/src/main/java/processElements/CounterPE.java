@@ -33,8 +33,7 @@ public class CounterPE extends ProcessingElement {
 		Tweet tweet = event.get("tweet", Tweet.class);
 		long time = event.get("timeTweet", Long.class);
 
-		int counterNeed = utilitiesWords.counterContains(keywords,
-				tweet.getText());
+		int counterNeed = utilitiesWords.counterContains(keywords, tweet.getText());
 
 		counter += counterNeed;
 
@@ -57,8 +56,7 @@ public class CounterPE extends ProcessingElement {
 		eventFactory = new EventFactory();
 		utilitiesWords = new Words();
 
-		keywords = utilitiesWords
-				.readWords("/alumnos/dwladdimiro/S4/experimentThesis/config/bag.txt");
+		keywords = utilitiesWords.readWords("/home/dwladdimiro/S4/experimentJournal/config/bag.txt");
 	}
 
 	@Override

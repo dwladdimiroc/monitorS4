@@ -1,9 +1,9 @@
 package org.apache.s4.core.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.s4.core.ProcessingElement;
+//import java.util.ArrayList;
+//import java.util.List;
+//
+//import org.apache.s4.core.ProcessingElement;
 
 public class Notification {
 
