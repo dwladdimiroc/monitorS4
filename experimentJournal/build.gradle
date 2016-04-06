@@ -147,7 +147,7 @@ s4r << {
 
 task cp << {
     description='Dumps the classpath for running a class from this project, into a \'classpath.txt\' file in the current directory'
-    new File("classpath.txt").write(sourceSets.main.output.classesDir.path + File.pathSeparator + '/home/daniel/Proyectos/monitorS4/apache-s4-0.6.0' + '/lib/*' + File.pathSeparator + '/home/daniel/Proyectos/monitorS4/apache-s4-0.6.0' + '/subprojects/s4-tools/build/install/s4-tools/lib/*')
+    new File("classpath.txt").write(sourceSets.main.output.classesDir.path + File.pathSeparator + '/home/dwladdimiro/S4/apache-s4-0.6.0-incubating-src' + '/lib/*' + File.pathSeparator + '/home/dwladdimiro/S4/apache-s4-0.6.0-incubating-src' + '/subprojects/s4-tools/build/install/s4-tools/lib/*')
 }
 
 /*Check whether the defined appClass exists and extends App*/

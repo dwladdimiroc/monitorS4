@@ -88,9 +88,7 @@ dependencies {
    compile (libraries.opennlp)
    compile (libraries.math)
 
-   compile files('./lib/SentiStrength-2.2.jar')
-
-
+   compile files('/home/dwladdimiro/S4/quotesApp/lib/SentiStrength-2.2.jar')
 }
 
 // Set the manifest attributes for the S4 archive here. ('S4-App-Class':  gets set by the s4r task)
@@ -144,7 +142,7 @@ s4r << {
 
 task cp << {
     description='Dumps the classpath for running a class from this project, into a \'classpath.txt\' file in the current directory'
-    new File("classpath.txt").write(sourceSets.main.output.classesDir.path + File.pathSeparator + '/home/daniel/Proyectos/monitorS4/apache-s4-0.6.0' + '/lib/*' + File.pathSeparator + '/home/daniel/Proyectos/monitorS4/apache-s4-0.6.0' + '/subprojects/s4-tools/build/install/s4-tools/lib/*')
+    new File("classpath.txt").write(sourceSets.main.output.classesDir.path + File.pathSeparator + '/home/dwladdimiro/S4/apache-s4-0.6.0-incubating-src' + '/lib/*' + File.pathSeparator + '/home/dwladdimiro/S4/apache-s4-0.6.0-incubating-src' + '/subprojects/s4-tools/build/install/s4-tools/lib/*')
 }
 
 /*Check whether the defined appClass exists and extends App*/

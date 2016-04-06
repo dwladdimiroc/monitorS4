@@ -25,7 +25,7 @@ import org.apache.s4.base.Event;
 import org.apache.s4.base.KeyFinder;
 import org.apache.s4.core.App;
 import org.apache.s4.core.Stream;
-//import org.apache.s4.core.monitor.StatusPE;
+import org.apache.s4.core.monitor.StatusPE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,9 +47,13 @@ public class Topology extends App {
 	protected void onInit() {
 		// Create the PE prototype
 		detectSpamPE = createPE(DetectSpamPE.class);
+		
 		analyzePE = createPE(AnalyzePE.class);
+	
 		detectNamePE = createPE(DetectNamePE.class);
+		
 		mongoPE = createPE(MongoPE.class);
+		//mongoPE.setUnique(true);
 
 		// Input Adapter
 		createInputStream("quotesInput", new KeyFinder<Event>() {
@@ -102,15 +106,20 @@ public class Topology extends App {
 		detectNamePE.registerMonitor();
 		mongoPE.registerMonitor();
 		
-		/*StatusPE statusStopwordPE = new StatusPE();
-		statusStopwordPE.setPE(stopwordPE.getClass());
-		statusStopwordPE.setReplication(4);
-		this.addReplication(statusStopwordPE);
+		/*StatusPE statusSpamPE = new StatusPE();
+		statusSpamPE.setPE(detectSpamPE.getClass());
+		statusSpamPE.setReplication(2);
+		this.addReplication(statusSpamPE);
 
-		StatusPE statusCounterPE = new StatusPE();
-		statusCounterPE.setPE(counterPE.getClass());
-		statusCounterPE.setReplication(8);
-		this.addReplication(statusCounterPE);*/
+		StatusPE statusAnalyzePE = new StatusPE();
+		statusAnalyzePE.setPE(analyzePE.getClass());
+		statusAnalyzePE.setReplication(3);
+		this.addReplication(statusAnalyzePE);*/
+		
+		StatusPE statusNamePE = new StatusPE();
+		statusNamePE.setPE(detectNamePE.getClass());
+		statusNamePE.setReplication(2);
+		this.addReplication(statusNamePE);
 
 		Thread clockTime = new Thread(new ClockTime());
 		clockTime.start();
@@ -134,14 +143,15 @@ public class Topology extends App {
 		@Override
 		public void run() {
 			try {
-				Thread.sleep(895000);
+				Thread.sleep(695000);
+				//Thread.sleep(3850000);
 			} catch (InterruptedException e) {
 				logger.error(e.toString());
 			}
 
 			while (true) {
 				timeFinal = System.currentTimeMillis();
-				if ((timeFinal - timeInit) >= 900000) {
+				if ((timeFinal - timeInit) >= 700000) {
 					close();
 					System.exit(0);
 				}

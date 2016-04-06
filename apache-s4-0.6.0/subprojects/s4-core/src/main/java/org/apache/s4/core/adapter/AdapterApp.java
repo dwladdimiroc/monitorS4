@@ -18,21 +18,21 @@
 
 package org.apache.s4.core.adapter;
 
-//import java.io.IOException;
-//import java.io.ObjectInputStream;
-//import java.net.ServerSocket;
-//import java.net.Socket;
-//import java.util.ArrayList;
-//import java.util.HashMap;
-//import java.util.List;
-//import java.util.Map;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.s4.base.Event;
 import org.apache.s4.base.KeyFinder;
 import org.apache.s4.core.App;
-//import org.apache.s4.core.ProcessingElement;
+import org.apache.s4.core.ProcessingElement;
 import org.apache.s4.core.RemoteStream;
-//import org.apache.s4.core.monitor.StatusPE;
+import org.apache.s4.core.monitor.StatusPE;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;

@@ -23,11 +23,11 @@ case "$1" in
     
     # example : ./s4 adapter -cluster=c1
 	shift 1
-	/home/daniel/Proyectos/monitorS4/apache-s4-0.6.0/gradlew cp
+	/home/dwladdimiro/S4/apache-s4-0.6.0-incubating-src/gradlew cp
 	java -cp `cat classpath.txt` org.apache.s4.core.S4Node $@
 ;;
 *)
-	echo "calling referenced s4 script : /home/daniel/Proyectos/monitorS4/apache-s4-0.6.0/s4"
-	(cd /home/daniel/Proyectos/monitorS4/apache-s4-0.6.0 && /home/daniel/Proyectos/monitorS4/apache-s4-0.6.0/s4 $@)
+	echo "calling referenced s4 script : /home/dwladdimiro/S4/apache-s4-0.6.0-incubating-src/s4"
+	(cd /home/dwladdimiro/S4/apache-s4-0.6.0-incubating-src && /home/dwladdimiro/S4/apache-s4-0.6.0-incubating-src/s4 $@)
 ;;
 esac

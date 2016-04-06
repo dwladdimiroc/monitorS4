@@ -24,7 +24,7 @@ import org.apache.s4.base.Key;
 import org.apache.s4.base.KeyFinder;
 import org.apache.s4.comm.topology.RemoteStreams;
 import org.apache.s4.core.adapter.Notification;
-//import org.apache.s4.core.monitor.StatusPE;
+import org.apache.s4.core.monitor.StatusPE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

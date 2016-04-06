@@ -40,16 +40,22 @@ public class FourierAdapter extends AdapterApp implements Runnable {
 
 	public List<Integer> cantTweets() {
 		// Model for 15 minutes
-		FourierModel fourier = new FourierModel(245.2, 114.8, 174.9, -183.2, -37.29, 170.6, -133.4, 52.64, 31.74, 31.53,
-				-12.1, -14.5, 27.55, -15.92, 2.248, -9.052, 3.92, 1.546);
-		return fourier.cantTweet(900000);
+		/*FourierModel fourier = new FourierModel(296.4, 15.66, 192.3, -101.1, -96.29, 161.4, -87.17, 46.93, 25.1, 10.09, 3.638, -19.05,
+				23.68, -18.24, -1.734, -0.3809, -0.2242, 1.682);
+		return fourier.cantTweet(900);*/
+
+		// Model for 1 hour
+		FourierModel fourier = new FourierModel(285.6, 21.75, 195.1, -105.3, -98.86, 179.7, -45.55, 46.07, 47.05, 11.16, 10.54,
+				-25.08, 10.22, -19.15, -12.66, -1.472, -5.407, 1.536);
+		return fourier.cantTweet(4000);
+		
 	}
 
 	@Override
 	protected void onInit() {
 		/* Este orden es importante */
 		logger.info("Create Fourier Adapter");
-		setRunMonitor(true);
+		setRunMonitor(false);
 		thread = new Thread(this);
 
 		tweets = readTweet();
@@ -116,14 +122,15 @@ public class FourierAdapter extends AdapterApp implements Runnable {
 		@Override
 		public void run() {
 			try {
-				Thread.sleep(895000);
+				//Thread.sleep(695000);
+				Thread.sleep(3850000);
 			} catch (InterruptedException e) {
 				logger.error(e.toString());
 			}
 
 			while (true) {
 				timeFinal = System.currentTimeMillis();
-				if ((timeFinal - timeInit) >= 900000) {
+				if ((timeFinal - timeInit) >= 3900000) {
 					close();
 					System.exit(0);
 				}

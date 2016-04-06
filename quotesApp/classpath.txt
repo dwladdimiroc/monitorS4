@@ -1,0 +1,1 @@
+/home/dwladdimiro/S4/quotesApp/build/classes/main:/home/dwladdimiro/S4/apache-s4-0.6.0-incubating-src/lib/*:/home/dwladdimiro/S4/apache-s4-0.6.0-incubating-src/subprojects/s4-tools/build/install/s4-tools/lib/*

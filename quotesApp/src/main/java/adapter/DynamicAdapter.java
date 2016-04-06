@@ -116,14 +116,15 @@ public class DynamicAdapter extends AdapterApp implements Runnable {
 		@Override
 		public void run() {
 			try {
-				Thread.sleep(895000);
+				Thread.sleep(695000);
+				//Thread.sleep(3850000);
 			} catch (InterruptedException e) {
 				logger.error(e.toString());
 			}
 
 			while (true) {
 				timeFinal = System.currentTimeMillis();
-				if ((timeFinal - timeInit) >= 900000) {
+				if ((timeFinal - timeInit) >= 700000) {
 					close();
 					System.exit(0);
 				}

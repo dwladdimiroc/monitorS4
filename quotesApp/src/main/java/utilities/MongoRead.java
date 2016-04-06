@@ -68,14 +68,14 @@ public class MongoRead {
 				if (var.get("publisher").getClass().equals(String.class))
 					auxQuote.setText((String) var.get("publisher"));
 				
-				if (var.get("time").getClass().equals(Date.class))
+				if (var.get("time").getClass().equals(Date.class) && var.get("time") != null)
 					auxQuote.setTimestamp((Date) var.get("time"));
 				
 				if (var.get("text").getClass().equals(String.class))
 					auxQuote.setText((String) var.get("text"));
 				
 				if (var.get("links").getClass().equals(String[].class))
-					auxQuote.setLinks((String[]) var.get("timestamp"));
+					auxQuote.setLinks((String[]) var.get("links"));
 
 				quotes.push(auxQuote);
 			}

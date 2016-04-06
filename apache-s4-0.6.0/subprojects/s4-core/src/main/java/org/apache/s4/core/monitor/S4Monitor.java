@@ -308,19 +308,27 @@ public class S4Monitor {
 			if (μ != 0) {
 				if (s == 1) {
 					ρ = (double) λ / (double) (μ + s);
-					logger.debug("[PE] " + statusPE.getPE().getCanonicalName() + " | [λ] " + λ + " | [μ] " + μ
-							+ " | [ρ] " + ρ);
+					// logger.debug("[PE] " +
+					// statusPE.getPE().getCanonicalName() + " | [λ] " + λ + " |
+					// [μ] " + μ
+					// + " | [ρ] " + ρ);
 				} else {
 					if (statusPE.getSendEventUnit() != 0) {
 						double μPE = statusPE.getSendEventUnit();
 						statusPE.setSendEvent(s * (long) Math.floor(μPE));
 						ρ = (double) λ / ((double) s * μPE);
-						logger.debug("[PE] " + statusPE.getPE().getCanonicalName() + " | [s] " + s + " | [μPE] " + μPE
-								+ " | [s*μPE] " + ((double) s * μPE) + " | [λ] " + λ + " | [ρ] " + ρ);
+						// logger.debug("[PE] " +
+						// statusPE.getPE().getCanonicalName() + " | [s] " + s +
+						// " | [μPE] " + μPE
+						// + " | [s*μPE] " + ((double) s * μPE) + " | [λ] " + λ
+						// + " | [ρ] " + ρ);
 					} else {
 						ρ = (double) λ / (double) (s * μ);
-						logger.error("[PE2] " + statusPE.getPE().getCanonicalName() + " | [s] " + s + " | [μ] " + μ
-								+ " | [s*μ] " + ((double) s * μ) + " | [λ] " + λ + " | [ρ] " + ρ);
+						// logger.error("[PE2] " +
+						// statusPE.getPE().getCanonicalName() + " | [s] " + s +
+						// " | [μ] " + μ
+						// + " | [s*μ] " + ((double) s * μ) + " | [λ] " + λ + "
+						// | [ρ] " + ρ);
 					}
 				}
 			} else if ((μ == 0) && (λ == 0)) {
@@ -369,7 +377,7 @@ public class S4Monitor {
 		/* Análisis de la tasa de rendimiento */
 		double ρ = statusPE.getProcessEvent();
 
-		logger.debug("[PE] " + statusPE.getPE() + " | [ρ] " + ρ);
+		// logger.debug("[PE] " + statusPE.getPE() + " | [ρ] " + ρ);
 
 		/*
 		 * Análisis de ρ para ver si debe aumentar, mantener o disminuir la
@@ -425,11 +433,13 @@ public class S4Monitor {
 		/* Análisis estadístico de los resultados de la predicción */
 		DescriptiveStatistics descriptiveStatistics = new DescriptiveStatistics(distEstacionaria);
 
-		logger.debug("[transitionMatrix] {" + Arrays.toString(markovChain.getTransitionMatrix()[0]) + ","
-				+ Arrays.toString(markovChain.getTransitionMatrix()[1]) + ","
-				+ Arrays.toString(markovChain.getTransitionMatrix()[2]) + "}" + " | [distEstacionaria] "
-				+ Arrays.toString(distEstacionaria) + " | [Statistics] "
-				+ descriptiveStatistics.getStandardDeviation());
+		// logger.debug("[transitionMatrix] {" +
+		// Arrays.toString(markovChain.getTransitionMatrix()[0]) + ","
+		// + Arrays.toString(markovChain.getTransitionMatrix()[1]) + ","
+		// + Arrays.toString(markovChain.getTransitionMatrix()[2]) + "}" + " |
+		// [distEstacionaria] "
+		// + Arrays.toString(distEstacionaria) + " | [Statistics] "
+		// + descriptiveStatistics.getStandardDeviation());
 
 		/*
 		 * En caso de existir una desviación estándar mayor al umbral, se tomará
@@ -487,7 +497,7 @@ public class S4Monitor {
 	private int administrationLoad(StatusPE statusPE) {
 		int numReplica = 0;
 
-		logger.debug("[Period] " + period);
+		// logger.debug("[Period] " + period);
 
 		if ((period % 20) != 0) {
 
@@ -526,8 +536,9 @@ public class S4Monitor {
 			 * aumentar.
 			 */
 
-			logger.debug("[{}] MarkMap: {}",
-					new String[] { statusPE.getPE().getCanonicalName(), statusPE.getMarkMap().toString() });
+			// logger.debug("[{}] MarkMap: {}",
+			// new String[] { statusPE.getPE().getCanonicalName(),
+			// statusPE.getMarkMap().toString() });
 
 			if (containsCondition(statusPE.getMarkMap(), true)) {
 				statusPE.getMarkMap().clear();
@@ -759,11 +770,12 @@ public class S4Monitor {
 
 			StatusPE statusPE = getStatusSystem().get(peCurrent);
 
-			logger.debug(statusPE.toString());
+			// logger.debug(statusPE.toString());
 
 			int status = administrationLoad(statusPE);
 
-			logger.debug("[Finish administrationLoad] PE: " + statusPE.getPE() + " | status: " + status);
+			// logger.debug("[Finish administrationLoad] PE: " +
+			// statusPE.getPE() + " | status: " + status);
 
 			/*
 			 * Se entenderá que debe replicarse si retornar el valor 1, por lo
@@ -781,8 +793,9 @@ public class S4Monitor {
 				}
 				statusPE.setReplication(statusPE.getReplication() + status);
 
-				logger.debug("Increment PE " + statusPE.getPE() + " | Current replication [" + statusPE.getReplication()
-						+ "]");
+				// logger.debug("Increment PE " + statusPE.getPE() + " | Current
+				// replication [" + statusPE.getReplication()
+				// + "]");
 				// intelligentReplication(statusPE, true);
 
 			} else if (status < 0) {
@@ -797,8 +810,9 @@ public class S4Monitor {
 						statusPE.setReplication(1);
 					}
 
-					logger.debug("Decrement PE " + statusPE.getPE() + " | Current replication ["
-							+ statusPE.getReplication() + "]");
+					// logger.debug("Decrement PE " + statusPE.getPE() + " |
+					// Current replication ["
+					// + statusPE.getReplication() + "]");
 					// intelligentReplication(statusPE, false);
 				}
 

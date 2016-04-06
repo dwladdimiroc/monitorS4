@@ -19,7 +19,7 @@ package org.apache.s4.core;
 
 import org.apache.s4.base.Event;
 import org.apache.s4.core.adapter.Notification;
-//import org.apache.s4.core.monitor.StatusPE;
+import org.apache.s4.core.monitor.StatusPE;
 
 /**
  * Sends events to remote clusters. Target clusters are selected dynamically
