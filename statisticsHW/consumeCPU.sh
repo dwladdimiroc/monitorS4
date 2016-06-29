@@ -1,1 +1,0 @@
-sar -u 1 | tee consumeCPU.csv
